@@ -8,12 +8,14 @@ import {
 import { RequestHandler } from 'express'
 import type { ApplicationInfo } from '../applicationInfo'
 
-export function initialiseAppInsights(): void {
+export function initialiseAppInsights(applicationInfo: ApplicationInfo): void {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     // eslint-disable-next-line no-console
     console.log('Enabling azure application insights')
 
     setup().setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C).start()
+    defaultClient.context.tags['ai.cloud.role'] = applicationInfo.applicationName
+    defaultClient.context.tags['ai.application.ver'] = applicationInfo.buildNumber
   }
 }
 

@@ -1,15 +1,12 @@
 import { dataAccess } from '../data'
 import AuditService from './auditService'
 
-export const services = () => {
-  const { applicationInfo, hmppsAuditClient } = dataAccess()
+const { applicationInfo, hmppsAuditClient } = dataAccess()
+const auditService = new AuditService(hmppsAuditClient)
 
-  const auditService = new AuditService(hmppsAuditClient)
-
-  return {
-    applicationInfo,
-    auditService,
-  }
+export const services = {
+  applicationInfo,
+  auditService,
 }
 
-export type Services = ReturnType<typeof services>
+export type Services = typeof services

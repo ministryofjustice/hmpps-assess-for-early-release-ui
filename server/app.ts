@@ -18,8 +18,9 @@ import setUpWebSession from './middleware/setUpWebSession'
 
 import routes from './routes'
 import type { Services } from './services'
+import { ApplicationInfo } from './applicationInfo'
 
-export default function createApp(services: Services): express.Application {
+export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
   const app = express()
 
   app.set('json spaces', 2)
@@ -27,12 +28,12 @@ export default function createApp(services: Services): express.Application {
   app.set('port', process.env.PORT || 3000)
 
   app.use(appInsightsMiddleware())
-  app.use(setUpHealthChecks(services.applicationInfo))
+  app.use(setUpHealthChecks(applicationInfo))
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
   app.use(setUpWebRequestParsing())
   app.use(setUpStaticResources())
-  nunjucksSetup(app)
+  nunjucksSetup(app, applicationInfo)
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())

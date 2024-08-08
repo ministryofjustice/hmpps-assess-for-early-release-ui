@@ -10,8 +10,19 @@ import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import { ApplicationInfo } from '../../applicationInfo'
+import setUpHealthChecks from '../../middleware/setUpHealthChecks'
 
 jest.mock('../../services/auditService')
+
+const testAppInfo: ApplicationInfo = {
+  applicationName: 'test',
+  buildNumber: '1',
+  gitRef: 'long ref',
+  gitShortHash: 'short ref',
+  branchName: 'main',
+  productId: 'DPS01',
+}
 
 export const user: HmppsUser = {
   name: 'FIRST LAST',
@@ -31,7 +42,8 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 
   app.set('view engine', 'njk')
 
-  nunjucksSetup(app)
+  nunjucksSetup(app, testAppInfo)
+  app.use(setUpHealthChecks(testAppInfo))
   app.use(setUpWebSession())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
