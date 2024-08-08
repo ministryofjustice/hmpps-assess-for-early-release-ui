@@ -90,10 +90,14 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
+    hmppsComponents: {
+      url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:8082', requiredInProduction),
+    },
   },
   sqs: {
     audit: auditConfig(),
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  dpsUrl: get('DPS_URL', 'http://localhost:3001', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }

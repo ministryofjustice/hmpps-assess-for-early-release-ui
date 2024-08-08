@@ -5,7 +5,10 @@
     "lib": ["es5", "dom", "es2015.promise"],
     "types": ["cypress", "express", "express-session"],
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@hmpps-components": ["./server/@types/hmppsComponents/index.d.ts"]
+    }
   },
   "include": ["**/*.ts"]
 }

@@ -19,6 +19,7 @@ import setUpWebSession from './middleware/setUpWebSession'
 import routes from './routes'
 import type { Services } from './services'
 import { ApplicationInfo } from './applicationInfo'
+import getFrontendComponents from './middleware/getFrontendComponents'
 
 export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
   const app = express()
@@ -38,6 +39,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  app.get('*', getFrontendComponents(services.hmppsComponentsService))
 
   app.use(routes(services))
 
