@@ -1,19 +1,39 @@
 /* eslint-disable no-param-reassign */
 import path from 'path'
-import nunjucks from 'nunjucks'
+import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
+import { ApplicationInfo } from '../applicationInfo'
 
-export default function nunjucksSetup(app: express.Express): void {
+const production = process.env.NODE_ENV === 'production'
+
+export default function nunjucksSetup(app: express.Express, applicationInfo: ApplicationInfo): void {
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
   app.locals.applicationName = 'Hmpps Assess For Early Release Ui'
   app.locals.environmentName = config.environmentName
   app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
+
+  // Cachebusting version string
+  if (production) {
+    // Version only changes with each commit
+    app.locals.version = applicationInfo.gitShortHash
+  } else {
+    // Version changes every request
+    app.use((req, res, next) => {
+      res.locals.version = Date.now().toString()
+      return next()
+    })
+  }
+
+  registerNunjucks(app)
+}
+
+export function registerNunjucks(app?: express.Express): Environment {
   let assetManifest: Record<string, string> = {}
 
   try {
@@ -39,4 +59,6 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+
+  return njkEnv
 }
