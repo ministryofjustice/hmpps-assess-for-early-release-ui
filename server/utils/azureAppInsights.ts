@@ -16,6 +16,13 @@ export function initialiseAppInsights(applicationInfo: ApplicationInfo): Telemet
     setup().setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C).start()
     defaultClient.context.tags['ai.cloud.role'] = applicationInfo.applicationName
     defaultClient.context.tags['ai.application.ver'] = applicationInfo.buildNumber
+    defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
+      const operationNameOverride = contextObjects.correlationContext?.customProperties?.getProperty('operationName')
+      if (operationNameOverride) {
+        tags['ai.operation.name'] = data.baseData.name = operationNameOverride // eslint-disable-line no-param-reassign,no-multi-assign
+      }
+      return true
+    })
     return defaultClient
   }
   return null
