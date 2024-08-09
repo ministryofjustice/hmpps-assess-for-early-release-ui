@@ -8,7 +8,7 @@ import {
 import { RequestHandler } from 'express'
 import type { ApplicationInfo } from '../applicationInfo'
 
-export function initialiseAppInsights(applicationInfo: ApplicationInfo): void {
+export function initialiseAppInsights(applicationInfo: ApplicationInfo): TelemetryClient {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     // eslint-disable-next-line no-console
     console.log('Enabling azure application insights')
@@ -16,17 +16,6 @@ export function initialiseAppInsights(applicationInfo: ApplicationInfo): void {
     setup().setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C).start()
     defaultClient.context.tags['ai.cloud.role'] = applicationInfo.applicationName
     defaultClient.context.tags['ai.application.ver'] = applicationInfo.buildNumber
-  }
-}
-
-export function buildAppInsightsClient(
-  { applicationName, buildNumber }: ApplicationInfo,
-  overrideName?: string,
-): TelemetryClient {
-  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
-    defaultClient.context.tags['ai.cloud.role'] = overrideName || applicationName
-    defaultClient.context.tags['ai.application.ver'] = buildNumber
-
     defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
       const operationNameOverride = contextObjects.correlationContext?.customProperties?.getProperty('operationName')
       if (operationNameOverride) {
@@ -34,7 +23,6 @@ export function buildAppInsightsClient(
       }
       return true
     })
-
     return defaultClient
   }
   return null
