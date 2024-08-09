@@ -91,7 +91,7 @@ export default {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     hmppsComponents: {
-      url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:8082', requiredInProduction),
+      url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:9091', requiredInProduction),
     },
   },
   sqs: {

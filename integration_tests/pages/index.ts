@@ -1,11 +1,13 @@
-import Page, { PageElement } from './page'
+import Page from './page'
 
 export default class IndexPage extends Page {
   constructor() {
     super('This site is under construction...')
   }
 
-  headerUserName = (): PageElement => cy.get('[data-qa=header-user-name]')
+  fallbackHeaderUserName = (): Cypress.Chainable<JQuery> => cy.get('[data-qa=header-user-name]')
 
-  headerPhaseBanner = (): PageElement => cy.get('[data-qa=header-phase-banner]')
+  commonComponentsHeader = (): Cypress.Chainable<JQuery> => cy.get('h1').contains('Common Components Header')
+
+  commonComponentsFooter = (): Cypress.Chainable<JQuery> => cy.get('h1').contains('Common Components Footer')
 }
