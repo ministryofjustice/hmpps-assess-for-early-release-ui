@@ -3,6 +3,7 @@ import { Response } from 'superagent'
 
 import { stubFor, getMatchingRequests } from './wiremock'
 import tokenVerification from './tokenVerification'
+import feComponent from './feComponent'
 
 interface UserToken {
   name?: string
@@ -88,21 +89,6 @@ const signOut = () =>
     },
   })
 
-const manageDetails = () =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/account-details.*',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html',
-      },
-      body: '<html><body><h1>Your account details</h1></body></html>',
-    },
-  })
-
 const token = (userToken: UserToken) =>
   stubFor({
     request: {
@@ -129,7 +115,10 @@ const token = (userToken: UserToken) =>
 export default {
   getSignInUrl,
   stubAuthPing: ping,
-  stubAuthManageDetails: manageDetails,
+  stubFeComponents: () =>
+    Promise.all([feComponent.stubFeComponents(), feComponent.stubFeComponentsJs(), feComponent.stubFeComponentsCss()]),
+  stubFeComponentsFail: feComponent.stubFeComponentsFail,
+  stubFeComponentsPing: feComponent.stubFeComponentsPing,
   stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response]> =>
     Promise.all([favicon(), redirect(), signOut(), token(userToken), tokenVerification.stubVerifyToken()]),
 }

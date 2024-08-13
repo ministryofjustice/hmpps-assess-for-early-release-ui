@@ -13,6 +13,8 @@ generic-service:
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
     ENVIRONMENT_NAME: DEV
     AUDIT_ENABLED: "false"
+    DPS_URL: 'https://dps-dev.prison.service.justice.gov.uk'
+    HMPPS_COMPONENT_API_URL: 'https://frontend-components-dev.hmpps.service.justice.gov.uk'
 
 generic-prometheus-alerts:
   alertSeverity: 
