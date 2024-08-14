@@ -1,40 +1,12 @@
-import type { Express } from 'express'
-import request from 'supertest'
-import { appWithAllRoutes, user } from './testutils/appSetup'
-import AuditService, { Page } from '../services/auditService'
+import fs from 'fs'
+import { templateRenderer } from '../utils/__testutils/templateTestUtils'
 
-jest.mock('../services/auditService')
+const render = templateRenderer(fs.readFileSync('server/views/pages/index.njk').toString())
 
-const auditService = new AuditService(null) as jest.Mocked<AuditService>
+describe('Views - Home', () => {
+  it('should display support card when flag is true in context', () => {
+    const $ = render({ shouldShowSupportCard: true })
 
-let app: Express
-
-beforeEach(() => {
-  app = appWithAllRoutes({
-    services: {
-      auditService,
-    },
-    userSupplier: () => user,
-  })
-})
-
-afterEach(() => {
-  jest.resetAllMocks()
-})
-
-describe('GET /', () => {
-  it('should render index page', () => {
-    auditService.logPageView.mockResolvedValue(null)
-
-    return request(app)
-      .get('/')
-      .expect('Content-Type', /html/)
-      .expect(res => {
-        expect(res.text).toContain('This site is under construction...')
-        expect(auditService.logPageView).toHaveBeenCalledWith(Page.EXAMPLE_PAGE, {
-          who: user.username,
-          correlationId: expect.any(String),
-        })
-      })
+    expect($('#supportCard').length).toBe(1)
   })
 })
