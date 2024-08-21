@@ -22,7 +22,7 @@
   {% if feComponents.header %}
     {{ feComponents.header | safe }}
   {% else %}
-    {% include "./header.njk" %}
+    {% include "./partials/header.njk" %}
   {% endif %}
 {% endblock %}
 
@@ -33,10 +33,11 @@
   {% if feComponents.footer %}
     {{ feComponents.footer | safe }}
   {% else %}
-    {% include "./footer.njk" %}
+    {% include "./partials/footer.njk" %}
   {% endif %}
 {% endblock %}
 
 {% block bodyEnd %}
   <script type="module" src="{{ '/assets/js/app.js' | assetMap }}"></script>
+  {% block pageScripts %}{% endblock %}
 {% endblock %}

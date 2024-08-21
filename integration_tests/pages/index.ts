@@ -2,7 +2,7 @@ import Page from './page'
 
 export default class IndexPage extends Page {
   constructor() {
-    super('This site is under construction...')
+    super('Assess For Early Release')
   }
 
   fallbackHeaderUserName = (): Cypress.Chainable<JQuery> => cy.get('[data-qa=header-user-name]')
