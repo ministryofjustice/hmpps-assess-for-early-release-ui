@@ -6,7 +6,7 @@ import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 import HmppsComponentsClient from './hmppsComponentsClient'
 import { getSystemToken, getSystemTokenWithRetries } from './tokenStore/systemToken'
-import DecisionMakerApiClient from './decisionMakerApiClient'
+import AssessForEarlyReleaseApiClient from './assessForEarlyReleaseApiClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -22,7 +22,7 @@ export const dataAccess = () => {
         : new InMemoryTokenStore(getSystemTokenWithRetries),
     ),
     hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
-    decisionMakerApiClient: new DecisionMakerApiClient(tokenStore),
+    assessForEarlyReleaseApiClient: new AssessForEarlyReleaseApiClient(tokenStore),
   }
 }
 

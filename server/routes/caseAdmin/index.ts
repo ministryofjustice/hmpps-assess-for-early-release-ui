@@ -6,7 +6,7 @@ import AuthRole from '../../enumeration/authRole'
 import CaseloadRoutes from './handlers/caseload'
 import { Services } from '../../services'
 
-export default function Index({ decisionMakerCaseloadService }: Services): Router {
+export default function Index({ caseAdminCaseloadService }: Services): Router {
   const router = Router()
   const prison = path('/prison')
   const caseload = prison.path('caseload')
@@ -15,7 +15,7 @@ export default function Index({ decisionMakerCaseloadService }: Services): Route
   const get = (routerPath: string, handler: RequestHandler) =>
     router.get(routerPath, roleCheckMiddleware([AuthRole.SUPPORT]), asyncMiddleware(handler))
 
-  const supportHomeHandler = new CaseloadRoutes(decisionMakerCaseloadService)
+  const supportHomeHandler = new CaseloadRoutes(caseAdminCaseloadService)
 
   get(assess({}), supportHomeHandler.GET)
 

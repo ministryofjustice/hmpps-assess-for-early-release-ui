@@ -1,17 +1,17 @@
 import { dataAccess, hmppsComponentsClientBuilder } from '../data'
 import AuditService from './auditService'
-import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
+import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import HmppsComponentsService from './hmppsComponentsService'
 
-const { hmppsAuditClient, decisionMakerApiClient } = dataAccess()
+const { hmppsAuditClient, assessForEarlyReleaseApiClient } = dataAccess()
 const auditService = new AuditService(hmppsAuditClient)
 const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
-const decisionMakerCaseloadService = new DecisionMakerCaseloadService(decisionMakerApiClient)
+const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
 
 export const services = {
   auditService,
   hmppsComponentsService,
-  decisionMakerCaseloadService,
+  caseAdminCaseloadService,
 }
 
 export type Services = typeof services
