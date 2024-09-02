@@ -6,11 +6,11 @@ import homeRoutes from './home'
 import assessingLicencesRoute from './assessingLicences'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function routes({ auditService }: Services): Router {
+export default function routes(services: Services): Router {
   const router = Router()
   router.use(homeRoutes())
   router.use(supportRoutes())
-  router.use(assessingLicencesRoute())
+  router.use(assessingLicencesRoute(services))
 
   return router
 }

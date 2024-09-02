@@ -11,9 +11,10 @@ const redisClient = {
 
 describe('tokenStore', () => {
   let tokenStore: TokenStore
+  const token = { token: 'token-1', expiresIn: 1234 }
 
   beforeEach(() => {
-    tokenStore = new TokenStore(redisClient as unknown as RedisClient)
+    tokenStore = new TokenStore(async _username => token, redisClient as unknown as RedisClient)
   })
 
   afterEach(() => {

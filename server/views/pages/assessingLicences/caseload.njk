@@ -4,6 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitle = applicationName + " - Assessing a licence - Caseload" %}
+{% set offenders = [] %}
 
 {% block content %}
     <div class="grid-row">
@@ -25,22 +26,19 @@
                                 }
                             },
                             {
-                                text: "Licence type"
-                            },
-                            {
-                                text: "Probation practitioner",
+                                text: "Prison number",
                                 attributes: {
                                     "aria-sort": "none"
                                 }
                             },
                             {
-                                text: "Release date",
+                                text: "HDCED",
                                 attributes: {
-                                    "aria-sort": "ascending"
+                                    "aria-sort": "none"
                                 }
                             },
                             {
-                                text: "Status",
+                                text: "Remaining days",
                                 attributes: {
                                     "aria-sort": "none"
                                 }
