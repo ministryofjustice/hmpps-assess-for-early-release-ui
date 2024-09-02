@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-import AssessCaseloadService from '../../../services/assessCaseloadService'
+import DecisionMakerCaseloadService from '../../../services/decisionMakerCaseloadService'
 
 export default class CaseloadRoutes {
-  constructor(private readonly assessCaseloadService: AssessCaseloadService) {}
+  constructor(private readonly decisionMakerCaseloadService: DecisionMakerCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const { user } = res.locals
-    const caseload = await this.assessCaseloadService.getAssessCaseload(user)
+    const caseload = await this.decisionMakerCaseloadService.getDecisionMakerCaseload()
     res.render('pages/assessingLicences/caseload', {
       caseload,
     })

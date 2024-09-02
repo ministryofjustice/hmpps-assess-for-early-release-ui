@@ -93,14 +93,14 @@ export default {
     hmppsComponents: {
       url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:9091', requiredInProduction),
     },
-    assessLicenceApi: {
-      url: get('LICENCE_API_URL', 'http://localhost:8089', requiredInProduction),
+    decisionMakerApi: {
+      url: get('DM_API_URL', 'http://localhost:8089', requiredInProduction),
       healthPath: '/health/ping',
       timeout: {
-        response: Number(get('LICENCE_API_TIMEOUT_RESPONSE', 30000)),
-        deadline: Number(get('LICENCE_API_TIMEOUT_DEADLINE', 30000)),
+        response: Number(get('DM_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('DM_API_TIMEOUT_DEADLINE', 30000)),
       },
-      agent: new AgentConfig(Number(get('LICENCE_API_TIMEOUT_RESPONSE', 30000))),
+      agent: new AgentConfig(Number(get('DM_API_TIMEOUT_RESPONSE', 30000))),
     },
   },
   sqs: {

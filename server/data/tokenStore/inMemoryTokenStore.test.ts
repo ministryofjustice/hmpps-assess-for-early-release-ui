@@ -1,13 +1,11 @@
 import TokenStore from './inMemoryTokenStore'
-import { SystemToken, SystemTokenSupplier } from './systemToken'
-
-const systemTokenSupplier = () => Promise<SystemToken>
 
 describe('inMemoryTokenStore', () => {
   let tokenStore: TokenStore
+  const token = { token: 'token-1', expiresIn: 1234 }
 
   beforeEach(() => {
-    tokenStore = new TokenStore(systemTokenSupplier as unknown as SystemTokenSupplier)
+    tokenStore = new TokenStore(async _username => token)
   })
 
   it('Can store and retrieve token', async () => {
