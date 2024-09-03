@@ -2,10 +2,9 @@ import TokenStore from './inMemoryTokenStore'
 
 describe('inMemoryTokenStore', () => {
   let tokenStore: TokenStore
-  const token = { token: 'token-1', expiresIn: 1234 }
 
   beforeEach(() => {
-    tokenStore = new TokenStore(async _username => token)
+    tokenStore = new TokenStore()
   })
 
   it('Can store and retrieve token', async () => {

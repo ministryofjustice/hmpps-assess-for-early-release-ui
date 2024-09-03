@@ -3,10 +3,10 @@ import AuditService from './auditService'
 import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import HmppsComponentsService from './hmppsComponentsService'
 
-const { hmppsAuditClient, assessForEarlyReleaseApiClient } = dataAccess()
+const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder } = dataAccess
 const auditService = new AuditService(hmppsAuditClient)
 const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
-const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
+const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClientBuilder)
 
 export const services = {
   auditService,

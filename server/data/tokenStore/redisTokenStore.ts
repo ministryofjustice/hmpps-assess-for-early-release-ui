@@ -2,16 +2,11 @@ import type { RedisClient } from '../redisClient'
 
 import logger from '../../../logger'
 import TokenStore from './tokenStore'
-import { SystemTokenSupplier } from './systemToken'
 
-export default class RedisTokenStore extends TokenStore {
+export default class RedisTokenStore implements TokenStore {
   private readonly prefix = 'systemToken:'
 
-  constructor(
-    systemTokenSupplier: SystemTokenSupplier,
-    private readonly client: RedisClient,
-  ) {
-    super(systemTokenSupplier)
+  constructor(private readonly client: RedisClient) {
     client.on('error', error => {
       logger.error(error, `Redis error`)
     })

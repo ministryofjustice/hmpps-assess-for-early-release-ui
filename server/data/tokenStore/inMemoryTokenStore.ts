@@ -1,13 +1,7 @@
-import { SystemTokenSupplier } from './systemToken'
 import TokenStore from './tokenStore'
 
-export default class InMemoryTokenStore extends TokenStore {
-  constructor(
-    systemTokenSupplier: SystemTokenSupplier,
-    private readonly map = new Map<string, { token: string; expiry: Date }>(),
-  ) {
-    super(systemTokenSupplier)
-  }
+export default class InMemoryTokenStore implements TokenStore {
+  map = new Map<string, { token: string; expiry: Date }>()
 
   public async setToken(key: string, token: string, durationSeconds: number): Promise<void> {
     this.map.set(key, { token, expiry: new Date(Date.now() + durationSeconds * 1000) })

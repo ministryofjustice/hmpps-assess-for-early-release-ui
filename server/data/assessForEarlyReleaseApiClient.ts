@@ -1,10 +1,15 @@
 import config, { ApiConfig } from '../config'
-import RestClient from './hmppsRestClient'
-import TokenStore from './tokenStore/tokenStore'
+import RestClient from './restClient'
 
-export default class AssessForEarlyReleaseApiClient extends RestClient {
-  constructor(tokenStore: TokenStore) {
-    super(tokenStore, 'Assess For Early Release API', config.apis.assessForEarlyReleaseApi as ApiConfig)
+export default class AssessForEarlyReleaseApiClient {
+  private restClient: RestClient
+
+  constructor(token: string) {
+    this.restClient = new RestClient(
+      'assessForEarlyReleaseApi',
+      config.apis.assessForEarlyReleaseApi as ApiConfig,
+      token,
+    )
   }
 
   async getCaseAdminCaseload() {
