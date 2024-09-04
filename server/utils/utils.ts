@@ -1,3 +1,4 @@
+import { parse, format } from 'date-fns'
 import AuthRole from '../enumeration/authRole'
 
 const properCase = (word: string): string =>
@@ -26,4 +27,12 @@ const initialiseName = (fullName?: string): string | null => {
 
 const hasRole = (user: Express.User, role: AuthRole): boolean => user?.userRoles.includes(role) || false
 
-export { convertToTitleCase, initialiseName, hasRole }
+const parseDate = (date: string) => {
+  return date ? parse(date, 'dd/MM/yyyy', new Date()) : null
+}
+
+const toIsoDate = (date: Date) => {
+  return date ? format(date, 'yyyy-MM-dd') : null
+}
+
+export { convertToTitleCase, initialiseName, hasRole, parseDate, toIsoDate }

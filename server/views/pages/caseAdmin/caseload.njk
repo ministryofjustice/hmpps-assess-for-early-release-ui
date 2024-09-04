@@ -6,6 +6,39 @@
 {% set pageTitle = applicationName + " - Assessing a licence - Caseload" %}
 {% set offenders = [] %}
 
+{% for offender in caseload %}
+    {% set offenders = (offenders.push([
+        {
+            attributes: {
+                id: 'name-' + loop.index,
+                "data-sort-value": offender.name
+            },
+            text: offender.name
+        },
+        {
+            attributes: {
+                id: 'prison-number-' + loop.index,
+                "data-sort-value": offender.prisonerNumber
+            },
+            text: offender.prisonerNumber
+        },
+        {
+            attributes: {
+                id: 'hdced-' + loop.index,
+                "data-sort-value": offender.hdced | toIsoDate
+            },
+            html: offender.hdced | toIsoDate
+        },
+        {
+            attributes: {
+                id: 'remaining-days-' + loop.index,
+                "data-sort-value": offender.remainingDays
+            },
+            html: offender.remainingDays
+        }
+    ]), offenders) %}
+{% endfor %}
+
 {% block content %}
     <div class="grid-row">
         <div class="govuk-grid-column-full">
