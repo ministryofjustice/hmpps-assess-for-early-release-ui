@@ -15,6 +15,7 @@ generic-service:
     AUDIT_ENABLED: "false"
     DPS_URL: 'https://dps-dev.prison.service.justice.gov.uk'
     HMPPS_COMPONENT_API_URL: 'https://frontend-components-dev.hmpps.service.justice.gov.uk'
+    AFER_API_URL: 'https://assess-for-early-release-api-dev.hmpps.service.justice.gov.uk'
 
 generic-prometheus-alerts:
   alertSeverity: 
