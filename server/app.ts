@@ -18,6 +18,7 @@ import setUpWebSession from './middleware/setUpWebSession'
 
 import routes from './routes'
 import type { Services } from './services'
+import populateClientToken from './middleware/populateClientToken'
 import { ApplicationInfo } from './applicationInfo'
 import getFrontendComponents from './middleware/getFrontendComponents'
 import setUpEnvironmentName from './middleware/setUpEnvironmentName'
@@ -41,6 +42,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  app.use(populateClientToken())
   app.get('*', getFrontendComponents(services.hmppsComponentsService))
 
   app.use(routes(services))

@@ -2,19 +2,21 @@ import { RequestHandler, Router } from 'express'
 import { path } from 'static-path'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import roleCheckMiddleware from '../../middleware/roleCheckMiddleware'
-import SupportHomeRoutes from './handlers/supportHome'
 import AuthRole from '../../enumeration/authRole'
+import CaseloadRoutes from './handlers/caseload'
+import { Services } from '../../services'
 
-export default function Index(): Router {
+export default function Index({ caseAdminCaseloadService }: Services): Router {
   const router = Router()
-  const support = path('/support')
+  const prison = path('/prison')
+  const caseload = prison.path('caseload')
 
   const get = (routerPath: string, handler: RequestHandler) =>
     router.get(routerPath, roleCheckMiddleware([AuthRole.SUPPORT]), asyncMiddleware(handler))
 
-  const supportHomeHandler = new SupportHomeRoutes()
+  const supportHomeHandler = new CaseloadRoutes(caseAdminCaseloadService)
 
-  get(support({}), supportHomeHandler.GET)
+  get(caseload({}), supportHomeHandler.GET)
 
   return router
 }

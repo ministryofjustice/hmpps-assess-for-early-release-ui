@@ -20,6 +20,9 @@ export declare global {
     interface Request {
       verified?: boolean
       id: string
+      middleware?: {
+        clientToken?: string
+      }
       logout(done: (err: unknown) => void): void
     }
 

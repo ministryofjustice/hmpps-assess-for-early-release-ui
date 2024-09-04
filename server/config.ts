@@ -93,6 +93,15 @@ export default {
     hmppsComponents: {
       url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:9091', requiredInProduction),
     },
+    assessForEarlyReleaseApi: {
+      url: get('AFER_API_URL', 'http://localhost:8089', requiredInProduction),
+      healthPath: '/health/ping',
+      timeout: {
+        response: Number(get('AFER_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('AFER_API_TIMEOUT_DEADLINE', 30000)),
+      },
+      agent: new AgentConfig(Number(get('AFER_API_TIMEOUT_RESPONSE', 30000))),
+    },
   },
   sqs: {
     audit: auditConfig(),

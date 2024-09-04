@@ -1,6 +1,22 @@
 version: '3.1'
 services:
 
+  redis:
+    image: 'redis:7.4'
+    networks:
+      - hmpps
+    container_name: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
     networks:
@@ -27,7 +43,8 @@ services:
       - "3000:3000"
     environment:
       - PRODUCT_ID=DPS087
-      - REDIS_ENABLED=false
+      - REDIS_ENABLED=true
+      - REDIS_HOST=redis
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
       # These will need to match new creds in the seed auth service auth
@@ -37,7 +54,7 @@ services:
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=somesecretvalue
       - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/auth
-      - TOKEN_VERIFICATION_ENABLED=false
+      - TOKEN_VERIFICATION_ENABLED=true
       - INGRESS_URL=http://localhost:3000
 
 networks:
