@@ -5,6 +5,6 @@ export default class CaseloadRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    res.render('pages/assessingLicences/caseload')
+    res.render('pages/caseAdmin/caseload')
   }
 }
