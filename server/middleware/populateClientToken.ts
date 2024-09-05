@@ -1,11 +1,10 @@
 import { RequestHandler } from 'express'
 import logger from '../../logger'
-import { dataAccess } from '../data'
+import { HmppsAuthClient } from '../data'
 
-export default function populateClientToken(): RequestHandler {
+export default function populateClientToken(hmppsAuthClient: HmppsAuthClient): RequestHandler {
   return async (req, res, next) => {
     try {
-      const { hmppsAuthClient } = dataAccess
       if (res.locals.user) {
         const clientToken = await hmppsAuthClient.getSystemClientToken(res.locals.user.username)
         if (clientToken) {

@@ -1,7 +1,7 @@
 import { CaseAdminCaseloadService } from '.'
-import createAssessForEarlyReleaseApiClient from '../data/testutils/mocks'
-import { createOffenderSummary } from '../data/testutils/testObjects'
-import { mockRequest } from '../routes/testutils/requestTestUtils'
+import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
+import { createOffenderSummary } from '../data/__testutils/testObjects'
+import { mockRequest } from '../routes/__testutils/requestTestUtils'
 
 const offenderSummaryList = [createOffenderSummary({})]
 

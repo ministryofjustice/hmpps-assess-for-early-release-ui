@@ -1,7 +1,7 @@
-import createMockCaseAdminCaseloadService from '../../services/testutils/mock'
-import { createOffenderSummary, caseAdminCaseload } from '../../data/testutils/testObjects'
+import { createOffenderSummary, caseAdminCaseload } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
-import { mockedDate, mockRequest, mockResponse } from '../testutils/requestTestUtils'
+import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
+import createMockCaseAdminCaseloadService from '../../services/__testutils/mock'
 
 const offenderSummaryList = [createOffenderSummary({})]
 const caseAdminCaseloadList = [caseAdminCaseload({})]

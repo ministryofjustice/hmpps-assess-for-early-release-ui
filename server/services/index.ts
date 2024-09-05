@@ -4,7 +4,7 @@ import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import HmppsComponentsService from './hmppsComponentsService'
 
 export const services = () => {
-  const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder } = dataAccess
+  const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder, hmppsAuthClient } = dataAccess
   const auditService = new AuditService(hmppsAuditClient)
   const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
   const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClientBuilder)
@@ -12,6 +12,7 @@ export const services = () => {
     auditService,
     hmppsComponentsService,
     caseAdminCaseloadService,
+    hmppsAuthClient,
   }
 }
 

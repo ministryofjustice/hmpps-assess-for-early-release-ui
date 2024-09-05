@@ -2,8 +2,8 @@ import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
 import { OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
-import { createOffenderSummary } from './testutils/testObjects'
-import { mockRequest } from '../routes/testutils/requestTestUtils'
+import { createOffenderSummary } from './__testutils/testObjects'
+import { mockRequest } from '../routes/__testutils/requestTestUtils'
 
 describe('feComponentsClient', () => {
   let fakeComponentsApi: nock.Scope
