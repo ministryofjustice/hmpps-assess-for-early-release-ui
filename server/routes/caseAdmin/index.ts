@@ -3,7 +3,7 @@ import { path } from 'static-path'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import roleCheckMiddleware from '../../middleware/roleCheckMiddleware'
 import AuthRole from '../../enumeration/authRole'
-import CaseloadRoutes from './handlers/caseload'
+import CaseloadRoutes from './caseload'
 import { Services } from '../../services'
 
 export default function Index({ caseAdminCaseloadService }: Services): Router {

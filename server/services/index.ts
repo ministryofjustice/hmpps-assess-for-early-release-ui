@@ -3,16 +3,19 @@ import AuditService from './auditService'
 import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import HmppsComponentsService from './hmppsComponentsService'
 
-const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder } = dataAccess
-const auditService = new AuditService(hmppsAuditClient)
-const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
-const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClientBuilder)
-
-export const services = {
-  auditService,
-  hmppsComponentsService,
-  caseAdminCaseloadService,
+export const services = () => {
+  const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder, hmppsAuthClient } = dataAccess
+  const auditService = new AuditService(hmppsAuditClient)
+  const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
+  const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClientBuilder)
+  return {
+    auditService,
+    hmppsComponentsService,
+    caseAdminCaseloadService,
+    hmppsAuthClient,
+  }
 }
 
-export type Services = typeof services
-export { HmppsComponentsService }
+export type Services = ReturnType<typeof services>
+
+export { HmppsComponentsService, CaseAdminCaseloadService }

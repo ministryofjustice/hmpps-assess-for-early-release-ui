@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { initialiseName } from './utils'
+import { initialiseName, toIsoDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
@@ -60,6 +60,7 @@ export function registerNunjucks(app?: express.Express): Environment {
 
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+  njkEnv.addFilter('toIsoDate', toIsoDate)
 
   return njkEnv
 }

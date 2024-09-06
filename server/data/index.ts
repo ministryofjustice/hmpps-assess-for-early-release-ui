@@ -22,4 +22,11 @@ const hmppsComponentsClientBuilder: RestClientBuilder<HmppsComponentsClient> = (
 
 export type DataAccess = typeof dataAccess
 
-export { HmppsAuthClient, RestClientBuilder, HmppsAuditClient, HmppsComponentsClient, hmppsComponentsClientBuilder }
+export {
+  HmppsAuthClient,
+  RestClientBuilder,
+  HmppsAuditClient,
+  HmppsComponentsClient,
+  hmppsComponentsClientBuilder,
+  AssessForEarlyReleaseApiClient,
+}

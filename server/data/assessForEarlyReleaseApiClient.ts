@@ -1,3 +1,4 @@
+import type { OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
 
@@ -12,7 +13,7 @@ export default class AssessForEarlyReleaseApiClient {
     )
   }
 
-  async getCaseAdminCaseload() {
-    return Promise<[]>
+  async getCaseAdminCaseload(prisonCode: string): Promise<OffenderSummary[]> {
+    return this.restClient.get<OffenderSummary[]>({ path: `/prison/${prisonCode}/case-admin/caseload` })
   }
 }
