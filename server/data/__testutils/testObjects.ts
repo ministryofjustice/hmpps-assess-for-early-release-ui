@@ -1,4 +1,4 @@
-import { OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import type { OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 const createOffenderSummary = ({
   prisonerNumber = 'A1234AB',

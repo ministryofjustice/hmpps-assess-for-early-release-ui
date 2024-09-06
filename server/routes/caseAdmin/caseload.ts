@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { differenceInDays } from 'date-fns'
 import CaseAdminCaseloadService from '../../services/caseAdminCaseloadService'
-import { convertToTitleCase, parseDate } from '../../utils/utils'
+import { convertToTitleCase, parseIsoDate } from '../../utils/utils'
 
 export default class CaseloadRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -17,7 +17,7 @@ export default class CaseloadRoutes {
         name: convertToTitleCase(`${offender.firstName} ${offender.lastName}`.trim()),
         prisonerNumber: offender.prisonerNumber,
         hdced: offender?.hdced,
-        remainingDays: differenceInDays(parseDate(offender?.hdced), new Date()),
+        remainingDays: differenceInDays(parseIsoDate(offender?.hdced), new Date()),
       }
     })
     res.render('pages/caseAdmin/caseload', { caseload })

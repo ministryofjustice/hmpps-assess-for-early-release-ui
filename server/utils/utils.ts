@@ -27,7 +27,7 @@ const initialiseName = (fullName?: string): string | null => {
 
 const hasRole = (user: Express.User, role: AuthRole): boolean => user?.userRoles.includes(role) || false
 
-const parseDate = (date: string) => {
+const parseIsoDate = (date: string) => {
   return date ? parse(date, 'dd/MM/yyyy', new Date()) : null
 }
 
@@ -35,4 +35,4 @@ const toIsoDate = (date: Date) => {
   return date ? format(date, 'yyyy-MM-dd') : null
 }
 
-export { convertToTitleCase, initialiseName, hasRole, parseDate, toIsoDate }
+export { convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate }

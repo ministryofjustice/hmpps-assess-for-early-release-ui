@@ -1,4 +1,4 @@
-import { OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
