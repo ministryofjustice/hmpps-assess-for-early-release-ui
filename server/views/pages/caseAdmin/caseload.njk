@@ -43,6 +43,7 @@
     <div class="grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">Assess for early release cases</h1>
+            {% if caseload.length > 0 %}
                 <form method="POST">
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
                     {{ govukTable({
@@ -80,6 +81,13 @@
                         rows: offenders
                     }) }}
                 </form>
+            {% else %}
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-three-quarters">
+                        <h3 class="govuk-heading-s">There are no offenders in your caseload.</h3>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
