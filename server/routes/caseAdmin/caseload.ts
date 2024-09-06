@@ -16,8 +16,8 @@ export default class CaseloadRoutes {
       return {
         name: convertToTitleCase(`${offender.firstName} ${offender.lastName}`.trim()),
         prisonerNumber: offender.prisonerNumber,
-        hdced: offender?.hdced,
-        remainingDays: differenceInDays(parseIsoDate(offender?.hdced), new Date()),
+        hdced: offender.hdced,
+        remainingDays: differenceInDays(parseIsoDate(offender.hdced), new Date()),
       }
     })
     res.render('pages/caseAdmin/caseload', { caseload })
