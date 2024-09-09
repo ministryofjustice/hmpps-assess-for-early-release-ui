@@ -3,16 +3,16 @@ export interface components {
     /** @description Offender Summary */
     OffenderSummary: {
       /** @description The offender's prisoner number. */
-      prisonerNumber: string
+      prisonNumber: string
       /**
        * Format: int64
        * @description The offender's booking id.
        */
       bookingId: number
       /** @description The offender's first name. */
-      firstName: string
+      forename: string
       /** @description The offender's last name. */
-      lastName: string
+      surname: string
       /** @description The offender's home detention curfew eligibility date. */
       hdced?: string
     }

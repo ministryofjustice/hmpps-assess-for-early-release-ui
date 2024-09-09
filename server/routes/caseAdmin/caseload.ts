@@ -14,8 +14,8 @@ export default class CaseloadRoutes {
 
     const caseload = offenderSummaryList.map(offender => {
       return {
-        name: convertToTitleCase(`${offender.firstName} ${offender.lastName}`.trim()),
-        prisonerNumber: offender.prisonerNumber,
+        name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
+        prisonNumber: offender.prisonNumber,
         hdced: offender.hdced,
         remainingDays: differenceInDays(parseIsoDate(offender.hdced), new Date()),
       }
