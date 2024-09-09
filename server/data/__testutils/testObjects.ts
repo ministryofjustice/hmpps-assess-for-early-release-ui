@@ -1,27 +1,27 @@
 import type { OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 const createOffenderSummary = ({
-  prisonerNumber = 'A1234AB',
+  prisonNumber = 'A1234AB',
   bookingId = 54321,
-  firstName = 'Jim',
-  lastName = 'Smith',
+  forename = 'Jim',
+  surname = 'Smith',
   hdced = '2022-08-01',
 } = {}): OffenderSummary => ({
-  prisonerNumber,
+  prisonNumber,
   bookingId,
-  firstName,
-  lastName,
+  forename,
+  surname,
   hdced,
 })
 
 const caseAdminCaseload = ({
   name = 'Jim Smith',
-  prisonerNumber = 'A1234AB',
+  prisonNumber = 'A1234AB',
   hdced = '2022-08-01',
   remainingDays = 31,
 } = {}) => ({
   name,
-  prisonerNumber,
+  prisonNumber,
   hdced,
   remainingDays,
 })
