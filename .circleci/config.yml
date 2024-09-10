@@ -98,6 +98,9 @@ jobs:
           name: Wait for node app to start
           command: sleep 5
       - run:
+          name: Install Playwright browsers and dependencies
+          command: npx playwright install --with-deps
+      - run:
           name: integration tests
           command: npm run int-test
       - store_test_results:

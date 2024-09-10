@@ -1,25 +1,13 @@
 import jwt from 'jsonwebtoken'
-import { Response } from 'superagent'
-
 import { stubFor, getMatchingRequests } from './wiremock'
-import tokenVerification from './tokenVerification'
-import feComponent from './feComponent'
 
-interface UserToken {
-  name?: string
-  roles?: string[]
-}
-
-const createToken = (userToken: UserToken) => {
-  // authorities in the session are always prefixed by ROLE.
-  const authorities = userToken.roles?.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`)) || []
+function createToken(authorities: string[]) {
   const payload = {
-    name: userToken.name || 'john smith',
-    user_name: 'USER1',
-    scope: ['read'],
+    name: 'bobby brown',
+    scope: ['read', 'write'],
     auth_source: 'nomis',
     authorities,
-    jti: '83b50a10-cca6-41db-985f-e87efb303ddb',
+    jti: 'a610a10-cca6-41db-985f-e87efb303aaf',
     client_id: 'clientid',
   }
 
@@ -47,18 +35,7 @@ const favicon = () =>
     },
   })
 
-const ping = () =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/health/ping',
-    },
-    response: {
-      status: 200,
-    },
-  })
-
-const redirect = () =>
+const signIn = () =>
   stubFor({
     request: {
       method: 'GET',
@@ -70,7 +47,7 @@ const redirect = () =>
         'Content-Type': 'text/html',
         Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
-      body: '<html><body>Sign in page<h1>Sign in</h1></body></html>',
+      body: '<html><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
     },
   })
 
@@ -85,11 +62,11 @@ const signOut = () =>
       headers: {
         'Content-Type': 'text/html',
       },
-      body: '<html><body>Sign in page<h1>Sign in</h1></body></html>',
+      body: '<html><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
     },
   })
 
-const token = (userToken: UserToken) =>
+const token = ({ authorities }: { authorities: string[] }) =>
   stubFor({
     request: {
       method: 'POST',
@@ -102,7 +79,7 @@ const token = (userToken: UserToken) =>
         Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
       jsonBody: {
-        access_token: createToken(userToken),
+        access_token: createToken(authorities),
         token_type: 'bearer',
         user_name: 'USER1',
         expires_in: 599,
@@ -112,13 +89,4 @@ const token = (userToken: UserToken) =>
     },
   })
 
-export default {
-  getSignInUrl,
-  stubAuthPing: ping,
-  stubFeComponents: () =>
-    Promise.all([feComponent.stubFeComponents(), feComponent.stubFeComponentsJs(), feComponent.stubFeComponentsCss()]),
-  stubFeComponentsFail: feComponent.stubFeComponentsFail,
-  stubFeComponentsPing: feComponent.stubFeComponentsPing,
-  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response]> =>
-    Promise.all([favicon(), redirect(), signOut(), token(userToken), tokenVerification.stubVerifyToken()]),
-}
+export { getSignInUrl, favicon, signIn, signOut, token }
