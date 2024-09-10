@@ -88,14 +88,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**/*.test.js",
-          "**/*.test.ts",
-          "**/testutils/**",
-          "**/integration_tests/**",
-          "playwright.config.ts",
-          "esbuild/**/*"
-        ]
+        "devDependencies": ["**/*.test.js", "**/*.test.ts", "**/testutils/**", "playwright.config.ts", "esbuild/**/*"]
       }
     ],
     "no-only-tests/no-only-tests": "error",

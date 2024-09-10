@@ -1,0 +1,7 @@
+{
+    "plugins": ["no-only-tests"],
+    "rules": {
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+      "no-only-tests/no-only-tests": "error"
+    }
+  }
