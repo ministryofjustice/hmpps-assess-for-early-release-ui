@@ -1,0 +1,77 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+{% set pageTitle = applicationName + " - Assess Offender" %}
+{% set offenders = [] %}
+
+
+{% set personalDetails = [
+        {
+            key: { text: "Name" },
+            value: { html: '' }
+        },
+        {
+            key: { text: "Prison Number" },
+            value: { html: '' }
+        },
+        {
+            key: { text: "HDCED" },
+            value: { html: '' }
+        },
+        {
+            key: { text: "CRD" },
+            value: { html: '' }
+        },
+        {
+            key: { text: "Location" },
+            value: { html: '' }
+        }
+]
+%}
+
+{% set tasksHtml %}
+    <h1 class="govuk-heading-l">Tasks</h1>
+{% endset -%}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">HDC application for </h1>
+        </div>
+        <div class="govuk-grid-column-one-half">
+            {{ govukSummaryList({
+                card: {
+                    title: {
+                    text: "Personal details"
+                    }
+                },
+                rows: personalDetails
+            }) }}
+        </div>
+        <div class="govuk-grid-column-one-half">
+            {{ govukSummaryList({
+                attributes: { id: 'personal-details' },
+                card: {
+                    title: {
+                    text: "Actions"
+                    }
+                },
+                rows: []
+            }) }}
+        </div>
+        <div class="govuk-grid-column-full">
+            {{ govukTabs({
+                items: [
+                    {
+                        label: "Tasks",
+                        id: "tasks",
+                        panel: {
+                                html: tasksHtml
+                            }
+                    }
+                ]
+                }) }}
+        </div>
+    </div>
+{% endblock %}

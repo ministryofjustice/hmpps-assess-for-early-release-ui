@@ -15,6 +15,7 @@ export default class CaseloadRoutes {
     const caseload = offenderSummaryList.map(offender => {
       return {
         name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
+        createLink: this.findCreateLinkToDisplay(offender.prisonNumber),
         prisonNumber: offender.prisonNumber,
         hdced: offender.hdced,
         remainingDays: differenceInDays(parseIsoDate(offender.hdced), new Date()),
@@ -22,4 +23,6 @@ export default class CaseloadRoutes {
     })
     res.render('pages/caseAdmin/caseload', { caseload })
   }
+
+  findCreateLinkToDisplay = (prisonerNumber: string): string => `/prison/assessment/${prisonerNumber}`
 }

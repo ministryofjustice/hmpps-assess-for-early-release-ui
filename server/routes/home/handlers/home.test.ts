@@ -16,19 +16,21 @@ describe('Route Handlers - Home', () => {
 
   describe('GET', () => {
     describe('For support admin role', () => {
-      it('With correct auth role', async () => {
+      it('With wrong auth role', async () => {
         req = getReqWithRolesAndSource([AuthRole.DECISION_MAKER], 'nomis')
         await handler.GET(req, res)
         expect(res.render).toHaveBeenCalledWith('pages/index', {
           shouldShowSupportCard: false,
+          shouldShowAssessForHDCCard: false,
         })
       })
 
-      it('With wrong auth role', async () => {
-        req = getReqWithRolesAndSource([AuthRole.SUPPORT], 'nomis')
+      it('With correct auth role', async () => {
+        req = getReqWithRolesAndSource([AuthRole.SUPPORT, AuthRole.CASE_ADMIN], 'nomis')
         await handler.GET(req, res)
         expect(res.render).toHaveBeenCalledWith('pages/index', {
           shouldShowSupportCard: true,
+          shouldShowAssessForHDCCard: true,
         })
       })
     })

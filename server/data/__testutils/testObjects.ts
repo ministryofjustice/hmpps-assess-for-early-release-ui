@@ -16,11 +16,13 @@ const createOffenderSummary = ({
 
 const caseAdminCaseload = ({
   name = 'Jim Smith',
+  createLink = '/prison/assessment/A1234AB',
   prisonNumber = 'A1234AB',
   hdced = '2022-08-01',
   remainingDays = 31,
 } = {}) => ({
   name,
+  createLink,
   prisonNumber,
   hdced,
   remainingDays,
