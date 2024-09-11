@@ -20,6 +20,14 @@
       "@hmpps-components": ["./server/@types/hmppsComponents/index.d.ts"]
     }
   },
-  "exclude": ["node_modules", "assets/**/*.js", "integration_tests", "dist", "playwright.config.ts", "esbuild"],
+  "exclude": [
+    "node_modules",
+    "assets/**/*.js",
+    "integration_tests",
+    "dist",
+    "playwright.config.ts",
+    "playwright-report",
+    "esbuild"
+  ],
   "include": ["**/*.js", "**/*.ts"]
 }
