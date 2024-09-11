@@ -1,4 +1,5 @@
-import type { OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import type { AssessmentSummary, OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 const createOffenderSummary = ({
   prisonNumber = 'A1234AB',
@@ -28,4 +29,22 @@ const caseAdminCaseload = ({
   remainingDays,
 })
 
-export { createOffenderSummary, caseAdminCaseload }
+const createAssessmentSummary = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  prisonNumber = 'A1234AB',
+  hdced = '2022-08-01',
+  crd = '2022-10-01',
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+} = {}): AssessmentSummary => ({
+  forename,
+  surname,
+  prisonNumber,
+  hdced,
+  crd,
+  location,
+  status,
+})
+
+export { createOffenderSummary, caseAdminCaseload, createAssessmentSummary }

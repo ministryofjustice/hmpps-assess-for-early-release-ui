@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
+import { CaseAdminCaseloadService } from '../../services'
 
 export default class AssessmentRoutes {
-  constructor() {}
+  constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    res.render('pages/caseAdmin/assessment')
+    const assessmentSummaryList = await this.caseAdminCaseloadService.getAssessmentSummary(
+      req?.middleware?.clientToken,
+      req.params.prisonNumber,
+    )
+    res.render('pages/caseAdmin/assessment', { assessmentSummaryList })
   }
 }

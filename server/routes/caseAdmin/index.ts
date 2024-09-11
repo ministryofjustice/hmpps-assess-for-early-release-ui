@@ -20,7 +20,7 @@ export default function Index({ caseAdminCaseloadService }: Services): Router {
 
   get(caseload({}), supportHomeHandler.GET)
 
-  const assessmentHandler = new AssessmentRoutes()
+  const assessmentHandler = new AssessmentRoutes(caseAdminCaseloadService)
 
   get(assessment.pattern, assessmentHandler.GET)
 
