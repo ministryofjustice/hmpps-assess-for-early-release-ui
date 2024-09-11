@@ -19,15 +19,15 @@ export interface components {
     /** @description Offender Summary */
     AssessmentSummary: {
       /** @description The offender's first name. */
-      forename: string
+      forename?: string
       /** @description The offender's last name. */
-      surname: string
+      surname?: string
       /** @description The offender's prisoner number. */
       prisonNumber: string
       /** @description The offender's home detention curfew eligibility date. */
-      hdced?: string
+      hdced: string
       /** @description The offender's conditional release date. */
-      crd: string
+      crd?: string
       /** @description The name of the prison the offender is in. */
       location: string
       /** @enum {string} */

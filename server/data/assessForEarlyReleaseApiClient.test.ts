@@ -9,7 +9,7 @@ describe('feComponentsClient', () => {
   let fakeComponentsApi: nock.Scope
   let assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient
   const offenderSummaryList = [createOffenderSummary({})]
-  const assessmentSummaryList = [createAssessmentSummary({})]
+  const assessmentSummary = createAssessmentSummary({})
   const req = mockRequest({})
 
   beforeEach(() => {
@@ -41,9 +41,9 @@ describe('feComponentsClient', () => {
 
   describe('getAssessmentSummary', () => {
     it('should return data from api', async () => {
-      const { prisonNumber } = assessmentSummaryList[0]
-      const response: { data: AssessmentSummary[] } = {
-        data: assessmentSummaryList,
+      const { prisonNumber } = assessmentSummary
+      const response: { data: AssessmentSummary } = {
+        data: assessmentSummary,
       }
 
       fakeComponentsApi

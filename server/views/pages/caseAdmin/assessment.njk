@@ -4,28 +4,29 @@
 
 {% set pageTitle = applicationName + " - Assess Offender" %}
 {% set offenders = [] %}
+{% set prisonerName =  [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
 
 
 {% set personalDetails = [
         {
             key: { text: "Name" },
-            value: { html: '' }
+            value: { text: prisonerName }
         },
         {
             key: { text: "Prison Number" },
-            value: { html: '' }
+            value: { text: assessmentSummary.prisonNumber }
         },
         {
             key: { text: "HDCED" },
-            value: { html: '' }
+            value: { html: assessmentSummary.hdced | toIsoDate }
         },
         {
             key: { text: "CRD" },
-            value: { html: '' }
+            value: { html: assessmentSummary.hdced | toIsoDate }
         },
         {
             key: { text: "Location" },
-            value: { html: '' }
+            value: { text: assessmentSummary.location }
         }
 ]
 %}

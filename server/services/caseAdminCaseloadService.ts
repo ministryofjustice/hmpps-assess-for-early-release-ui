@@ -12,7 +12,7 @@ export default class CaseAdminCaseloadService {
     return assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
   }
 
-  public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary[]> {
+  public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
   }

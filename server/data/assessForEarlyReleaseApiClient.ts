@@ -17,7 +17,7 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.get<OffenderSummary[]>({ path: `/prison/${prisonCode}/case-admin/caseload` })
   }
 
-  async getAssessmentSummary(prisonNumber: string): Promise<AssessmentSummary[]> {
-    return this.restClient.get<AssessmentSummary[]>({ path: `/offender/${prisonNumber}/current-assessment` })
+  async getAssessmentSummary(prisonNumber: string): Promise<AssessmentSummary> {
+    return this.restClient.get<AssessmentSummary>({ path: `/offender/${prisonNumber}/current-assessment` })
   }
 }

@@ -4,7 +4,7 @@ import { createAssessmentSummary, createOffenderSummary } from '../data/__testut
 import { mockRequest } from '../routes/__testutils/requestTestUtils'
 
 const offenderSummaryList = [createOffenderSummary({})]
-const assessmentSummaryList = [createAssessmentSummary({})]
+const assessmentSummary = createAssessmentSummary({})
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
@@ -16,7 +16,7 @@ beforeEach(() => {
   AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
   caseAdminCaseloadService = new CaseAdminCaseloadService(AssessForEarlyReleaseApiClientBuilder)
   assessForEarlyReleaseApiClient.getCaseAdminCaseload.mockResolvedValue(offenderSummaryList)
-  assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummaryList)
+  assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
 })
 
 afterEach(() => {
@@ -33,12 +33,12 @@ describe('COM Caseload Service', () => {
 
 describe('Assessment Summary', () => {
   it('get assessment summary', async () => {
-    req.params.prisonNumber = assessmentSummaryList[0].prisonNumber
+    req.params.prisonNumber = assessmentSummary.prisonNumber
     const result = await caseAdminCaseloadService.getAssessmentSummary(
       req.middleware.clientToken,
       req.params.prisonNumber,
     )
     expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(req.middleware.clientToken)
-    expect(result).toEqual(assessmentSummaryList)
+    expect(result).toEqual(assessmentSummary)
   })
 })
