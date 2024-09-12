@@ -22,6 +22,18 @@
                     </div>
                 {% endif %}
 
+                {% if shouldShowAssessForHDCCard %}
+                    <div class="govuk-grid-column-one-third card-group__item">
+                        {{ card({
+                            "id": "assessForHDCCard",
+                            "href": '/prison/caseload',
+                            "clickable": "true",
+                            "heading": "Assess for HDC",
+                            "description": "View assessment and assess offender."
+                        }) }}
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>

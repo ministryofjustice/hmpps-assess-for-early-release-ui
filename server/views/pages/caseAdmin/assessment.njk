@@ -1,0 +1,24 @@
+{% extends "layout.njk" %}
+{% from "partials/assessment/personalDetails.njk" import personalDetails %}
+{% from "partials/assessment/actions.njk" import actions %}
+{% from "partials/assessment/tasks.njk" import tasks %}
+
+{% set pageTitle = applicationName + " - Assess Offender" %}
+{% set prisonerName =  [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">HDC application for {{ prisonerName }}</h1>
+        </div>
+        <div class="govuk-grid-column-one-half">
+            {{ personalDetails(assessmentSummary) }}
+        </div>
+        <div class="govuk-grid-column-one-half">
+            {{ actions(assessmentSummary) }}
+        </div>
+        <div class="govuk-grid-column-full">
+            {{ tasks(assessmentSummary) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,5 @@
-import type { OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { format } from 'date-fns'
+import type { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
 
@@ -14,6 +15,22 @@ export default class AssessForEarlyReleaseApiClient {
   }
 
   async getCaseAdminCaseload(prisonCode: string): Promise<OffenderSummary[]> {
-    return this.restClient.get<OffenderSummary[]>({ path: `/prison/${prisonCode}/case-admin/caseload` })
+    const caseAdminCaseload = await this.restClient.get<OffenderSummary[]>({
+      path: `/prison/${prisonCode}/case-admin/caseload`,
+    })
+    return caseAdminCaseload.map(c => {
+      return { ...c, hdced: format(c.hdced, 'dd MMM yyyy') }
+    })
+  }
+
+  async getAssessmentSummary(prisonNumber: string): Promise<AssessmentSummary> {
+    const assessmentSummary = await this.restClient.get<AssessmentSummary>({
+      path: `/offender/${prisonNumber}/current-assessment`,
+    })
+    return {
+      ...assessmentSummary,
+      hdced: format(assessmentSummary.hdced, 'dd MMM yyyy'),
+      crd: assessmentSummary.crd ? format(assessmentSummary.crd, 'dd MMM yyyy') : 'not found',
+    }
   }
 }

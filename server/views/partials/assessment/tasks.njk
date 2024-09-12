@@ -1,0 +1,19 @@
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+
+{%  macro tasks(params) %}
+    {% set tasksHtml %}
+        <h1 class="govuk-heading-l">Tasks</h1>
+    {% endset -%}
+
+    {{ govukTabs({
+            items: [
+                {
+                    label: "Tasks",
+                    id: "tasks",
+                    panel: {
+                            html: tasksHtml
+                        }
+                }
+            ]
+    }) }}
+{% endmacro %}
