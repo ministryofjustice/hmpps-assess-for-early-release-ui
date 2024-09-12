@@ -1,0 +1,37 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{%  macro personalDetails(params) %}
+    {% set prisonerName =  [params.forename, params.surname] | join(' ') %}
+    {% set personalDetails = [
+            {
+                key: { text: "Name" },
+                value: { text: prisonerName }
+            },
+            {
+                key: { text: "Prison Number" },
+                value: { text: params.prisonNumber }
+            },
+            {
+                key: { text: "HDCED" },
+                value: { html: params.hdced }
+            },
+            {
+                key: { text: "CRD" },
+                value: { html: params.crd }
+            },
+            {
+                key: { text: "Location" },
+                value: { text: params.location }
+            }
+    ]
+    %}
+
+    {{ govukSummaryList({
+            card: {
+                title: {
+                text: "Personal details"
+                }
+            },
+            rows: personalDetails
+    }) }}
+{% endmacro %}

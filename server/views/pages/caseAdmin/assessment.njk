@@ -1,78 +1,24 @@
 {% extends "layout.njk" %}
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "partials/assessment/personalDetails.njk" import personalDetails %}
+{% from "partials/assessment/actions.njk" import actions %}
+{% from "partials/assessment/tasks.njk" import tasks %}
 
 {% set pageTitle = applicationName + " - Assess Offender" %}
-{% set offenders = [] %}
 {% set prisonerName =  [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
-
-
-{% set personalDetails = [
-        {
-            key: { text: "Name" },
-            value: { text: prisonerName }
-        },
-        {
-            key: { text: "Prison Number" },
-            value: { text: assessmentSummary.prisonNumber }
-        },
-        {
-            key: { text: "HDCED" },
-            value: { html: assessmentSummary.hdced | toIsoDate }
-        },
-        {
-            key: { text: "CRD" },
-            value: { html: assessmentSummary.hdced | toIsoDate }
-        },
-        {
-            key: { text: "Location" },
-            value: { text: assessmentSummary.location }
-        }
-]
-%}
-
-{% set tasksHtml %}
-    <h1 class="govuk-heading-l">Tasks</h1>
-{% endset -%}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l">HDC application for </h1>
+            <h1 class="govuk-heading-l">HDC application for {{ prisonerName }}</h1>
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ govukSummaryList({
-                card: {
-                    title: {
-                    text: "Personal details"
-                    }
-                },
-                rows: personalDetails
-            }) }}
+            {{ personalDetails(assessmentSummary) }}
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ govukSummaryList({
-                attributes: { id: 'personal-details' },
-                card: {
-                    title: {
-                    text: "Actions"
-                    }
-                },
-                rows: []
-            }) }}
+            {{ actions(assessmentSummary) }}
         </div>
         <div class="govuk-grid-column-full">
-            {{ govukTabs({
-                items: [
-                    {
-                        label: "Tasks",
-                        id: "tasks",
-                        panel: {
-                                html: tasksHtml
-                            }
-                    }
-                ]
-                }) }}
+            {{ tasks(assessmentSummary) }}
         </div>
     </div>
 {% endblock %}

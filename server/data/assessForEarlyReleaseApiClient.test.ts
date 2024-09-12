@@ -25,14 +25,15 @@ describe('feComponentsClient', () => {
   describe('getCaseAdminCaseload', () => {
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
-      const response: { data: OffenderSummary[] } = {
-        data: offenderSummaryList,
-      }
+      const response: OffenderSummary[] = offenderSummaryList
+      const request: OffenderSummary[] = offenderSummaryList.map(c => {
+        return { ...c, hdced: '2022-08-01' }
+      })
 
       fakeComponentsApi
         .get(`/prison/${prisonCode}/case-admin/caseload`)
         .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
-        .reply(200, response)
+        .reply(200, request)
 
       const output = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
       expect(output).toEqual(response)
@@ -42,17 +43,30 @@ describe('feComponentsClient', () => {
   describe('getAssessmentSummary', () => {
     it('should return data from api', async () => {
       const { prisonNumber } = assessmentSummary
-      const response: { data: AssessmentSummary } = {
-        data: assessmentSummary,
-      }
+      const response: AssessmentSummary = assessmentSummary
+      const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: '2024-10-10' }
 
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment`)
         .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
-        .reply(200, response)
+        .reply(200, request)
 
       const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
       expect(output).toEqual(response)
+    })
+
+    it('should return crd as not found if crd is empty', async () => {
+      const { prisonNumber } = assessmentSummary
+      const response: AssessmentSummary = { ...assessmentSummary, crd: null }
+      const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: null }
+
+      fakeComponentsApi
+        .get(`/offender/${prisonNumber}/current-assessment`)
+        .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
+        .reply(200, request)
+
+      const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
+      expect(output).toEqual({ ...response, crd: 'not found' })
     })
   })
 })
