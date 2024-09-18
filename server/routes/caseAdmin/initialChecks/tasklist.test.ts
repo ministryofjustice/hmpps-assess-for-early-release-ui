@@ -22,7 +22,7 @@ afterEach(() => {
 })
 
 describe('GET', () => {
-  it('should render list of licences for approval', async () => {
+  it('should render task list', async () => {
     req.params.prisonNumber = initialChecks.assessmentSummary.prisonNumber
     await tasklistRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getInitialChecks).toHaveBeenCalledWith(
