@@ -1,4 +1,8 @@
-import type { AssessmentSummary, OffenderSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import type {
+  AssessmentSummary,
+  InitialChecks,
+  OffenderSummary,
+} from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 const createOffenderSummary = ({
@@ -37,6 +41,7 @@ const createAssessmentSummary = ({
   crd = '10 Oct 2024',
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
 } = {}): AssessmentSummary => ({
   forename,
   surname,
@@ -45,6 +50,35 @@ const createAssessmentSummary = ({
   crd,
   location,
   status,
+  policyVersion,
 })
 
-export { createOffenderSummary, caseAdminCaseload, createAssessmentSummary }
+const createInitialChecks = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  prisonNumber = 'A1234AB',
+  hdced = '10 Oct 2024',
+  crd = '10 Oct 2024',
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
+} = {}): InitialChecks => ({
+  assessmentSummary: {
+    forename,
+    surname,
+    prisonNumber,
+    hdced,
+    crd,
+    location,
+    status,
+    policyVersion,
+  },
+  checksPassed: false,
+  complete: false,
+  eligibilityStatus: 'NOT_STARTED',
+  suitabilityStatus: 'NOT_STARTED',
+  eligibility: [],
+  suitability: [],
+})
+
+export { createOffenderSummary, createInitialChecks, caseAdminCaseload, createAssessmentSummary }

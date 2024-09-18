@@ -12,6 +12,7 @@ import { minutesToMilliseconds, secondsToMilliseconds } from 'date-fns'
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  outputDir: './test_results/playwright/test-output',
   testDir: './integration_tests',
   /* Maximum time one test can run for. */
   timeout: minutesToMilliseconds(3),
@@ -24,7 +25,11 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 1 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: 'test_results/playwright/report', open: process.env.CI ? 'never' : 'on-failure' }],
+    ['junit', { outputFile: 'test_results/playwright/junit.xml' }],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     actionTimeout: secondsToMilliseconds(30),

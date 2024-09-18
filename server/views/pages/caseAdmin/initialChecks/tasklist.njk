@@ -1,0 +1,69 @@
+{% extends "layout.njk" %}
+{% from "partials/assessment/personalDetails.njk" import personalDetails %}
+{% from "partials/assessment/actions.njk" import actions %}
+{% from "partials/assessment/tasks.njk" import tasks %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% set pageTitle = applicationName + " - Assess Offender" %}
+{% set assessmentSummary = initialChecks.assessmentSummary %}
+{% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
+
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-full">
+            {{ personalDetails(assessmentSummary) }}
+        </div>
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Assess eligibility and suitability</h1>
+        </div>
+        <div class="govuk-grid-column-full">
+            {% set eligiblityChecks =  [] %}
+            {% for check in initialChecks.eligibility %}
+            {% set eligiblityChecks = (eligiblityChecks.push(
+                {
+                title: {
+                text: check.taskName
+                },
+                href: "/" + check.code,
+                status: {
+                tag: {
+                    text: check.status | replace("_", " ") | capitalize,
+                    classes: "govuk-tag--blue"
+                }
+                }
+            }
+            ), eligiblityChecks) %}
+            {% endfor %}
+
+            <h2>Eligibility checks</h2>         
+            {{ govukTaskList({
+                idPrefix: "eligibility-check",
+                items: eligiblityChecks
+            }) }}
+
+            {% set suitabilityChecks =  [] %}
+            {% for check in initialChecks.suitability %}
+            {% set suitabilityChecks = (suitabilityChecks.push(
+                {
+                title: {
+                text: check.taskName
+                },
+                href: "/" + check.code,
+                status: {
+                tag: {
+                    text: check.status | replace("_", " ") | capitalize,
+                    classes: "govuk-tag--blue"
+                }
+                }
+            }
+            ), suitabilityChecks) %}
+            {% endfor %}
+            <h2>Suitability checks</h2>         
+            {{ govukTaskList({
+                idPrefix: "suitability-check",
+                items: suitabilityChecks
+            }) }}
+
+        </div>
+    </div>
+{% endblock %}

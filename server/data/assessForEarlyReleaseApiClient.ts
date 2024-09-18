@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import type { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { AssessmentSummary, InitialChecks, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
 
@@ -32,5 +32,12 @@ export default class AssessForEarlyReleaseApiClient {
       hdced: format(assessmentSummary.hdced, 'dd MMM yyyy'),
       crd: assessmentSummary.crd ? format(assessmentSummary.crd, 'dd MMM yyyy') : 'not found',
     }
+  }
+
+  async getInitialCheckStatus(prisonNumber: string): Promise<InitialChecks> {
+    const initialChecks = await this.restClient.get<InitialChecks>({
+      path: `/offender/${prisonNumber}/current-assessment/initial-checks`,
+    })
+    return initialChecks
   }
 }

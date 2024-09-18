@@ -22,6 +22,8 @@ import populateClientToken from './middleware/populateClientToken'
 import { ApplicationInfo } from './applicationInfo'
 import getFrontendComponents from './middleware/getFrontendComponents'
 import setUpEnvironmentName from './middleware/setUpEnvironmentName'
+import phaseNameSetup from './middleware/phaseNameSetup'
+import config from './config'
 
 export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
   const app = express()
@@ -38,6 +40,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   app.use(setUpStaticResources())
   setUpEnvironmentName(app)
   nunjucksSetup(app, applicationInfo)
+  phaseNameSetup(app, config.phaseName)
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())

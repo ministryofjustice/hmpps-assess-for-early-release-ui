@@ -1,4 +1,4 @@
-import type { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { AssessmentSummary, InitialChecks, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
@@ -15,5 +15,10 @@ export default class CaseAdminCaseloadService {
   public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
+  }
+
+  public async getInitialChecks(token: string, prisonNumber: string): Promise<InitialChecks> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
   }
 }

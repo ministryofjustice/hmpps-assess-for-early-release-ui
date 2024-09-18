@@ -54,7 +54,7 @@
       [
         "./node_modules/jest-html-reporter",
         {
-          "outputPath": "test_results/unit-test-reports.html"
+          "outputPath": "test_results/jest/report/unit-test-reports.html"
         }
       ]
     ],

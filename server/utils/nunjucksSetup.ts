@@ -61,6 +61,10 @@ export function registerNunjucks(app?: express.Express): Environment {
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
   njkEnv.addFilter('toIsoDate', toIsoDate)
+  njkEnv.addFilter(
+    'dumpJson',
+    (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),
+  )
 
   return njkEnv
 }
