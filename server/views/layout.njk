@@ -1,4 +1,6 @@
 {% extends "govuk/template.njk" %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block head %}
   <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
@@ -29,7 +31,30 @@
   {% endif %}
 {% endblock %}
 
+{% block beforeContent %}
+    {{ govukPhaseBanner({
+      attributes: {
+        role: "complementary"
+      },
+      tag: {
+        text: phaseName,
+        classes: phaseNameColour
+      },
+      html: 'This is a new service – your <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="'+ phaseBannerLink +'">feedback</a> will help us to improve it.'
+    }) }}
+  {% if not hideBackLink %}
+    <nav>
+      {{ govukBackLink({
+        text: "Back",
+        href: "#",
+        classes: 'js-backlink'
+      }) }}
+    </nav>
+  {% endif %}
+{% endblock %}
+
 {% block bodyStart %}
+
 {% endblock %}
 
 {% block footer %}

@@ -1,6 +1,6 @@
 node_modules
 public
 assets
-playwright-report
+test_results
 reporter-config.json
 dist/

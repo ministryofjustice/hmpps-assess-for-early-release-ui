@@ -291,7 +291,7 @@ export interface components {
        * @description The version of the policy that this assessment has been carried out under
        * @example 1.0
        */
-      policyVersion?: string
+      policyVersion: string
     }
     /** @description The initial checks for a specific assessment */
     EligibilityCheckDetails: {
@@ -312,20 +312,36 @@ export interface components {
       question: string
       /**
        * @description The state of this check
-       * @example UNANSWERED
+       * @example NOT_STARTED
        * @enum {string}
        */
-      state: 'ELIGIBLE' | 'INELIGIBLE' | 'UNANSWERED'
+      status: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
       /**
        * @description The answer provided by the user
-       * @example Yes
+       * @example false
        */
-      answer?: Record<string, never>
+      answer?: boolean
     }
     /** @description The initial checks for a specific assessment */
     InitialChecks: {
       assessmentSummary: components['schemas']['AssessmentSummary']
+      /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
+      complete: boolean
+      /** @description eligibility status = ELIGIBLE and suitability status = SUITABLE */
+      checksPassed: boolean
+      /**
+       * @description state of current eligibility checks
+       * @enum {string}
+       */
+      eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      /** @description details of current eligibility checks */
       eligibility: components['schemas']['EligibilityCheckDetails'][]
+      /**
+       * @description state of current suitability checks
+       * @enum {string}
+       */
+      suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      /** @description details of current suitability checks */
       suitability: components['schemas']['SuitabilityCheckDetails'][]
     }
     /** @description The initial checks for a specific assessment */
@@ -347,15 +363,15 @@ export interface components {
       question: string
       /**
        * @description The state of this check
-       * @example UNANSWERED
+       * @example NOT_STARTED
        * @enum {string}
        */
-      state: 'ELIGIBLE' | 'INELIGIBLE' | 'UNANSWERED'
+      status: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
       /**
        * @description The answer provided by the user
-       * @example Yes
+       * @example true
        */
-      answer?: Record<string, never>
+      answer?: boolean
     }
   }
   responses: never

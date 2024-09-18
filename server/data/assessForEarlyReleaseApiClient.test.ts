@@ -2,19 +2,16 @@ import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
 import { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
-import { createAssessmentSummary, createOffenderSummary } from './__testutils/testObjects'
-import { mockRequest } from '../routes/__testutils/requestTestUtils'
+import { createAssessmentSummary, createOffenderSummary, createInitialChecks } from './__testutils/testObjects'
 
 describe('feComponentsClient', () => {
   let fakeComponentsApi: nock.Scope
   let assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient
-  const offenderSummaryList = [createOffenderSummary({})]
-  const assessmentSummary = createAssessmentSummary({})
-  const req = mockRequest({})
+  const token = 'TOKEN-1'
 
   beforeEach(() => {
     fakeComponentsApi = nock(config.apis.assessForEarlyReleaseApi.url)
-    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(req.middleware.clientToken)
+    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(token)
   })
 
   afterEach(() => {
@@ -23,6 +20,8 @@ describe('feComponentsClient', () => {
   })
 
   describe('getCaseAdminCaseload', () => {
+    const offenderSummaryList = [createOffenderSummary({})]
+
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
       const response: OffenderSummary[] = offenderSummaryList
@@ -32,7 +31,7 @@ describe('feComponentsClient', () => {
 
       fakeComponentsApi
         .get(`/prison/${prisonCode}/case-admin/caseload`)
-        .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
+        .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
 
       const output = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
@@ -41,6 +40,8 @@ describe('feComponentsClient', () => {
   })
 
   describe('getAssessmentSummary', () => {
+    const assessmentSummary = createAssessmentSummary({})
+
     it('should return data from api', async () => {
       const { prisonNumber } = assessmentSummary
       const response: AssessmentSummary = assessmentSummary
@@ -48,7 +49,7 @@ describe('feComponentsClient', () => {
 
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment`)
-        .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
+        .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
 
       const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
@@ -62,11 +63,26 @@ describe('feComponentsClient', () => {
 
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment`)
-        .matchHeader('authorization', `Bearer ${req.middleware.clientToken}`)
+        .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
 
       const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
       expect(output).toEqual({ ...response, crd: 'not found' })
+    })
+  })
+
+  describe('getInitialCheckStatus', () => {
+    const initialChecks = createInitialChecks()
+    const { prisonNumber } = initialChecks.assessmentSummary
+
+    it('should return data from api', async () => {
+      fakeComponentsApi
+        .get(`/offender/${prisonNumber}/current-assessment/initial-checks`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, initialChecks)
+
+      const output = await assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
+      expect(output).toEqual(initialChecks)
     })
   })
 })

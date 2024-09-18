@@ -65,15 +65,15 @@ jobs:
           name: unit tests
           command: npm run test:ci
       - store_test_results:
-          path: test_results
+          path: test_results/jest/junit.xml
       - store_artifacts:
-          path: test_results/unit-test-reports.html
+          path: test_results/jest/report
 
   integration_test:
     executor:
       name: hmpps/node_redis
       node_tag: << pipeline.parameters.node-version >>
-      redis_tag: "7.0"
+      redis_tag: '7.0'
     steps:
       - checkout
       - attach_workspace:
@@ -105,10 +105,10 @@ jobs:
           command: npm run int-test
       - store_test_results:
           path: test_results
+      - store_test_results:
+          path: test_results/playwright/junit.xml
       - store_artifacts:
-          path: integration_tests/videos
-      - store_artifacts:
-          path: integration_tests/screenshots
+          path: test_results/playwright/report
 
 workflows:
   version: 2
@@ -134,7 +134,7 @@ workflows:
                 - main
       - hmpps/deploy_env:
           name: deploy_dev
-          env: "dev"
+          env: 'dev'
           jira_update: true
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
@@ -149,47 +149,47 @@ workflows:
             - integration_test
             - build_docker
           helm_timeout: 5m
-#      - request-preprod-approval:
-#          type: approval
-#          requires:
-#            - deploy_dev
-#      - hmpps/deploy_env:
-#          name: deploy_preprod
-#          env: "preprod"
-#          jira_update: true
-#          jira_env_type: staging
-#          pipeline_id: <<pipeline.id>>
-#          pipeline_number: <<pipeline.number>>
-#          context:
-#            - hmpps-common-vars
-#            - hmpps-assess-for-early-release-ui-preprod
-#          requires:
-#            - request-preprod-approval
-#          helm_timeout: 5m
-#      - request-prod-approval:
-#          type: approval
-#          requires:
-#            - deploy_preprod
-#      - hmpps/deploy_env:
-#          name: deploy_prod
-#          env: "prod"
-#          jira_update: true
-#          jira_env_type: production
-#          pipeline_id: <<pipeline.id>>
-#          pipeline_number: <<pipeline.number>>
-#          slack_notification: true
-#          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
-#          context:
-#            - hmpps-common-vars
-#            - hmpps-assess-for-early-release-ui-prod
-#          requires:
-#            - request-prod-approval
-#          helm_timeout: 5m
+  #      - request-preprod-approval:
+  #          type: approval
+  #          requires:
+  #            - deploy_dev
+  #      - hmpps/deploy_env:
+  #          name: deploy_preprod
+  #          env: "preprod"
+  #          jira_update: true
+  #          jira_env_type: staging
+  #          pipeline_id: <<pipeline.id>>
+  #          pipeline_number: <<pipeline.number>>
+  #          context:
+  #            - hmpps-common-vars
+  #            - hmpps-assess-for-early-release-ui-preprod
+  #          requires:
+  #            - request-preprod-approval
+  #          helm_timeout: 5m
+  #      - request-prod-approval:
+  #          type: approval
+  #          requires:
+  #            - deploy_preprod
+  #      - hmpps/deploy_env:
+  #          name: deploy_prod
+  #          env: "prod"
+  #          jira_update: true
+  #          jira_env_type: production
+  #          pipeline_id: <<pipeline.id>>
+  #          pipeline_number: <<pipeline.number>>
+  #          slack_notification: true
+  #          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
+  #          context:
+  #            - hmpps-common-vars
+  #            - hmpps-assess-for-early-release-ui-prod
+  #          requires:
+  #            - request-prod-approval
+  #          helm_timeout: 5m
 
   security:
     triggers:
       - schedule:
-          cron: "35 4 * * 1-5"
+          cron: '35 4 * * 1-5'
           filters:
             branches:
               only:
@@ -212,7 +212,7 @@ workflows:
   security-weekly:
     triggers:
       - schedule:
-          cron: "26 4 * * 1"
+          cron: '26 4 * * 1'
           filters:
             branches:
               only:
