@@ -1,10 +1,9 @@
 {% extends "layout.njk" %}
 {% from "partials/card.njk" import card %}
 
+{% set bodyAttributes = { "data-page": "home" } %}
 {% set pageTitle = applicationName + " - Home" %}
 {% set mainClasses = "app-container govuk-body" %}
-
-{% set bodyAttributes = { "data-page": "home" } %}
 
 {% block content %}
     <div class="grid-row">

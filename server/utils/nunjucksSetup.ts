@@ -3,10 +3,12 @@ import path from 'path'
 import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
+import { Params, Path } from 'static-path'
 import { initialiseName, toIsoDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
+import paths from '../routes/paths'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -65,6 +67,13 @@ export function registerNunjucks(app?: express.Express): Environment {
     'dumpJson',
     (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),
   )
+  njkEnv.addGlobal('paths', paths)
+  njkEnv.addFilter('toPath', <T extends string>(staticPath: Path<T>, params: Params<T>) => {
+    if (!staticPath) {
+      throw Error(`no path provided`)
+    }
+    return staticPath(params)
+  })
 
   return njkEnv
 }

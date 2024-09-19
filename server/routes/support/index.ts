@@ -1,20 +1,20 @@
 import { RequestHandler, Router } from 'express'
-import { path } from 'static-path'
+import { Path } from 'static-path'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import roleCheckMiddleware from '../../middleware/roleCheckMiddleware'
 import SupportHomeRoutes from './handlers/supportHome'
 import AuthRole from '../../enumeration/authRole'
+import paths from '../paths'
 
 export default function Index(): Router {
   const router = Router()
-  const support = path('/support')
 
-  const get = (routerPath: string, handler: RequestHandler) =>
-    router.get(routerPath, roleCheckMiddleware([AuthRole.SUPPORT]), asyncMiddleware(handler))
+  const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
+    router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.SUPPORT]), asyncMiddleware(handler))
 
   const supportHomeHandler = new SupportHomeRoutes()
 
-  get(support({}), supportHomeHandler.GET)
+  get(paths.support.home, supportHomeHandler.GET)
 
   return router
 }
