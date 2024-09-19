@@ -1,0 +1,83 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+
+{% set pageTitle = applicationName + " - Opt-out" %}
+{% set backLinkHref = "/" %}¡
+
+{% set otherReasonHtml %}
+    {{ govukInput({
+      label: {
+        text: "Enter reason",
+        classes: "govuk-label"
+      },
+      id: "otherReason",
+      name: "otherReason",
+      classes: "govuk-input--width-30",
+      errorMessage: validationErrors | findError('otherReason')
+    }) }}
+{% endset %}
+
+{% block content %}
+    <div class="govuk-width-container">
+        <div class="govuk-grid-column-two-thirds">
+            {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment.name) }}
+            <div class="govuk-grid-row govuk-!-margin-top-8">
+                <form method="POST">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    {{ govukRadios({
+                        idPrefix: "optOutRadio",
+                        name: "optOutReason",
+                        fieldset: {
+                            attributes: {
+                                id: 'answer'
+                            },
+                            legend: {
+                                text: "Why has this person chosen to opt out of HDC?",
+                                classes: "govuk-fieldset__legend--l"
+                            }
+                        },
+                        errorMessage: validationErrors | findError('optOutReason'),
+                        items: [
+                            {
+                                value: "NOWHERE_TO_STAY",
+                                text: "They do not have anywhere to stay",
+                                checked: false
+                            },
+                            {
+                                value: "DOES_NOT_WANT_TO_BE_TAGGED",
+                                text: "They do not want to be tagged",
+                                checked: false
+                            },
+                            {
+                                value: "NO_REASON_GIVEN",
+                                text: "They did not give a reason",
+                                checked: false
+                            },
+                            {
+                                value: "OTHER",
+                                text: "Other reason",
+                                checked: optOutReason === 'OTHER',
+                                conditional: {
+                                    html: otherReasonHtml
+                                }
+                            }
+                        ]
+                    }) }}
+
+                    <div class="govuk-button-group">
+                        {{ govukButton({
+                            text: "Continue",
+                            type: "submit",
+                            attributes: { 'data-qa': 'continue' }
+                        }) }}
+                        <a class="govuk-link govuk-link--no-visited-state" href="./">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

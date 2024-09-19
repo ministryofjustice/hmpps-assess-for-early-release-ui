@@ -1,5 +1,10 @@
 import { format } from 'date-fns'
-import type { AssessmentSummary, InitialChecks, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type {
+  AssessmentSummary,
+  InitialChecks,
+  OffenderSummary,
+  OptOutRequest,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
 
@@ -39,5 +44,9 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/offender/${prisonNumber}/current-assessment/initial-checks`,
     })
     return initialChecks
+  }
+
+  async optOut(prisonNumber: string, optOutRequest: OptOutRequest) {
+    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
   }
 }
