@@ -4,6 +4,8 @@
 {% set pageTitle = applicationName + " - Home" %}
 {% set mainClasses = "app-container govuk-body" %}
 
+{% set bodyAttributes = { "data-page": "home" } %}
+
 {% block content %}
     <div class="grid-row">
         <div class="govuk-grid-column-full">
@@ -37,8 +39,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block pageScripts %}
-    <script src="/assets/js/card.js"></script>
 {% endblock %}
