@@ -4,9 +4,13 @@ import { CaseAdminCaseloadService } from '../../services'
 import { convertToTitleCase } from '../../utils/utils'
 import OptOutReasonType from '../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../@types/FieldValidationError'
+import OptOutService from '../../services/optOutService'
 
 export default class OptOutRoutes {
-  constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
+  constructor(
+    private readonly caseAdminCaseloadService: CaseAdminCaseloadService,
+    private readonly optOutService: OptOutService,
+  ) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
@@ -23,14 +27,14 @@ export default class OptOutRoutes {
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    const { optOutReason } = req.body
+    const { optOutReason, otherReason } = req.body
 
     const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
       req.params.prisonNumber,
     )
     const name = convertToTitleCase(`${assessment.forename} ${assessment.surname}`.trim())
-    const validationErrors = this.validateForm(optOutReason, req.body.otherReason)
+    const validationErrors = this.validateForm(optOutReason, otherReason)
 
     if (validationErrors.length !== 0) {
       return res.render(`pages/optOut/optOut`, {
@@ -43,6 +47,7 @@ export default class OptOutRoutes {
       })
     }
 
+    await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, optOutReason, otherReason)
     req.flash('optedOutOfHdc', `${name} has opted out of HDC`)
     const assessmentPath = path('/prison/assessment/:prisonNumber')
     return res.redirect(assessmentPath({ prisonNumber: req.params.prisonNumber }))

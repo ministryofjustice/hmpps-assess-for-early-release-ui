@@ -4,13 +4,13 @@ import { AssessForEarlyReleaseApiClient } from '.'
 import { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessmentSummary, createOffenderSummary, createInitialChecks } from './__testutils/testObjects'
 
-describe('feComponentsClient', () => {
-  let fakeComponentsApi: nock.Scope
+describe('assessForEarlyReleaseApiClient', () => {
+  let fakeAferApi: nock.Scope
   let assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient
   const token = 'TOKEN-1'
 
   beforeEach(() => {
-    fakeComponentsApi = nock(config.apis.assessForEarlyReleaseApi.url)
+    fakeAferApi = nock(config.apis.assessForEarlyReleaseApi.url)
     assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(token)
   })
 
@@ -29,7 +29,7 @@ describe('feComponentsClient', () => {
         return { ...c, hdced: '2022-08-01' }
       })
 
-      fakeComponentsApi
+      fakeAferApi
         .get(`/prison/${prisonCode}/case-admin/caseload`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
@@ -47,7 +47,7 @@ describe('feComponentsClient', () => {
       const response: AssessmentSummary = assessmentSummary
       const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: '2024-10-10' }
 
-      fakeComponentsApi
+      fakeAferApi
         .get(`/offender/${prisonNumber}/current-assessment`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
@@ -61,7 +61,7 @@ describe('feComponentsClient', () => {
       const response: AssessmentSummary = { ...assessmentSummary, crd: null }
       const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: null }
 
-      fakeComponentsApi
+      fakeAferApi
         .get(`/offender/${prisonNumber}/current-assessment`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, request)
@@ -76,13 +76,28 @@ describe('feComponentsClient', () => {
     const { prisonNumber } = initialChecks.assessmentSummary
 
     it('should return data from api', async () => {
-      fakeComponentsApi
+      fakeAferApi
         .get(`/offender/${prisonNumber}/current-assessment/initial-checks`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, initialChecks)
 
       const output = await assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
       expect(output).toEqual(initialChecks)
+    })
+  })
+
+  describe('optOut', () => {
+    const initialChecks = createInitialChecks()
+    const { prisonNumber } = initialChecks.assessmentSummary
+
+    it('should opt out', async () => {
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/opt-out`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      await assessForEarlyReleaseApiClient.optOut(prisonNumber, { reasonType: 'NOWHERE_TO_STAY' })
+      expect(fakeAferApi.isDone()).toBe(true)
     })
   })
 })

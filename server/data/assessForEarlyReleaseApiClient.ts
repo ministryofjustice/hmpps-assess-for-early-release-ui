@@ -40,13 +40,12 @@ export default class AssessForEarlyReleaseApiClient {
   }
 
   async getInitialCheckStatus(prisonNumber: string): Promise<InitialChecks> {
-    const initialChecks = await this.restClient.get<InitialChecks>({
+    return this.restClient.get<InitialChecks>({
       path: `/offender/${prisonNumber}/current-assessment/initial-checks`,
     })
-    return initialChecks
   }
 
-  async optOut(prisonNumber: string, optOutRequest: OptOutRequest) {
+  async optOut(prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
     return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
   }
 }

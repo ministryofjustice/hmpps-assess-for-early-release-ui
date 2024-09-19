@@ -14,8 +14,11 @@
             {% if optedOutOfHdc | length > 0%}
                 {{ mojBanner({
                     type: 'success',
-                    html: optedOutOfHdc,
-                    iconFallbackText: 'Success'
+                    text: optedOutOfHdc,
+                    iconFallbackText: 'Success',
+                    attributes: {
+                        "data-qa": "optedOutOfHdcBanner"
+                    }
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-l">HDC application for {{ assessmentSummary.name }}</h1>

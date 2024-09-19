@@ -7,7 +7,7 @@ import OptOutCheckRoutes from './optOutCheck'
 import { Services } from '../../services'
 import OptOutRoutes from './optOut'
 
-export default function Index({ caseAdminCaseloadService }: Services): Router {
+export default function Index({ caseAdminCaseloadService, optOutService }: Services): Router {
   const router = Router()
   const optOutCheckPath = path('/prison/assessment/:prisonNumber/opt-out-check')
   const optOutPath = path('/prison/assessment/:prisonNumber/opt-out')
@@ -22,7 +22,7 @@ export default function Index({ caseAdminCaseloadService }: Services): Router {
   get(optOutCheckPath.pattern, optOutCheckHandler.GET)
   post(optOutCheckPath.pattern, optOutCheckHandler.POST)
 
-  const optOutHandler = new OptOutRoutes(caseAdminCaseloadService)
+  const optOutHandler = new OptOutRoutes(caseAdminCaseloadService, optOutService)
   get(optOutPath.pattern, optOutHandler.GET)
   post(optOutPath.pattern, optOutHandler.POST)
 
