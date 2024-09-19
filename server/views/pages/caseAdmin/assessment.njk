@@ -5,63 +5,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "moj/components/banner/macro.njk" import mojBanner %}
-{% from "moj/components/ticket-panel/macro.njk" import mojTicketPanel %}
 
 {% set pageTitle = applicationName + " - Assess Offender" %}
-{% set offenders = [] %}
-
-{% set personalDetails = [
-        {
-            key: { text: "Name" },
-            value: { text: assessmentSummary.name }
-        },
-        {
-            key: { text: "Prison Number" },
-            value: { text: assessmentSummary.prisonNumber }
-        },
-        {
-            key: { text: "HDCED" },
-            value: { html: assessmentSummary.hdced | toIsoDate }
-        },
-        {
-            key: { text: "CRD" },
-            value: { html: assessmentSummary.hdced | toIsoDate }
-        },
-        {
-            key: { text: "Location" },
-            value: { text: assessmentSummary.location }
-        }
-]
-%}
-
-{% set actions = [
-        {
-            key: { html: "<a class='govuk-link govuk-link--no-visited-state' href=" + optOutLink + ">Opt in/out</a>" },
-            value: { html: '' }
-        }
-]
-%}
-
-{% set tasksHtml %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Tasks</h1>
-            {{ mojTicketPanel({
-              attributes: {
-                'aria-label': 'Assess eligibility and suitability'
-              },
-              items: [{
-                html: '<h2 class="govuk-heading-m govuk-!-margin-bottom-2">Assess eligibility and suitability</h2>
-                       <a class="govuk-button govuk-!-margin-bottom-1" data-module="govuk-button" href="' + optOutLink + '">Start</a>',
-                attributes: {
-                  'aria-label': 'Start to assess eligibility and suitability'
-                },
-                classes: 'moj-ticket-panel__content--blue'
-              }]
-            }) }}
-        </div>
-    </div>
-{% endset -%}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -76,40 +21,13 @@
             <h1 class="govuk-heading-l">HDC application for {{ assessmentSummary.name }}</h1>
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ govukSummaryList({
-                card: {
-                    title: {
-                    text: "Personal details"
-                    }
-                },
-                rows: personalDetails
-            }) }}
+            {{ personalDetails(assessmentSummary) }}
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ govukSummaryList({
-                attributes: { id: 'actions' },
-                card: {
-                    title: {
-                    text: "Actions"
-                    }
-                },
-                rows: actions
-            }) }}
+            {{ actions(optOutLink) }}
         </div>
-    </div>
-    <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {{ govukTabs({
-                items: [
-                    {
-                        label: "Tasks",
-                        id: "tasks",
-                        panel: {
-                                html: tasksHtml
-                            }
-                    }
-                ]
-                }) }}
+            {{ tasks(assessmentSummary) }}
         </div>
     </div>
 {% endblock %}
