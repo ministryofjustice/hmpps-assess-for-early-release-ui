@@ -1,4 +1,14 @@
-window.onload = function () {
+const pages = ['home', 'support-home']
+
+document.addEventListener('DOMContentLoaded', () => {
+  const body = document.querySelector('body')
+  const pageType = body.getAttribute('data-page')
+  if (pages.includes(pageType)) {
+    initCards()
+  }
+})
+
+const initCards = () => {
   // Loops through dom and finds all elements with card--clickable class
   document.querySelectorAll('.card--clickable').forEach(card => {
     // Check if card has a link within it

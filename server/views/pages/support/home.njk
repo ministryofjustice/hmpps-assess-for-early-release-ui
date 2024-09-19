@@ -1,6 +1,7 @@
 {% extends "layout.njk" %}
 {% from "../../partials/card.njk" import card %}
 
+{% set bodyAttributes = { "data-page": "support-home" } %}
 {% set pageTitle = applicationName + " - Support Home" %}
 {% set backLinkHref = "/" %}
 
@@ -10,8 +11,4 @@
             <h1 class="govuk-heading-l">Assess For Early Release support</h1>
         </div>
     </div>
-{% endblock %}
-
-{% block pageScripts %}
-    <script src="/assets/js/card.js"></script>
 {% endblock %}
