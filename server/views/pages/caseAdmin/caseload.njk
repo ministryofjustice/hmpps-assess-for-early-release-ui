@@ -31,9 +31,9 @@
         {
             attributes: {
                 id: 'hdced-' + loop.index,
-                "data-sort-value": offender.hdced
+                "data-sort-value": offender.hdced | toMillis
             },
-            html: offender.hdced
+            html: offender.hdced | formatDate('dd MMM yyyy')
         },
         {
             attributes: {

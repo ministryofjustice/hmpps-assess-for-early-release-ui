@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
-import { differenceInDays } from 'date-fns'
 import CaseAdminCaseloadService from '../../services/caseAdminCaseloadService'
-import { convertToTitleCase } from '../../utils/utils'
+import paths from '../paths'
 
 export default class CaseloadRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -14,15 +13,13 @@ export default class CaseloadRoutes {
 
     const caseload = offenderSummaryList.map(offender => {
       return {
-        name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
-        createLink: this.findCreateLinkToDisplay(offender.prisonNumber),
+        createLink: paths.prison.assessment.home(offender),
+        name: offender.name,
         prisonNumber: offender.prisonNumber,
         hdced: offender.hdced,
-        remainingDays: differenceInDays(offender.hdced, new Date()),
+        remainingDays: offender.remainingDays,
       }
     })
     res.render('pages/caseAdmin/caseload', { caseload })
   }
-
-  findCreateLinkToDisplay = (prisonerNumber: string): string => `/prison/assessment/${prisonerNumber}`
 }

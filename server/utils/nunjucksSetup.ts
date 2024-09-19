@@ -4,7 +4,7 @@ import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { Params, Path } from 'static-path'
-import { initialiseName, toIsoDate } from './utils'
+import { formatDate, initialiseName, toIsoDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
@@ -63,6 +63,9 @@ export function registerNunjucks(app?: express.Express): Environment {
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
   njkEnv.addFilter('toIsoDate', toIsoDate)
+  njkEnv.addFilter('formatDate', formatDate)
+  njkEnv.addFilter('toMillis', (date: Date) => (date ? date.getTime() : 0))
+
   njkEnv.addFilter(
     'dumpJson',
     (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),

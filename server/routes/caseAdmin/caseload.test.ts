@@ -1,10 +1,10 @@
-import { createOffenderSummary, caseAdminCaseload } from '../../data/__testutils/testObjects'
+import { createCase } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import createMockCaseAdminCaseloadService from '../../services/__testutils/mock'
+import { parseIsoDate } from '../../utils/utils'
 
-const offenderSummaryList = [createOffenderSummary({})]
-const caseAdminCaseloadList = [caseAdminCaseload({})]
+const offenderSummaryList = [createCase({})]
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
@@ -26,6 +26,16 @@ describe('GET', () => {
   it('should render list of licences for approval', async () => {
     await caseloadRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
-    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', { caseload: caseAdminCaseloadList })
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
+      caseload: [
+        {
+          createLink: '/prison/assessment/A1234AB',
+          hdced: parseIsoDate('2022-01-08'),
+          name: 'Jim Smith',
+          prisonNumber: 'A1234AB',
+          remainingDays: 1,
+        },
+      ],
+    })
   })
 })

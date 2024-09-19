@@ -35,4 +35,8 @@ const toIsoDate = (date: Date) => {
   return date ? format(date, 'yyyy-MM-dd') : null
 }
 
-export { convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate }
+const formatDate = (date: Date, pattern: string, defaultValue: string = null) => {
+  return date ? format(date, pattern) : defaultValue
+}
+
+export { convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate }

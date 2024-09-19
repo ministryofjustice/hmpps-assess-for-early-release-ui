@@ -1,8 +1,9 @@
 import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
-import { AssessmentSummary, OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { _AssessmentSummary, _OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessmentSummary, createOffenderSummary, createInitialChecks } from './__testutils/testObjects'
+import { toIsoDate } from '../utils/utils'
 
 describe('feComponentsClient', () => {
   let fakeComponentsApi: nock.Scope
@@ -24,18 +25,17 @@ describe('feComponentsClient', () => {
 
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
-      const response: OffenderSummary[] = offenderSummaryList
-      const request: OffenderSummary[] = offenderSummaryList.map(c => {
-        return { ...c, hdced: '2022-08-01' }
+      const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
+        return { ...c, hdced: toIsoDate(c.hdced) }
       })
 
       fakeComponentsApi
         .get(`/prison/${prisonCode}/case-admin/caseload`)
         .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200, request)
+        .reply(200, apiResponse)
 
       const output = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
-      expect(output).toEqual(response)
+      expect(output).toEqual(offenderSummaryList)
     })
   })
 
@@ -44,30 +44,36 @@ describe('feComponentsClient', () => {
 
     it('should return data from api', async () => {
       const { prisonNumber } = assessmentSummary
-      const response: AssessmentSummary = assessmentSummary
-      const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: '2024-10-10' }
+      const apiResponse: _AssessmentSummary = {
+        ...assessmentSummary,
+        hdced: toIsoDate(assessmentSummary.hdced),
+        crd: toIsoDate(assessmentSummary.crd),
+      }
 
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment`)
         .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200, request)
+        .reply(200, apiResponse)
 
       const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
-      expect(output).toEqual(response)
+      expect(output).toEqual(assessmentSummary)
     })
 
     it('should return crd as not found if crd is empty', async () => {
       const { prisonNumber } = assessmentSummary
-      const response: AssessmentSummary = { ...assessmentSummary, crd: null }
-      const request: AssessmentSummary = { ...assessmentSummary, hdced: '2024-10-10', crd: null }
+      const apiResponse: _AssessmentSummary = {
+        ...assessmentSummary,
+        hdced: toIsoDate(assessmentSummary.hdced),
+        crd: null,
+      }
 
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment`)
         .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200, request)
+        .reply(200, apiResponse)
 
       const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
-      expect(output).toEqual({ ...response, crd: 'not found' })
+      expect(output).toEqual({ ...assessmentSummary, crd: null })
     })
   })
 
@@ -76,10 +82,19 @@ describe('feComponentsClient', () => {
     const { prisonNumber } = initialChecks.assessmentSummary
 
     it('should return data from api', async () => {
+      const apiResponse = {
+        ...initialChecks,
+        assessmentSummary: {
+          ...initialChecks.assessmentSummary,
+          hdced: toIsoDate(initialChecks.assessmentSummary.hdced),
+          crd: toIsoDate(initialChecks.assessmentSummary.crd),
+        },
+      }
+
       fakeComponentsApi
         .get(`/offender/${prisonNumber}/current-assessment/initial-checks`)
         .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200, initialChecks)
+        .reply(200, apiResponse)
 
       const output = await assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
       expect(output).toEqual(initialChecks)
