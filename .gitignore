@@ -122,10 +122,12 @@ dist/
 test_results/
 integration_tests/videos/
 integration_tests/screenshots/
-*/*.iml
+**/*.iml
 **/Chart.lock
 **/.DS_Store
 test-results/
 playwright-report/
 /blob-report/
 /playwright/.cache/
+
+

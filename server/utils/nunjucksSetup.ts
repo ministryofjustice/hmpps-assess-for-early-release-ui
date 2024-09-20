@@ -9,6 +9,7 @@ import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
 import paths from '../routes/paths'
+import { FieldValidationError } from '../@types/FieldValidationError'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -60,9 +61,25 @@ export function registerNunjucks(app?: express.Express): Environment {
     },
   )
 
+  // eslint-disable-next-line default-param-last
+  njkEnv.addFilter('findError', (array: FieldValidationError[] = [], formFieldId: string) => {
+    const item = array.find(error => error.field === formFieldId)
+    if (item) {
+      return {
+        text: item.message,
+      }
+    }
+    return null
+  })
+
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
   njkEnv.addFilter('toIsoDate', toIsoDate)
+  njkEnv.addFilter(
+    'dumpJson',
+    (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),
+  )
+
   njkEnv.addFilter(
     'dumpJson',
     (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),

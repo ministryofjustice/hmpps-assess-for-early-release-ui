@@ -1,0 +1,8 @@
+enum OptOutReasonType {
+  NOWHERE_TO_STAY = 'NOWHERE_TO_STAY',
+  DOES_NOT_WANT_TO_BE_TAGGED = 'DOES_NOT_WANT_TO_BE_TAGGED',
+  NO_REASON_GIVEN = 'NO_REASON_GIVEN',
+  OTHER = 'OTHER',
+}
+
+export default OptOutReasonType

@@ -1,0 +1,65 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+
+{% set pageTitle = applicationName + " - Opt-out check" %}
+{% set backLinkHref = "/" %}¡
+
+{% block content %}
+    <div class="govuk-width-container">
+        <div class="govuk-grid-column-two-thirds">
+            {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment.name) }}
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                Enter curfew address or CAS area
+            </h1>
+            <p class="govuk-body">
+                Download the <a href="/case-overview#forms?" class="govuk-link govuk-link--no-visited-state">address form</a> for this person to record where they could live.
+            </p>
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {% if hasError %}
+                    {% set errorMessage = 'Select a value' %}
+                {% endif %}
+                {{ govukRadios({
+                    idPrefix: "optOutRadio",
+                    name: "considerForHdc",
+                    fieldset: {
+                        attributes: {
+                            id: 'answer'
+                        },
+                        legend: {
+                            text: "Does this person want to be considered for HDC?",
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+                    errorMessage: {
+                        text: errorMessage
+                    },
+                    items: [
+                        {
+                            value: "yes",
+                            text: "Yes – enter curfew address or CAS area",
+                            checked: false
+                        },
+                        {
+                            value: "no",
+                            text: "No, they want to opt out",
+                            checked: false,
+                            attributes: {
+                                "data-qa": "theyWantToOptOutRadio"
+                            }
+                        }
+                    ]
+                }) }}
+
+                {{ govukButton({
+                    text: "Continue",
+                    type: "submit",
+                    attributes: { 'data-qa': 'continue' }
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

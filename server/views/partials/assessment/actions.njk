@@ -1,6 +1,14 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{%  macro actions(params) %}
+{%  macro actions(optOutLink) %}
+    {% set actions = [
+        {
+            key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optInOutAction' href=" + optOutLink + ">Opt in/out</a>" },
+            value: { html: '' }
+        }
+    ]
+    %}
+
     {{ govukSummaryList({
         attributes: { id: 'actions' },
         card: {
@@ -8,6 +16,6 @@
             text: "Actions"
             }
         },
-        rows: []
+        rows: actions
     }) }}
 {% endmacro %}
