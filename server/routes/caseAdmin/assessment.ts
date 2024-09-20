@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
+import { path } from 'static-path'
 import { CaseAdminCaseloadService } from '../../services'
+import { convertToTitleCase } from '../../utils/utils'
 
 export default class AssessmentRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -9,6 +11,15 @@ export default class AssessmentRoutes {
       req?.middleware?.clientToken,
       req.params.prisonNumber,
     )
-    res.render('pages/caseAdmin/assessment', { assessmentSummary })
+    const optOutPath = path('/prison/assessment/:prisonNumber/opt-out-check')
+
+    res.render('pages/caseAdmin/assessment', {
+      assessmentSummary: {
+        ...assessmentSummary,
+        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
+      },
+      optedOutOfHdc: req.flash('optedOutOfHdc')?.[0],
+      optOutLink: optOutPath({ prisonNumber: assessmentSummary.prisonNumber }),
+    })
   }
 }

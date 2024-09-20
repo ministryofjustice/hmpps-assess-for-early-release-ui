@@ -36,6 +36,7 @@ const caseAdminCaseload = ({
 const createAssessmentSummary = ({
   forename = 'Jim',
   surname = 'Smith',
+  dateOfBirth = '1981-10-19',
   prisonNumber = 'A1234AB',
   hdced = '10 Oct 2024',
   crd = '10 Oct 2024',
@@ -45,6 +46,7 @@ const createAssessmentSummary = ({
 } = {}): AssessmentSummary => ({
   forename,
   surname,
+  dateOfBirth,
   prisonNumber,
   hdced,
   crd,
@@ -57,6 +59,7 @@ const createInitialChecks = ({
   forename = 'Jim',
   surname = 'Smith',
   prisonNumber = 'A1234AB',
+  dateOfBirth = '1981-10-19',
   hdced = '10 Oct 2024',
   crd = '10 Oct 2024',
   location = 'Prison',
@@ -66,6 +69,7 @@ const createInitialChecks = ({
   assessmentSummary: {
     forename,
     surname,
+    dateOfBirth,
     prisonNumber,
     hdced,
     crd,

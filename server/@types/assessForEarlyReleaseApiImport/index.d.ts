@@ -262,6 +262,11 @@ export interface components {
        */
       surname?: string
       /**
+       * Format: date
+       * @description The offender's date of birth
+       */
+      dateOfBirth: string
+      /**
        * @description The offender's prison number
        * @example A1234AA
        */
@@ -315,14 +320,19 @@ export interface components {
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      state: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
       /**
        * @description The answer provided by the user
-       * @example false
+       * @example Yes
        */
-      answer?: boolean
+      answer?: Record<string, never>
     }
-    /** @description The initial checks for a specific assessment */
+    /** @description The initial checks for a specific assessment:
+     *       * eligibility status: any ineligible: ELIGIBLE, INELIGIBLE, IN_PROGRESS, NOT_STARTED
+     *       * suitability status: any unsuitable: SUITABLE, UNSUITABLE, IN_PROGRESS, NOT_STARTED
+     *       * complete: all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE
+     *       * overall: eligibility status = ELIGIBLE and suitability status = SUITABLE
+     *      */
     InitialChecks: {
       assessmentSummary: components['schemas']['AssessmentSummary']
       /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
@@ -366,12 +376,12 @@ export interface components {
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      state: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
       /**
        * @description The answer provided by the user
-       * @example true
+       * @example Yes
        */
-      answer?: boolean
+      answer?: Record<string, never>
     }
   }
   responses: never
