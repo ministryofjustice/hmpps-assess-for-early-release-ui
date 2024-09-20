@@ -46,6 +46,7 @@ describe('assessForEarlyReleaseApiClient', () => {
       const { prisonNumber } = assessmentSummary
       const apiResponse: _AssessmentSummary = {
         ...assessmentSummary,
+        dateOfBirth: toIsoDate(assessmentSummary.dateOfBirth),
         hdced: toIsoDate(assessmentSummary.hdced),
         crd: toIsoDate(assessmentSummary.crd),
       }
@@ -63,6 +64,7 @@ describe('assessForEarlyReleaseApiClient', () => {
       const { prisonNumber } = assessmentSummary
       const apiResponse: _AssessmentSummary = {
         ...assessmentSummary,
+        dateOfBirth: toIsoDate(assessmentSummary.dateOfBirth),
         hdced: toIsoDate(assessmentSummary.hdced),
         crd: null,
       }
@@ -86,6 +88,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         ...initialChecks,
         assessmentSummary: {
           ...initialChecks.assessmentSummary,
+          dateOfBirth: toIsoDate(initialChecks.assessmentSummary.dateOfBirth),
           hdced: toIsoDate(initialChecks.assessmentSummary.hdced),
           crd: toIsoDate(initialChecks.assessmentSummary.crd),
         },

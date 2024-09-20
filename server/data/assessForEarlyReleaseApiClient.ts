@@ -37,6 +37,7 @@ export default class AssessForEarlyReleaseApiClient {
     })
     return {
       ...assessmentSummary,
+      dateOfBirth: parseIsoDate(assessmentSummary.dateOfBirth),
       hdced: parseIsoDate(assessmentSummary.hdced),
       crd: parseIsoDate(assessmentSummary.crd),
     }
@@ -50,6 +51,7 @@ export default class AssessForEarlyReleaseApiClient {
       ...initialChecks,
       assessmentSummary: {
         ...initialChecks.assessmentSummary,
+        dateOfBirth: parseIsoDate(initialChecks.assessmentSummary.dateOfBirth),
         hdced: parseIsoDate(initialChecks.assessmentSummary.hdced),
         crd: parseIsoDate(initialChecks.assessmentSummary.crd),
       },
