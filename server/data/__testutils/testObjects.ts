@@ -37,6 +37,7 @@ const createOffenderSummary = ({
 const createAssessmentSummary = ({
   forename = 'Jim',
   surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-10-08'),
   crd = parseIsoDate('2022-01-08'),
@@ -46,6 +47,7 @@ const createAssessmentSummary = ({
 } = {}): AssessmentSummary => ({
   forename,
   surname,
+  dateOfBirth,
   prisonNumber,
   hdced,
   crd,
@@ -57,6 +59,7 @@ const createAssessmentSummary = ({
 const createInitialChecks = ({
   forename = 'Jim',
   surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
   crd = parseIsoDate('2022-08-10'),
@@ -67,6 +70,7 @@ const createInitialChecks = ({
   assessmentSummary: {
     forename,
     surname,
+    dateOfBirth,
     prisonNumber,
     hdced,
     crd,

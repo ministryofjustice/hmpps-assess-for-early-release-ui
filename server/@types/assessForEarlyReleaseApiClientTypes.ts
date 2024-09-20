@@ -8,7 +8,8 @@ export type _OffenderSummary = components['schemas']['OffenderSummary']
 export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced'>
 
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
-export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'hdced' | 'crd'>
+export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
 
 export type _InitialChecks = components['schemas']['InitialChecks']
-export type InitialChecks = ParsingDates<_InitialChecks, 'hdced' | 'crd'>
+export type InitialChecks = ParsingDates<_InitialChecks, 'dateOfBirth' | 'hdced' | 'crd'>
+export type OptOutRequest = components['schemas']['OptOutRequest']

@@ -96,5 +96,3 @@ test.describe('SignIn', () => {
     await expect(page.getByTestId('header-user-name')).toHaveText('B. Brown')
   })
 })
-
-export default getSignInUrl

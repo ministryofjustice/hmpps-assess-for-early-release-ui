@@ -1,11 +1,10 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {%  macro personalDetails(params) %}
-    {% set prisonerName =  [params.forename, params.surname] | join(' ') %}
     {% set personalDetails = [
             {
                 key: { text: "Name" },
-                value: { text: prisonerName }
+                value: { text: params.name }
             },
             {
                 key: { text: "Prison Number" },

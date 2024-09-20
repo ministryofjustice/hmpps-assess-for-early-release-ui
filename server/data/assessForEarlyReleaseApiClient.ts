@@ -5,6 +5,7 @@ import type {
   InitialChecks,
   _OffenderSummary,
   OffenderSummary,
+  OptOutRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -53,5 +54,9 @@ export default class AssessForEarlyReleaseApiClient {
         crd: parseIsoDate(initialChecks.assessmentSummary.crd),
       },
     }
+  }
+
+  async optOut(prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
+    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
   }
 }
