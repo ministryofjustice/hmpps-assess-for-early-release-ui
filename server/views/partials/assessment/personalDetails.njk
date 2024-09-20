@@ -12,11 +12,11 @@
             },
             {
                 key: { text: "HDCED" },
-                value: { html: params.hdced }
+                value: { html: params.hdced | formatDate('dd MMM yyyy') }
             },
             {
                 key: { text: "CRD" },
-                value: { html: params.crd }
+                value: { html: params.crd | formatDate('dd MMM yyyy', 'not found')}
             },
             {
                 key: { text: "Location" },

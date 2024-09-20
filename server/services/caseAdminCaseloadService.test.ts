@@ -20,13 +20,20 @@ describe('COM Caseload Service', () => {
 
   describe('Caseload', () => {
     it('get caseadmin caseload', async () => {
-      const offenderSummaryList = [createOffenderSummary({})]
-      assessForEarlyReleaseApiClient.getCaseAdminCaseload.mockResolvedValue(offenderSummaryList)
+      const aCase = createOffenderSummary({})
+      assessForEarlyReleaseApiClient.getCaseAdminCaseload.mockResolvedValue([aCase])
 
       const result = await caseAdminCaseloadService.getCaseAdminCaseload(token, 'MDI')
 
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
-      expect(result).toEqual(offenderSummaryList)
+      expect(result).toEqual([
+        {
+          name: 'Jim Smith',
+          remainingDays: 3,
+          prisonNumber: 'A1234AB',
+          hdced: aCase.hdced,
+        },
+      ])
     })
   })
 
