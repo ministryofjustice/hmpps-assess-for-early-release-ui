@@ -5,7 +5,6 @@ import { getSignInUrl } from './mockApis/auth'
 import { login, stubFeComponents } from './testUtils'
 import AssessmentStatus from '../server/enumeration/assessmentStatus'
 
-// TODO : move paths to common file
 test.describe('Opt out', () => {
   test.afterEach(async () => {
     await resetStubs()
