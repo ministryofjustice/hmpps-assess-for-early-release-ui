@@ -47,7 +47,7 @@ const signIn = () =>
         'Content-Type': 'text/html',
         Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
-      body: '<html><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
+      body: '<html lang="en"><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
     },
   })
 
@@ -62,7 +62,7 @@ const signOut = () =>
       headers: {
         'Content-Type': 'text/html',
       },
-      body: '<html><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
+      body: '<html lang="en"><body>Dummy Sign in page<h1>AFER Sign in</h1></body></html>',
     },
   })
 

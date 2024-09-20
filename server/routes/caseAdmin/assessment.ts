@@ -18,7 +18,6 @@ export default class AssessmentRoutes {
         ...assessmentSummary,
         name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
       },
-      optedOutOfHdc: req.flash('optedOutOfHdc')?.[0],
       optOutLink: optOutPath({ prisonNumber: assessmentSummary.prisonNumber }),
     })
   }

@@ -48,7 +48,6 @@ export default class OptOutRoutes {
     }
 
     await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, optOutReason, otherReason)
-    req.flash('optedOutOfHdc', `${name} has opted out of HDC`)
     const assessmentPath = path('/prison/assessment/:prisonNumber')
     return res.redirect(assessmentPath({ prisonNumber: req.params.prisonNumber }))
   }

@@ -1,6 +1,7 @@
 import { stubFor } from './wiremock'
+import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
-const stubGetAssessmentSummary = (prisonNumber: string) =>
+const stubGetAssessmentSummary = (prisonNumber: string, status: AssessmentStatus = AssessmentStatus.NOT_STARTED) =>
   stubFor({
     request: {
       method: 'GET',
@@ -19,7 +20,7 @@ const stubGetAssessmentSummary = (prisonNumber: string) =>
         hdced: '2025-08-12',
         crd: '2025-11-29',
         location: 'BMI',
-        status: 'NOT_STARTED',
+        status,
         policyVersion: '1.0',
       },
     },
