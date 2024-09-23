@@ -1,9 +1,9 @@
-import { path } from 'static-path'
 import { createAssessmentSummary } from '../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import createMockCaseAdminCaseloadService from '../../services/__testutils/mock'
 import AssessmentRoutes from './assessment'
 import { convertToTitleCase } from '../../utils/utils'
+import paths from '../paths'
 
 const assessmentSummary = createAssessmentSummary({})
 
@@ -36,7 +36,7 @@ describe('GET', () => {
         ...assessmentSummary,
         name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
       },
-      optOutLink: path('/prison/assessment/:prisonNumber/opt-out-check')({
+      optOutLink: paths.prison.assessment.optOutCheckPath({
         prisonNumber: assessmentSummary.prisonNumber,
       }),
     })

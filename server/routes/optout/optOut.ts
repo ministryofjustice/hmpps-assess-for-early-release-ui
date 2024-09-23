@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { path } from 'static-path'
 import { CaseAdminCaseloadService } from '../../services'
 import { convertToTitleCase } from '../../utils/utils'
 import OptOutReasonType from '../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../@types/FieldValidationError'
 import OptOutService from '../../services/optOutService'
+import paths from '../paths'
 
 export default class OptOutRoutes {
   constructor(
@@ -48,9 +48,7 @@ export default class OptOutRoutes {
     }
 
     await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, optOutReason, otherReason)
-    req.flash('optedOutOfHdc', `${name} has opted out of HDC`)
-    const assessmentPath = path('/prison/assessment/:prisonNumber')
-    return res.redirect(assessmentPath({ prisonNumber: req.params.prisonNumber }))
+    return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
   }
 
   validateForm(optOutReason: string, otherReason: string): FieldValidationError[] {
