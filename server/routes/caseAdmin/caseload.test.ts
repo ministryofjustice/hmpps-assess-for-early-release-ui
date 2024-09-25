@@ -1,7 +1,7 @@
 import { createCase } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import createMockCaseAdminCaseloadService from '../../services/__testutils/mock'
+import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import { parseIsoDate } from '../../utils/utils'
 
 const offenderSummaryList = [createCase({})]

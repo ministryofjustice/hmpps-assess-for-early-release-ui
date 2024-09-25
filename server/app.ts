@@ -24,6 +24,7 @@ import getFrontendComponents from './middleware/getFrontendComponents'
 import setUpEnvironmentName from './middleware/setUpEnvironmentName'
 import phaseNameSetup from './middleware/phaseNameSetup'
 import config from './config'
+import setUpValidationMiddleware from './middleware/setUpValidationMiddleware'
 
 export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
   const app = express()
@@ -48,6 +49,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   app.use(populateClientToken(services.hmppsAuthClient))
   app.get('*', getFrontendComponents(services.hmppsComponentsService))
 
+  app.use(setUpValidationMiddleware())
   app.use(routes(services))
 
   app.use((req, res, next) => next(createError(404, 'Not found')))

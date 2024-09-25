@@ -24,6 +24,7 @@ export declare global {
         clientToken?: string
       }
       logout(done: (err: unknown) => void): void
+      flash(type: string, message: unknown): unknown
     }
 
     interface Locals {

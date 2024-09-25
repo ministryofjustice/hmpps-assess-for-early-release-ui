@@ -1,0 +1,41 @@
+{% extends "layout.njk" %}
+{% from "partials/assessment/personalDetails.njk" import personalDetails %}
+{% from "partials/initialChecks/question.njk" import question %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Assess Offender" %}
+{% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
+
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+        {% if validationErrors.length > 0 %}
+            {{ govukErrorSummary({
+                titleText: "There is a problem",
+                errorList: validationErrors | errorSummaryList 
+            }) }}
+        {% endif %}   
+        <div class="govuk-grid-column-full">
+            {{ personalDetails(assessmentSummary) }}
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {% for checkQuestion in check.questions %}
+                    {{ question(checkQuestion, validationErrors, submittedForm) }}
+                {% endfor %}
+
+                {{ govukButton({
+                    text: "Continue",
+                    preventDoubleClick: true,
+                    classes: 'govuk-!-margin-right-5'
+                }) }}
+                {{ govukButton({
+                    text: "Cancel",
+                    href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
+                    classes: "govuk-button--secondary"
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

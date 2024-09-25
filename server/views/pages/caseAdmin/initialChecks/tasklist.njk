@@ -24,7 +24,11 @@
                 title: {
                 text: check.taskName
                 },
-                href: "/" + check.code,
+                href: paths.prison.assessment.initialChecks.check | toPath({ 
+                    prisonNumber:assessmentSummary.prisonNumber, 
+                    type: 'eligibility',
+                    checkCode: check.code 
+                }),
                 status: {
                 tag: {
                     text: check.status | replace("_", " ") | capitalize,
@@ -48,7 +52,11 @@
                 title: {
                 text: check.taskName
                 },
-                href: "/" + check.code,
+                href: paths.prison.assessment.initialChecks.check | toPath({ 
+                    prisonNumber:assessmentSummary.prisonNumber, 
+                    type: 'suitability',
+                    checkCode: check.code 
+                }),
                 status: {
                 tag: {
                     text: check.status | replace("_", " ") | capitalize,

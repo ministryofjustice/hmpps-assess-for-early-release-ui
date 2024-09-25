@@ -12,4 +12,8 @@ export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' |
 
 export type _InitialChecks = components['schemas']['InitialChecks']
 export type InitialChecks = ParsingDates<_InitialChecks, 'dateOfBirth' | 'hdced' | 'crd'>
+export type EligibilityCheck = InitialChecks['eligibility'][0]
+export type SuitabilityCheck = InitialChecks['suitability'][0]
+export type Check = EligibilityCheck | SuitabilityCheck
+
 export type OptOutRequest = components['schemas']['OptOutRequest']

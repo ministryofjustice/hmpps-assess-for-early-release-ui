@@ -1,8 +1,10 @@
 import { addDays, startOfDay } from 'date-fns'
 import type {
   AssessmentSummary,
+  EligibilityCheck,
   InitialChecks,
   OffenderSummary,
+  SuitabilityCheck,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -66,6 +68,8 @@ const createInitialChecks = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  eligibility = [] as EligibilityCheck[],
+  suitability = [] as SuitabilityCheck[],
 } = {}): InitialChecks => ({
   assessmentSummary: {
     forename,
@@ -82,8 +86,47 @@ const createInitialChecks = ({
   complete: false,
   eligibilityStatus: 'NOT_STARTED',
   suitabilityStatus: 'NOT_STARTED',
-  eligibility: [],
-  suitability: [],
+  eligibility,
+  suitability,
 })
 
-export { createCase, createOffenderSummary, createInitialChecks, createAssessmentSummary }
+const createQuestion = ({ name = 'question1', text = 'answer the question?', answer = null, hint = null }) => ({
+  name,
+  text,
+  answer,
+  hint,
+})
+
+const createEligbilityCheck = ({
+  code = 'code-1',
+  taskName = 'task-1',
+  status = 'NOT_STARTED' as EligibilityCheck['status'],
+  questions = [createQuestion({})],
+}): EligibilityCheck => ({
+  code,
+  taskName,
+  status,
+  questions,
+})
+
+const createSuitabilityCheck = ({
+  code = 'code-1',
+  taskName = 'task-1',
+  status = 'NOT_STARTED' as SuitabilityCheck['status'],
+  questions = [createQuestion({})],
+}): SuitabilityCheck => ({
+  code,
+  taskName,
+  status,
+  questions,
+})
+
+export {
+  createCase,
+  createOffenderSummary,
+  createInitialChecks,
+  createAssessmentSummary,
+  createQuestion,
+  createEligbilityCheck,
+  createSuitabilityCheck,
+}
