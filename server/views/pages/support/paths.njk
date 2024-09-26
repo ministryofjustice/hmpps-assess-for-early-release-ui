@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+{% from "../../partials/card.njk" import card %}
+
+{% set bodyAttributes = { "data-page": "show-paths" } %}
+{% set pageTitle = applicationName + " - Show paths" %}
+{% set backLinkHref = "/" %}
+
+{% macro displaySection(item) %}
+   <ul>
+    {% for name, value in item %}
+        <li class="govuk-!-margin-top-4">
+          <strong class="govuk-!-margin-right-2">{{name}}:</strong>
+          {% if value is string %} 
+            {{value}}
+          {% else %}
+            {{ displaySection(value) }}
+          {% endif %}
+        </li>
+    {% endfor %}
+   </ul> 
+{% endmacro %}
+
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Paths</h1>
+            {% for area, sections in  patterns %}
+              <h2>{{ area | capitalize }}</h2>
+              {{ displaySection(sections) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

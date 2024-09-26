@@ -36,7 +36,7 @@ describe('GET', () => {
         ...assessmentSummary,
         name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
       },
-      optOutLink: paths.prison.assessment.optOutCheckPath({
+      optOutLink: paths.prison.assessment.optOutCheck({
         prisonNumber: assessmentSummary.prisonNumber,
       }),
     })

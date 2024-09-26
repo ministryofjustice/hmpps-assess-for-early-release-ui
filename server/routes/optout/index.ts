@@ -18,12 +18,12 @@ export default function Index({ caseAdminCaseloadService, optOutService }: Servi
     router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const optOutCheckHandler = new OptOutCheckRoutes(caseAdminCaseloadService)
-  get(paths.prison.assessment.optOutCheckPath, optOutCheckHandler.GET)
-  post(paths.prison.assessment.optOutCheckPath, optOutCheckHandler.POST)
+  get(paths.prison.assessment.optOutCheck, optOutCheckHandler.GET)
+  post(paths.prison.assessment.optOutCheck, optOutCheckHandler.POST)
 
   const optOutHandler = new OptOutRoutes(caseAdminCaseloadService, optOutService)
-  get(paths.prison.assessment.optOutPath, optOutHandler.GET)
-  post(paths.prison.assessment.optOutPath, optOutHandler.POST)
+  get(paths.prison.assessment.optOut, optOutHandler.GET)
+  post(paths.prison.assessment.optOut, optOutHandler.POST)
 
   return router
 }
