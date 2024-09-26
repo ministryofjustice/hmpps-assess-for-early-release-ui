@@ -10,8 +10,8 @@
     "build": "node esbuild/esbuild.config.js --build",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
-    "start-feature": "export $(cat feature.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
-    "start-feature:dev": "export $(cat feature.env) && concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
+    "start-feature": "node --env-file=feature.env $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
+    "start-feature:dev": "concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-test-server\"",
     "lint": "eslint . --cache --max-warnings 0",
     "lint-fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc && tsc -p integration_tests",
@@ -101,8 +101,7 @@
     "redis": "^4.6.15",
     "static-path": "^0.0.4",
     "superagent": "^9.0.2",
-    "url-value-parser": "^2.2.0",
-    "uuid": "^10.0.0"
+    "url-value-parser": "^2.2.0"
   },
   "devDependencies": {
     "@golevelup/ts-jest": "^0.5.0",
@@ -131,7 +130,6 @@
     "cheerio": "^1.0.0-rc.12",
     "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
-    "dotenv": "^16.4.5",
     "esbuild": "^0.23.0",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-copy": "^2.1.1",

@@ -1,8 +1,40 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{%- from "moj/components/ticket-panel/macro.njk" import mojTicketPanel -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{%  macro ticket(params) %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.name}}</h2>
+  {{ govukButton({
+    text: params.action,
+    href: params.href,
+    classes: "govuk-!-margin-bottom-1"
+  }) }}
+{% endmacro %}
 
 {%  macro tasks(params) %}
     {% set tasksHtml %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Tasks</h1>
+
+        {{ mojTicketPanel({
+            attributes: {
+                'aria-label': 'Sub navigation 1'
+            },
+            items: [{ 
+                html: ticket({ 
+                    name: 'Assess eligibility and suitability',
+                    href: paths.prison.assessment.initialChecks.tasklist | toPath(params),
+                    action: 'Start' 
+                }),  
+                attributes: {
+                'aria-label': 'Assess eligibility and suitability'
+                },
+                classes: 'moj-ticket-panel__content--blue'
+            }]
+        }) }}
+      </div>
+    </div>
     {% endset -%}
 
     {{ govukTabs({

@@ -9,7 +9,9 @@
 
 {% block content %}
     <div class="govuk-width-container">
+      <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
             {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment.name) }}
             <h1 class="govuk-heading-l govuk-!-margin-top-6">
                 Enter curfew address or CAS area
@@ -19,11 +21,8 @@
             </p>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-                {% if hasError %}
-                    {% set errorMessage = 'Select a value' %}
-                {% endif %}
                 {{ govukRadios({
-                    idPrefix: "optOutRadio",
+                    idPrefix: "considerForHdc",
                     name: "considerForHdc",
                     fieldset: {
                         attributes: {
@@ -34,19 +33,15 @@
                             classes: "govuk-fieldset__legend--m"
                         }
                     },
-                    errorMessage: {
-                        text: errorMessage
-                    },
+                    errorMessage:  validationErrors | findError('considerForHdc'),
                     items: [
                         {
                             value: "yes",
-                            text: "Yes – enter curfew address or CAS area",
-                            checked: false
+                            text: "Yes – enter curfew address or CAS area"
                         },
                         {
                             value: "no",
                             text: "No, they want to opt out",
-                            checked: false,
                             attributes: {
                                 "data-qa": "theyWantToOptOutRadio"
                             }
@@ -61,5 +56,6 @@
                 }) }}
             </form>
         </div>
+      </div>  
     </div>
 {% endblock %}

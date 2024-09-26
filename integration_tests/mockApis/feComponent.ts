@@ -82,9 +82,12 @@ const stubFeComponentsPing = () =>
   })
 
 export default {
-  stubFeComponents,
-  stubFeComponentsCss,
-  stubFeComponentsJs,
   stubFeComponentsFail,
   stubFeComponentsPing,
+
+  stubFeComponentsSuccess: async () => {
+    await stubFeComponents()
+    await stubFeComponentsJs()
+    await stubFeComponentsCss()
+  },
 }

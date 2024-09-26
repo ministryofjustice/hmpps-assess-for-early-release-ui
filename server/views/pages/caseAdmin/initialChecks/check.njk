@@ -9,12 +9,7 @@
 
 {% block content %}
     <div class="govuk-grid-row govuk-body">
-        {% if validationErrors.length > 0 %}
-            {{ govukErrorSummary({
-                titleText: "There is a problem",
-                errorList: validationErrors | errorSummaryList 
-            }) }}
-        {% endif %}   
+        {% include 'partials/errorSummary.njk' %}
         <div class="govuk-grid-column-full">
             {{ personalDetails(assessmentSummary) }}
         </div>

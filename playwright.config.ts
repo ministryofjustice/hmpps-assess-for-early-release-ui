@@ -2,13 +2,6 @@ import { defineConfig, devices } from '@playwright/test'
 import { minutesToMilliseconds, secondsToMilliseconds } from 'date-fns'
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv'
-// dotenv.config({ path: path.resolve(__dirname, '.env') })
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -20,6 +13,8 @@ export default defineConfig({
   globalTimeout: minutesToMilliseconds(60),
   /* Run tests in files in parallel */
   fullyParallel: false,
+  /* Ensure tests run consecutively due to inability to share wiremock instance */
+  workers: 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
