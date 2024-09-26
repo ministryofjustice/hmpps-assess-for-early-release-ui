@@ -17,7 +17,7 @@ export default class AssessmentRoutes {
         ...assessmentSummary,
         name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
       },
-      optOutLink: paths.prison.assessment.optOutCheckPath({ prisonNumber: assessmentSummary.prisonNumber }),
+      optOutLink: paths.prison.assessment.optOutCheck({ prisonNumber: assessmentSummary.prisonNumber }),
     })
   }
 }

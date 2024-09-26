@@ -2,6 +2,7 @@ import { path } from 'static-path'
 
 const supportHome = path('/support')
 const prison = path('/prison')
+const showPaths = supportHome.path('/paths')
 
 const caseload = prison.path('caseload')
 const assessmentHome = prison.path('assessment/:prisonNumber')
@@ -9,12 +10,13 @@ const assessmentHome = prison.path('assessment/:prisonNumber')
 const tasklist = assessmentHome.path('initial-checks')
 const check = tasklist.path(':type/:checkCode')
 
-const optOutCheckPath = assessmentHome.path('opt-out-check')
-const optOutPath = assessmentHome.path('opt-out')
+const optOutCheck = assessmentHome.path('opt-out-check')
+const optOut = assessmentHome.path('opt-out')
 
 const paths = {
   support: {
     home: supportHome,
+    showPaths,
   },
   prison: {
     caseload,
@@ -24,8 +26,8 @@ const paths = {
         tasklist,
         check,
       },
-      optOutCheckPath,
-      optOutPath,
+      optOutCheck,
+      optOut,
     },
   },
 }

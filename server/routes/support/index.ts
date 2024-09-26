@@ -3,6 +3,8 @@ import { Path } from 'static-path'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import roleCheckMiddleware from '../../middleware/roleCheckMiddleware'
 import SupportHomeRoutes from './handlers/supportHome'
+import ShowPathRoutes from './handlers/showPaths'
+
 import AuthRole from '../../enumeration/authRole'
 import paths from '../paths'
 
@@ -15,6 +17,9 @@ export default function Index(): Router {
   const supportHomeHandler = new SupportHomeRoutes()
 
   get(paths.support.home, supportHomeHandler.GET)
+
+  const showPathsHandler = new ShowPathRoutes()
+  get(paths.support.showPaths, showPathsHandler.GET)
 
   return router
 }

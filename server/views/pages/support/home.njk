@@ -9,6 +9,15 @@
     <div class="grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">Assess For Early Release support</h1>
+            <div class="govuk-grid-column-one-third card-group__item">
+                {{ card({
+                    "id": "supportCard",
+                    "href": paths.support.showPaths | toPath(),
+                    "clickable": "true",
+                    "heading": "Show paths",
+                    "description": "Show currently implemented paths in the application."
+                }) }}
+            </div>
         </div>
     </div>
 {% endblock %}

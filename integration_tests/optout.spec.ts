@@ -18,7 +18,7 @@ test.describe('Opt out', () => {
 
     await page.goto(paths.prison.assessment.home({ prisonNumber }))
     const optInOutLink = await page.getByTestId('optInOutAction').getAttribute('href')
-    expect(optInOutLink).toEqual(paths.prison.assessment.optOutCheckPath({ prisonNumber }))
+    expect(optInOutLink).toEqual(paths.prison.assessment.optOutCheck({ prisonNumber }))
 
     await page.goto(optInOutLink)
     await page.getByTestId('theyWantToOptOutRadio').click()
