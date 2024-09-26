@@ -1,20 +1,32 @@
+import { Page } from '@playwright/test'
 import tokenVerification from './mockApis/tokenVerification'
 import feComponent from './mockApis/feComponent'
-import { favicon, signIn, signOut, token } from './mockApis/auth'
+import { favicon, getSignInUrl, signIn, signOut, token } from './mockApis/auth'
+import { resetStubs } from './mockApis/wiremock'
 
-export async function login({ authorities }: { authorities: string[] }, active = true) {
+export { resetStubs }
+
+export async function login(
+  page: Page,
+  {
+    authorities,
+    active = true,
+    feComponentsFail = true,
+  }: {
+    authorities: string[]
+    active?: boolean
+    feComponentsFail?: boolean
+  },
+) {
   await Promise.all([
     favicon(),
     signIn(),
     signOut(),
     token({ authorities }),
     tokenVerification.stubVerifyToken(active),
-    feComponent.stubFeComponentsFail(),
+    feComponentsFail ? feComponent.stubFeComponentsFail() : feComponent.stubFeComponentsSuccess(),
   ])
-}
-
-export async function stubFeComponents() {
-  await feComponent.stubFeComponents()
-  await feComponent.stubFeComponentsJs()
-  await feComponent.stubFeComponentsCss()
+  await page.goto('/')
+  const url = await getSignInUrl()
+  await page.goto(url)
 }

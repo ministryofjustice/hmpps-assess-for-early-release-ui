@@ -5,6 +5,7 @@ import OptOutReasonType from '../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../@types/FieldValidationError'
 import OptOutService from '../../services/optOutService'
 import paths from '../paths'
+import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 
 export default class OptOutRoutes {
   constructor(
@@ -27,41 +28,22 @@ export default class OptOutRoutes {
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
+    validateRequest(req, body => {
+      const validationErrors: FieldValidationError[] = []
+
+      if (!body.optOutReason) {
+        validationErrors.push({ field: 'optOutReason', message: 'Select an opt-out reason' })
+      }
+
+      if (body.optOutReason === OptOutReasonType.OTHER && !body.otherReason) {
+        validationErrors.push({ field: 'otherReason', message: 'Enter the reason for opting out' })
+      }
+
+      return validationErrors
+    })
+
     const { optOutReason, otherReason } = req.body
-
-    const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
-      req?.middleware?.clientToken,
-      req.params.prisonNumber,
-    )
-    const name = convertToTitleCase(`${assessment.forename} ${assessment.surname}`.trim())
-    const validationErrors = this.validateForm(optOutReason, otherReason)
-
-    if (validationErrors.length !== 0) {
-      return res.render(`pages/optOut/optOut`, {
-        assessment: {
-          ...assessment,
-          name,
-        },
-        optOutReason,
-        validationErrors,
-      })
-    }
-
     await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, optOutReason, otherReason)
     return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
-  }
-
-  validateForm(optOutReason: string, otherReason: string): FieldValidationError[] {
-    const validationErrors: FieldValidationError[] = []
-
-    if (!optOutReason) {
-      validationErrors.push({ field: 'optOutReason', message: 'Select an opt-out reason' })
-    }
-
-    if (optOutReason === OptOutReasonType.OTHER && !otherReason) {
-      validationErrors.push({ field: 'otherReason', message: 'Enter the reason for opting out' })
-    }
-
-    return validationErrors
   }
 }

@@ -15,7 +15,7 @@ export default function Index({ caseAdminCaseloadService, optOutService }: Servi
     router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const post = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
-    router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.SUPPORT]), asyncMiddleware(handler))
+    router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const optOutCheckHandler = new OptOutCheckRoutes(caseAdminCaseloadService)
   get(paths.prison.assessment.optOutCheckPath, optOutCheckHandler.GET)

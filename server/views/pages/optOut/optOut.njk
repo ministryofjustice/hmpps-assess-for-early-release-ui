@@ -1,6 +1,5 @@
 {% extends "layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "partials/offenderSummary.njk" import offenderSummary %}
@@ -16,6 +15,7 @@
       },
       id: "otherReason",
       name: "otherReason",
+      value: submittedForm.otherReason,
       classes: "govuk-input--width-30",
       errorMessage: validationErrors | findError('otherReason')
     }) }}
@@ -23,14 +23,17 @@
 
 {% block content %}
     <div class="govuk-width-container">
+      <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
             {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment.name) }}
             <div class="govuk-grid-row govuk-!-margin-top-8">
                 <form method="POST">
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
                     {{ govukRadios({
-                        idPrefix: "optOutRadio",
+                        idPrefix: "optOutReason",
                         name: "optOutReason",
+                        value: submittedForm.optOutReason,
                         fieldset: {
                             attributes: {
                                 id: 'answer'
@@ -44,26 +47,22 @@
                         items: [
                             {
                                 value: "NOWHERE_TO_STAY",
-                                text: "They do not have anywhere to stay",
-                                checked: false
+                                text: "They do not have anywhere to stay"
                             },
                             {
                                 value: "DOES_NOT_WANT_TO_BE_TAGGED",
                                 text: "They do not want to be tagged",
-                                checked: false,
                                 attributes: {
                                     "data-qa": "doNotWantToBeTaggedRadio"
                                 }
                             },
                             {
                                 value: "NO_REASON_GIVEN",
-                                text: "They did not give a reason",
-                                checked: false
+                                text: "They did not give a reason"
                             },
                             {
                                 value: "OTHER",
                                 text: "Other reason",
-                                checked: optOutReason === 'OTHER',
                                 conditional: {
                                     html: otherReasonHtml
                                 }
@@ -81,6 +80,7 @@
                     </div>
                 </form>
             </div>
+          </div>  
         </div>
     </div>
 {% endblock %}

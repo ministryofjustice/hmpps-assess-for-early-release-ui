@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../services'
 import { convertToTitleCase } from '../../utils/utils'
+import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 
 export default class OptOutCheckRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -20,20 +21,11 @@ export default class OptOutCheckRoutes {
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
-      req?.middleware?.clientToken,
-      req.params.prisonNumber,
-    )
+    validateRequest(req, body => {
+      return body.considerForHdc ? [] : [{ field: 'considerForHdc', message: 'Select a value' }]
+    })
 
-    const { considerForHdc } = req.body
-    if (!considerForHdc) {
-      return res.render('pages/optOut/optOutCheck', {
-        assessmentSummary,
-        hasError: true,
-      })
-    }
-
-    if (considerForHdc === 'yes') {
+    if (req.body.considerForHdc === 'yes') {
       return res.redirect(`/prison/assessment/${req.params.prisonNumber}/curfew-address`)
     }
 
