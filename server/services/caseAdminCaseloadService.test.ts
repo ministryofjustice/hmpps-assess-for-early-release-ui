@@ -1,6 +1,6 @@
 import { CaseAdminCaseloadService } from '.'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createAssessmentSummary, createOffenderSummary, createInitialChecks } from '../data/__testutils/testObjects'
+import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
@@ -47,21 +47,6 @@ describe('COM Caseload Service', () => {
 
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
       expect(result).toEqual(assessmentSummary)
-    })
-  })
-  describe('Initial checks', () => {
-    const initialChecks = createInitialChecks({})
-
-    it('get initial checks', async () => {
-      assessForEarlyReleaseApiClient.getInitialCheckStatus.mockResolvedValue(initialChecks)
-
-      const result = await caseAdminCaseloadService.getInitialChecks(
-        token,
-        initialChecks.assessmentSummary.prisonNumber,
-      )
-
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
-      expect(result).toEqual(result)
     })
   })
 })

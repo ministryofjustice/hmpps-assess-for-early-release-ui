@@ -11,7 +11,7 @@ describe('nunjucksSetup', () => {
   describe('toPath', () => {
     test('with correct args:', () => {
       const result = renderTemplate(
-        ' {{- paths.prison.assessment.initialChecks | toPath({prisonNumber: "A1224"}) -}} ',
+        ' {{- paths.prison.assessment.initialChecks.tasklist | toPath({prisonNumber: "A1224"}) -}} ',
         {},
       )
       expect(result).toStrictEqual('/prison/assessment/A1224/initial-checks')
@@ -19,7 +19,7 @@ describe('nunjucksSetup', () => {
 
     test('with incorrect args:', () => {
       try {
-        renderTemplate(' {{- paths.prison.assessment.initialChecks | toPath({prisonNUMBER: "A1224"}) -}} ', {})
+        renderTemplate(' {{- paths.prison.assessment.initialChecks.tasklist | toPath({prisonNUMBER: "A1224"}) -}} ', {})
         expect(true).toBe(false)
       } catch (e) {
         expect(e.message).toContain(

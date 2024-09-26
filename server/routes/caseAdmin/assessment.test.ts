@@ -1,6 +1,6 @@
 import { createAssessmentSummary } from '../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import createMockCaseAdminCaseloadService from '../../services/__testutils/mock'
+import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import AssessmentRoutes from './assessment'
 import { convertToTitleCase } from '../../utils/utils'
 import paths from '../paths'

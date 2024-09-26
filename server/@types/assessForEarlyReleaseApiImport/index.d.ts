@@ -198,6 +198,15 @@ export interface components {
        */
       otherDescription?: string
     }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Response object which describes an offender */
     OffenderSummary: {
       /**
@@ -226,15 +235,6 @@ export interface components {
        * @description The offender's home detention curfew eligibility date
        */
       hdced: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     DlqMessage: {
       body: {
@@ -311,28 +311,15 @@ export interface components {
        */
       taskName: string
       /**
-       * @description The question that is posed to the user
-       * @example a question...
-       */
-      question: string
-      /**
        * @description The state of this check
        * @example NOT_STARTED
        * @enum {string}
        */
-      state: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /**
-       * @description The answer provided by the user
-       * @example Yes
-       */
-      answer?: Record<string, never>
+      status: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      /** @description The questions that are posed to the user */
+      questions: components['schemas']['Question'][]
     }
-    /** @description The initial checks for a specific assessment:
-     *       * eligibility status: any ineligible: ELIGIBLE, INELIGIBLE, IN_PROGRESS, NOT_STARTED
-     *       * suitability status: any unsuitable: SUITABLE, UNSUITABLE, IN_PROGRESS, NOT_STARTED
-     *       * complete: all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE
-     *       * overall: eligibility status = ELIGIBLE and suitability status = SUITABLE
-     *      */
+    /** @description The initial checks for a specific assessment */
     InitialChecks: {
       assessmentSummary: components['schemas']['AssessmentSummary']
       /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
@@ -354,6 +341,29 @@ export interface components {
       /** @description details of current suitability checks */
       suitability: components['schemas']['SuitabilityCheckDetails'][]
     }
+    /** @description A question that is asked by the user */
+    Question: {
+      /**
+       * @description The question that is posed to the user
+       * @example a question...
+       */
+      text: string
+      /**
+       * @description The hint html associated with this question
+       * @example <p>Some hint text</p>
+       */
+      hint?: string
+      /**
+       * @description The name that the data will be stored under for this check
+       * @example question1
+       */
+      name?: string
+      /**
+       * @description The answer provided by the user
+       * @example true
+       */
+      answer?: boolean
+    }
     /** @description The initial checks for a specific assessment */
     SuitabilityCheckDetails: {
       /**
@@ -367,21 +377,13 @@ export interface components {
        */
       taskName: string
       /**
-       * @description The question that is posed to the user
-       * @example a question...
-       */
-      question: string
-      /**
        * @description The state of this check
        * @example NOT_STARTED
        * @enum {string}
        */
-      state: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /**
-       * @description The answer provided by the user
-       * @example Yes
-       */
-      answer?: Record<string, never>
+      status: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
+      /** @description The questions that are posed to the user */
+      questions: components['schemas']['Question'][]
     }
   }
   responses: never

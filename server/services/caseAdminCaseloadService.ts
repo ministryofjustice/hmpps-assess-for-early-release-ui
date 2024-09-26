@@ -1,6 +1,6 @@
 import { differenceInDays, startOfDay } from 'date-fns'
-import type { AssessmentSummary, InitialChecks } from '../@types/assessForEarlyReleaseApiClientTypes'
-import { RestClientBuilder } from '../data'
+import type { AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
 
@@ -30,10 +30,5 @@ export default class CaseAdminCaseloadService {
   public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
-  }
-
-  public async getInitialChecks(token: string, prisonNumber: string): Promise<InitialChecks> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
   }
 }

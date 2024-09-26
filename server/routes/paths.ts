@@ -6,7 +6,8 @@ const prison = path('/prison')
 const caseload = prison.path('caseload')
 const assessmentHome = prison.path('assessment/:prisonNumber')
 
-const initialChecks = assessmentHome.path('initial-checks')
+const tasklist = assessmentHome.path('initial-checks')
+const check = tasklist.path(':type/:checkCode')
 
 const optOutCheckPath = assessmentHome.path('opt-out-check')
 const optOutPath = assessmentHome.path('opt-out')
@@ -19,7 +20,10 @@ const paths = {
     caseload,
     assessment: {
       home: assessmentHome,
-      initialChecks,
+      initialChecks: {
+        tasklist,
+        check,
+      },
       optOutCheckPath,
       optOutPath,
     },

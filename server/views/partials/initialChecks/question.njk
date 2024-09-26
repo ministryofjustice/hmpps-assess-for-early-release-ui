@@ -1,0 +1,31 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% macro question(questionOptions, errors, formValues) %}
+  {{ govukRadios({
+    idPrefix: questionOptions.name,
+    name:  questionOptions.name,
+    classes: "govuk-radios--inline",
+    value: formValues[questionOptions.name],
+    fieldset: {
+      legend: {
+        text: questionOptions.text,
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+      }
+    },
+    hint: {
+      html: questionOptions.hint
+    },
+    items: [
+      {
+        value: "true",
+        text: "Yes"
+      },
+      {
+        value: "false",
+        text: "No"
+      }
+    ],
+    errorMessage: errors | findError(questionOptions.name)
+  }) }}
+{% endmacro %}
