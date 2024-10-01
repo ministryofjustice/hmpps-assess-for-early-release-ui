@@ -1,4 +1,8 @@
-import { createAssessmentSummary, createEligbilityCheck, createQuestion } from '../../../data/__testutils/testObjects'
+import {
+  createAssessmentSummary,
+  createEligibilityCriterionProgress,
+  createQuestion,
+} from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockEligibilityAndSuitabilityService } from '../../../services/__testutils/mock'
 import CheckRoutes from './check'
@@ -21,12 +25,12 @@ afterEach(() => {
 describe('GET', () => {
   it('should render check questions', async () => {
     const assessmentSummary = createAssessmentSummary({})
-    const eligibilityCheck1 = createEligbilityCheck({ code: 'code-1' })
+    const eligibilityCheck1 = createEligibilityCriterionProgress({ code: 'code-1' })
 
-    eligibilityAndSuitabilityService.getInitialCheck.mockResolvedValue({
+    eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
       assessmentSummary,
-      check: eligibilityCheck1,
-      nextCheck: undefined,
+      criterion: eligibilityCheck1,
+      nextCriterion: undefined,
     })
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
@@ -35,7 +39,7 @@ describe('GET', () => {
 
     await checkRoutes.GET(req, res)
 
-    expect(eligibilityAndSuitabilityService.getInitialCheck).toHaveBeenCalledWith(
+    expect(eligibilityAndSuitabilityService.getCriterion).toHaveBeenCalledWith(
       req.middleware.clientToken,
       req.params.prisonNumber,
       req.params.type,
@@ -45,7 +49,7 @@ describe('GET', () => {
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/check', {
       assessmentSummary,
       type: 'eligibility',
-      check: eligibilityCheck1,
+      criterion: eligibilityCheck1,
     })
   })
 })
@@ -53,19 +57,19 @@ describe('GET', () => {
 describe('POST', () => {
   const assessmentSummary = createAssessmentSummary({})
   const question = createQuestion({})
-  const eligibilityCheck1 = createEligbilityCheck({
+  const eligibilityCheck1 = createEligibilityCriterionProgress({
     code: 'code-1',
     questions: [{ name: 'question1', text: 'answer the question?', answer: null, hint: null }],
   })
-  const eligibilityCheck2 = createEligbilityCheck({ code: 'code-2' })
+  const eligibilityCheck2 = createEligibilityCriterionProgress({ code: 'code-2' })
   const validPayload = { [question.name]: 'true' }
   const invalidPayload = { [question.name]: '' }
 
   it('should submit valid answer', async () => {
-    eligibilityAndSuitabilityService.getInitialCheck.mockResolvedValue({
+    eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
       assessmentSummary,
-      check: eligibilityCheck1,
-      nextCheck: eligibilityCheck2,
+      criterion: eligibilityCheck1,
+      nextCriterion: eligibilityCheck2,
     })
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
@@ -75,7 +79,7 @@ describe('POST', () => {
 
     await checkRoutes.POST(req, res)
 
-    expect(eligibilityAndSuitabilityService.getInitialCheck).toHaveBeenCalledWith(
+    expect(eligibilityAndSuitabilityService.getCriterion).toHaveBeenCalledWith(
       req.middleware.clientToken,
       req.params.prisonNumber,
       req.params.type,
@@ -86,10 +90,10 @@ describe('POST', () => {
   })
 
   it('should throw validation error when no answer provided', async () => {
-    eligibilityAndSuitabilityService.getInitialCheck.mockResolvedValue({
+    eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
       assessmentSummary,
-      check: eligibilityCheck1,
-      nextCheck: eligibilityCheck2,
+      criterion: eligibilityCheck1,
+      nextCriterion: eligibilityCheck2,
     })
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
@@ -101,10 +105,10 @@ describe('POST', () => {
   })
 
   it('should redirect to tasklist after end of questions', async () => {
-    eligibilityAndSuitabilityService.getInitialCheck.mockResolvedValue({
+    eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
       assessmentSummary,
-      check: eligibilityCheck1,
-      nextCheck: undefined,
+      criterion: eligibilityCheck1,
+      nextCriterion: undefined,
     })
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
@@ -114,7 +118,7 @@ describe('POST', () => {
 
     await checkRoutes.POST(req, res)
 
-    expect(eligibilityAndSuitabilityService.getInitialCheck).toHaveBeenCalledWith(
+    expect(eligibilityAndSuitabilityService.getCriterion).toHaveBeenCalledWith(
       req.middleware.clientToken,
       req.params.prisonNumber,
       req.params.type,

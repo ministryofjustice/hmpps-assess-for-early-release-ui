@@ -1,5 +1,12 @@
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createInitialChecks, createEligbilityCheck, createSuitabilityCheck } from '../data/__testutils/testObjects'
+import {
+  createEligibilityAndSuitabilityCaseView,
+  createEligibilityCriterionProgress,
+  createSuitabilityCriterionProgress,
+  createEligibilityCriterionView,
+  createSuitabilityCriterionView,
+  createQuestion,
+} from '../data/__testutils/testObjects'
 import EligibilityAndSuitabilityService from './eligiblityAndSuitabilityService'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
@@ -18,76 +25,136 @@ describe('EligibilityAndSuitabilityService', () => {
     jest.resetAllMocks()
   })
 
-  describe('Initial checks', () => {
-    const eligibilityCheck1 = createEligbilityCheck({ code: 'eligibility-1' })
-    const eligibilityCheck2 = createEligbilityCheck({ code: 'eligibility-2' })
-    const suitabilityCheck1 = createSuitabilityCheck({ code: 'suitability-1' })
-    const suitabilityCheck2 = createSuitabilityCheck({ code: 'suitability-1' })
+  describe('EligibilityService', () => {
+    it('get Criteria', async () => {
+      const eligibilityCheck1 = createEligibilityCriterionProgress({ code: 'eligibility-1' })
+      const eligibilityCheck2 = createEligibilityCriterionProgress({ code: 'eligibility-2' })
+      const suitabilityCheck1 = createSuitabilityCriterionProgress({ code: 'suitability-1' })
+      const suitabilityCheck2 = createSuitabilityCriterionProgress({ code: 'suitability-1' })
 
-    const initialChecks = createInitialChecks({
-      eligibility: [eligibilityCheck1, eligibilityCheck2],
-      suitability: [suitabilityCheck1, suitabilityCheck2],
-    })
+      const view = createEligibilityAndSuitabilityCaseView({
+        eligibility: [eligibilityCheck1, eligibilityCheck2],
+        suitability: [suitabilityCheck1, suitabilityCheck2],
+      })
 
-    it('get initial checks', async () => {
-      assessForEarlyReleaseApiClient.getInitialCheckStatus.mockResolvedValue(initialChecks)
+      assessForEarlyReleaseApiClient.getEligibilityCriteriaView.mockResolvedValue(view)
 
-      const result = await eligibilityAndSuitabilityService.getInitialChecks(
-        token,
-        initialChecks.assessmentSummary.prisonNumber,
-      )
+      const result = await eligibilityAndSuitabilityService.getCriteria(token, view.assessmentSummary.prisonNumber)
 
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
       expect(result).toEqual(result)
     })
 
-    describe('getInitialCheck', () => {
-      it('get existing eligibility check', async () => {
-        assessForEarlyReleaseApiClient.getInitialCheckStatus.mockResolvedValue(initialChecks)
+    describe('getCriterion', () => {
+      it('get Eligibility Criterion view', async () => {
+        const criterionView = createEligibilityCriterionView({})
 
-        const result = await eligibilityAndSuitabilityService.getInitialCheck(
+        assessForEarlyReleaseApiClient.getEligibilityCriterionView.mockResolvedValue(criterionView)
+
+        const result = await eligibilityAndSuitabilityService.getCriterion(
           token,
-          initialChecks.assessmentSummary.prisonNumber,
+          criterionView.assessmentSummary.prisonNumber,
           'eligibility',
-          eligibilityCheck1.code,
+          criterionView.criterion.code,
         )
 
         expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
-        expect(result).toEqual({
-          assessmentSummary: initialChecks.assessmentSummary,
-          check: eligibilityCheck1,
-          nextCheck: eligibilityCheck2,
+        expect(assessForEarlyReleaseApiClient.getEligibilityCriterionView).toHaveBeenCalledWith(
+          criterionView.assessmentSummary.prisonNumber,
+          criterionView.criterion.code,
+        )
+
+        expect(result).toStrictEqual(criterionView)
+      })
+
+      it('get Suitability Criterion view', async () => {
+        const criterionView = createSuitabilityCriterionView({})
+
+        assessForEarlyReleaseApiClient.getSuitabilityCriterionView.mockResolvedValue(criterionView)
+
+        const result = await eligibilityAndSuitabilityService.getCriterion(
+          token,
+          criterionView.assessmentSummary.prisonNumber,
+          'suitability',
+          criterionView.criterion.code,
+        )
+
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(assessForEarlyReleaseApiClient.getSuitabilityCriterionView).toHaveBeenCalledWith(
+          criterionView.assessmentSummary.prisonNumber,
+          criterionView.criterion.code,
+        )
+
+        expect(result).toStrictEqual(criterionView)
+      })
+    })
+
+    describe('saveCriteriaCheck', () => {
+      it('save criteria check with true answer', async () => {
+        const criterionProgress = createEligibilityCriterionProgress({})
+
+        await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
+          prisonNumber: 'A1234AA',
+          type: 'eligibility',
+          criterion: criterionProgress,
+          form: { question1: 'true' },
+        })
+
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
+          answers: {
+            question1: true,
+          },
+          code: 'code-1',
+          type: 'eligibility',
         })
       })
 
-      it('get non-existing eligibility check', async () => {
-        assessForEarlyReleaseApiClient.getInitialCheckStatus.mockResolvedValue(initialChecks)
+      it('save criteria check with false answer', async () => {
+        const criterionProgress = createEligibilityCriterionProgress({})
 
-        await expect(() =>
-          eligibilityAndSuitabilityService.getInitialCheck(
-            token,
-            initialChecks.assessmentSummary.prisonNumber,
-            'eligibility',
-            'some-non-existent-code',
-          ),
-        ).rejects.toThrow(`Could not find check of type: 'eligibility', code: 'some-non-existent-code'`)
-      })
-
-      it('get final check', async () => {
-        assessForEarlyReleaseApiClient.getInitialCheckStatus.mockResolvedValue(initialChecks)
-
-        const result = await eligibilityAndSuitabilityService.getInitialCheck(
-          token,
-          initialChecks.assessmentSummary.prisonNumber,
-          'eligibility',
-          eligibilityCheck2.code,
-        )
+        await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
+          prisonNumber: 'A1234AA',
+          type: 'eligibility',
+          criterion: criterionProgress,
+          form: { question1: 'false' },
+        })
 
         expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
-        expect(result).toEqual({
-          assessmentSummary: initialChecks.assessmentSummary,
-          check: eligibilityCheck2,
-          nextCheck: undefined,
+        expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
+          answers: {
+            question1: false,
+          },
+          code: 'code-1',
+          type: 'eligibility',
+        })
+      })
+
+      it('save criteria check with multiple answers', async () => {
+        const criterionProgress = createEligibilityCriterionProgress({
+          questions: [
+            createQuestion({ name: 'name1' }),
+            createQuestion({ name: 'name2' }),
+            createQuestion({ name: 'name3' }),
+          ],
+        })
+
+        await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
+          prisonNumber: 'A1234AA',
+          type: 'eligibility',
+          criterion: criterionProgress,
+          form: { name1: 'false', name2: 'true', name3: 'true' },
+        })
+
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
+          answers: {
+            name1: false,
+            name2: true,
+            name3: true,
+          },
+          code: 'code-1',
+          type: 'eligibility',
         })
       })
     })

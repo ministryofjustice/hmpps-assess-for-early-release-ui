@@ -5,7 +5,7 @@
     idPrefix: questionOptions.name,
     name:  questionOptions.name,
     classes: "govuk-radios--inline",
-    value: formValues[questionOptions.name],
+    value: coalesce(formValues[questionOptions.name], questionOptions.answer) | safeToString,
     fieldset: {
       legend: {
         text: questionOptions.text,

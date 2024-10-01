@@ -85,6 +85,9 @@ export function registerNunjucks(app?: express.Express): Environment {
   njkEnv.addFilter('formatDate', formatDate)
   njkEnv.addFilter('toMillis', (date: Date) => (date ? date.getTime() : 0))
 
+  njkEnv.addGlobal('coalesce', (...args: unknown[]) => args.find(item => item !== null && item !== undefined))
+  njkEnv.addFilter('safeToString', (val: unknown) => (val !== null && val !== undefined ? val.toString() : val))
+
   njkEnv.addFilter(
     'dumpJson',
     (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),

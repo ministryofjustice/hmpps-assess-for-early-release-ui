@@ -1,5 +1,8 @@
-import assert from 'assert'
-import type { Check, InitialChecks } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type {
+  CriterionProgress,
+  CriterionView,
+  EligibilityAndSuitabilityCaseView,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
@@ -10,43 +13,54 @@ export default class EligibilityAndSuitabilityService {
     private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
   ) {}
 
-  public async getInitialChecks(token: string, prisonNumber: string): Promise<InitialChecks> {
+  public async getCriteria(token: string, prisonNumber: string): Promise<EligibilityAndSuitabilityCaseView> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
+    return assessForEarlyReleaseApiClient.getEligibilityCriteriaView(prisonNumber)
   }
 
-  public async getInitialCheck(
+  public async getCriterion(
     token: string,
     prisonNumber: string,
     type: 'eligibility' | 'suitability',
     checkCode: string,
-  ) {
-    const initialChecks = await this.getInitialChecks(token, prisonNumber)
-    const checks = type === 'eligibility' ? initialChecks.eligibility : initialChecks.suitability
-    const checkIndex = checks.findIndex(q => q.code === checkCode)
+  ): Promise<CriterionView> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
 
-    assert(checkIndex >= 0, `Could not find check of type: '${type}', code: '${checkCode}'`)
-    return {
-      assessmentSummary: initialChecks.assessmentSummary,
-      check: checks[checkIndex],
-      nextCheck: checks[checkIndex + 1],
+    if (type === 'eligibility') {
+      return assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, checkCode)
     }
+
+    if (type === 'suitability') {
+      return assessForEarlyReleaseApiClient.getSuitabilityCriterionView(prisonNumber, checkCode)
+    }
+    throw new Error(`Unknown type: ${type}`)
   }
 
-  public async saveInitialCheckAnswer(
+  public async saveCriterionAnswers(
     token: string,
     {
       prisonNumber,
       type,
-      check,
+      criterion,
       form,
-    }: { prisonNumber: string; type: string; check: Check; form: Record<string, unknown> },
+    }: {
+      prisonNumber: string
+      type: 'suitability' | 'eligibility'
+      criterion: CriterionProgress
+      form: Record<string, unknown>
+    },
   ) {
-    const payload = this.sanitiseForm(check, form)
-    logger.info('save check called', prisonNumber, type, check, payload)
+    const payload = this.sanitiseForm(criterion, form)
+    logger.info('save check called', prisonNumber, type, criterion, payload)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.submitAnswer(prisonNumber, {
+      type,
+      code: criterion.code,
+      answers: payload,
+    })
   }
 
-  sanitiseForm(check: Check, form: Record<string, unknown>): Record<string, boolean> {
-    return Object.fromEntries(check.questions.map(question => [question.name, Boolean(form[question.name])]))
+  sanitiseForm(check: CriterionProgress, form: Record<string, unknown>): Record<string, boolean> {
+    return Object.fromEntries(check.questions.map(question => [question.name, form[question.name] === 'true']))
   }
 }

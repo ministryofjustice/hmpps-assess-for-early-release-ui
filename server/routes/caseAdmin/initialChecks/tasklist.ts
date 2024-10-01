@@ -5,10 +5,10 @@ export default class TasklistRoutes {
   constructor(private readonly eligibilityAndSuitabilityService: EligibilityAndSuitabilityService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const initialChecks = await this.eligibilityAndSuitabilityService.getInitialChecks(
+    const criteria = await this.eligibilityAndSuitabilityService.getCriteria(
       req?.middleware?.clientToken,
       req.params.prisonNumber,
     )
-    res.render('pages/caseAdmin/initialChecks/tasklist', { initialChecks })
+    res.render('pages/caseAdmin/initialChecks/tasklist', { criteria })
   }
 }
