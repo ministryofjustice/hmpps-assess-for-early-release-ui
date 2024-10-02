@@ -5,7 +5,7 @@
 {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
 
 {% set pageTitle = applicationName + " - Assess Offender" %}
-{% set assessmentSummary = initialChecks.assessmentSummary %}
+{% set assessmentSummary = criteria.assessmentSummary %}
 {% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
 
 {% block content %}
@@ -18,7 +18,7 @@
         </div>
         <div class="govuk-grid-column-full">
             {% set eligiblityChecks =  [] %}
-            {% for check in initialChecks.eligibility %}
+            {% for check in criteria.eligibility %}
             {% set eligiblityChecks = (eligiblityChecks.push(
                 {
                 title: {
@@ -46,7 +46,7 @@
             }) }}
 
             {% set suitabilityChecks =  [] %}
-            {% for check in initialChecks.suitability %}
+            {% for check in criteria.suitability %}
             {% set suitabilityChecks = (suitabilityChecks.push(
                 {
                 title: {

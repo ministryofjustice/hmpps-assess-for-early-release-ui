@@ -10,10 +10,23 @@ export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced'>
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
 export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
 
-export type _InitialChecks = components['schemas']['InitialChecks']
-export type InitialChecks = ParsingDates<_InitialChecks, 'dateOfBirth' | 'hdced' | 'crd'>
-export type EligibilityCheck = InitialChecks['eligibility'][0]
-export type SuitabilityCheck = InitialChecks['suitability'][0]
-export type Check = EligibilityCheck | SuitabilityCheck
+export type _EligibilityAndSuitabilityCaseView = components['schemas']['EligibilityAndSuitabilityCaseView']
+export type EligibilityAndSuitabilityCaseView = ParsingDates<
+  _EligibilityAndSuitabilityCaseView,
+  'dateOfBirth' | 'hdced' | 'crd'
+>
+
+export type EligibilityCriterionProgress = components['schemas']['EligibilityCriterionProgress']
+export type _EligibilityCriterionView = components['schemas']['EligibilityCriterionView']
+export type EligibilityCriterionView = ParsingDates<_EligibilityCriterionView, 'dateOfBirth' | 'hdced' | 'crd'>
+
+export type SuitabilityCriterionProgress = components['schemas']['SuitabilityCriterionProgress']
+export type _SuitabilityCriterionView = components['schemas']['SuitabilityCriterionView']
+export type SuitabilityCriterionView = ParsingDates<_SuitabilityCriterionView, 'dateOfBirth' | 'hdced' | 'crd'>
+
+export type CriterionView = EligibilityCriterionView | SuitabilityCriterionView
+export type CriterionProgress = SuitabilityCriterionProgress | EligibilityCriterionProgress
 
 export type OptOutRequest = components['schemas']['OptOutRequest']
+
+export type CriterionCheck = components['schemas']['CriterionCheck']

@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
+import { assessmentSummary } from './mockApis/assessForEarlyReleaseData'
+
 import { login, resetStubs } from './testUtils'
 import AssessmentStatus from '../server/enumeration/assessmentStatus'
 import paths from '../server/routes/paths'
@@ -11,7 +13,7 @@ test.describe('Opt out', () => {
   test('Offender can opt out of HDC', async ({ page }) => {
     const prisonNumber = 'A1234AE'
 
-    await assessForEarlyRelease.stubGetAssessmentSummary(prisonNumber)
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubOptOut(prisonNumber)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -24,7 +26,7 @@ test.describe('Opt out', () => {
     await page.getByTestId('theyWantToOptOutRadio').click()
     await page.getByTestId('continue').click()
 
-    await assessForEarlyRelease.stubGetAssessmentSummary(prisonNumber, AssessmentStatus.OPTED_OUT)
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber, AssessmentStatus.OPTED_OUT))
     await page.getByTestId('doNotWantToBeTaggedRadio').click()
     await page.getByTestId('continue').click()
 
@@ -34,7 +36,7 @@ test.describe('Opt out', () => {
   test('Check validation', async ({ page }) => {
     const prisonNumber = 'A1234AE'
 
-    await assessForEarlyRelease.stubGetAssessmentSummary(prisonNumber)
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 

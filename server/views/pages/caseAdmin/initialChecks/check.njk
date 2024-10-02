@@ -16,8 +16,8 @@
         <div class="govuk-grid-column-two-thirds">
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-                {% for checkQuestion in check.questions %}
-                    {{ question(checkQuestion, validationErrors, submittedForm) }}
+                {% for criterionQuestion in criterion.questions %}
+                    {{ question(criterionQuestion, validationErrors, submittedForm) }}
                 {% endfor %}
 
                 {{ govukButton({

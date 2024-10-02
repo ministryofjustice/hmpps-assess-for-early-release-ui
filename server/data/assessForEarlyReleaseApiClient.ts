@@ -1,11 +1,16 @@
 import type {
   _AssessmentSummary,
   AssessmentSummary,
-  _InitialChecks,
-  InitialChecks,
   _OffenderSummary,
   OffenderSummary,
   OptOutRequest,
+  EligibilityCriterionView,
+  _EligibilityCriterionView,
+  SuitabilityCriterionView,
+  _SuitabilityCriterionView,
+  EligibilityAndSuitabilityCaseView,
+  _EligibilityAndSuitabilityCaseView,
+  CriterionCheck,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -43,9 +48,9 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async getInitialCheckStatus(prisonNumber: string): Promise<InitialChecks> {
-    const initialChecks = await this.restClient.get<_InitialChecks>({
-      path: `/offender/${prisonNumber}/current-assessment/initial-checks`,
+  async getEligibilityCriteriaView(prisonNumber: string): Promise<EligibilityAndSuitabilityCaseView> {
+    const initialChecks = await this.restClient.get<_EligibilityAndSuitabilityCaseView>({
+      path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability`,
     })
     return {
       ...initialChecks,
@@ -58,7 +63,44 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
+  async getEligibilityCriterionView(prisonNumber: string, code: string): Promise<EligibilityCriterionView> {
+    const check = await this.restClient.get<_EligibilityCriterionView>({
+      path: `/offender/${prisonNumber}/current-assessment/eligibility/${code}`,
+    })
+    return {
+      ...check,
+      assessmentSummary: {
+        ...check.assessmentSummary,
+        dateOfBirth: parseIsoDate(check.assessmentSummary.dateOfBirth),
+        hdced: parseIsoDate(check.assessmentSummary.hdced),
+        crd: parseIsoDate(check.assessmentSummary.crd),
+      },
+    }
+  }
+
+  async getSuitabilityCriterionView(prisonNumber: string, code: string): Promise<SuitabilityCriterionView> {
+    const check = await this.restClient.get<_SuitabilityCriterionView>({
+      path: `/offender/${prisonNumber}/current-assessment/suitability/${code}`,
+    })
+    return {
+      ...check,
+      assessmentSummary: {
+        ...check.assessmentSummary,
+        dateOfBirth: parseIsoDate(check.assessmentSummary.dateOfBirth),
+        hdced: parseIsoDate(check.assessmentSummary.hdced),
+        crd: parseIsoDate(check.assessmentSummary.crd),
+      },
+    }
+  }
+
   async optOut(prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
     return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
+  }
+
+  async submitAnswer(prisonNumber: string, answer: CriterionCheck): Promise<void> {
+    return this.restClient.put({
+      path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
+      data: answer,
+    })
   }
 }

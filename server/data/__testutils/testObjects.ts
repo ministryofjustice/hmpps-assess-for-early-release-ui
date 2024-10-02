@@ -1,10 +1,12 @@
 import { addDays, startOfDay } from 'date-fns'
 import type {
   AssessmentSummary,
-  EligibilityCheck,
-  InitialChecks,
+  EligibilityCriterionProgress,
+  EligibilityAndSuitabilityCaseView,
   OffenderSummary,
-  SuitabilityCheck,
+  SuitabilityCriterionProgress,
+  EligibilityCriterionView,
+  SuitabilityCriterionView,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -58,7 +60,7 @@ const createAssessmentSummary = ({
   policyVersion,
 })
 
-const createInitialChecks = ({
+const createEligibilityAndSuitabilityCaseView = ({
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -68,9 +70,9 @@ const createInitialChecks = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
-  eligibility = [] as EligibilityCheck[],
-  suitability = [] as SuitabilityCheck[],
-} = {}): InitialChecks => ({
+  eligibility = [] as EligibilityCriterionProgress[],
+  suitability = [] as SuitabilityCriterionProgress[],
+} = {}): EligibilityAndSuitabilityCaseView => ({
   assessmentSummary: {
     forename,
     surname,
@@ -90,6 +92,62 @@ const createInitialChecks = ({
   suitability,
 })
 
+const createEligibilityCriterionView = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
+  prisonNumber = 'A1234AB',
+  hdced = parseIsoDate('2022-08-01'),
+  crd = parseIsoDate('2022-08-10'),
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
+  criterion = createEligibilityCriterionProgress({ code: 'code-1' }),
+  nextCriterion = createEligibilityCriterionProgress({ code: 'code-2' }),
+} = {}): EligibilityCriterionView => ({
+  assessmentSummary: {
+    forename,
+    surname,
+    dateOfBirth,
+    prisonNumber,
+    hdced,
+    crd,
+    location,
+    status,
+    policyVersion,
+  },
+  criterion,
+  nextCriterion,
+})
+
+const createSuitabilityCriterionView = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
+  prisonNumber = 'A1234AB',
+  hdced = parseIsoDate('2022-08-01'),
+  crd = parseIsoDate('2022-08-10'),
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
+  criterion = createSuitabilityCriterionProgress({ code: 'code-1' }),
+  nextCriterion = createSuitabilityCriterionProgress({ code: 'code-2' }),
+} = {}): SuitabilityCriterionView => ({
+  assessmentSummary: {
+    forename,
+    surname,
+    dateOfBirth,
+    prisonNumber,
+    hdced,
+    crd,
+    location,
+    status,
+    policyVersion,
+  },
+  criterion,
+  nextCriterion,
+})
+
 const createQuestion = ({ name = 'question1', text = 'answer the question?', answer = null, hint = null }) => ({
   name,
   text,
@@ -97,24 +155,24 @@ const createQuestion = ({ name = 'question1', text = 'answer the question?', ans
   hint,
 })
 
-const createEligbilityCheck = ({
+const createEligibilityCriterionProgress = ({
   code = 'code-1',
   taskName = 'task-1',
-  status = 'NOT_STARTED' as EligibilityCheck['status'],
+  status = 'NOT_STARTED' as EligibilityCriterionProgress['status'],
   questions = [createQuestion({})],
-}): EligibilityCheck => ({
+}): EligibilityCriterionProgress => ({
   code,
   taskName,
   status,
   questions,
 })
 
-const createSuitabilityCheck = ({
+const createSuitabilityCriterionProgress = ({
   code = 'code-1',
   taskName = 'task-1',
-  status = 'NOT_STARTED' as SuitabilityCheck['status'],
+  status = 'NOT_STARTED' as SuitabilityCriterionProgress['status'],
   questions = [createQuestion({})],
-}): SuitabilityCheck => ({
+}): SuitabilityCriterionProgress => ({
   code,
   taskName,
   status,
@@ -124,9 +182,11 @@ const createSuitabilityCheck = ({
 export {
   createCase,
   createOffenderSummary,
-  createInitialChecks,
+  createEligibilityAndSuitabilityCaseView,
+  createEligibilityCriterionView,
+  createSuitabilityCriterionView,
   createAssessmentSummary,
   createQuestion,
-  createEligbilityCheck,
-  createSuitabilityCheck,
+  createEligibilityCriterionProgress,
+  createSuitabilityCriterionProgress,
 }

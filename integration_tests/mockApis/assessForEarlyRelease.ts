@@ -1,36 +1,34 @@
-import { stubFor } from './wiremock'
-import AssessmentStatus from '../../server/enumeration/assessmentStatus'
+import { stubFor, getMatchingRequests } from './wiremock'
+import {
+  EligibilityCriterionProgress,
+  SuitabilityCriterionProgress,
+  _AssessmentSummary,
+} from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 
-const stubGetAssessmentSummary = (prisonNumber: string, status: AssessmentStatus = AssessmentStatus.NOT_STARTED) =>
+const stubGetAssessmentSummary = (assessmentSummary: _AssessmentSummary) =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment`,
+      urlPattern: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment`,
     },
     response: {
       status: 200,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: {
-        forename: 'Jimmy',
-        surname: 'Quelch',
-        dateOfBirth: '1974-07-18',
-        prisonNumber,
-        hdced: '2025-08-12',
-        crd: '2025-11-29',
-        location: 'BMI',
-        status,
-        policyVersion: '1.0',
-      },
+      jsonBody: assessmentSummary,
     },
   })
 
-const stubGetInitialChecks = (prisonNumber: string, status: AssessmentStatus = AssessmentStatus.NOT_STARTED) =>
+const stubGetEligibilityAndSuitability = (
+  assessmentSummary: _AssessmentSummary,
+  eligibility: EligibilityCriterionProgress[],
+  suitability: SuitabilityCriterionProgress[],
+) =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/initial-checks`,
+      urlPattern: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment/eligibility-and-suitability`,
     },
     response: {
       status: 200,
@@ -38,70 +36,73 @@ const stubGetInitialChecks = (prisonNumber: string, status: AssessmentStatus = A
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        assessmentSummary: {
-          forename: 'Jimmy',
-          surname: 'Quelch',
-          dateOfBirth: '1974-07-18',
-          prisonNumber,
-          hdced: '2025-08-12',
-          crd: '2025-11-29',
-          location: 'BMI',
-          status,
-          policyVersion: '1.0',
-        },
+        assessmentSummary,
         checksPassed: false,
         complete: false,
         eligibilityStatus: 'NOT_STARTED',
         suitabilityStatus: 'NOT_STARTED',
-        eligibility: [
-          {
-            code: 'code-1',
-            taskName: 'Answer the first question',
-            status: 'NOT_STARTED',
-            questions: [
-              {
-                name: 'question1',
-                text: 'Please answer question 1',
-                answer: null,
-                hint: 'Its simple really',
-              },
-            ],
-          },
-          {
-            code: 'code-2',
-            taskName: 'Answer the second 2 questions',
-            status: 'NOT_STARTED',
-            questions: [
-              {
-                name: 'question2',
-                text: 'Please answer question 2',
-                answer: null,
-                hint: null,
-              },
-              {
-                name: 'question3',
-                text: 'Please answer question 3',
-                answer: null,
-                hint: 'its the last eligbility question!',
-              },
-            ],
-          },
-        ],
-        suitability: [
-          {
-            code: 'code-3',
-            taskName: 'Answer the first suitability question',
-            status: 'NOT_STARTED',
-            questions: [
-              {
-                name: 'question3',
-                text: 'Please answer question 4',
-                answer: null,
-                hint: 'Theres only one suitability question',
-              },
-            ],
-          },
-        ],
+        eligibility,
+        suitability,
+      },
+    },
+  })
+
+const stubSubmitCheckRequest = (prisonNumber: string) =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
+    },
+    response: {
+      status: 204,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    },
+  })
+
+const stubGetEligibilityCriterionView = (
+  assessmentSummary: _AssessmentSummary,
+  criterion: EligibilityCriterionProgress,
+  nextCriterion: EligibilityCriterionProgress,
+) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment/eligibility/${criterion.code}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        assessmentSummary,
+        criterion,
+        nextCriterion,
+      },
+    },
+  })
+
+const stubGetSuitabilityCriterionView = (
+  assessmentSummary: _AssessmentSummary,
+  criterion: SuitabilityCriterionProgress,
+  nextCriterion: SuitabilityCriterionProgress,
+) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment/suitability/${criterion.code}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        assessmentSummary,
+        criterion,
+        nextCriterion,
       },
     },
   })
@@ -120,8 +121,24 @@ const stubOptOut = (prisonNumber: string) =>
     },
   })
 
+const getSubmittedEligibilityChecks = (assessmentSummary: _AssessmentSummary) =>
+  getMatchingRequests({
+    method: 'PUT',
+    urlPath: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment/eligibility-and-suitability-check`,
+  }).then(data => {
+    const { requests } = data.body
+    if (!requests.length) {
+      throw new Error('No matching requests')
+    }
+    return requests.map(request => JSON.parse(request.body))
+  })
+
 export default {
   stubGetAssessmentSummary,
-  stubGetInitialChecks,
+  stubGetEligibilityAndSuitability,
+  stubGetEligibilityCriterionView,
+  stubGetSuitabilityCriterionView,
+  stubSubmitCheckRequest,
   stubOptOut,
+  getSubmittedEligibilityChecks,
 }

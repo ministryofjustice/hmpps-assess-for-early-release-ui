@@ -2,7 +2,15 @@ import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
 import { _AssessmentSummary, _OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
-import { createAssessmentSummary, createOffenderSummary, createInitialChecks } from './__testutils/testObjects'
+import {
+  createAssessmentSummary,
+  createOffenderSummary,
+  createEligibilityAndSuitabilityCaseView,
+  createEligibilityCriterionView,
+  createEligibilityCriterionProgress,
+  createSuitabilityCriterionView,
+  createSuitabilityCriterionProgress,
+} from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
 
 describe('assessForEarlyReleaseApiClient', () => {
@@ -79,33 +87,89 @@ describe('assessForEarlyReleaseApiClient', () => {
     })
   })
 
-  describe('getInitialCheckStatus', () => {
-    const initialChecks = createInitialChecks()
-    const { prisonNumber } = initialChecks.assessmentSummary
+  describe('getEligibilityCriteriaView', () => {
+    const view = createEligibilityAndSuitabilityCaseView()
+    const { prisonNumber } = view.assessmentSummary
 
     it('should return data from api', async () => {
       const apiResponse = {
-        ...initialChecks,
+        ...view,
         assessmentSummary: {
-          ...initialChecks.assessmentSummary,
-          dateOfBirth: toIsoDate(initialChecks.assessmentSummary.dateOfBirth),
-          hdced: toIsoDate(initialChecks.assessmentSummary.hdced),
-          crd: toIsoDate(initialChecks.assessmentSummary.crd),
+          ...view.assessmentSummary,
+          dateOfBirth: toIsoDate(view.assessmentSummary.dateOfBirth),
+          hdced: toIsoDate(view.assessmentSummary.hdced),
+          crd: toIsoDate(view.assessmentSummary.crd),
         },
       }
 
       fakeAferApi
-        .get(`/offender/${prisonNumber}/current-assessment/initial-checks`)
+        .get(`/offender/${prisonNumber}/current-assessment/eligibility-and-suitability`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getInitialCheckStatus(prisonNumber)
-      expect(output).toEqual(initialChecks)
+      const output = await assessForEarlyReleaseApiClient.getEligibilityCriteriaView(prisonNumber)
+      expect(output).toEqual(view)
+    })
+  })
+
+  describe('getEligibilityCriterionView', () => {
+    const criterion = createEligibilityCriterionProgress({ code: 'code-1' })
+    const nextCriterion = createEligibilityCriterionProgress({ code: 'code-2' })
+    const criterionView = createEligibilityCriterionView({ criterion, nextCriterion })
+
+    const { prisonNumber } = criterionView.assessmentSummary
+
+    it('should return data from api', async () => {
+      const apiResponse = {
+        ...criterionView,
+        assessmentSummary: {
+          ...criterionView.assessmentSummary,
+          dateOfBirth: toIsoDate(criterionView.assessmentSummary.dateOfBirth),
+          hdced: toIsoDate(criterionView.assessmentSummary.hdced),
+          crd: toIsoDate(criterionView.assessmentSummary.crd),
+        },
+      }
+
+      fakeAferApi
+        .get(`/offender/${prisonNumber}/current-assessment/eligibility/${criterion.code}`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      const output = await assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, 'code-1')
+      expect(output).toEqual(criterionView)
+    })
+  })
+
+  describe('getSuitabilityCriterionView', () => {
+    const criterion = createSuitabilityCriterionProgress({ code: 'code-1' })
+    const nextCriterion = createSuitabilityCriterionProgress({ code: 'code-2' })
+    const criterionView = createSuitabilityCriterionView({ criterion, nextCriterion })
+
+    const { prisonNumber } = criterionView.assessmentSummary
+
+    it('should return data from api', async () => {
+      const apiResponse = {
+        ...criterionView,
+        assessmentSummary: {
+          ...criterionView.assessmentSummary,
+          dateOfBirth: toIsoDate(criterionView.assessmentSummary.dateOfBirth),
+          hdced: toIsoDate(criterionView.assessmentSummary.hdced),
+          crd: toIsoDate(criterionView.assessmentSummary.crd),
+        },
+      }
+
+      fakeAferApi
+        .get(`/offender/${prisonNumber}/current-assessment/suitability/${criterion.code}`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      const output = await assessForEarlyReleaseApiClient.getSuitabilityCriterionView(prisonNumber, 'code-1')
+      expect(output).toEqual(criterionView)
     })
   })
 
   describe('optOut', () => {
-    const initialChecks = createInitialChecks()
+    const initialChecks = createEligibilityAndSuitabilityCaseView()
     const { prisonNumber } = initialChecks.assessmentSummary
 
     it('should opt out', async () => {

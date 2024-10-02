@@ -83,6 +83,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/eligibility-and-suitability-check': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Sets the state of a current eligbility/suitability check
+     * @description Returns details of a specific suitability for a prisoner's initial checks
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['answerCheck']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     parameters: {
       query?: never
@@ -149,7 +172,53 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/offender/{prisonNumber}/current-assessment/initial-checks': {
+  '/offender/{prisonNumber}/current-assessment/suitability/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns a specific suitability check for a prisoner's current assessment
+     * @description Returns details of a specific suitability for a prisoner's initial checks
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getSuitabilityCheck']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/offender/{prisonNumber}/current-assessment/eligibility/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns a specific eligibility check for a prisoner's current assessment
+     * @description Returns details of a specific eligibility for a prisoner's initial checks
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getEligibilityCriterion']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/offender/{prisonNumber}/current-assessment/eligibility-and-suitability': {
     parameters: {
       query?: never
       header?: never
@@ -163,7 +232,53 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getInitialChecks']
+    get: operations['getCaseView']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/addresses': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns addresses that match the postcode parameter
+     * @description Returns addresses that match the postcode parameter
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getAddressesForPostcode']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/address/uprn/{uprn}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets an address by it's UPRN
+     * @description Gets an address by it's UPRN
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getAddressForUprn']
     put?: never
     post?: never
     delete?: never
@@ -236,18 +351,23 @@ export interface components {
        */
       hdced: string
     }
-    DlqMessage: {
-      body: {
-        [key: string]: Record<string, never>
+    /** @description The answers to the question for a specific criterion */
+    CriterionCheck: {
+      /**
+       * @description The type of criteria
+       * @example eligibility
+       * @enum {string}
+       */
+      type: 'eligibility' | 'suitability'
+      /**
+       * @description A unique code for the check
+       * @example code-1
+       */
+      code: string
+      /** @description A unique code for the check */
+      answers: {
+        [key: string]: boolean
       }
-      messageId: string
-    }
-    GetDlqResult: {
-      /** Format: int32 */
-      messagesFoundCount: number
-      /** Format: int32 */
-      messagesReturnedCount: number
-      messages: components['schemas']['DlqMessage'][]
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -298,49 +418,6 @@ export interface components {
        */
       policyVersion: string
     }
-    /** @description The initial checks for a specific assessment */
-    EligibilityCheckDetails: {
-      /**
-       * @description the unique code to identify this check
-       * @example rotl-failure-to-return
-       */
-      code: string
-      /**
-       * @description The name of the check that would appear in a task list
-       * @example ROTL failure to return
-       */
-      taskName: string
-      /**
-       * @description The state of this check
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      status: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /** @description The questions that are posed to the user */
-      questions: components['schemas']['Question'][]
-    }
-    /** @description The initial checks for a specific assessment */
-    InitialChecks: {
-      assessmentSummary: components['schemas']['AssessmentSummary']
-      /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
-      complete: boolean
-      /** @description eligibility status = ELIGIBLE and suitability status = SUITABLE */
-      checksPassed: boolean
-      /**
-       * @description state of current eligibility checks
-       * @enum {string}
-       */
-      eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /** @description details of current eligibility checks */
-      eligibility: components['schemas']['EligibilityCheckDetails'][]
-      /**
-       * @description state of current suitability checks
-       * @enum {string}
-       */
-      suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /** @description details of current suitability checks */
-      suitability: components['schemas']['SuitabilityCheckDetails'][]
-    }
     /** @description A question that is asked by the user */
     Question: {
       /**
@@ -359,31 +436,158 @@ export interface components {
        */
       name?: string
       /**
-       * @description The answer provided by the user
+       * @description The answer provided by the user for this question
        * @example true
        */
       answer?: boolean
     }
-    /** @description The initial checks for a specific assessment */
-    SuitabilityCheckDetails: {
+    /** @description The progress on a specific suitability criteria for a case */
+    SuitabilityCriterionProgress: {
       /**
-       * @description the unique code to identify this check
+       * @description the unique code to identify this criterion
        * @example rosh-and-mappa
        */
       code: string
       /**
-       * @description The name of the check that would appear in a task list
+       * @description The name of the criterion that would appear in a task list
        * @example RoSH and MAPPA
        */
       taskName: string
       /**
-       * @description The state of this check
+       * @description Status of this criterion for a specific case
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'SUITABLE' | 'UNSUITABLE' | 'NOT_STARTED' | 'IN_PROGRESS'
-      /** @description The questions that are posed to the user */
+      status: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description The questions that are associated with this criterion for this case */
       questions: components['schemas']['Question'][]
+    }
+    /** @description The details of a specific suitability criterion */
+    SuitabilityCriterionView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      criterion: components['schemas']['SuitabilityCriterionProgress']
+      nextCriterion?: components['schemas']['SuitabilityCriterionProgress']
+    }
+    DlqMessage: {
+      body: {
+        [key: string]: Record<string, never>
+      }
+      messageId: string
+    }
+    GetDlqResult: {
+      /** Format: int32 */
+      messagesFoundCount: number
+      /** Format: int32 */
+      messagesReturnedCount: number
+      messages: components['schemas']['DlqMessage'][]
+    }
+    /** @description The progress on a specific eligibility criterion for a case */
+    EligibilityCriterionProgress: {
+      /**
+       * @description the unique code to identify this criterion
+       * @example rotl-failure-to-return
+       */
+      code: string
+      /**
+       * @description The name of the criterion that would appear in a task list
+       * @example ROTL failure to return
+       */
+      taskName: string
+      /**
+       * @description Status of this criterion for a specific case
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description The questions that are associated with this criterion for this case */
+      questions: components['schemas']['Question'][]
+    }
+    /** @description The details of a specific eligibility criterion */
+    EligibilityCriterionView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      criterion: components['schemas']['EligibilityCriterionProgress']
+      nextCriterion?: components['schemas']['EligibilityCriterionProgress']
+    }
+    /** @description A view on the progress of suitability and eligibility criteria for a specific case */
+    EligibilityAndSuitabilityCaseView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
+      complete: boolean
+      /** @description eligibility status = ELIGIBLE and suitability status = SUITABLE */
+      checksPassed: boolean
+      /**
+       * @description state of current eligibility checks
+       * @enum {string}
+       */
+      eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description details of current eligibility checks */
+      eligibility: components['schemas']['EligibilityCriterionProgress'][]
+      /**
+       * @description state of current suitability checks
+       * @enum {string}
+       */
+      suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description details of current suitability checks */
+      suitability: components['schemas']['SuitabilityCriterionProgress'][]
+    }
+    /** @description Response object which describes an address */
+    AddressSummary: {
+      /**
+       * @description The address's UPRN
+       * @example 200010019924
+       */
+      uprn: string
+      /**
+       * @description The address's first line
+       * @example 34 Maryport Street
+       */
+      firstLine?: string
+      /**
+       * @description The address's second line
+       * @example Urchfont
+       */
+      secondLine?: string
+      /**
+       * @description The address's town
+       * @example Chippenham
+       */
+      town: string
+      /**
+       * @description The address's county
+       * @example Shropshire
+       */
+      county: string
+      /**
+       * @description The address's postcode
+       * @example RG13HS
+       */
+      postcode: string
+      /**
+       * @description The address's country
+       * @example Wales
+       */
+      country: string
+      /**
+       * Format: double
+       * @description The address's x-coordinate
+       */
+      xCoordinate?: number
+      /**
+       * Format: double
+       * @description The address's y-coordinate
+       * @example 154111
+       */
+      yCoordinate?: number
+      /**
+       * Format: date
+       * @description The date the address was last updated
+       * @example 2021-05-23
+       */
+      addressLastUpdated: string
+      /** Format: double */
+      xcoordinate: number
+      /** Format: double */
+      ycoordinate: number
     }
   }
   responses: never
@@ -480,6 +684,50 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['OffenderSummary'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  answerCheck: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CriterionCheck']
+      }
+    }
+    responses: {
+      /** @description Returns details of a specific suitability criteria in the current assessment for the prisoner */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SuitabilityCriterionView']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
@@ -606,7 +854,89 @@ export interface operations {
       }
     }
   }
-  getInitialChecks: {
+  getSuitabilityCheck: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns details of a specific suitability criteria in the current assessment for the prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SuitabilityCriterionView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getEligibilityCriterion: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns details of a specific eligibility criteria in the current assessment for the prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['EligibilityCriterionView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseView: {
     parameters: {
       query?: never
       header?: never
@@ -623,7 +953,87 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['InitialChecks']
+          'application/json': components['schemas']['EligibilityAndSuitabilityCaseView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressesForPostcode: {
+    parameters: {
+      query: {
+        postcode: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns addresses matching the supplied postcode */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AddressSummary']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressForUprn: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        uprn: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the address with the provided UPRN */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AddressSummary']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
