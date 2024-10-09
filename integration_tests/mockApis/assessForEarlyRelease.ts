@@ -3,6 +3,7 @@ import {
   EligibilityCriterionProgress,
   SuitabilityCriterionProgress,
   _AssessmentSummary,
+  AddressSummary,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 
 const stubGetAssessmentSummary = (assessmentSummary: _AssessmentSummary) =>
@@ -133,6 +134,50 @@ const getSubmittedEligibilityChecks = (assessmentSummary: _AssessmentSummary) =>
     return requests.map(request => JSON.parse(request.body))
   })
 
+const stubGetAddressesForPostcode = (postcode: string, addressSummaries: AddressSummary[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/addresses\\?postcode=${postcode}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: addressSummaries,
+    },
+  })
+
+const stubAddStandardAddressCheckRequest = (prisonNumber: string) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        dateRequested: '2024-10-09',
+        preferencePriority: 'FIRST',
+        status: 'IN_PROGRESS',
+        address: {
+          uprn: '310010433',
+          firstLine: '97, HARTLAND ROAD',
+          secondLine: '',
+          town: 'READING',
+          county: 'READING',
+          postcode: 'RG2 8AF',
+          country: 'England',
+          xCoordinate: 472219,
+          yCoordinate: 170067,
+          addressLastUpdated: '2020-06-25',
+        },
+      },
+    },
+  })
+
 export default {
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,
@@ -141,4 +186,6 @@ export default {
   stubSubmitCheckRequest,
   stubOptOut,
   getSubmittedEligibilityChecks,
+  stubGetAddressesForPostcode,
+  stubAddStandardAddressCheckRequest,
 }

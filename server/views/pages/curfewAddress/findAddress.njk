@@ -1,0 +1,46 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+
+{% set pageTitle = applicationName + " - Find an address" %}
+{% set backLinkHref = "/" %}¡
+
+{% block content %}
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                Find an address
+            </h1>
+               <div class="govuk-grid-row">
+                    <div class="moj-search govuk-grid-column-two-thirds govuk-!-margin-bottom-8">
+                        <form method="POST">
+                            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                            {{ govukInput({
+                              label: {
+                                text: "Type an address or postcode",
+                                classes: "moj-search__label govuk-!-font-weight-bold"
+                              },
+                              classes: "moj-search__input",
+                              attributes: {
+                                  "data-qa": "addressInput"
+                              },
+                              id: "searchQuery",
+                              name: "searchQuery",
+                              errorMessage: validationErrors | findError('searchQuery')
+                            }) }}
+                            <button class="govuk-button moj-search__button" data-module="govuk-button" data-qa="searchAddresses">
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
