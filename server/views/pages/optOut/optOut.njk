@@ -73,7 +73,7 @@
                     <div class="govuk-button-group">
                         {{ govukButton({
                             text: "Continue",
-                            type: "submit",
+                            preventDoubleClick: true,
                             attributes: { 'data-qa': 'continue' }
                         }) }}
                         <a class="govuk-link govuk-link--no-visited-state" href="./">Cancel</a>

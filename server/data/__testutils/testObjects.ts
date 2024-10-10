@@ -1,5 +1,5 @@
 import { addDays, startOfDay } from 'date-fns'
-import type {
+import {
   AssessmentSummary,
   EligibilityCriterionProgress,
   EligibilityAndSuitabilityCaseView,
@@ -7,6 +7,9 @@ import type {
   SuitabilityCriterionProgress,
   EligibilityCriterionView,
   SuitabilityCriterionView,
+  AddressSummary,
+  AddStandardAddressCheckRequest,
+  StandardAddressCheckRequestSummary,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -179,6 +182,58 @@ const createSuitabilityCriterionProgress = ({
   questions,
 })
 
+const createAddressSummary = ({
+  uprn = '310030567',
+  firstLine = '99, HARTLAND ROAD',
+  secondLine = '',
+  town = 'READING',
+  county = 'READING',
+  postcode = 'RG2 8AF',
+  country = 'England',
+  xCoordinate = 472231.0,
+  yCoordinate = 170070.0,
+  addressLastUpdated = new Date('2020-06-25'),
+}): AddressSummary => ({
+  uprn,
+  firstLine,
+  secondLine,
+  town,
+  county,
+  postcode,
+  country,
+  xCoordinate,
+  yCoordinate,
+  addressLastUpdated,
+})
+
+const createAddStandardAddressCheckRequest = ({
+  ppAdditionalInfo = '',
+  caAdditionalInfo = '',
+  preferencePriority = 'FIRST' as AddStandardAddressCheckRequest['preferencePriority'],
+  addressUprn = '310030567',
+}): AddStandardAddressCheckRequest => ({
+  caAdditionalInfo,
+  ppAdditionalInfo,
+  preferencePriority,
+  addressUprn,
+})
+
+const createStandardAddressCheckRequestSummary = ({
+  caAdditionalInfo = '',
+  ppAdditionalInfo = '',
+  dateRequested = new Date('2024-11-05'),
+  preferencePriority = 'FIRST' as StandardAddressCheckRequestSummary['preferencePriority'],
+  status = 'IN_PROGRESS' as StandardAddressCheckRequestSummary['status'],
+  address = createAddressSummary({}),
+} = {}): StandardAddressCheckRequestSummary => ({
+  caAdditionalInfo,
+  ppAdditionalInfo,
+  dateRequested,
+  preferencePriority,
+  status,
+  address,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -189,4 +244,7 @@ export {
   createQuestion,
   createEligibilityCriterionProgress,
   createSuitabilityCriterionProgress,
+  createAddressSummary,
+  createAddStandardAddressCheckRequest,
+  createStandardAddressCheckRequestSummary,
 }

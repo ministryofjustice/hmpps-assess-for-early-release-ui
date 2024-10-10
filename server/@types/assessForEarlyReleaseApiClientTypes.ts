@@ -7,6 +7,9 @@ type ParsingDates<T, Fields> = {
 export type _OffenderSummary = components['schemas']['OffenderSummary']
 export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced'>
 
+export type _AddressSummary = components['schemas']['AddressSummary']
+export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
+
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
 export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
 
@@ -30,3 +33,10 @@ export type CriterionProgress = SuitabilityCriterionProgress | EligibilityCriter
 export type OptOutRequest = components['schemas']['OptOutRequest']
 
 export type CriterionCheck = components['schemas']['CriterionCheck']
+
+export type AddStandardAddressCheckRequest = components['schemas']['AddStandardAddressCheckRequest']
+export type _StandardAddressCheckRequestSummary = components['schemas']['StandardAddressCheckRequestSummary']
+export type StandardAddressCheckRequestSummary = ParsingDates<
+  _StandardAddressCheckRequestSummary,
+  'dateRequested' | 'addressLastUpdated'
+>

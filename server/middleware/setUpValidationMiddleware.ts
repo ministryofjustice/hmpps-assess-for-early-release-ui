@@ -12,7 +12,7 @@ export function validateRequest(request: Request, validator: Validator) {
   if (errors.length) {
     request.flash(FLASH_KEY_VALIDATION_ERRORS, errors)
     request.flash(FLASH_KEY_SUBMITTED_FORM, request.body)
-    throw new ValidationError('A validation error occured')
+    throw new ValidationError('A validation error occurred')
   }
 }
 

@@ -1,0 +1,25 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+
+{% set pageTitle = applicationName + " - No address found" %}
+{% set backLinkHref = "/" %}¡
+
+{% block content %}
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                No address found
+            </h1>
+            <p class="govuk-body">
+                We could not find an address that matches {{ postcode }}. You can search again or enter the address manually.
+            </p>
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ findAddressUrl }}">Search again</a>
+        </div>
+      </div>
+    </div>
+{% endblock %}

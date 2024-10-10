@@ -11,6 +11,11 @@ import type {
   EligibilityAndSuitabilityCaseView,
   _EligibilityAndSuitabilityCaseView,
   CriterionCheck,
+  _AddressSummary,
+  AddressSummary,
+  AddStandardAddressCheckRequest,
+  StandardAddressCheckRequestSummary,
+  _StandardAddressCheckRequestSummary,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -102,5 +107,39 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
       data: answer,
     })
+  }
+
+  async findAddressesForPostcode(postcode: string): Promise<AddressSummary[]> {
+    const addressSummaries = await this.restClient.get<_AddressSummary[]>({
+      path: `/addresses?postcode=${postcode}`,
+    })
+    return addressSummaries.map(addressSummary => {
+      return { ...addressSummary, addressLastUpdated: parseIsoDate(addressSummary.addressLastUpdated) }
+    })
+  }
+
+  async getAddressForUprn(uprn: string): Promise<AddressSummary> {
+    const addressSummary = await this.restClient.get<_AddressSummary>({
+      path: `/address/uprn/${uprn}`,
+    })
+    return { ...addressSummary, addressLastUpdated: parseIsoDate(addressSummary.addressLastUpdated) }
+  }
+
+  async addStandardAddressCheckRequest(
+    prisonNumber: string,
+    standardAddressCheckRequest: AddStandardAddressCheckRequest,
+  ): Promise<StandardAddressCheckRequestSummary> {
+    const requestSummary = (await this.restClient.post<_StandardAddressCheckRequestSummary>({
+      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
+      data: standardAddressCheckRequest,
+    })) as _StandardAddressCheckRequestSummary
+    return {
+      ...requestSummary,
+      dateRequested: parseIsoDate(requestSummary.dateRequested),
+      address: {
+        ...requestSummary.address,
+        addressLastUpdated: parseIsoDate(requestSummary.address.addressLastUpdated),
+      },
+    }
   }
 }

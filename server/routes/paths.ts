@@ -13,6 +13,11 @@ const check = tasklist.path(':type/:checkCode')
 const optOutCheck = assessmentHome.path('opt-out-check')
 const optOut = assessmentHome.path('opt-out')
 
+const curfewAddress = assessmentHome.path('curfew-address')
+const findAddress = curfewAddress.path('find-address')
+const selectAddress = curfewAddress.path('select-address')
+const noAddressFound = curfewAddress.path('no-address-found')
+
 const paths = {
   support: {
     home: supportHome,
@@ -28,6 +33,11 @@ const paths = {
       },
       optOutCheck,
       optOut,
+      curfewAddress: {
+        findAddress,
+        selectAddress,
+        noAddressFound,
+      },
     },
   },
 }

@@ -26,7 +26,7 @@ export default class OptOutCheckRoutes {
     })
 
     if (req.body.considerForHdc === 'yes') {
-      return res.redirect(`/prison/assessment/${req.params.prisonNumber}/curfew-address`)
+      return res.redirect(`/prison/assessment/${req.params.prisonNumber}/curfew-address/find-address`)
     }
 
     return res.redirect(`/prison/assessment/${req.params.prisonNumber}/opt-out`)
