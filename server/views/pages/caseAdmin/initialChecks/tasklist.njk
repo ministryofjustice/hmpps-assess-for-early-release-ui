@@ -21,21 +21,16 @@
             {% for check in criteria.eligibility %}
             {% set eligiblityChecks = (eligiblityChecks.push(
                 {
-                title: {
-                text: check.taskName
-                },
-                href: paths.prison.assessment.initialChecks.check | toPath({ 
-                    prisonNumber:assessmentSummary.prisonNumber, 
-                    type: 'eligibility',
-                    checkCode: check.code 
-                }),
-                status: {
-                tag: {
-                    text: check.status | replace("_", " ") | capitalize,
-                    classes: "govuk-tag--blue"
+                    title: {
+                    text: check.taskName
+                    },
+                    href: paths.prison.assessment.initialChecks.check | toPath({ 
+                        prisonNumber:assessmentSummary.prisonNumber, 
+                        type: 'eligibility',
+                        checkCode: check.code 
+                    }),
+                    status: eligibilityChecks.eligibilityLabel(check.status)
                 }
-                }
-            }
             ), eligiblityChecks) %}
             {% endfor %}
 
@@ -49,21 +44,16 @@
             {% for check in criteria.suitability %}
             {% set suitabilityChecks = (suitabilityChecks.push(
                 {
-                title: {
-                text: check.taskName
-                },
-                href: paths.prison.assessment.initialChecks.check | toPath({ 
-                    prisonNumber:assessmentSummary.prisonNumber, 
-                    type: 'suitability',
-                    checkCode: check.code 
-                }),
-                status: {
-                tag: {
-                    text: check.status | replace("_", " ") | capitalize,
-                    classes: "govuk-tag--blue"
+                    title: {
+                    text: check.taskName
+                    },
+                    href: paths.prison.assessment.initialChecks.check | toPath({ 
+                        prisonNumber:assessmentSummary.prisonNumber, 
+                        type: 'suitability',
+                        checkCode: check.code 
+                    }),
+                    status: eligibilityChecks.suitabilityLabel(check.status)
                 }
-                }
-            }
             ), suitabilityChecks) %}
             {% endfor %}
             <h2>Suitability checks</h2>         
