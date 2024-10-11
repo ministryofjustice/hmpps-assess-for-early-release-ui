@@ -359,15 +359,6 @@ export interface components {
        */
       otherDescription?: string
     }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
-    }
     /** @description Response object which describes an offender */
     OffenderSummary: {
       /**
@@ -396,6 +387,15 @@ export interface components {
        * @description The offender's home detention curfew eligibility date
        */
       hdced: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
     }
     /** @description The answers to the question for a specific criterion */
     CriterionCheck: {
@@ -480,13 +480,13 @@ export interface components {
        * Format: double
        * @description The address's x-coordinate
        */
-      xCoordinate: number
+      xCoordinate?: number
       /**
        * Format: double
        * @description The address's y-coordinate
        * @example 154111
        */
-      yCoordinate: number
+      yCoordinate?: number
       /**
        * Format: date
        * @description The date the address was last updated
@@ -630,7 +630,25 @@ export interface components {
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'NOT_STARTED' | 'OPTED_OUT'
+      status:
+        | 'NOT_STARTED'
+        | 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS'
+        | 'ELIGIBLE_AND_SUITABLE'
+        | 'AWAITING_ADDRESS_AND_RISK_CHECKS'
+        | 'ADDRESS_AND_RISK_CHECKS_IN_PROGRESS'
+        | 'AWAITING_PRE_DECISION_CHECKS'
+        | 'AWAITING_DECISION'
+        | 'APPROVED'
+        | 'AWAITING_PRE_RELEASE_CHECKS'
+        | 'PASSED_PRE_RELEASE_CHECKS'
+        | 'ADDRESS_UNSUITABLE'
+        | 'AWAITING_REFUSAL'
+        | 'INELIGIBLE_OR_UNSUITABLE'
+        | 'REFUSED'
+        | 'TIMED_OUT'
+        | 'POSTPONED'
+        | 'OPTED_OUT'
+        | 'RELEASED_ON_HDC'
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1.0

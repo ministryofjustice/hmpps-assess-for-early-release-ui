@@ -40,3 +40,6 @@ export type StandardAddressCheckRequestSummary = ParsingDates<
   _StandardAddressCheckRequestSummary,
   'dateRequested' | 'addressLastUpdated'
 >
+
+export type EligibilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['eligibilityStatus']
+export type SuitabilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['suitabilityStatus']

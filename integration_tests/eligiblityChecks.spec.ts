@@ -6,7 +6,9 @@ import paths from '../server/routes/paths'
 import {
   assessmentSummary,
   eligibilityCriterion1,
+  eligibilityCriterion1Completed,
   eligibilityCriterion2,
+  eligibilityCriterion2Ineligible,
   suitabilityCriterion1,
 } from './mockApis/assessForEarlyReleaseData'
 
@@ -90,5 +92,17 @@ test.describe('Eligiblity checks', () => {
         type: 'suitability',
       },
     ])
+
+    await assessForEarlyRelease.stubGetEligibilityAndSuitability(
+      anAssessmentSummary,
+      [eligibilityCriterion1Completed, eligibilityCriterion2Ineligible],
+      [suitabilityCriterion1],
+    )
+
+    await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
+
+    expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
+    expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
+    expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
   })
 })

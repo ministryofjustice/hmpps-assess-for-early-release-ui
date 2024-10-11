@@ -10,6 +10,7 @@ import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
 import paths from '../routes/paths'
 import { FieldValidationError } from '../@types/FieldValidationError'
+import { EligibilityStatus, SuitabilityStatus } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -43,9 +44,9 @@ export function registerNunjucks(app?: express.Express): Environment {
   try {
     const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
     assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
-  } catch (e) {
+  } catch (e: unknown) {
     if (process.env.NODE_ENV !== 'test') {
-      logger.error('Could not read asset manifest file')
+      logger.error(e, 'Could not read asset manifest file')
     }
   }
 
@@ -94,6 +95,58 @@ export function registerNunjucks(app?: express.Express): Environment {
   )
 
   njkEnv.addGlobal('paths', paths)
+
+  njkEnv.addGlobal('eligibilityChecks', {
+    eligibilityLabel: (status: EligibilityStatus) => {
+      switch (status) {
+        case 'NOT_STARTED':
+          return {
+            tag: {
+              text: 'Incomplete',
+              classes: 'govuk-tag--blue',
+            },
+          }
+        case 'ELIGIBLE':
+          return {
+            text: 'Completed',
+          }
+
+        case 'INELIGIBLE':
+          return {
+            tag: {
+              text: 'Ineligible',
+              classes: 'govuk-tag--red',
+            },
+          }
+        default:
+          throw Error(`Unknown status: ${status}`)
+      }
+    },
+    suitabilityLabel: (status: SuitabilityStatus) => {
+      switch (status) {
+        case 'NOT_STARTED':
+          return {
+            tag: {
+              text: 'Incomplete',
+              classes: 'govuk-tag--blue',
+            },
+          }
+        case 'SUITABLE':
+          return {
+            text: 'Completed',
+          }
+        case 'UNSUITABLE':
+          return {
+            tag: {
+              text: 'Ineligible',
+              classes: 'govuk-tag--red',
+            },
+          }
+        default:
+          throw Error(`Unknown status: ${status}`)
+      }
+    },
+  })
 
   njkEnv.addFilter('toPath', <T extends string>(staticPath: Path<T>, params: Params<T>) => {
     if (!staticPath) {

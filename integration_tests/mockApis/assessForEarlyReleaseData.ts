@@ -19,6 +19,20 @@ export const eligibilityCriterion1: EligibilityCriterionProgress = {
   ],
 }
 
+export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
+  code: 'code-1',
+  taskName: 'Answer the first question',
+  status: 'ELIGIBLE',
+  questions: [
+    {
+      name: 'question1',
+      text: 'Please answer question 1',
+      answer: true,
+      hint: 'Its simple really',
+    },
+  ],
+}
+
 export const eligibilityCriterion2: EligibilityCriterionProgress = {
   code: 'code-2',
   taskName: 'Answer the second 2 questions',
@@ -34,6 +48,26 @@ export const eligibilityCriterion2: EligibilityCriterionProgress = {
       name: 'question3',
       text: 'Please answer question 3',
       answer: null,
+      hint: 'its the last eligbility question!',
+    },
+  ],
+}
+
+export const eligibilityCriterion2Ineligible: EligibilityCriterionProgress = {
+  code: 'code-2',
+  taskName: 'Answer the second 2 questions',
+  status: 'INELIGIBLE',
+  questions: [
+    {
+      name: 'question2',
+      text: 'Please answer question 2',
+      answer: false,
+      hint: null,
+    },
+    {
+      name: 'question3',
+      text: 'Please answer question 3',
+      answer: false,
       hint: 'its the last eligbility question!',
     },
   ],
