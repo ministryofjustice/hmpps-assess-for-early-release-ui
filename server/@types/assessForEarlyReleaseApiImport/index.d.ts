@@ -129,6 +129,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/standard-address-check-request/{requestId}/resident': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Adds a resident to standard address check request for an assessment.
+     * @description Adds a resident to a standard address check request for an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    post: operations['addStandardAddressCheckRequestResident']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/cas-check-request': {
     parameters: {
       query?: never
@@ -233,6 +256,29 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     get: operations['getSuitabilityCheck']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/offender/{prisonNumber}/current-assessment/standard-address-check-request/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a standard address check request by it's request id.
+     * @description Gets a standard address check request by it's request id.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getStandardAddressCheckRequest']
     put?: never
     post?: never
     delete?: never
@@ -385,6 +431,7 @@ export interface components {
       /**
        * Format: date
        * @description The offender's home detention curfew eligibility date
+       * @example 2026-08-23
        */
       hdced: string
     }
@@ -480,13 +527,13 @@ export interface components {
        * Format: double
        * @description The address's x-coordinate
        */
-      xCoordinate?: number
+      xCoordinate: number
       /**
        * Format: double
        * @description The address's y-coordinate
        * @example 154111
        */
-      yCoordinate?: number
+      yCoordinate: number
       /**
        * Format: date
        * @description The date the address was last updated
@@ -496,6 +543,12 @@ export interface components {
     }
     /** @description Response object which describes a standard address check request */
     StandardAddressCheckRequestSummary: {
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -524,6 +577,93 @@ export interface components {
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       address: components['schemas']['AddressSummary']
+    }
+    /** @description Request for adding a resident to a standard address check request */
+    AddResidentRequest: {
+      /**
+       * @description The resident's forename
+       * @example Dave
+       */
+      forename: string
+      /**
+       * @description The resident's surname
+       * @example Jones
+       */
+      surname: string
+      /**
+       * @description The resident's phone number
+       * @example 07634183674
+       */
+      phoneNumber?: string
+      /**
+       * @description The resident's relation to the offender
+       * @example Mother
+       */
+      relation: string
+      /**
+       * Format: date
+       * @description The resident's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth?: string
+      /**
+       * Format: int32
+       * @description The resident's age
+       * @example 42
+       */
+      age?: number
+      /**
+       * @description Is this main resident at the address
+       * @example true
+       */
+      isMainResident: boolean
+    }
+    /** @description Response object which describes an assessment */
+    ResidentSummary: {
+      /**
+       * Format: int64
+       * @description A unique internal reference for the resident
+       * @example 87320
+       */
+      residentId: number
+      /**
+       * @description The resident's forename
+       * @example Dave
+       */
+      forename: string
+      /**
+       * @description The resident's surname
+       * @example Jones
+       */
+      surname: string
+      /**
+       * @description The resident's phone number
+       * @example 07634183674
+       */
+      phoneNumber?: string
+      /**
+       * @description The resident's relation to the offender
+       * @example Mother
+       */
+      relation: string
+      /**
+       * Format: date
+       * @description The resident's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth?: string
+      /**
+       * Format: int32
+       * @description The resident's age
+       * @example 42
+       */
+      age?: number
+      /**
+       * @description Is this main resident at the address
+       * @example true
+       */
+      isMainResident: boolean
+      standardAddressCheckRequest: components['schemas']['StandardAddressCheckRequestSummary']
     }
     /** @description Request for adding a CAS check request */
     AddCasCheckRequest: {
@@ -957,6 +1097,51 @@ export interface operations {
       }
     }
   }
+  addStandardAddressCheckRequestResident: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddResidentRequest']
+      }
+    }
+    responses: {
+      /** @description The resident has been added to the standard address check request. */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentSummary']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   addCasCheckRequest: {
     parameters: {
       query?: never
@@ -1124,6 +1309,47 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['SuitabilityCriterionView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getStandardAddressCheckRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the standard address check request with the specified request id */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['StandardAddressCheckRequestSummary']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */

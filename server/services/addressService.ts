@@ -1,6 +1,10 @@
 import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
-import type { AddressSummary, AddStandardAddressCheckRequest } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type {
+  AddResidentRequest,
+  AddressSummary,
+  AddStandardAddressCheckRequest,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class AddressService {
   constructor(
@@ -24,5 +28,20 @@ export default class AddressService {
   ) {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(prisonNumber, addStandardAddressCheckRequest)
+  }
+
+  public async getStandardAddressCheckRequest(token: string, prisonNumber: string, requestId: number) {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.getStandardAddressCheckRequest(prisonNumber, requestId)
+  }
+
+  public async addResident(
+    token: string,
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    addResidentRequest: AddResidentRequest,
+  ) {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.addResident(prisonNumber, addressCheckRequestId, addResidentRequest)
   }
 }

@@ -49,11 +49,21 @@ export default class SelectAddressRoutes {
       return validationErrors
     })
 
-    await this.addressService.addStandardAddressCheckRequest(req?.middleware?.clientToken, req.params.prisonNumber, {
-      preferencePriority: 'FIRST',
-      addressUprn: req.body.selectedAddressUprn,
-    })
-    return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
+    const checkRequestSummary = await this.addressService.addStandardAddressCheckRequest(
+      req?.middleware?.clientToken,
+      req.params.prisonNumber,
+      {
+        preferencePriority: 'FIRST',
+        addressUprn: req.body.selectedAddressUprn,
+      },
+    )
+
+    return res.redirect(
+      paths.prison.assessment.curfewAddress.addResidentDetails({
+        prisonNumber: req.params.prisonNumber,
+        checkRequestId: checkRequestSummary.requestId.toString(),
+      }),
+    )
   }
 
   private toAddressView(addresses: AddressSummary[]) {

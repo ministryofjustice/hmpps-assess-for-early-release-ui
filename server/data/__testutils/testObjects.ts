@@ -10,6 +10,8 @@ import {
   AddressSummary,
   AddStandardAddressCheckRequest,
   StandardAddressCheckRequestSummary,
+  ResidentSummary,
+  AddResidentRequest,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -219,6 +221,7 @@ const createAddStandardAddressCheckRequest = ({
 })
 
 const createStandardAddressCheckRequestSummary = ({
+  requestId = 1,
   caAdditionalInfo = '',
   ppAdditionalInfo = '',
   dateRequested = new Date('2024-11-05'),
@@ -226,12 +229,53 @@ const createStandardAddressCheckRequestSummary = ({
   status = 'IN_PROGRESS' as StandardAddressCheckRequestSummary['status'],
   address = createAddressSummary({}),
 } = {}): StandardAddressCheckRequestSummary => ({
+  requestId,
   caAdditionalInfo,
   ppAdditionalInfo,
   dateRequested,
   preferencePriority,
   status,
   address,
+})
+
+const createAddResidentRequest = ({
+  forename = 'Tommy',
+  surname = 'Johnson',
+  phoneNumber = '07527341960',
+  relation = 'mother',
+  dateOfBirth = '1985-03-31',
+  age = 38,
+  isMainResident = true,
+} = {}): AddResidentRequest => ({
+  forename,
+  surname,
+  phoneNumber,
+  relation,
+  dateOfBirth,
+  age,
+  isMainResident,
+})
+
+const createResidentSummary = ({
+  residentId = 4,
+  forename = 'Tommy',
+  surname = 'Johnson',
+  phoneNumber = '07527341960',
+  relation = 'mother',
+  dateOfBirth = parseIsoDate('1985-03-31'),
+  age = 38,
+  isMainResident = true,
+  standardAddressCheckRequest = createStandardAddressCheckRequestSummary({}),
+} = {}): ResidentSummary => ({
+  residentId,
+  forename,
+  surname,
+  phoneNumber,
+  relation,
+  dateOfBirth,
+  age,
+  isMainResident,
+  standardAddressCheckRequest,
 })
 
 export {
@@ -247,4 +291,6 @@ export {
   createAddressSummary,
   createAddStandardAddressCheckRequest,
   createStandardAddressCheckRequestSummary,
+  createAddResidentRequest,
+  createResidentSummary,
 }

@@ -17,6 +17,7 @@ const curfewAddress = assessmentHome.path('curfew-address')
 const findAddress = curfewAddress.path('find-address')
 const selectAddress = curfewAddress.path('select-address')
 const noAddressFound = curfewAddress.path('no-address-found')
+const addResidentDetails = curfewAddress.path('resident-details/:checkRequestId')
 
 const paths = {
   support: {
@@ -37,6 +38,7 @@ const paths = {
         findAddress,
         selectAddress,
         noAddressFound,
+        addResidentDetails,
       },
     },
   },
