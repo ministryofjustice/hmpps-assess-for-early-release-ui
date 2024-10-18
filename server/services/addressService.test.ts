@@ -2,8 +2,10 @@ import AddressService from './addressService'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { AddressSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
+  createAddResidentRequest,
   createAddressSummary,
   createAddStandardAddressCheckRequest,
+  createResidentSummary,
   createStandardAddressCheckRequestSummary,
 } from '../data/__testutils/testObjects'
 
@@ -81,5 +83,32 @@ describe('Address Service', () => {
 
     expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
     expect(result).toEqual(requestSummary)
+  })
+
+  it('Gets a standard address check request', async () => {
+    const prisonNumber = 'A1234AE'
+    const requestId = 49
+
+    const requestSummary = createStandardAddressCheckRequestSummary()
+    assessForEarlyReleaseApiClient.getStandardAddressCheckRequest.mockResolvedValue(requestSummary)
+
+    const result = await addressService.getStandardAddressCheckRequest(token, prisonNumber, requestId)
+
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(result).toEqual(requestSummary)
+  })
+
+  it('Adds a resident', async () => {
+    const prisonNumber = 'A1234AE'
+    const requestId = 49
+
+    const addResidentRequest = createAddResidentRequest()
+    const residentSummary = createResidentSummary()
+    assessForEarlyReleaseApiClient.addResident.mockResolvedValue(residentSummary)
+
+    const result = await addressService.addResident(token, prisonNumber, requestId, addResidentRequest)
+
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(result).toEqual(residentSummary)
   })
 })

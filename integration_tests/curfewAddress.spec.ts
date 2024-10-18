@@ -7,11 +7,11 @@ import paths from '../server/routes/paths'
 import { AddressSummary } from '../server/@types/assessForEarlyReleaseApiClientTypes'
 import playwrightConfig from '../playwright.config'
 
-test.describe('Search for an address', () => {
+test.describe('Can add a curfew address and a main resident', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
-  test('Case admin can find and select an address ', async ({ page }) => {
+  test('Case admin can find and select an address and then add a resident', async ({ page }) => {
     const prisonNumber = 'A1234AE'
     const postcode = 'RG11DB'
     const addressSummaries = [
@@ -56,6 +56,8 @@ test.describe('Search for an address', () => {
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubGetAddressesForPostcode(postcode, addressSummaries)
     await assessForEarlyRelease.stubAddStandardAddressCheckRequest(prisonNumber)
+    await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, 1)
+    await assessForEarlyRelease.stubAddStandardAddressCheckRequestResident(prisonNumber, 1)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
@@ -65,6 +67,20 @@ test.describe('Search for an address', () => {
 
     await page.getByTestId('address-1').click()
     await page.getByTestId('useThisAddress').click()
+
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}/prison/assessment/A1234AE/curfew-address/resident-details/1`,
+    )
+
+    const forename = 'Bob'
+    const surname = 'Carragher'
+    const relation = 'sister'
+    const age = '53'
+    await page.getByTestId('resident-forename').fill(forename)
+    await page.getByTestId('resident-surname').fill(surname)
+    await page.getByTestId('resident-relation').fill(relation)
+    await page.getByTestId('resident-age').fill(age)
+    await page.getByTestId('addResidentContinue').click()
 
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}/prison/assessment/A1234AE`)
   })

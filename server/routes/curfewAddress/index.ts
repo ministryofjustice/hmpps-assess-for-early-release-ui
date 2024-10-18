@@ -8,6 +8,7 @@ import paths from '../paths'
 import { Services } from '../../services'
 import SelectAddressRoutes from './selectAddress'
 import NoAddressFoundRoutes from './noAddressFound'
+import AddResidentDetailsRoutes from './addResidentDetails'
 
 export default function Index({ addressService, caseAdminCaseloadService }: Services): Router {
   const router = Router()
@@ -28,6 +29,10 @@ export default function Index({ addressService, caseAdminCaseloadService }: Serv
 
   const noAddressFoundHandler = new NoAddressFoundRoutes(caseAdminCaseloadService)
   get(paths.prison.assessment.curfewAddress.noAddressFound, noAddressFoundHandler.GET)
+
+  const addResidentDetailsHandler = new AddResidentDetailsRoutes(addressService, caseAdminCaseloadService)
+  get(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.GET)
+  post(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.POST)
 
   return router
 }

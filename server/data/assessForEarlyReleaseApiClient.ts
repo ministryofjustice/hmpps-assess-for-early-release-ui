@@ -1,21 +1,24 @@
 import type {
-  _AssessmentSummary,
-  AssessmentSummary,
-  _OffenderSummary,
-  OffenderSummary,
-  OptOutRequest,
-  EligibilityCriterionView,
-  _EligibilityCriterionView,
-  SuitabilityCriterionView,
-  _SuitabilityCriterionView,
-  EligibilityAndSuitabilityCaseView,
-  _EligibilityAndSuitabilityCaseView,
-  CriterionCheck,
   _AddressSummary,
+  _AssessmentSummary,
+  _EligibilityAndSuitabilityCaseView,
+  _EligibilityCriterionView,
+  _OffenderSummary,
+  _ResidentSummary,
+  _StandardAddressCheckRequestSummary,
+  _SuitabilityCriterionView,
+  AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
+  AssessmentSummary,
+  CriterionCheck,
+  EligibilityAndSuitabilityCaseView,
+  EligibilityCriterionView,
+  OffenderSummary,
+  OptOutRequest,
+  ResidentSummary,
   StandardAddressCheckRequestSummary,
-  _StandardAddressCheckRequestSummary,
+  SuitabilityCriterionView,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -139,6 +142,46 @@ export default class AssessForEarlyReleaseApiClient {
       address: {
         ...requestSummary.address,
         addressLastUpdated: parseIsoDate(requestSummary.address.addressLastUpdated),
+      },
+    }
+  }
+
+  async getStandardAddressCheckRequest(
+    prisonNumber: string,
+    requestId: number,
+  ): Promise<StandardAddressCheckRequestSummary> {
+    const requestSummary = await this.restClient.get<_StandardAddressCheckRequestSummary>({
+      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}`,
+    })
+    return {
+      ...requestSummary,
+      dateRequested: parseIsoDate(requestSummary.dateRequested),
+      address: {
+        ...requestSummary.address,
+        addressLastUpdated: parseIsoDate(requestSummary.address.addressLastUpdated),
+      },
+    }
+  }
+
+  async addResident(
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    addResidentRequest: AddResidentRequest,
+  ): Promise<ResidentSummary> {
+    const residentSummary = (await this.restClient.post<_ResidentSummary>({
+      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
+      data: addResidentRequest,
+    })) as _ResidentSummary
+    return {
+      ...residentSummary,
+      dateOfBirth: parseIsoDate(residentSummary.dateOfBirth),
+      standardAddressCheckRequest: {
+        ...residentSummary.standardAddressCheckRequest,
+        dateRequested: parseIsoDate(residentSummary.standardAddressCheckRequest.dateRequested),
+        address: {
+          ...residentSummary.standardAddressCheckRequest.address,
+          addressLastUpdated: parseIsoDate(residentSummary.standardAddressCheckRequest.address.addressLastUpdated),
+        },
       },
     }
   }

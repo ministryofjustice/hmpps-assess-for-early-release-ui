@@ -1,4 +1,8 @@
-import { createAddressSummary, createAssessmentSummary } from '../../data/__testutils/testObjects'
+import {
+  createAddressSummary,
+  createAssessmentSummary,
+  createStandardAddressCheckRequestSummary,
+} from '../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import { convertToTitleCase } from '../../utils/utils'
@@ -19,6 +23,7 @@ describe('select address routes', () => {
   beforeEach(() => {
     selectAddressRoutes = new SelectAddressRoutes(addressService, caseAdminCaseloadService)
     addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
+    addressService.addStandardAddressCheckRequest.mockResolvedValue(createStandardAddressCheckRequestSummary({}))
     caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
   })
 
@@ -81,7 +86,12 @@ describe('select address routes', () => {
         },
       )
 
-      expect(res.redirect).toHaveBeenCalledWith(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
+      expect(res.redirect).toHaveBeenCalledWith(
+        paths.prison.assessment.curfewAddress.addResidentDetails({
+          prisonNumber: req.params.prisonNumber,
+          checkRequestId: '1',
+        }),
+      )
     })
   })
 })

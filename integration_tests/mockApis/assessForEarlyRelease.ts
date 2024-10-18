@@ -159,6 +159,7 @@ const stubAddStandardAddressCheckRequest = (prisonNumber: string) =>
       status: 200,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: {
+        requestId: 1,
         dateRequested: '2024-10-09',
         preferencePriority: 'FIRST',
         status: 'IN_PROGRESS',
@@ -178,6 +179,74 @@ const stubAddStandardAddressCheckRequest = (prisonNumber: string) =>
     },
   })
 
+const stubGetStandardAddressCheckRequest = (prisonNumber: string, requestId: number) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        requestId: 1,
+        dateRequested: '2024-10-09',
+        preferencePriority: 'FIRST',
+        status: 'IN_PROGRESS',
+        address: {
+          uprn: '310010433',
+          firstLine: '97, HARTLAND ROAD',
+          secondLine: '',
+          town: 'READING',
+          county: 'READING',
+          postcode: 'RG2 8AF',
+          country: 'England',
+          xCoordinate: 472219,
+          yCoordinate: 170067,
+          addressLastUpdated: '2020-06-25',
+        },
+      },
+    },
+  })
+
+const stubAddResident = (prisonNumber: string, requestId: number) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}/resident`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        residentId: 1,
+        forename: 'Josie',
+        surname: 'Roberts',
+        relation: 'mother',
+        age: 97,
+        isMainResident: true,
+        standardAddressCheckRequest: {
+          requestId: 1,
+          dateRequested: '2024-10-09',
+          preferencePriority: 'FIRST',
+          status: 'IN_PROGRESS',
+          address: {
+            uprn: '310010433',
+            firstLine: '97, HARTLAND ROAD',
+            secondLine: '',
+            town: 'READING',
+            county: 'READING',
+            postcode: 'RG2 8AF',
+            country: 'England',
+            xCoordinate: 472219,
+            yCoordinate: 170067,
+            addressLastUpdated: '2020-06-25',
+          },
+        },
+      },
+    },
+  })
+
 export default {
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,
@@ -188,4 +257,6 @@ export default {
   getSubmittedEligibilityChecks,
   stubGetAddressesForPostcode,
   stubAddStandardAddressCheckRequest,
+  stubGetStandardAddressCheckRequest,
+  stubAddStandardAddressCheckRequestResident: stubAddResident,
 }

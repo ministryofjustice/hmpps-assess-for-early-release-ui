@@ -40,6 +40,9 @@ export type StandardAddressCheckRequestSummary = ParsingDates<
   _StandardAddressCheckRequestSummary,
   'dateRequested' | 'addressLastUpdated'
 >
+export type AddResidentRequest = components['schemas']['AddResidentRequest']
+export type _ResidentSummary = components['schemas']['ResidentSummary']
+export type ResidentSummary = ParsingDates<_ResidentSummary, 'dateOfBirth' | 'dateRequested' | 'addressLastUpdated'>
 
 export type EligibilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['eligibilityStatus']
 export type SuitabilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['suitabilityStatus']
