@@ -56,7 +56,10 @@
                     autocomplete: "given-name",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('forename'),
-                    value: submittedForm.forename
+                    value: submittedForm.forename,
+                    attributes: {
+                        'data-qa': 'resident-forename'
+                    }
                 }) }}
                 {{ govukInput({
                     id: 'surname',
@@ -67,7 +70,10 @@
                     autocomplete: "family-name",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('surname'),
-                    value: submittedForm.surname
+                    value: submittedForm.surname,
+                    attributes: {
+                        'data-qa': 'resident-surname'
+                    }
                 }) }}
                 {{ govukInput({
                     id: 'phoneNumber',
@@ -88,7 +94,10 @@
                     name: "relation",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('relation'),
-                    value: submittedForm.relation
+                    value: submittedForm.relation,
+                    attributes: {
+                        'data-qa': 'resident-relation'
+                    }
                 }) }}
                 {{ govukDateInput({
                     id: "dateOfBirth",
@@ -112,7 +121,10 @@
                     name: "age",
                     classes: 'govuk-input govuk-input--width-3',
                     errorMessage: validationErrors | findError('age'),
-                    value: submittedForm.age
+                    value: submittedForm.age,
+                    attributes: {
+                        'data-qa': 'resident-age'
+                    }
                 }) }}
                 <div class="moj-button-action govuk-!-margin-top-4">
                     {{ govukButton({
@@ -125,7 +137,7 @@
                         text: "Continue",
                         preventDoubleClick: true,
                         attributes: {
-                            "data-qa": "addResidentContinue"
+                            'data-qa': 'addResidentContinue'
                         }
                     }) }}
                 </div>

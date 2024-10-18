@@ -57,6 +57,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     await assessForEarlyRelease.stubGetAddressesForPostcode(postcode, addressSummaries)
     await assessForEarlyRelease.stubAddStandardAddressCheckRequest(prisonNumber)
     await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, 1)
+    await assessForEarlyRelease.stubAddStandardAddressCheckRequestResident(prisonNumber, 1)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
@@ -70,5 +71,17 @@ test.describe('Can add a curfew address and a main resident', () => {
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}/prison/assessment/A1234AE/curfew-address/resident-details/1`,
     )
+
+    const forename = 'Bob'
+    const surname = 'Carragher'
+    const relation = 'sister'
+    const age = '53'
+    await page.getByTestId('resident-forename').fill(forename)
+    await page.getByTestId('resident-surname').fill(surname)
+    await page.getByTestId('resident-relation').fill(relation)
+    await page.getByTestId('resident-age').fill(age)
+    await page.getByTestId('addResidentContinue').click()
+
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}/prison/assessment/A1234AE`)
   })
 })
