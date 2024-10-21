@@ -1,0 +1,65 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+
+{% set pageTitle = applicationName + " - More information required check" %}
+{% set backLinkHref = "/" %}¡
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        {% include 'partials/errorSummary.njk' %}
+        {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+        {% set addMoreInfo %}
+            {{ govukTextarea({
+                id: "add-more-info",
+                name: "addMoreInfo",
+                label: {
+                    text: "Add more information"
+                }
+            }) }}
+        {% endset -%}
+        <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            {{ govukRadios({
+                idPrefix: "radio-option",
+                name:  "moreInfoRequiredCheck",
+                fieldset: {
+                    legend: {
+                        text: "Do you need to enter any more information?",
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--l"
+                    }
+                },
+                hint: {
+                    html: "For example, anything the probation practitioner might need to know about this person’s choice."
+                },
+                items: [
+                    {
+                        value: "yes",
+                        text: "Yes",
+                        conditional: {
+                            html: addMoreInfo
+                        }
+                    },
+                    {
+                        value: "no",
+                        text: "No"
+                    }
+                ],
+                errorMessage: errors | findError("moreInfoRequiredCheck")
+            }) }}
+
+            {{ govukButton({
+                text: "Continue",
+                type: "submit",
+                preventDoubleClick: true,
+                attributes: { 'data-qa': 'continue' }
+            }) }}
+        </form>
+    </div>
+</div>
+{% endblock %}
