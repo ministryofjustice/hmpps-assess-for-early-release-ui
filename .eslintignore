@@ -4,3 +4,4 @@ assets
 test_results
 reporter-config.json
 dist/
+playwright-report
