@@ -76,7 +76,7 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.669.0",
+    "@aws-sdk/client-sqs": "^3.675.0",
     "@ministryofjustice/frontend": "^2.2.4",
     "agentkeepalive": "^4.5.0",
     "applicationinsights": "^2.9.5",
@@ -89,7 +89,7 @@
     "date-fns": "^4.1.0",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
-    "govuk-frontend": "^5.7.0",
+    "govuk-frontend": "^5.7.1",
     "helmet": "^8.0.0",
     "http-errors": "^2.0.0",
     "jquery-ui-dist": "^1.13.3",
@@ -100,13 +100,13 @@
     "passport-oauth2": "^1.8.0",
     "redis": "^4.7.0",
     "static-path": "^0.0.4",
-    "superagent": "^10.1.0",
+    "superagent": "^10.1.1",
     "url-value-parser": "^2.2.0"
   },
   "devDependencies": {
     "@golevelup/ts-jest": "^0.5.6",
     "@jgoz/esbuild-plugin-typecheck": "^4.0.1",
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.48.1",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
     "@types/compression": "^1.7.5",
@@ -126,14 +126,14 @@
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "audit-ci": "^7.1.0",
-    "aws-sdk-client-mock": "^4.0.2",
+    "aws-sdk-client-mock": "^4.1.0",
     "cheerio": "^1.0.0",
     "chokidar": "^3.6.0",
     "concurrently": "^9.0.1",
     "esbuild": "^0.23.0",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-copy": "^2.1.1",
-    "esbuild-plugin-manifest": "^1.0.4",
+    "esbuild-plugin-manifest": "^1.0.5",
     "esbuild-sass-plugin": "^3.3.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -157,5 +157,10 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "csurf": {
+      "cookie": "0.7.2"
+    }
   }
 }
