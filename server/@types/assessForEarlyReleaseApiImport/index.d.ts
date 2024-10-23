@@ -379,6 +379,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-request/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes an address check request for an assessment.
+     * @description Deletes an address check request for an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    delete: operations['deleteAddressCheckRequest']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -404,36 +427,6 @@ export interface components {
        * @example Reason for the offending opting out
        */
       otherDescription?: string
-    }
-    /** @description Response object which describes an offender */
-    OffenderSummary: {
-      /**
-       * @description The offender's prisoner number
-       * @example A1234AA
-       */
-      prisonNumber: string
-      /**
-       * Format: int64
-       * @description The offender's booking id
-       * @example 773722
-       */
-      bookingId: number
-      /**
-       * @description The offender's first name
-       * @example Bob
-       */
-      forename?: string
-      /**
-       * @description The offender's surname
-       * @example Smith
-       */
-      surname?: string
-      /**
-       * Format: date
-       * @description The offender's home detention curfew eligibility date
-       * @example 2026-08-23
-       */
-      hdced: string
     }
     ErrorResponse: {
       /** Format: int32 */
@@ -527,13 +520,13 @@ export interface components {
        * Format: double
        * @description The address's x-coordinate
        */
-      xCoordinate: number
+      xCoordinate?: number
       /**
        * Format: double
        * @description The address's y-coordinate
        * @example 154111
        */
-      yCoordinate: number
+      yCoordinate?: number
       /**
        * Format: date
        * @description The date the address was last updated
@@ -728,6 +721,36 @@ export interface components {
       messagesReturnedCount: number
       messages: components['schemas']['DlqMessage'][]
     }
+    /** @description Response object which describes an offender */
+    OffenderSummary: {
+      /**
+       * @description The offender's prisoner number
+       * @example A1234AA
+       */
+      prisonNumber: string
+      /**
+       * Format: int64
+       * @description The offender's booking id
+       * @example 773722
+       */
+      bookingId: number
+      /**
+       * @description The offender's first name
+       * @example Bob
+       */
+      forename?: string
+      /**
+       * @description The offender's surname
+       * @example Smith
+       */
+      surname?: string
+      /**
+       * Format: date
+       * @description The offender's home detention curfew eligibility date
+       * @example 2026-08-23
+       */
+      hdced: string
+    }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
       /**
@@ -794,6 +817,29 @@ export interface components {
        * @example 1.0
        */
       policyVersion: string
+      /** @description The status of tasks that make up this assessment */
+      tasks: components['schemas']['TaskProgress'][]
+    }
+    /** @description The progress on a task */
+    TaskProgress: {
+      /**
+       * @description The name of an outstanding task
+       * @example ASSESS_ELIGIBILITY
+       * @enum {string}
+       */
+      name:
+        | 'ASSESS_ELIGIBILITY'
+        | 'ENTER_CURFEW_ADDRESS'
+        | 'COMPLETE_PRE_RELEASE_CHECKS'
+        | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
+        | 'PREPARE_FOR_RELEASE'
+        | 'PRINT_LICENCE'
+      /**
+       * @description The state of this task for a specific assessment
+       * @example Smith
+       * @enum {string}
+       */
+      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
     }
     /** @description A question that is asked by the user */
     Question: {
@@ -875,12 +921,15 @@ export interface components {
     /** @description A view on the progress of suitability and eligibility criteria for a specific case */
     EligibilityAndSuitabilityCaseView: {
       assessmentSummary: components['schemas']['AssessmentSummary']
-      /** @description all eligibility checks ELIGIBLE, or any eligibility check INELIGIBLE */
-      complete: boolean
-      /** @description eligibility status = ELIGIBLE and suitability status = SUITABLE */
-      checksPassed: boolean
+      /**
+       * @description Overall status of eligibility assessment
+       * @example IN_PROGRESS
+       * @enum {string}
+       */
+      overallStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
       /**
        * @description state of current eligibility checks
+       * @example NOT_STARTED
        * @enum {string}
        */
       eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
@@ -888,6 +937,7 @@ export interface components {
       eligibility: components['schemas']['EligibilityCriterionProgress'][]
       /**
        * @description state of current suitability checks
+       * @example NOT_STARTED
        * @enum {string}
        */
       suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
@@ -988,7 +1038,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['OffenderSummary'][]
+          'application/json': unknown
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
@@ -1133,6 +1183,15 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description A standard address check request with the specified request id does not exist for the offender */
+      404: {
         headers: {
           [name: string]: unknown
         }
@@ -1370,6 +1429,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
+      /** @description A standard address check request with the specified request id does not exist for the offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
     }
   }
   getEligibilityCriterion: {
@@ -1524,6 +1592,56 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAddressCheckRequest: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description The address check request has been deleted. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender */
+      404: {
         headers: {
           [name: string]: unknown
         }
