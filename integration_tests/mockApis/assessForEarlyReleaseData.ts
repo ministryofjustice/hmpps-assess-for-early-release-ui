@@ -100,4 +100,11 @@ export const assessmentSummary = (
   location: 'BMI',
   status,
   policyVersion: '1.0',
+  tasks: [
+    { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+    { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+    { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+    { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+    { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+  ],
 })
