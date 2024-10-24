@@ -163,6 +163,12 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
+  async deleteAddressCheckRequest(prisonNumber: string, requestId: number) {
+    return this.restClient.delete({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
+    })
+  }
+
   async addResident(
     prisonNumber: string,
     addressCheckRequestId: number,

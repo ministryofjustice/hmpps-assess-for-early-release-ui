@@ -1,0 +1,106 @@
+{% extends "layout.njk" %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+
+{% set pageTitle = applicationName + " - More information required check" %}
+{% set backLinkHref = "/" %}
+{% set addressCount = addresses.length %}
+{% set items = [] %}
+{% for address in addresses %}
+    {% set items = (items.push({
+                    key: {
+                        html: 'Preferred address: <br/>' + address.name if address.preferencePriority == 'FIRST' 
+                                else 'Second address: <br/>' + address.name
+                    },
+                    value: {
+                        html:  '<br/>'
+                    },
+                    classes: 'govuk-summary-list__row',
+                    actions: {
+                        items: [
+                            {
+                                href: "",
+                                text: "Change",
+                                visuallyHiddenText: "",
+                                classes: 'govuk-link govuk-link--no-visited-state'
+                            },
+                            {
+                                href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
+                                    checkRequestId:address.checkRequestId,
+                                    prisonNumber:prisonNumber
+                                }),
+                                text: "Remove",
+                                visuallyHiddenText: "",
+                                attributes: { "data-qa": "delete-map-" + loop.index0 + "-link" },
+                                classes: 'govuk-link govuk-link--no-visited-state'
+                            }
+                        ]
+                    }
+                }), items) %}
+
+{% endfor %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                        You have added {% if addressCount == 1 %}one{% else %}{{ addressCount }}{% endif %} address{% if uploadCount > 1 %}es{% endif %}
+                    </h1>
+                    {{ govukSummaryList({
+                        rows: items
+                    }) }}
+                    <form method="POST">
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                <input type="hidden" name="assessmentId" value="{{ addresses[0].id}}">
+                                {{ govukRadios({
+                                    name: "uploadFile",
+                                    fieldset: {
+                                        legend: {
+                                            text: "Do you need to add another curfew address or CAS area?" if addressCount == 1 else "Do you need to add a CAS area?",
+                                            classes: "govuk-fieldset__legend--m"
+                                        }
+                                    },
+                                    hint: {
+                                        text: "You can enter one more curfew address and 2 CAS areas."
+                                    },
+                                    items: [
+                                        {
+                                            value: "Yes",
+                                            text: "Yes, add curfew address"
+                                        } if addressCount == 1,
+                                        {
+                                            value: "Yes",
+                                            text: "Yes, add CAS area"
+                                        },
+                                        {
+                                            value: "No",
+                                            text: "No"
+                                        }
+                                    ],
+                                    errorMessage: displayMessage
+                                }) }}
+
+                                <div class="govuk-button-group">
+                                    {{ govukButton({
+                                        text: "Continue",
+                                        type: "submit",
+                                        classes: 'govuk-!-margin-top-6',
+                                        attributes: { 'data-qa': 'continue' }
+                                    }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+{% endblock %}
