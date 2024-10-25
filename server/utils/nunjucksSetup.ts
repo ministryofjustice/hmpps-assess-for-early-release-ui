@@ -4,13 +4,14 @@ import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { Params, Path } from 'static-path'
-import { formatDate, initialiseName, toIsoDate } from './utils'
+import { convertToTitleCase, formatDate, initialiseName, toIsoDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
 import paths from '../routes/paths'
 import { FieldValidationError } from '../@types/FieldValidationError'
-import { EligibilityStatus, SuitabilityStatus } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { AssessmentSummary, EligibilityStatus, SuitabilityStatus } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { tasks } from '../config/tasks'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -89,12 +90,27 @@ export function registerNunjucks(app?: express.Express): Environment {
   njkEnv.addGlobal('coalesce', (...args: unknown[]) => args.find(item => item !== null && item !== undefined))
   njkEnv.addFilter('safeToString', (val: unknown) => (val !== null && val !== undefined ? val.toString() : val))
 
+  njkEnv.addFilter('find', (vals: Record<string, unknown>[], attributeName, valueToFind: unknown) =>
+    !vals ? [] : vals.find(val => val[attributeName] === valueToFind),
+  )
+  njkEnv.addFilter('filter', (vals: Record<string, unknown>[], attributeName, valueToFind: unknown) =>
+    !vals ? [] : vals.filter(val => val[attributeName] === valueToFind),
+  )
+  njkEnv.addFilter('attr', (vals: Record<string, unknown>[], attributeName) =>
+    !vals ? [] : vals.map(val => val[attributeName]),
+  )
+
+  njkEnv.addFilter('toFullName', (assessmentSummary: AssessmentSummary) =>
+    convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
+  )
+
   njkEnv.addFilter(
     'dumpJson',
     (val: string) => new nunjucks.runtime.SafeString(`<pre>${JSON.stringify(val, null, 2)}</pre>`),
   )
 
   njkEnv.addGlobal('paths', paths)
+  njkEnv.addGlobal('tasksList', tasks)
 
   njkEnv.addGlobal('eligibilityChecks', {
     eligibilityLabel: (status: EligibilityStatus) => {

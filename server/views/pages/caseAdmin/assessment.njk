@@ -14,7 +14,7 @@
             {% if assessmentSummary.status == 'OPTED_OUT' %}
                 {{ mojBanner({
                     type: 'success',
-                    text: assessmentSummary.name + " has opted out of HDC",
+                    text: assessmentSummary | toFullName + " has opted out of HDC",
                     iconFallbackText: 'Success',
                     attributes: {
                         "data-qa": "optedOutOfHdcBanner"
@@ -27,7 +27,7 @@
             {{ personalDetails(assessmentSummary) }}
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ actions(optOutLink) }}
+            {{ actions(paths.prison.assessment.optOutCheck({ prisonNumber: assessmentSummary.prisonNumber })) }}
         </div>
         <div class="govuk-grid-column-full">
             {{ tasks(assessmentSummary) }}

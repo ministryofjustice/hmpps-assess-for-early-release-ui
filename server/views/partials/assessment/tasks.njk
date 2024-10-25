@@ -2,36 +2,84 @@
 {%- from "moj/components/ticket-panel/macro.njk" import mojTicketPanel -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{%  macro ticket(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.name}}</h2>
+{%  macro readyToStart(params) %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
+  <p></p>
   {{ govukButton({
-    text: params.action,
-    href: params.href,
+    text: 'Start',
+    href: params.task.path(params.assessment),
     classes: "govuk-!-margin-bottom-1"
   }) }}
 {% endmacro %}
 
+{% macro locked(params) %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}</h2>
+  <p>{{params.task.lockedDescription(params.assessment)}}</p>
+{% endmacro %}
+
+{%  macro complete(params) %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--green">Completed</span></h2>
+  <p></p>
+  <a class="govuk-link govuk-link--no-visited-state" href="{{params.task.path(params.assessment)}}">View or change</a>
+{% endmacro %}
+
+{% macro taskContent(params) %}
+  {% switch params.state %}
+    {% case 'READY_TO_START' %}
+      {{ readyToStart(params) }}
+    {% case 'LOCKED' %}
+      {{ locked(params) }}
+    {% case 'COMPLETE' %}
+      {{ complete(params) }}
+    {% default %}
+      {{ params.state }} state not yet supported 
+  {% endswitch %}
+{% endmacro %}
+
+{%- macro ticketPanelColour(state) -%}
+  {% switch state %}
+    {%- case 'READY_TO_START' -%}
+      moj-ticket-panel__content--blue ready-to-start
+    {%- case 'LOCKED' -%}
+      moj-ticket-panel__content--grey locked
+    {%- case 'COMPLETE' -%}
+      moj-ticket-panel__content--green complete
+    {%- default -%}
+      {{ state }} not supported, add new tile 
+    {% endswitch %}  
+{%- endmacro -%}
+
 {%  macro tasks(params) %}
+  {% set tasksCards = [] %} 
+  {% for taskProgress in params.tasks %}
+      {% set task = tasksList | find('code', taskProgress.name) %}
+
+      {% set tasksCards = (tasksCards.push(
+        { 
+            html: taskContent({ 
+                task: task,
+                assessment: params,
+                state: taskProgress.progress
+            }),  
+            attributes: {
+                'data-qa': taskProgress.name,
+                'aria-label': params.task.title
+            },
+            classes: ticketPanelColour(taskProgress.progress)
+        }
+      ), tasksCards) %}
+  {% endfor %}
+ 
+    
     {% set tasksHtml %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Tasks</h1>
-
         {{ mojTicketPanel({
             attributes: {
-                'aria-label': 'Sub navigation 1'
+                'aria-label': 'Tasks'
             },
-            items: [{ 
-                html: ticket({ 
-                    name: 'Assess eligibility and suitability',
-                    href: paths.prison.assessment.initialChecks.tasklist | toPath(params),
-                    action: 'Start' 
-                }),  
-                attributes: {
-                'aria-label': 'Assess eligibility and suitability'
-                },
-                classes: 'moj-ticket-panel__content--blue'
-            }]
+            items: tasksCards
         }) }}
       </div>
     </div>

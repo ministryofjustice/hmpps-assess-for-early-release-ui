@@ -97,10 +97,12 @@ test.describe('Eligiblity checks', () => {
       anAssessmentSummary,
       [eligibilityCriterion1Completed, eligibilityCriterion2Ineligible],
       [suitabilityCriterion1],
+      'INELIGIBLE',
     )
 
     await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
 
+    expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
     expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
     expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
     expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')

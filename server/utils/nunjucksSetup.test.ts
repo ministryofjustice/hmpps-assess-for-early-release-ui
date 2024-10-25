@@ -74,6 +74,99 @@ describe('nunjucksSetup', () => {
     })
   })
 
+  describe('find', () => {
+    test('when undefined array:', () => {
+      const result = renderTemplate('{{- values | find("name", "bbb") -}}', {})
+      expect(result).toStrictEqual('')
+    })
+    test('when found:', () => {
+      const result = renderTemplate('{% set a = values | find("name", "bbb") %}{{a.age}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 30 },
+        ],
+      })
+      expect(result).toStrictEqual('20')
+    })
+    test('when not found:', () => {
+      const result = renderTemplate('{{- values | find("name", "ddd") -}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 30 },
+        ],
+      })
+      expect(result).toStrictEqual('')
+    })
+  })
+
+  describe('filter', () => {
+    test('when undefined array:', () => {
+      const result = renderTemplate('{{- values | filter("name", "bbb") -}}', {})
+      expect(result).toStrictEqual('')
+    })
+    test('when found:', () => {
+      const result = renderTemplate('{{ values | filter("age", 10) | length -}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 10 },
+        ],
+      })
+      expect(result).toStrictEqual('2')
+    })
+    test('when not found:', () => {
+      const result = renderTemplate('{{- values | filter("name", "ddd") -}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 30 },
+        ],
+      })
+      expect(result).toStrictEqual('')
+    })
+  })
+
+  describe('attr', () => {
+    test('when undefined array:', () => {
+      const result = renderTemplate('{{- values | filter("name", "bbb") -}}', {})
+      expect(result).toStrictEqual('')
+    })
+    test('when exists:', () => {
+      const result = renderTemplate('{{ values | attr("name") | join(" - ") -}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 10 },
+        ],
+      })
+      expect(result).toStrictEqual('aaa - bbb - ccc')
+    })
+    test('when does not exist:', () => {
+      const result = renderTemplate('{{- values | attr("colour") | join(" ") | trim  -}}', {
+        values: [
+          { name: 'aaa', age: 10 },
+          { name: 'bbb', age: 20 },
+          { name: 'ccc', age: 30 },
+        ],
+      })
+      expect(result).toStrictEqual('')
+    })
+  })
+
+  describe('toFullName', () => {
+    test('when does not exist:', () => {
+      expect(() => renderTemplate('{{- value | toFullName -}}', {})).toThrow()
+    })
+    test('when undefined array:', () => {
+      const result = renderTemplate('{{- value | toFullName -}}', {
+        value: { forename: 'JIM', surname: 'SMITH-BOOTH' },
+      })
+      expect(result).toStrictEqual('Jim Smith-Booth')
+    })
+  })
+
   describe('safeToString', () => {
     test('with undefinded:', () => {
       const result = renderTemplate('{{- undefined | safeToString -}}', {})
