@@ -5,15 +5,20 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 
-{% set pageTitle = applicationName + " - More information required check" %}
+{% set pageTitle = applicationName + " - More address checks" %}
 {% set backLinkHref = "/" %}
-{% set addressCount = addresses.length %}
+{% set addressCount = addressSummary.length %}
 {% set items = [] %}
-{% for address in addresses %}
+{% for data in addressSummary %}
     {% set items = (items.push({
                     key: {
-                        html: 'Preferred address: <br/>' + address.name if address.preferencePriority == 'FIRST' 
-                                else 'Second address: <br/>' + address.name
+                        html: 'Preferred address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
+                                data.address | formatListAsString +'</label>'
+                                if data.preferencePriority == 'FIRST' 
+                                else 
+                                'Second address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
+                                data.address | formatListAsString +'</label>',
+                        classes: 'govuk-!-width-two-thirds'
                     },
                     value: {
                         html:  '<br/>'
@@ -22,14 +27,17 @@
                     actions: {
                         items: [
                             {
-                                href: "",
+                                href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+                                    checkRequestId:data.requestId,
+                                    prisonNumber:prisonNumber
+                                }),
                                 text: "Change",
                                 visuallyHiddenText: "",
                                 classes: 'govuk-link govuk-link--no-visited-state'
                             },
                             {
                                 href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
-                                    checkRequestId:address.checkRequestId,
+                                    checkRequestId:data.requestId,
                                     prisonNumber:prisonNumber
                                 }),
                                 text: "Remove",
@@ -60,42 +68,41 @@
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
                         <div class="govuk-grid-row">
                             <div class="govuk-grid-column-full">
-                                <input type="hidden" name="assessmentId" value="{{ addresses[0].id}}">
                                 {{ govukRadios({
-                                    name: "uploadFile",
+                                    name: "moreAddressChecks",
                                     fieldset: {
                                         legend: {
-                                            text: "Do you need to add another curfew address or CAS area?" if addressCount == 1 else "Do you need to add a CAS area?",
+                                            text: "Do you need to add another curfew address?",
                                             classes: "govuk-fieldset__legend--m"
                                         }
                                     },
                                     hint: {
-                                        text: "You can enter one more curfew address and 2 CAS areas."
+                                        text: "You can enter one more curfew address."
                                     },
                                     items: [
                                         {
-                                            value: "Yes",
-                                            text: "Yes, add curfew address"
-                                        } if addressCount == 1,
-                                        {
-                                            value: "Yes",
-                                            text: "Yes, add CAS area"
+                                            value: "yes",
+                                            text: "Yes"
                                         },
                                         {
-                                            value: "No",
+                                            value: "no",
                                             text: "No"
                                         }
                                     ],
                                     errorMessage: displayMessage
-                                }) }}
+                                }) if addressCount == 1 }} 
 
                                 <div class="govuk-button-group">
                                     {{ govukButton({
                                         text: "Continue",
                                         type: "submit",
-                                        classes: 'govuk-!-margin-top-6',
                                         attributes: { 'data-qa': 'continue' }
-                                    }) }}
+                                    }) if addressCount == 1 }}
+
+                                     {{ govukButton({
+                                        text: "Check your answers",
+                                        href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: prisonNumber })
+                                    }) if addressCount > 1 }}
                                 </div>
                             </div>
                         </div>

@@ -171,5 +171,15 @@ export function registerNunjucks(app?: express.Express): Environment {
     return staticPath(params)
   })
 
+  njkEnv.addFilter('formatListAsString', (list: { [key: string]: string }): string => {
+    if (list) {
+      return Object.keys(list)
+        .map(i => list[i])
+        .filter(Boolean)
+        .join(', ')
+    }
+    return ''
+  })
+
   return njkEnv
 }

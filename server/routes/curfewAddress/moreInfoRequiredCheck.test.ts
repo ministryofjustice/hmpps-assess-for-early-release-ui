@@ -54,7 +54,6 @@ describe('POST', () => {
     expect(res.redirect).toHaveBeenCalledWith(
       paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
         prisonNumber: req.params.prisonNumber,
-        checkRequestId: req.params.checkRequestId,
       }),
     )
   })

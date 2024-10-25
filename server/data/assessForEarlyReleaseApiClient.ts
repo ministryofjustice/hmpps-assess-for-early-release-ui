@@ -1,6 +1,7 @@
 import type {
   _AddressSummary,
   _AssessmentSummary,
+  _CheckRequestSummary,
   _EligibilityAndSuitabilityCaseView,
   _EligibilityCriterionView,
   _OffenderSummary,
@@ -11,6 +12,7 @@ import type {
   AddressSummary,
   AddStandardAddressCheckRequest,
   AssessmentSummary,
+  CheckRequestSummary,
   CriterionCheck,
   EligibilityAndSuitabilityCaseView,
   EligibilityCriterionView,
@@ -166,6 +168,23 @@ export default class AssessForEarlyReleaseApiClient {
   async deleteAddressCheckRequest(prisonNumber: string, requestId: number) {
     return this.restClient.delete({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
+    })
+  }
+
+  async getCheckRequestsForAssessment(prisonNumber: string): Promise<CheckRequestSummary[]> {
+    const requestSummary = await this.restClient.get<_CheckRequestSummary[]>({
+      path: `/offender/${prisonNumber}/current-assessment/address-check-requests`,
+    })
+
+    return requestSummary.map(c => {
+      return {
+        ...c,
+        dateRequested: parseIsoDate(c.dateRequested),
+        address: {
+          ...c.address,
+          addressLastUpdated: parseIsoDate(c.address.addressLastUpdated),
+        },
+      }
     })
   }
 
