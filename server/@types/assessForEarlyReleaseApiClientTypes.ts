@@ -40,6 +40,11 @@ export type StandardAddressCheckRequestSummary = ParsingDates<
   _StandardAddressCheckRequestSummary,
   'dateRequested' | 'addressLastUpdated'
 >
+export type _CasCheckRequestSummary = components['schemas']['CasCheckRequestSummary']
+export type CasCheckRequestSummary = ParsingDates<_CasCheckRequestSummary, 'dateRequested' | 'addressLastUpdated'>
+export type _CheckRequestSummary = components['schemas']['CheckRequestSummary']
+export type CheckRequestSummary = ParsingDates<_CheckRequestSummary, 'dateRequested' | 'addressLastUpdated'>
+
 export type AddResidentRequest = components['schemas']['AddResidentRequest']
 export type _ResidentSummary = components['schemas']['ResidentSummary']
 export type ResidentSummary = ParsingDates<_ResidentSummary, 'dateOfBirth' | 'dateRequested' | 'addressLastUpdated'>

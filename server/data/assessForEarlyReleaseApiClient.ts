@@ -1,6 +1,7 @@
-import type {
+import {
   _AddressSummary,
   _AssessmentSummary,
+  _CheckRequestSummary,
   _EligibilityAndSuitabilityCaseView,
   _EligibilityCriterionView,
   _OffenderSummary,
@@ -11,6 +12,7 @@ import type {
   AddressSummary,
   AddStandardAddressCheckRequest,
   AssessmentSummary,
+  CheckRequestSummary,
   CriterionCheck,
   EligibilityAndSuitabilityCaseView,
   EligibilityCriterionView,
@@ -161,6 +163,32 @@ export default class AssessForEarlyReleaseApiClient {
         addressLastUpdated: parseIsoDate(requestSummary.address.addressLastUpdated),
       },
     }
+  }
+
+  async getAddressCheckRequestsForAssessment(prisonNumber: string): Promise<CheckRequestSummary[]> {
+    const checkRequests = await this.restClient.get<_CheckRequestSummary[]>({
+      path: `/offender/${prisonNumber}/current-assessment/address-check-requests`,
+    })
+    return checkRequests.map(request => {
+      if (request.requestType === 'CAS') {
+        return {
+          ...request,
+          dateRequested: parseIsoDate(request.dateRequested),
+          allocatedAddress: {
+            ...request.address,
+            addressLastUpdated: parseIsoDate(request.address.addressLastUpdated),
+          },
+        }
+      }
+      return {
+        ...request,
+        dateRequested: parseIsoDate(request.dateRequested),
+        address: {
+          ...request.address,
+          addressLastUpdated: parseIsoDate(request.address.addressLastUpdated),
+        },
+      }
+    })
   }
 
   async addResident(

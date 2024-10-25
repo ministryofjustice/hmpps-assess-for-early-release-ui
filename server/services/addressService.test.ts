@@ -5,6 +5,7 @@ import {
   createAddResidentRequest,
   createAddressSummary,
   createAddStandardAddressCheckRequest,
+  createCasCheckRequestSummary,
   createResidentSummary,
   createStandardAddressCheckRequestSummary,
 } from '../data/__testutils/testObjects'
@@ -12,6 +13,7 @@ import {
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const prisonNumber = 'A1234AE'
 
 describe('Address Service', () => {
   let addressService: AddressService
@@ -73,7 +75,6 @@ describe('Address Service', () => {
   })
 
   it('Add standard address check request', async () => {
-    const prisonNumber = 'A1234AE'
     const standardAddressCheckRequest = createAddStandardAddressCheckRequest({})
 
     const requestSummary = createStandardAddressCheckRequestSummary()
@@ -86,7 +87,6 @@ describe('Address Service', () => {
   })
 
   it('Gets a standard address check request', async () => {
-    const prisonNumber = 'A1234AE'
     const requestId = 49
 
     const requestSummary = createStandardAddressCheckRequestSummary()
@@ -98,8 +98,17 @@ describe('Address Service', () => {
     expect(result).toEqual(requestSummary)
   })
 
+  it("Gets address check requests for an offender's current assessment", async () => {
+    const requestSummaries = [createStandardAddressCheckRequestSummary(), createCasCheckRequestSummary()]
+
+    assessForEarlyReleaseApiClient.getAddressCheckRequestsForAssessment.mockResolvedValue(requestSummaries)
+    const result = await addressService.getAddressCheckRequestsForAssessment(token, prisonNumber)
+
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(result).toEqual(requestSummaries)
+  })
+
   it('Adds a resident', async () => {
-    const prisonNumber = 'A1234AE'
     const requestId = 49
 
     const addResidentRequest = createAddResidentRequest()
