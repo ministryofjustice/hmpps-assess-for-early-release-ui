@@ -1,4 +1,4 @@
-import {
+import type {
   _AddressSummary,
   _AssessmentSummary,
   _CheckRequestSummary,
