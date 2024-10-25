@@ -4,7 +4,7 @@
     {% set personalDetails = [
             {
                 key: { text: "Name" },
-                value: { text: params.name }
+                value: { text: params | toFullName }
             },
             {
                 key: { text: "Prison Number" },

@@ -3,10 +3,15 @@ import * as cheerio from 'cheerio'
 import nunjucks from 'nunjucks'
 import { registerNunjucks } from '../nunjucksSetup'
 
-export const renderTemplate = (template: string, model: Record<string, unknown>) => {
+export const renderTemplate = (template: string, model: Record<string, unknown>, debug = false) => {
   const njkEnv = registerNunjucks()
   const compiledTemplate = nunjucks.compile(template, njkEnv)
-  return cheerio.load(compiledTemplate.render(model))
+  const renderedHtml = compiledTemplate.render(model)
+  if (debug) {
+    // eslint-disable-next-line no-console
+    console.log(renderedHtml)
+  }
+  return cheerio.load(renderedHtml)
 }
 
 export const templateRenderer = (template: string) => (model: Record<string, unknown>) =>

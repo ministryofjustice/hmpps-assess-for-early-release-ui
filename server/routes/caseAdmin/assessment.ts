@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import paths from '../paths'
 
 export default class AssessmentRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -12,12 +10,6 @@ export default class AssessmentRoutes {
       req.params.prisonNumber,
     )
 
-    res.render('pages/caseAdmin/assessment', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
-      optOutLink: paths.prison.assessment.optOutCheck({ prisonNumber: assessmentSummary.prisonNumber }),
-    })
+    res.render('pages/caseAdmin/assessment', { assessmentSummary })
   }
 }
