@@ -23,8 +23,8 @@ test.describe('Can add a curfew address and a main resident', () => {
         county: 'READING',
         postcode: 'RG2 8AF',
         country: 'England',
-        xCoordinate: 472219.0,
-        yCoordinate: 170067.0,
+        xcoordinate: 472219.0,
+        ycoordinate: 170067.0,
         addressLastUpdated: '2020-06-25',
       },
       {
@@ -35,8 +35,8 @@ test.describe('Can add a curfew address and a main resident', () => {
         county: 'READING',
         postcode: 'RG2 8AF',
         country: 'England',
-        xCoordinate: 472231.0,
-        yCoordinate: 170070.0,
+        xcoordinate: 472231.0,
+        ycoordinate: 170070.0,
         addressLastUpdated: '2020-06-25',
       },
       {
@@ -47,8 +47,8 @@ test.describe('Can add a curfew address and a main resident', () => {
         county: 'READING',
         postcode: 'RG2 8AF',
         country: 'England',
-        xCoordinate: 472274.0,
-        yCoordinate: 170113.0,
+        xcoordinate: 472274.0,
+        ycoordinate: 170113.0,
         addressLastUpdated: new Date('2019-08-15'),
       },
     ] as AddressSummary[]

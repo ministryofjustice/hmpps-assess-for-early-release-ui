@@ -54,10 +54,6 @@ export default class AddResidentDetailsRoutes {
         validationErrors.push({ field: 'relation', message: "Enter the resident's relation to the offender" })
       }
 
-      if (!age) {
-        validationErrors.push({ field: 'age', message: 'Enter an age' })
-      }
-
       return validationErrors
     })
 

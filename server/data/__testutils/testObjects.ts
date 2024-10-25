@@ -219,8 +219,8 @@ const createAddressSummary = ({
   county = 'READING',
   postcode = 'RG2 8AF',
   country = 'England',
-  xCoordinate = 472231.0,
-  yCoordinate = 170070.0,
+  xcoordinate = 472231.0,
+  ycoordinate = 170070.0,
   addressLastUpdated = new Date('2020-06-25'),
 }): AddressSummary => ({
   uprn,
@@ -230,8 +230,8 @@ const createAddressSummary = ({
   county,
   postcode,
   country,
-  xCoordinate,
-  yCoordinate,
+  xcoordinate,
+  ycoordinate,
   addressLastUpdated,
 })
 
