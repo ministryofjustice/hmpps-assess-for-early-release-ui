@@ -12,7 +12,6 @@
 {% block content %}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form method="POST">
         {% include 'partials/errorSummary.njk' %}
         {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
         <h1 class="govuk-heading-l govuk-!-margin-top-6">
@@ -39,7 +38,7 @@
                 </dl>
             </div>
         </div>
-        
+        <form method="POST">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             {% call govukFieldset({
                 legend: {
