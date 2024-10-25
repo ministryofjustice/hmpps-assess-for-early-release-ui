@@ -60,6 +60,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/submit-for-address-checks': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Submits an offender's current assessment for address checks.
+     * @description Submits an offender's current assessment so that address checks by the probation practitioner can begin.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['submitForAddressChecks']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/opt-out': {
     parameters: {
       query?: never
@@ -333,6 +356,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-check-requests': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns check requests that are linked to an offender's current assessment.
+     * @description Returns standard and CAS check requests that are linked to an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getAddressCheckRequestsForAssessment']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/addresses': {
     parameters: {
       query?: never
@@ -414,6 +460,15 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
       /**
@@ -427,15 +482,6 @@ export interface components {
        * @example Reason for the offending opting out
        */
       otherDescription?: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     /** @description The answers to the question for a specific criterion */
     CriterionCheck: {
@@ -472,7 +518,7 @@ export interface components {
        * @example SECOND
        * @enum {string}
        */
-      preferencePriority: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
+      preferencePriority: 'FIRST' | 'SECOND'
       /**
        * @description The UPRN of the address to check
        * @example 200010019924
@@ -520,13 +566,13 @@ export interface components {
        * Format: double
        * @description The address's x-coordinate
        */
-      xCoordinate?: number
+      xcoordinate: number
       /**
        * Format: double
        * @description The address's y-coordinate
        * @example 154111
        */
-      yCoordinate?: number
+      ycoordinate: number
       /**
        * Format: date
        * @description The date the address was last updated
@@ -535,40 +581,19 @@ export interface components {
       addressLastUpdated: string
     }
     /** @description Response object which describes a standard address check request */
-    StandardAddressCheckRequestSummary: {
+    StandardAddressCheckRequestSummary: Omit<
+      WithRequired<
+        components['schemas']['CheckRequestSummary'],
+        'dateRequested' | 'preferencePriority' | 'requestId' | 'requestType' | 'status'
+      >,
+      'requestType'
+    > & {
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description Any additional information on the request added by the case administrator
-       * @example Some additional info
-       */
-      caAdditionalInfo?: string
-      /**
-       * @description Any additional information on the request added by the probation practitioner
-       * @example Some additional info
-       */
-      ppAdditionalInfo?: string
-      /**
-       * @description The date / time the check was requested on
-       * @example 2021-07-05T10:35:17
-       */
-      dateRequested: string
-      /**
-       * @description The priority of the check request
-       * @example SECOND
+       * @description Type of this check request
+       * @example STANDARD_ADDRESS
        * @enum {string}
        */
-      preferencePriority: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: 'STANDARD_ADDRESS'
       address: components['schemas']['AddressSummary']
     }
     /** @description Request for adding a resident to a standard address check request */
@@ -675,38 +700,29 @@ export interface components {
        * @example SECOND
        * @enum {string}
        */
-      preferencePriority: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
+      preferencePriority: 'FIRST' | 'SECOND'
     }
     /** @description Response object which describes a CAS check request */
-    CasCheckRequestSummary: {
+    CasCheckRequestSummary: Omit<
+      WithRequired<
+        components['schemas']['CheckRequestSummary'],
+        'dateRequested' | 'preferencePriority' | 'requestId' | 'requestType' | 'status'
+      >,
+      'requestType'
+    > & {
       /**
-       * @description Any additional information on the request added by the case administrator
-       * @example Some additional info
-       */
-      caAdditionalInfo?: string
-      /**
-       * @description Any additional information on the request added by the probation practitioner
-       * @example Some additional info
-       */
-      ppAdditionalInfo?: string
-      /**
-       * @description The date / time the check was requested on
-       * @example 2021-07-05T10:35:17
-       */
-      dateRequested: string
-      /**
-       * @description The priority of the check request
-       * @example SECOND
+       * @description Type of this check request
+       * @example CAS
        * @enum {string}
        */
-      preferencePriority: 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     }
     DlqMessage: {
       body: {
@@ -944,6 +960,43 @@ export interface components {
       /** @description details of current suitability checks */
       suitability: components['schemas']['SuitabilityCriterionProgress'][]
     }
+    /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
+    CheckRequestSummary: {
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
+       * @description Any additional information on the request added by the case administrator
+       * @example Some additional info
+       */
+      caAdditionalInfo?: string
+      /**
+       * @description Any additional information on the request added by the probation practitioner
+       * @example Some additional info
+       */
+      ppAdditionalInfo?: string
+      /**
+       * @description The priority of the check request
+       * @example SECOND
+       * @enum {string}
+       */
+      preferencePriority: 'FIRST' | 'SECOND'
+      /**
+       * @description The date / time the check was requested on
+       * @example 2021-07-05T10:35:17
+       */
+      dateRequested: string
+      requestType: string
+    } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
   }
   responses: never
   parameters: never
@@ -1013,6 +1066,55 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['PurgeQueueResult']
+        }
+      }
+    }
+  }
+  submitForAddressChecks: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description The offender's current assessment has been submitted for address checks. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Could not find an offender with the provided prison number */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
@@ -1521,6 +1623,55 @@ export interface operations {
       }
     }
   }
+  getAddressCheckRequestsForAssessment: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address check requests linked to the offender's current assessment are returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CheckRequestSummary'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found, an offender with provider number cannot be found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getAddressesForPostcode: {
     parameters: {
       query: {
@@ -1651,4 +1802,7 @@ export interface operations {
       }
     }
   }
+}
+type WithRequired<T, K extends keyof T> = T & {
+  [P in K]-?: T[P]
 }
