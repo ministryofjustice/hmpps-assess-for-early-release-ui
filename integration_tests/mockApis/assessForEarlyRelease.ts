@@ -4,6 +4,7 @@ import {
   SuitabilityCriterionProgress,
   _AssessmentSummary,
   AddressSummary,
+  CheckRequestSummary,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 
 const stubGetAssessmentSummary = (assessmentSummary: _AssessmentSummary) =>
@@ -249,6 +250,19 @@ const stubAddResident = (prisonNumber: string, requestId: number) =>
     },
   })
 
+const stubGetCheckRequestsForAssessment = (prisonNumber: string, addressSummary: CheckRequestSummary[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/address-check-requests`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: addressSummary,
+    },
+  })
+
 export default {
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,
@@ -261,4 +275,5 @@ export default {
   stubAddStandardAddressCheckRequest,
   stubGetStandardAddressCheckRequest,
   stubAddStandardAddressCheckRequestResident: stubAddResident,
+  stubGetCheckRequestsForAssessment,
 }

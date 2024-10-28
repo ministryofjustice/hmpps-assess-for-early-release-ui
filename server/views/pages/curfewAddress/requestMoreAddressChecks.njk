@@ -26,15 +26,7 @@
                     classes: 'govuk-summary-list__row',
                     actions: {
                         items: [
-                            {
-                                href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
-                                    checkRequestId:data.requestId,
-                                    prisonNumber:prisonNumber
-                                }),
-                                text: "Change",
-                                visuallyHiddenText: "",
-                                classes: 'govuk-link govuk-link--no-visited-state'
-                            },
+                            
                             {
                                 href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
                                     checkRequestId:data.requestId,
@@ -101,6 +93,7 @@
 
                                      {{ govukButton({
                                         text: "Check your answers",
+                                        attributes: { 'data-qa': 'checkYourAnswers' },
                                         href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: prisonNumber })
                                     }) if addressCount > 1 }}
                                 </div>

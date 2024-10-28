@@ -1,4 +1,5 @@
 import {
+  CheckRequestSummary,
   EligibilityCriterionProgress,
   SuitabilityCriterionProgress,
   _AssessmentSummary,
@@ -108,3 +109,39 @@ export const assessmentSummary = (
     { name: 'PRINT_LICENCE', progress: 'LOCKED' },
   ],
 })
+
+const address = {
+  firstLine: '99, HARTLAND ROAD',
+  secondLine: '',
+  town: 'READING',
+  postcode: 'RG2 8AF',
+  uprn: '310030567',
+  county: 'READING',
+  country: 'England',
+  xcoordinate: 472231.0,
+  ycoordinate: 170070.0,
+  addressLastUpdated: new Date('2020-06-25'),
+}
+
+export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
+  {
+    requestType: 'STANDARD_ADDRESS',
+    requestId: '1',
+    caAdditionalInfo: null,
+    ppAdditionalInfo: null,
+    dateRequested: new Date('2024-11-05'),
+    preferencePriority: 'FIRST',
+    status: 'IN_PROGRESS',
+    address,
+  },
+  {
+    requestType: 'STANDARD_ADDRESS',
+    requestId: '2',
+    caAdditionalInfo: null,
+    ppAdditionalInfo: null,
+    dateRequested: new Date('2024-11-05'),
+    preferencePriority: 'SECOND',
+    status: 'IN_PROGRESS',
+    address,
+  },
+]
