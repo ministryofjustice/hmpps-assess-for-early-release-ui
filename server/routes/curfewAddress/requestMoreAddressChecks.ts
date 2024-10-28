@@ -51,19 +51,4 @@ export default class RequestMoreAddressChecksRoutes {
 
     return res.redirect(paths.prison.assessment.curfewAddress.requestMoreAddressChecks({ prisonNumber }))
   }
-
-  // private toAddressView(addressSummary: CheckRequestSummary[]) {
-  //   return addressSummary.map(a => {
-  //     return {
-  //       ...a,
-  //       requestId: a.requestId.toString(),
-  //       address: {
-  //         firstLine: a.address.firstLine,
-  //         secondLine: a.address.secondLine,
-  //         town: a.address.town,
-  //         postcode: a.address.postcode,
-  //       },
-  //     }
-  //   })
-  // }
 }
