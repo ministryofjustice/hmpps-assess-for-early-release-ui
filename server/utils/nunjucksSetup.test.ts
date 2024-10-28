@@ -246,4 +246,33 @@ describe('nunjucksSetup', () => {
       )
     })
   })
+
+  describe('toAddressView', () => {
+    test('should return firstLine, secondLine, town, postcode from addressSummary as string format', () => {
+      const result = renderTemplate('{{- addressSummary | toAddressView | valuesToList -}}', {
+        addressSummary: {
+          uprn: '310030567',
+          firstLine: '99, HARTLAND ROAD',
+          secondLine: '',
+          town: 'READING',
+          county: 'READING',
+          postcode: 'RG2 8AF',
+          country: 'England',
+          xcoordinate: 472231.0,
+          ycoordinate: 170070.0,
+          addressLastUpdated: new Date('2020-06-25'),
+        },
+      })
+
+      expect(result).toEqual('99, HARTLAND ROAD, READING, RG2 8AF')
+    })
+  })
+
+  describe('toString', () => {
+    test('should return request id in string format', () => {
+      const result = renderTemplate('{{- requestId | toString -}}', { requestId: 9 })
+
+      expect(result).toEqual('9')
+    })
+  })
 })
