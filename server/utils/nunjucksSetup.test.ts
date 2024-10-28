@@ -247,7 +247,7 @@ describe('nunjucksSetup', () => {
     })
   })
 
-  describe('toAddressView', () => {
+  describe('toAddressView & valuesToList', () => {
     test('should return firstLine, secondLine, town, postcode from addressSummary as string format', () => {
       const result = renderTemplate('{{- addressSummary | toAddressView | valuesToList -}}', {
         addressSummary: {
