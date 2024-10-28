@@ -178,12 +178,7 @@ export function registerNunjucks(app?: express.Express): Environment {
 
   njkEnv.addFilter('valuesToList', (list: { [key: string]: string }): string => {
     if (list) {
-      return (
-        Object.values(list)
-          // .map(i => list[i])
-          .filter(Boolean)
-          .join(', ')
-      )
+      return Object.values(list).filter(Boolean).join(', ')
     }
     return ''
   })
