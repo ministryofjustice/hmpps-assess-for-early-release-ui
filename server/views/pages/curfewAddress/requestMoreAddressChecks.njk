@@ -13,7 +13,7 @@
 {
     href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
         checkRequestId:data.requestId,
-        prisonNumber:prisonNumber
+        prisonNumber: assessmentSummary.prisonNumber
     }),
     text: "Change",
     visuallyHiddenText: "",
@@ -23,11 +23,11 @@
     {% set items = (items.push({
                     key: {
                         html: 'Preferred address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
-                                data.address | formatListAsString +'</label>'
+                                data.address | toAddressView | valuesToList +'</label>'
                                 if data.preferencePriority == 'FIRST' 
                                 else 
                                 'Second address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
-                                data.address | formatListAsString +'</label>',
+                                data.address | toAddressView | valuesToList +'</label>',
                         classes: 'govuk-!-width-two-thirds'
                     },
                     value: {
@@ -38,8 +38,8 @@
                         items: [
                             {
                                 href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
-                                    checkRequestId:data.requestId,
-                                    prisonNumber:prisonNumber
+                                    checkRequestId:data.requestId | toString,
+                                    prisonNumber:assessmentSummary.prisonNumber
                                 }),
                                 text: "Remove",
                                 visuallyHiddenText: "",
@@ -55,7 +55,7 @@
 {% block content %}
     <div class="govuk-grid-row">
             {% include 'partials/errorSummary.njk' %}
-            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
@@ -103,7 +103,7 @@
                                      {{ govukButton({
                                         text: "Check your answers",
                                         attributes: { 'data-qa': 'checkYourAnswers' },
-                                        href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: prisonNumber })
+                                        href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: assessmentSummary.prisonNumber })
                                     }) if addressCount > 1 }}
                                 </div>
                             </div>

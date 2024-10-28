@@ -83,7 +83,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     await page.getByTestId('addResidentContinue').click()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}/prison/assessment/A1234AE/curfew-address/1/more-information-required-check`,
+      `${playwrightConfig.use.baseURL}${paths.prison.assessment.curfewAddress.moreInformationRequiredCheck({ prisonNumber, checkRequestId: '1' })}`,
     )
   })
 })

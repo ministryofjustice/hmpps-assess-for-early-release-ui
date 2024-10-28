@@ -23,12 +23,8 @@ export default class RequestMoreAddressChecksRoutes {
     )
 
     res.render('pages/curfewAddress/requestMoreAddressChecks', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
-      prisonNumber,
-      addressSummary: this.toAddressView(addressSummary),
+      assessmentSummary,
+      addressSummary,
     })
   }
 
@@ -58,18 +54,18 @@ export default class RequestMoreAddressChecksRoutes {
     return res.redirect(paths.prison.assessment.curfewAddress.requestMoreAddressChecks({ prisonNumber }))
   }
 
-  private toAddressView(addressSummary: CheckRequestSummary[]) {
-    return addressSummary.map(a => {
-      return {
-        ...a,
-        requestId: a.requestId.toString(),
-        address: {
-          firstLine: a.address.firstLine,
-          secondLine: a.address.secondLine,
-          town: a.address.town,
-          postcode: a.address.postcode,
-        },
-      }
-    })
-  }
+  // private toAddressView(addressSummary: CheckRequestSummary[]) {
+  //   return addressSummary.map(a => {
+  //     return {
+  //       ...a,
+  //       requestId: a.requestId.toString(),
+  //       address: {
+  //         firstLine: a.address.firstLine,
+  //         secondLine: a.address.secondLine,
+  //         town: a.address.town,
+  //         postcode: a.address.postcode,
+  //       },
+  //     }
+  //   })
+  // }
 }
