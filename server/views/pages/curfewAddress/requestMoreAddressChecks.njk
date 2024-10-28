@@ -9,6 +9,16 @@
 {% set backLinkHref = "/" %}
 {% set addressCount = addressSummary.length %}
 {% set items = [] %}
+{# Change link to update address
+{
+    href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+        checkRequestId:data.requestId,
+        prisonNumber:prisonNumber
+    }),
+    text: "Change",
+    visuallyHiddenText: "",
+    classes: 'govuk-link govuk-link--no-visited-state'
+}, #}
 {% for data in addressSummary %}
     {% set items = (items.push({
                     key: {
@@ -26,7 +36,6 @@
                     classes: 'govuk-summary-list__row',
                     actions: {
                         items: [
-                            
                             {
                                 href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
                                     checkRequestId:data.requestId,
