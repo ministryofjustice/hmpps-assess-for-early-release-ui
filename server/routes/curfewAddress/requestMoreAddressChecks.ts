@@ -1,9 +1,7 @@
 import { Request, Response } from 'express'
 import { AddressService, CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
-import { CheckRequestSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class RequestMoreAddressChecksRoutes {
   constructor(

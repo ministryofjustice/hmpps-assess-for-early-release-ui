@@ -1,6 +1,5 @@
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
-import { convertToTitleCase } from '../../utils/utils'
 import { ValidationError } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
 import { createAssessmentSummary, createCheckRequestsForAssessmentSummary } from '../../data/__testutils/testObjects'
