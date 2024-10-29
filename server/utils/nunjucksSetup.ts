@@ -10,7 +10,12 @@ import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
 import paths from '../routes/paths'
 import { FieldValidationError } from '../@types/FieldValidationError'
-import { AssessmentSummary, EligibilityStatus, SuitabilityStatus } from '../@types/assessForEarlyReleaseApiClientTypes'
+import {
+  AddressSummary,
+  AssessmentSummary,
+  EligibilityStatus,
+  SuitabilityStatus,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 import { tasks } from '../config/tasks'
 
 const production = process.env.NODE_ENV === 'production'
@@ -169,6 +174,26 @@ export function registerNunjucks(app?: express.Express): Environment {
       throw Error(`no path provided`)
     }
     return staticPath(params)
+  })
+
+  njkEnv.addFilter('valuesToList', (list: { [key: string]: string }): string => {
+    if (list) {
+      return Object.values(list).filter(Boolean).join(', ')
+    }
+    return ''
+  })
+
+  njkEnv.addFilter('toAddressView', (addressSummary: AddressSummary) => {
+    return {
+      firstLine: addressSummary.firstLine,
+      secondLine: addressSummary.secondLine,
+      town: addressSummary.town,
+      postcode: addressSummary.postcode,
+    }
+  })
+
+  njkEnv.addFilter('toString', (value: number) => {
+    return value.toString()
   })
 
   return njkEnv

@@ -1,0 +1,115 @@
+{% extends "layout.njk" %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+
+{% set pageTitle = applicationName + " - More address checks" %}
+{% set backLinkHref = "/" %}
+{% set addressCount = addressSummary.length %}
+{% set items = [] %}
+{# Change link to update address
+{
+    href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+        checkRequestId:data.requestId,
+        prisonNumber: assessmentSummary.prisonNumber
+    }),
+    text: "Change",
+    visuallyHiddenText: "",
+    classes: 'govuk-link govuk-link--no-visited-state'
+}, #}
+{% for data in addressSummary %}
+    {% set items = (items.push({
+                    key: {
+                        html: 'Preferred address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
+                                data.address | toAddressView | valuesToList +'</label>'
+                                if data.preferencePriority == 'FIRST' 
+                                else 
+                                'Second address: <br/> <label class="govuk-!-font-size-16 govuk-!-font-weight-regular">'+
+                                data.address | toAddressView | valuesToList +'</label>',
+                        classes: 'govuk-!-width-two-thirds'
+                    },
+                    value: {
+                        html:  '<br/>'
+                    },
+                    classes: 'govuk-summary-list__row',
+                    actions: {
+                        items: [
+                            {
+                                href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
+                                    checkRequestId:data.requestId | toString,
+                                    prisonNumber:assessmentSummary.prisonNumber
+                                }),
+                                text: "Remove",
+                                visuallyHiddenText: "",
+                                attributes: { "data-qa": "delete-map-" + loop.index0 + "-link" },
+                                classes: 'govuk-link govuk-link--no-visited-state'
+                            }
+                        ]
+                    }
+                }), items) %}
+
+{% endfor %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                        You have added {% if addressCount == 1 %}one{% else %}{{ addressCount }}{% endif %} address{% if uploadCount > 1 %}es{% endif %}
+                    </h1>
+                    {{ govukSummaryList({
+                        rows: items
+                    }) }}
+                    <form method="POST">
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                {{ govukRadios({
+                                    name: "moreAddressChecks",
+                                    fieldset: {
+                                        legend: {
+                                            text: "Do you need to add another curfew address?",
+                                            classes: "govuk-fieldset__legend--m"
+                                        }
+                                    },
+                                    hint: {
+                                        text: "You can enter one more curfew address."
+                                    },
+                                    items: [
+                                        {
+                                            value: "yes",
+                                            text: "Yes"
+                                        },
+                                        {
+                                            value: "no",
+                                            text: "No"
+                                        }
+                                    ],
+                                    errorMessage: displayMessage
+                                }) if addressCount == 1 }} 
+
+                                <div class="govuk-button-group">
+                                    {{ govukButton({
+                                        text: "Continue",
+                                        type: "submit",
+                                        attributes: { 'data-qa': 'continue' }
+                                    }) if addressCount == 1 }}
+
+                                     {{ govukButton({
+                                        text: "Check your answers",
+                                        attributes: { 'data-qa': 'checkYourAnswers' },
+                                        href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: assessmentSummary.prisonNumber })
+                                    }) if addressCount > 1 }}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+{% endblock %}

@@ -20,7 +20,9 @@ const noAddressFound = curfewAddress.path('no-address-found')
 const addResidentDetails = curfewAddress.path('resident-details/:checkRequestId')
 const moreInformationRequiredCheck = curfewAddress.path(':checkRequestId/more-information-required-check')
 const moreInformationRequired = curfewAddress.path(':checkRequestId/more-information-required')
-const requestMoreAddressChecks = curfewAddress.path(':checkRequestId/request-more-address-checks')
+const requestMoreAddressChecks = curfewAddress.path('/request-more-address-checks')
+const deleteAddressCheckRequest = curfewAddress.path(':checkRequestId/request-more-address-checks/delete')
+const checkYourAnswers = curfewAddress.path('/check-your-answers')
 
 const paths = {
   support: {
@@ -45,6 +47,8 @@ const paths = {
         moreInformationRequiredCheck,
         moreInformationRequired,
         requestMoreAddressChecks,
+        deleteAddressCheckRequest,
+        checkYourAnswers,
       },
     },
   },

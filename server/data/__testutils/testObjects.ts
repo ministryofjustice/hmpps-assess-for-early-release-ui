@@ -12,6 +12,7 @@ import {
   StandardAddressCheckRequestSummary,
   ResidentSummary,
   AddResidentRequest,
+  CheckRequestSummary,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -305,6 +306,33 @@ const createResidentSummary = ({
   standardAddressCheckRequest,
 })
 
+const createCheckRequestsForAssessmentSummary = ({
+  requestType = 'STANDARD_ADDRESS',
+  requestId = '1',
+  caAdditionalInfo = null,
+  ppAdditionalInfo = null,
+  dateRequested = new Date('2024-11-05'),
+  preferencePriority = 'FIRST',
+  status = 'IN_PROGRESS',
+  address = {
+    firstLine: '99, HARTLAND ROAD',
+    secondLine: '',
+    town: 'READING',
+    postcode: 'RG2 8AF',
+  },
+} = {}): CheckRequestSummary[] => [
+  {
+    requestType,
+    requestId,
+    caAdditionalInfo,
+    ppAdditionalInfo,
+    dateRequested,
+    preferencePriority,
+    status,
+    address,
+  },
+]
+
 export {
   createCase,
   createOffenderSummary,
@@ -320,4 +348,5 @@ export {
   createStandardAddressCheckRequestSummary,
   createAddResidentRequest,
   createResidentSummary,
+  createCheckRequestsForAssessmentSummary,
 }
