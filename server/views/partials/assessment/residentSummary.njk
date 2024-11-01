@@ -1,0 +1,52 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+    {%  macro residentSummary(params) %}
+    {% set actionItems = [] %}
+    
+    {% set residents =  [
+                            {
+                                key: {
+                                    text: "Name"
+                                },
+                                value: {
+                                    html: params.resident.forename + ' ' + params.resident.surname
+                                }
+                            },
+                            {
+                                key: {
+                                    text: "Phone number"
+                                },
+                                value: {
+                                    html: params.resident.phoneNumber
+                                }
+                            },
+                            {
+                                key: {
+                                    text: "Relation"
+                                },
+                                value: {
+                                    html: params.resident.relation
+                                }
+                            }
+                        ]
+    %}
+
+    {% for link in params.links %}
+        {% set actionItems = (actionItems.push({
+            href: link.href,
+            text: link.text,
+            visuallyHiddenText: link.visuallyHiddenText
+                }), actionItems) %}
+    {% endfor %}
+    {{ govukSummaryList({
+                        card: {
+                            title: {
+                            text: "Main occupier"
+                            },
+                            actions: {
+                            items: actionItems
+                            }
+                        },
+                        rows: residents
+                    }) }}
+{% endmacro %}

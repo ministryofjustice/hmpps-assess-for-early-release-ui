@@ -11,6 +11,7 @@ import NoAddressFoundRoutes from './noAddressFound'
 import AddResidentDetailsRoutes from './addResidentDetails'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
 import RequestMoreAddressChecksRoutes from './requestMoreAddressChecks'
+import CheckYourAnswersRoutes from './checkYourAnswers'
 
 export default function Index({ addressService, caseAdminCaseloadService }: Services): Router {
   const router = Router()
@@ -44,6 +45,11 @@ export default function Index({ addressService, caseAdminCaseloadService }: Serv
   get(paths.prison.assessment.curfewAddress.requestMoreAddressChecks, requestMoreAddressChecksRoutes.GET)
   post(paths.prison.assessment.curfewAddress.requestMoreAddressChecks, requestMoreAddressChecksRoutes.POST)
   get(paths.prison.assessment.curfewAddress.deleteAddressCheckRequest, requestMoreAddressChecksRoutes.DELETE)
+
+  const checkYourAnswersRoutes = new CheckYourAnswersRoutes(addressService, caseAdminCaseloadService)
+  get(paths.prison.assessment.curfewAddress.checkYourAnswers, checkYourAnswersRoutes.GET)
+  post(paths.prison.assessment.curfewAddress.checkYourAnswers, checkYourAnswersRoutes.POST)
+  get(paths.prison.assessment.curfewAddress.deleteCheckYourAnswers, checkYourAnswersRoutes.DELETE)
 
   return router
 }

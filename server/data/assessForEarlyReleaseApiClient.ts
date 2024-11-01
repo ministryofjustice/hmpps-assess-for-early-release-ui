@@ -188,6 +188,10 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
+  async submitAssessmentForAddressChecks(prisonNumber: string): Promise<void> {
+    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks` })
+  }
+
   async addResident(
     prisonNumber: string,
     addressCheckRequestId: number,
@@ -200,14 +204,14 @@ export default class AssessForEarlyReleaseApiClient {
     return {
       ...residentSummary,
       dateOfBirth: parseIsoDate(residentSummary.dateOfBirth),
-      standardAddressCheckRequest: {
-        ...residentSummary.standardAddressCheckRequest,
-        dateRequested: parseIsoDate(residentSummary.standardAddressCheckRequest.dateRequested),
-        address: {
-          ...residentSummary.standardAddressCheckRequest.address,
-          addressLastUpdated: parseIsoDate(residentSummary.standardAddressCheckRequest.address.addressLastUpdated),
-        },
-      },
+      // standardAddressCheckRequest: {
+      //   ...residentSummary.standardAddressCheckRequest,
+      //   // dateRequested: parseIsoDate(residentSummary.standardAddressCheckRequest.dateRequested),
+      //   // address: {
+      //   //   ...residentSummary.standardAddressCheckRequest.address,
+      //   //   addressLastUpdated: parseIsoDate(residentSummary.standardAddressCheckRequest.address.addressLastUpdated),
+      //   // },
+      // },
     }
   }
 }

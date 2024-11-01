@@ -1,0 +1,45 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+    {%  macro addressSummary(params) %}
+    {% set actionItems = [] %}
+    {% set address =  [
+                        {
+                            key: {
+                                text: "Address"
+                            },
+                            value: {
+                                html: params.assessmentSummary[0].address.firstLine + '' + params.assessmentSummary[0].address.secondLine
+                                    + '<br>' + params.assessmentSummary[0].address.town + '<br>' + params.assessmentSummary[0].address.postcode
+                            }
+                        },
+                        {
+                            key: {
+                                text: "Preference"
+                            },
+                            value: {
+                                html: "Preferred address" if params.assessmentSummary[0].preferencePriority == "FIRST" else "Secondary address"
+                            }
+                        }
+                    ]
+    %}
+
+    {% for link in params.links %}
+        {% set actionItems = (actionItems.push({
+            href: link.href,
+            text: link.text,
+            visuallyHiddenText: link.visuallyHiddenText
+                }), actionItems) %}
+    {% endfor %}
+
+    {{ govukSummaryList({
+            card: {
+                            title: {
+                            text: "Address details"
+                            },
+                            actions: {
+                            items: actionItems
+                            }
+                        },
+            rows: address
+    }) }}
+{% endmacro %}
