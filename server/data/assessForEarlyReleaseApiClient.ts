@@ -204,14 +204,6 @@ export default class AssessForEarlyReleaseApiClient {
     return {
       ...residentSummary,
       dateOfBirth: parseIsoDate(residentSummary.dateOfBirth),
-      // standardAddressCheckRequest: {
-      //   ...residentSummary.standardAddressCheckRequest,
-      //   // dateRequested: parseIsoDate(residentSummary.standardAddressCheckRequest.dateRequested),
-      //   // address: {
-      //   //   ...residentSummary.standardAddressCheckRequest.address,
-      //   //   addressLastUpdated: parseIsoDate(residentSummary.standardAddressCheckRequest.address.addressLastUpdated),
-      //   // },
-      // },
     }
   }
 }
