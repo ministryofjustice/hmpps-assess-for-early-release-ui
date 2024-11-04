@@ -267,12 +267,4 @@ describe('nunjucksSetup', () => {
       expect(result).toEqual('99, HARTLAND ROAD, READING, RG2 8AF')
     })
   })
-
-  describe('toString', () => {
-    test('should return request id in string format', () => {
-      const result = renderTemplate('{{- requestId | toString -}}', { requestId: 9 })
-
-      expect(result).toEqual('9')
-    })
-  })
 })

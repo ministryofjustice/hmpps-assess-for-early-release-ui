@@ -192,9 +192,5 @@ export function registerNunjucks(app?: express.Express): Environment {
     }
   })
 
-  njkEnv.addFilter('toString', (value: number) => {
-    return value.toString()
-  })
-
   return njkEnv
 }

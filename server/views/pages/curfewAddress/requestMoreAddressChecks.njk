@@ -38,7 +38,7 @@
                         items: [
                             {
                                 href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
-                                    checkRequestId:data.requestId | toString,
+                                    checkRequestId:data.requestId | string,
                                     prisonNumber:assessmentSummary.prisonNumber
                                 }),
                                 text: "Remove",

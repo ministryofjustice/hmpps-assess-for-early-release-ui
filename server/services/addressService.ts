@@ -45,6 +45,11 @@ export default class AddressService {
     return assessForEarlyReleaseApiClient.getCheckRequestsForAssessment(prisonNumber)
   }
 
+  public async submitAssessmentForAddressChecks(token: string, prisonNumber: string) {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber)
+  }
+
   public async addResident(
     token: string,
     prisonNumber: string,

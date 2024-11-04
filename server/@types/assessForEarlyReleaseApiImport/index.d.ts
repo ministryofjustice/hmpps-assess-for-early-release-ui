@@ -106,6 +106,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/opt-in': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Allows an offender to opt back in to being assessed for early release.
+     * @description Allows an offender to opt back in to being assessed for early release.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['optBackIn']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/eligibility-and-suitability-check': {
     parameters: {
       query?: never
@@ -580,63 +603,10 @@ export interface components {
        */
       addressLastUpdated: string
     }
-    /** @description Response object which describes a standard address check request */
-    StandardAddressCheckRequestSummary: Omit<
-      WithRequired<
-        components['schemas']['CheckRequestSummary'],
-        'dateRequested' | 'preferencePriority' | 'requestId' | 'requestType' | 'status'
-      >,
-      'requestType'
-    > & {
-      /**
-       * @description Type of this check request
-       * @example STANDARD_ADDRESS
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
-      address: components['schemas']['AddressSummary']
-    }
-    /** @description Request for adding a resident to a standard address check request */
-    AddResidentRequest: {
-      /**
-       * @description The resident's forename
-       * @example Dave
-       */
-      forename: string
-      /**
-       * @description The resident's surname
-       * @example Jones
-       */
-      surname: string
-      /**
-       * @description The resident's phone number
-       * @example 07634183674
-       */
-      phoneNumber?: string
-      /**
-       * @description The resident's relation to the offender
-       * @example Mother
-       */
-      relation: string
-      /**
-       * Format: date
-       * @description The resident's date of birth
-       * @example 2002-02-20
-       */
-      dateOfBirth?: string
-      /**
-       * Format: int32
-       * @description The resident's age
-       * @example 42
-       */
-      age?: number
-      /**
-       * @description Is this main resident at the address
-       * @example true
-       */
-      isMainResident: boolean
-    }
-    /** @description Response object which describes an assessment */
+    /**
+     * @description Response object which describes an assessment
+     * @example See ResidentSummary
+     */
     ResidentSummary: {
       /**
        * Format: int64
@@ -681,7 +651,79 @@ export interface components {
        * @example true
        */
       isMainResident: boolean
-      standardAddressCheckRequest: components['schemas']['StandardAddressCheckRequestSummary']
+    }
+    /** @description Response object which describes a standard address check request */
+    StandardAddressCheckRequestSummary: Omit<
+      WithRequired<
+        components['schemas']['CheckRequestSummary'],
+        'dateRequested' | 'preferencePriority' | 'requestId' | 'requestType' | 'status'
+      >,
+      'requestType'
+    > & {
+      /**
+       * @description Type of this check request
+       * @example STANDARD_ADDRESS
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
+      address: components['schemas']['AddressSummary']
+      /**
+       * @description The residents the check request is for
+       * @example See ResidentSummary
+       */
+      residents: components['schemas']['ResidentSummary'][]
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
+    }
+    /** @description Request for adding a resident to a standard address check request */
+    AddResidentRequest: {
+      /**
+       * @description The resident's forename
+       * @example Dave
+       */
+      forename: string
+      /**
+       * @description The resident's surname
+       * @example Jones
+       */
+      surname: string
+      /**
+       * @description The resident's phone number
+       * @example 07634183674
+       */
+      phoneNumber?: string
+      /**
+       * @description The resident's relation to the offender
+       * @example Mother
+       */
+      relation: string
+      /**
+       * Format: date
+       * @description The resident's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth?: string
+      /**
+       * Format: int32
+       * @description The resident's age
+       * @example 42
+       */
+      age?: number
+      /**
+       * @description Is this main resident at the address
+       * @example true
+       */
+      isMainResident: boolean
     }
     /** @description Request for adding a CAS check request */
     AddCasCheckRequest: {
@@ -717,6 +759,12 @@ export interface components {
        */
       requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1135,6 +1183,46 @@ export interface operations {
     }
     responses: {
       /** @description The offender has been opted out of assess for early release. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  optBackIn: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description The offender has been opted back into being assessed for early release. */
       204: {
         headers: {
           [name: string]: unknown

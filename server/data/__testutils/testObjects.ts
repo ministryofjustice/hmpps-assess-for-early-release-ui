@@ -293,7 +293,6 @@ const createResidentSummary = ({
   dateOfBirth = parseIsoDate('1985-03-31'),
   age = 38,
   isMainResident = true,
-  standardAddressCheckRequest = createStandardAddressCheckRequestSummary({}),
 } = {}): ResidentSummary => ({
   residentId,
   forename,
@@ -303,7 +302,6 @@ const createResidentSummary = ({
   dateOfBirth,
   age,
   isMainResident,
-  standardAddressCheckRequest,
 })
 
 const createCheckRequestsForAssessmentSummary = ({
@@ -320,6 +318,7 @@ const createCheckRequestsForAssessmentSummary = ({
     town: 'READING',
     postcode: 'RG2 8AF',
   },
+  residents = [createResidentSummary()],
 } = {}): CheckRequestSummary[] => [
   {
     requestType,
@@ -330,6 +329,7 @@ const createCheckRequestsForAssessmentSummary = ({
     preferencePriority,
     status,
     address,
+    residents,
   },
 ]
 

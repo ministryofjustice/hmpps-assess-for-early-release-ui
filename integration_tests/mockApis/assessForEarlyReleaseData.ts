@@ -1,6 +1,7 @@
 import {
   CheckRequestSummary,
   EligibilityCriterionProgress,
+  ResidentSummary,
   SuitabilityCriterionProgress,
   _AssessmentSummary,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
@@ -123,6 +124,17 @@ const address = {
   addressLastUpdated: new Date('2020-06-25'),
 }
 
+const createResidentSummary = (residentId, isMainResident): ResidentSummary => ({
+  residentId,
+  forename: 'Tommy',
+  surname: 'Johnson',
+  phoneNumber: '07527341960',
+  relation: 'mother',
+  dateOfBirth: new Date('1985-03-31'),
+  age: 38,
+  isMainResident,
+})
+
 export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
   {
     requestType: 'STANDARD_ADDRESS',
@@ -133,6 +145,7 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
     preferencePriority: 'FIRST',
     status: 'IN_PROGRESS',
     address,
+    residents: [createResidentSummary(1, true)],
   },
   {
     requestType: 'STANDARD_ADDRESS',
@@ -143,5 +156,6 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
     preferencePriority: 'SECOND',
     status: 'IN_PROGRESS',
     address,
+    residents: [createResidentSummary(2, false)],
   },
 ]

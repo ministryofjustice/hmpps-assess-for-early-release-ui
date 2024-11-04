@@ -23,6 +23,7 @@ const moreInformationRequired = curfewAddress.path(':checkRequestId/more-informa
 const requestMoreAddressChecks = curfewAddress.path('/request-more-address-checks')
 const deleteAddressCheckRequest = curfewAddress.path(':checkRequestId/request-more-address-checks/delete')
 const checkYourAnswers = curfewAddress.path('/check-your-answers')
+const deleteCheckYourAnswers = curfewAddress.path(':checkRequestId/check-your-answers/delete')
 
 const paths = {
   support: {
@@ -49,6 +50,7 @@ const paths = {
         requestMoreAddressChecks,
         deleteAddressCheckRequest,
         checkYourAnswers,
+        deleteCheckYourAnswers,
       },
     },
   },
