@@ -8,8 +8,8 @@
                                 text: "Address"
                             },
                             value: {
-                                html: params.assessmentSummary[0].address.firstLine + '' + params.assessmentSummary[0].address.secondLine
-                                    + '<br>' + params.assessmentSummary[0].address.town + '<br>' + params.assessmentSummary[0].address.postcode
+                                html: params.assessmentSummary.address.firstLine + '' + params.assessmentSummary.address.secondLine
+                                    + '<br>' + params.assessmentSummary.address.town + '<br>' + params.assessmentSummary.address.postcode
                             }
                         },
                         {
@@ -17,7 +17,7 @@
                                 text: "Preference"
                             },
                             value: {
-                                html: "Preferred address" if params.assessmentSummary[0].preferencePriority == "FIRST" else "Secondary address"
+                                html: "Preferred address" if params.assessmentSummary.preferencePriority == "FIRST" else "Secondary address"
                             }
                         }
                     ]

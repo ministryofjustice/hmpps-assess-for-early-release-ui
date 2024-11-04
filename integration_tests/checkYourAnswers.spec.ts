@@ -21,7 +21,7 @@ test.describe('Can change, remove & save assessments', () => {
     await page.goto(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}/prison/assessment/A1234AE/curfew-address/check-your-answers`,
+      `${playwrightConfig.use.baseURL}${paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber })}`,
     )
 
     await expect(page.getByText('Check your answers')).toBeVisible()
@@ -51,10 +51,14 @@ test.describe('Can change, remove & save assessments', () => {
     await expect(page.getByText('second-address-residental-details')).not.toBeVisible()
 
     const removeLink = await page.getByRole('link', { name: 'Remove preferred address' }).getAttribute('href')
-    expect(removeLink).toContain('/prison/assessment/A1234AE/curfew-address/1/check-your-answers/delete')
+    expect(removeLink).toContain(
+      paths.prison.assessment.curfewAddress.deleteCheckYourAnswers({ prisonNumber, checkRequestId: '1' }),
+    )
 
     const chnageLink = await page.getByRole('link', { name: 'Change  change preferred' }).getAttribute('href')
-    expect(chnageLink).toContain('/prison/assessment/A1234AE/curfew-address/resident-details/1')
+    expect(chnageLink).toContain(
+      paths.prison.assessment.curfewAddress.addResidentDetails({ prisonNumber, checkRequestId: '1' }),
+    )
 
     await expect(page.getByTestId('save')).toBeVisible()
   })
