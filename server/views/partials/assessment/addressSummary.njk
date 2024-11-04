@@ -27,6 +27,7 @@
         {% set actionItems = (actionItems.push({
             href: link.href,
             text: link.text,
+            classes: link.classes,
             visuallyHiddenText: link.visuallyHiddenText
                 }), actionItems) %}
     {% endfor %}

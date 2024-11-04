@@ -39,10 +39,10 @@
 
                     <h2 class="govuk-heading-m govuk-!-margin-top-6">Preferred address</h2>
                     {{ addressSummary({ assessmentSummary: preferedAddress, 
-                    links: [{ href: getChangeAddressLink(preferedAddress[0].requestId), text: "Change", visuallyHiddenText: "change address"}, 
-                    { href: getRemoveAddressLink(preferedAddress[0].requestId), text: "Remove preferred address", visuallyHiddenText: "remove address"}]}) }}
+                    links: [{ href: getChangeAddressLink(preferedAddress[0].requestId), text: "Change", visuallyHiddenText: "change preferred address", classes: "change-preferred-address"}, 
+                    { href: getRemoveAddressLink(preferedAddress[0].requestId), text: "Remove preferred address", visuallyHiddenText: "remove preferred address", classes: "remove-preferred-address"}]}) }}
 
-                    <h3 class="govuk-heading-s govuk-!-margin-top-6">Details of residents</h3>
+                    <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="prefered-address-residental-details" >Details of residents</h3>
                     {% for resident in preferedAddress[0].residents %}
                         {{ residentSummary({ resident: resident, 
                         links: [{ href: getChangeAddressLink(preferedAddress[0].requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
@@ -52,10 +52,10 @@
                     {% if secondAddress.length %}
                         <h2 class="govuk-heading-m govuk-!-margin-top-9">Second address</h2>
                         {{ addressSummary({ assessmentSummary: secondAddress, 
-                        links: [{ href: getChangeAddressLink(secondAddress[0].requestId), text: "Change", visuallyHiddenText: "change address"}, 
-                        { href: getRemoveAddressLink(secondAddress[0].requestId), text: "Remove second address", visuallyHiddenText: "remove address"}]}) }}
+                        links: [{ href: getChangeAddressLink(secondAddress[0].requestId), text: "Change", visuallyHiddenText: "change second address", classes: "change-second-address"}, 
+                        { href: getRemoveAddressLink(secondAddress[0].requestId), text: "Remove second address", visuallyHiddenText: "remove second address", classes: "remove-second-address"}]}) }}
 
-                        <h3 class="govuk-heading-s govuk-!-margin-top-6">Details of residents</h3>
+                        <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="second-address-residental-details">Details of residents</h3>
                         {% for resident in secondAddress[0].residents %}
                             {{ residentSummary({ resident: resident, 
                             links: [{ href: getChangeAddressLink(secondAddress[0].requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
