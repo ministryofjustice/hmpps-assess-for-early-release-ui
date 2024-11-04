@@ -22,7 +22,10 @@ describe('select address routes', () => {
 
   beforeEach(() => {
     selectAddressRoutes = new SelectAddressRoutes(addressService, caseAdminCaseloadService)
-    addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
+    addressService.findAddressesForPostcode.mockResolvedValue([
+      createAddressSummary({}),
+      createAddressSummary({ uprn: '310030568' }),
+    ])
     addressService.addStandardAddressCheckRequest.mockResolvedValue(createStandardAddressCheckRequestSummary({}))
     caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
   })
@@ -59,10 +62,50 @@ describe('select address routes', () => {
             ycoordinate: 170070,
             addressLastUpdated: new Date('2020-06-25'),
           },
+          {
+            uprn: '310030568',
+            firstLine: '99, Hartland Road',
+            secondLine: '',
+            town: 'Reading',
+            county: 'READING',
+            postcode: 'RG2 8AF',
+            country: 'England',
+            xcoordinate: 472231,
+            ycoordinate: 170070,
+            addressLastUpdated: new Date('2020-06-25'),
+          },
         ],
         findAddressUrl: paths.prison.assessment.curfewAddress.findAddress({ prisonNumber: req.params.prisonNumber }),
         formattedPostcode: 'SO12 8UF',
       })
+    })
+
+    it('should render add resident details page', async () => {
+      addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
+      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.query.postcode = 'SO128UF'
+      await selectAddressRoutes.GET(req, res)
+
+      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+        req.middleware.clientToken,
+        req.params.prisonNumber,
+      )
+
+      expect(addressService.addStandardAddressCheckRequest).toHaveBeenCalledWith(
+        req?.middleware?.clientToken,
+        req.params.prisonNumber,
+        {
+          preferencePriority: 'FIRST',
+          addressUprn: '310030567',
+        },
+      )
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        paths.prison.assessment.curfewAddress.addResidentDetails({
+          prisonNumber: req.params.prisonNumber,
+          checkRequestId: '1',
+        }),
+      )
     })
   })
 

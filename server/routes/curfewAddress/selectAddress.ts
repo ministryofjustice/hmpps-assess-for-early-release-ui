@@ -22,6 +22,22 @@ export default class SelectAddressRoutes {
     const postcode = req.query?.postcode as string
     if (postcode) {
       const addresses = await this.addressService.findAddressesForPostcode(req?.middleware?.clientToken, postcode)
+      if (addresses.length === 1) {
+        const checkRequestSummary = await this.addressService.addStandardAddressCheckRequest(
+          req?.middleware?.clientToken,
+          req.params.prisonNumber,
+          {
+            preferencePriority: 'FIRST',
+            addressUprn: addresses[0].uprn,
+          },
+        )
+        return res.redirect(
+          paths.prison.assessment.curfewAddress.addResidentDetails({
+            prisonNumber: req.params.prisonNumber,
+            checkRequestId: checkRequestSummary.requestId.toString(),
+          }),
+        )
+      }
       return res.render('pages/curfewAddress/selectAddress', {
         assessmentSummary: {
           ...assessmentSummary,
