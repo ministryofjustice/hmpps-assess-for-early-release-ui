@@ -21,8 +21,8 @@
             Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
         </p>
         <p>
-            Result: {{ 'Ineligible' if criteria.eligibilityStatus == 'INELIGIBLE' else 'Unsuitable' }}</br>
-            Reason: {{ criteria.eligibility | filter('status', 'INELIGIBLE') | attr('taskName') }}     
+            Result: <span data-qa="failureType">{{ criteria.failureType | title }}</span></br>
+            Reason: <span data-qa="failureReasons">{{ criteria.failedCheckReasons }}</span>     
         </p>
     {% endset %}
     {{ govukNotificationBanner({ html: html }) }}

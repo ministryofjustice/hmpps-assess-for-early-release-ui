@@ -109,6 +109,8 @@ const createEligibilityAndSuitabilityCaseView = ({
   suitabilityStatus: 'NOT_STARTED',
   eligibility,
   suitability,
+  failureType: null,
+  failedCheckReasons: [],
 })
 
 const createEligibilityCriterionView = ({

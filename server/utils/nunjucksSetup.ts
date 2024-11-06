@@ -143,8 +143,16 @@ export function registerNunjucks(app?: express.Express): Environment {
           throw Error(`Unknown status: ${status}`)
       }
     },
-    suitabilityLabel: (status: SuitabilityStatus) => {
-      switch (status) {
+    suitabilityLabel: (suitabilityBlocked: boolean, suitabilityStatus: SuitabilityStatus) => {
+      if (suitabilityBlocked) {
+        return {
+          tag: {
+            text: 'Cannot start yet',
+            classes: 'govuk-tag--grey',
+          },
+        }
+      }
+      switch (suitabilityStatus) {
         case 'NOT_STARTED':
           return {
             tag: {
@@ -164,7 +172,7 @@ export function registerNunjucks(app?: express.Express): Environment {
             },
           }
         default:
-          throw Error(`Unknown status: ${status}`)
+          throw Error(`Unknown status: ${suitabilityStatus}`)
       }
     },
   })

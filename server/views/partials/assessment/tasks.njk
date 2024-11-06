@@ -12,6 +12,16 @@
   }) }}
 {% endmacro %}
 
+{%  macro inProgress(params) %}
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
+  <p></p>
+  {{ govukButton({
+    text: 'Continue',
+    href: params.task.path(params.assessment),
+    classes: "govuk-!-margin-bottom-1"
+  }) }}
+{% endmacro %}
+
 {% macro locked(params) %}
   <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}</h2>
   <p>{{params.task.lockedDescription(params.assessment)}}</p>
@@ -26,7 +36,9 @@
 {% macro taskContent(params) %}
   {% switch params.state %}
     {% case 'READY_TO_START' %}
-      {{ readyToStart(params) }}
+      {{ readyToStart(params) }}  
+    {% case 'IN_PROGRESS' %}
+      {{ inProgress(params) }}
     {% case 'LOCKED' %}
       {{ locked(params) }}
     {% case 'COMPLETE' %}
@@ -40,6 +52,8 @@
   {% switch state %}
     {%- case 'READY_TO_START' -%}
       moj-ticket-panel__content--blue ready-to-start
+    {%- case 'IN_PROGRESS' -%}
+      moj-ticket-panel__content--blue in-progress
     {%- case 'LOCKED' -%}
       moj-ticket-panel__content--grey locked
     {%- case 'COMPLETE' -%}
