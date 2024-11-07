@@ -12,8 +12,6 @@ export default function Index({ communityOffenderManagerCaseloadService }: Servi
 
   const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
     router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER]), asyncMiddleware(handler))
-  const post = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
-    router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER]), asyncMiddleware(handler))
 
   const caseload = new CaseloadRoutes(communityOffenderManagerCaseloadService)
   get(paths.probation.probationCaseload, caseload.GET)
