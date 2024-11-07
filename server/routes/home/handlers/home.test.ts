@@ -21,7 +21,8 @@ describe('Route Handlers - Home', () => {
         await handler.GET(req, res)
         expect(res.render).toHaveBeenCalledWith('pages/index', {
           shouldShowSupportCard: false,
-          shouldShowAssessForHDCCard: false,
+          shouldShowCaAssessForHDCCard: false,
+          shouldShowComAssessForHDCCard: false,
         })
       })
 
@@ -30,7 +31,30 @@ describe('Route Handlers - Home', () => {
         await handler.GET(req, res)
         expect(res.render).toHaveBeenCalledWith('pages/index', {
           shouldShowSupportCard: true,
-          shouldShowAssessForHDCCard: true,
+          shouldShowCaAssessForHDCCard: true,
+          shouldShowComAssessForHDCCard: false,
+        })
+      })
+    })
+
+    describe('Community offender manager role', () => {
+      it('With wrong auth role', async () => {
+        req = getReqWithRolesAndSource([AuthRole.DECISION_MAKER], 'nomis')
+        await handler.GET(req, res)
+        expect(res.render).toHaveBeenCalledWith('pages/index', {
+          shouldShowSupportCard: false,
+          shouldShowCaAssessForHDCCard: false,
+          shouldShowComAssessForHDCCard: false,
+        })
+      })
+
+      it('With correct auth role', async () => {
+        req = getReqWithRolesAndSource([AuthRole.RESPONSIBLE_OFFICER], 'nomis')
+        await handler.GET(req, res)
+        expect(res.render).toHaveBeenCalledWith('pages/index', {
+          shouldShowSupportCard: false,
+          shouldShowCaAssessForHDCCard: false,
+          shouldShowComAssessForHDCCard: true,
         })
       })
     })

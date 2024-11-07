@@ -1,0 +1,14 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = applicationName + " - Assessing a licence - Caseload" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Select someone's HDC application to work on</h1>
+                <form method="POST">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                </form>
+        </div>
+    </div>
+{% endblock %}

@@ -19,7 +19,7 @@ export default function Index({ caseAdminCaseloadService, eligibilityAndSuitabil
     router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const supportHomeHandler = new CaseloadRoutes(caseAdminCaseloadService)
-  get(paths.prison.caseload, supportHomeHandler.GET)
+  get(paths.prison.prisonCaseload, supportHomeHandler.GET)
 
   const assessmentHandler = new AssessmentRoutes(caseAdminCaseloadService)
   get(paths.prison.assessment.home, assessmentHandler.GET)
