@@ -42,7 +42,7 @@
                 items: eligiblityChecks
             }) }}
 
-            {% set suitabilityBlocked = criteria.eligibilityStatus != 'ELIGIBLE' and suitabilityStatus === 'NOT_STARTED' %}   
+            {% set suitabilityBlocked = criteria.eligibilityStatus !== 'ELIGIBLE' and suitabilityStatus === 'NOT_STARTED' %}   
             {% set suitabilityChecks =  [] %}
             {% for check in criteria.suitability %}
             {% set suitabilityChecks = (suitabilityChecks.push(
