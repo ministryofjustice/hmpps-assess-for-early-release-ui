@@ -23,13 +23,25 @@
                     </div>
                 {% endif %}
 
-                {% if shouldShowAssessForHDCCard %}
+                {% if shouldShowCaAssessForHDCCard %}
                     <div class="govuk-grid-column-one-third card-group__item">
                         {{ card({
-                            "id": "assessForHDCCard",
+                            "id": "caAssessForHDCCard",
                             "href": '/prison/caseload',
                             "clickable": "true",
-                            "heading": "Assess for HDC",
+                            "heading": "Home detention curfew (HDC)",
+                            "description": "View assessment and assess offender."
+                        }) }}
+                    </div>
+                {% endif %}
+
+                {% if shouldShowComAssessForHDCCard %}
+                    <div class="govuk-grid-column-one-third card-group__item">
+                        {{ card({
+                            "id": "comAssessForHDCCard",
+                            "href": '/probation/caseload',
+                            "clickable": "true",
+                            "heading": "Home detention curfew (HDC)",
                             "description": "View assessment and assess offender."
                         }) }}
                     </div>

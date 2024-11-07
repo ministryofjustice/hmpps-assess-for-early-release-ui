@@ -6,6 +6,7 @@ import homeRoutes from './home'
 import caseAdminRoutes from './caseAdmin'
 import optOutRoutes from './optout'
 import curfewAddressRoutes from './curfewAddress'
+import communityOffenderManager from './communityOffenderManager'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {
@@ -15,6 +16,7 @@ export default function routes(services: Services): Router {
   router.use(caseAdminRoutes(services))
   router.use(optOutRoutes(services))
   router.use(curfewAddressRoutes(services))
+  router.use(communityOffenderManager(services))
 
   return router
 }

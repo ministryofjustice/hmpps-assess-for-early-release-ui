@@ -2,9 +2,11 @@ import { path } from 'static-path'
 
 const supportHome = path('/support')
 const prison = path('/prison')
+const probation = path('/probation')
 const showPaths = supportHome.path('/paths')
 
-const caseload = prison.path('caseload')
+const prisonCaseload = prison.path('caseload')
+const probationCaseload = probation.path('caseload')
 const assessmentHome = prison.path('assessment/:prisonNumber')
 
 const tasklist = assessmentHome.path('initial-checks')
@@ -31,7 +33,7 @@ const paths = {
     showPaths,
   },
   prison: {
-    caseload,
+    prisonCaseload,
     assessment: {
       home: assessmentHome,
       initialChecks: {
@@ -53,6 +55,9 @@ const paths = {
         deleteCheckYourAnswers,
       },
     },
+  },
+  probation: {
+    probationCaseload,
   },
 }
 
