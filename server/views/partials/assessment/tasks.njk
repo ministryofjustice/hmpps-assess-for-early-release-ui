@@ -3,8 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {%  macro readyToStart(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
-  <p></p>
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
   {{ govukButton({
     text: 'Start',
     href: params.task.path(params.assessment),
@@ -13,8 +12,7 @@
 {% endmacro %}
 
 {%  macro inProgress(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
-  <p></p>
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
   {{ govukButton({
     text: 'Continue',
     href: params.task.path(params.assessment),
@@ -28,8 +26,7 @@
 {% endmacro %}
 
 {%  macro complete(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--green">Completed</span></h2>
-  <p></p>
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--green">Completed</span></h2>
   <a class="govuk-link govuk-link--no-visited-state" href="{{params.task.path(params.assessment)}}">View or change</a>
 {% endmacro %}
 
