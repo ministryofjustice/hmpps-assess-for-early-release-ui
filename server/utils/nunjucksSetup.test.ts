@@ -222,28 +222,32 @@ describe('nunjucksSetup', () => {
   })
   describe('suitabilityLabel', () => {
     test('with NOT_STARTED:', () => {
-      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel("NOT_STARTED") | dumpJson -}}', {})
+      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel(false, "NOT_STARTED") | dumpJson -}}', {})
       expect(result).toContain(`"text": "Incomplete"`)
       expect(result).toContain(`"classes": "govuk-tag--blue"`)
     })
     test('with SUITABLE:', () => {
-      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel("SUITABLE")  | dumpJson -}}', {})
+      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel(false, "SUITABLE")  | dumpJson -}}', {})
       expect(result).toContain(`"text": "Completed"`)
     })
     test('with UNSUITABLE:', () => {
-      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel("UNSUITABLE")  | dumpJson -}}', {})
+      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel(false, "UNSUITABLE")  | dumpJson -}}', {})
       expect(result).toContain(`"text": "Ineligible"`)
       expect(result).toContain(`"classes": "govuk-tag--red"`)
     })
     test('with unknown:', () => {
-      expect(() => renderTemplate('{{- eligibilityChecks.suitabilityLabel("unknown") | dumpJson -}}', {})).toThrow(
-        'Error: Unknown status: unknown',
-      )
+      expect(() =>
+        renderTemplate('{{- eligibilityChecks.suitabilityLabel(false, "unknown") | dumpJson -}}', {}),
+      ).toThrow('Error: Unknown status: unknown')
     })
     test('with undefined:', () => {
-      expect(() => renderTemplate('{{- eligibilityChecks.suitabilityLabel(undefined) | dumpJson -}}', {})).toThrow(
-        'Error: Unknown status: undefined',
-      )
+      expect(() =>
+        renderTemplate('{{- eligibilityChecks.suitabilityLabel(false, undefined) | dumpJson -}}', {}),
+      ).toThrow('Error: Unknown status: undefined')
+    })
+    test('when blocked from starting:', () => {
+      const result = renderTemplate('{{- eligibilityChecks.suitabilityLabel(true, "NOT_STARTED")  | dumpJson -}}', {})
+      expect(result).toContain(`"text": "Cannot start yet"`)
     })
   })
 

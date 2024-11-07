@@ -19,7 +19,6 @@
         <div class="govuk-grid-column-full">
 
             {% include 'partials/initialChecks/outcomeBanner.njk' %}
-
             {% set eligiblityChecks =  [] %}
             {% for check in criteria.eligibility %}
             {% set eligiblityChecks = (eligiblityChecks.push(
@@ -43,6 +42,7 @@
                 items: eligiblityChecks
             }) }}
 
+            {% set suitabilityBlocked = criteria.eligibilityStatus != 'ELIGIBLE' and suitabilityStatus === 'NOT_STARTED' %}   
             {% set suitabilityChecks =  [] %}
             {% for check in criteria.suitability %}
             {% set suitabilityChecks = (suitabilityChecks.push(
@@ -50,12 +50,12 @@
                     title: {
                     text: check.taskName
                     },
-                    href: paths.prison.assessment.initialChecks.check | toPath({ 
+                    href: undefined if suitabilityBlocked else paths.prison.assessment.initialChecks.check | toPath({ 
                         prisonNumber:assessmentSummary.prisonNumber, 
                         type: 'suitability',
                         checkCode: check.code 
                     }),
-                    status: eligibilityChecks.suitabilityLabel(check.status)
+                    status: eligibilityChecks.suitabilityLabel(suitabilityBlocked, check.status)
                 }
             ), suitabilityChecks) %}
             {% endfor %}

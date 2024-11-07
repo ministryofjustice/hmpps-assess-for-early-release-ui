@@ -1007,21 +1007,17 @@ export interface components {
       suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
       /** @description details of current suitability checks */
       suitability: components['schemas']['SuitabilityCriterionProgress'][]
+      /**
+       * @description The type of the failure
+       * @example INELIGIBLE
+       * @enum {string}
+       */
+      failureType?: 'INELIGIBLE' | 'UNSUITABLE'
+      /** @description Reasons why someone is ineligible */
+      failedCheckReasons: string[]
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1044,6 +1040,18 @@ export interface components {
        */
       dateRequested: string
       requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
   }
   responses: never

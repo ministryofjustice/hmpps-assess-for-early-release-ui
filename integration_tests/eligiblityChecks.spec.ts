@@ -98,6 +98,8 @@ test.describe('Eligiblity checks', () => {
       [eligibilityCriterion1Completed, eligibilityCriterion2Ineligible],
       [suitabilityCriterion1],
       'INELIGIBLE',
+      'INELIGIBLE',
+      ['question-1'],
     )
 
     await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
@@ -106,5 +108,7 @@ test.describe('Eligiblity checks', () => {
     expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
     expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
     expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
+    expect(page.getByTestId('failureType')).toContainText('Ineligible')
+    expect(page.getByTestId('failureReasons')).toContainText('question-1')
   })
 })
