@@ -8,7 +8,6 @@ import optOutRoutes from './optout'
 import curfewAddressRoutes from './curfewAddress'
 import communityOffenderManager from './communityOffenderManager'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {
   const router = Router()
   router.use(homeRoutes())
