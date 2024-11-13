@@ -32,6 +32,8 @@ export interface PrisonUser extends BaseUser {
  */
 export interface ProbationUser extends BaseUser {
   authSource: 'delius'
+  deliusStaffIdentifier?: number
+  deliusStaffCode?: string
 }
 
 /**

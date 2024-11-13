@@ -1,4 +1,4 @@
-import { AddressService, CaseAdminCaseloadService, EligibilityAndSuitabilityService } from '..'
+import { AddressService, CaseAdminCaseloadService, EligibilityAndSuitabilityService, UserService } from '..'
 
 jest.mock('..')
 
@@ -10,4 +10,11 @@ const createMockCaseAdminCaseloadService = () =>
 const createMockEligibilityAndSuitabilityService = () =>
   new EligibilityAndSuitabilityService(null) as jest.Mocked<EligibilityAndSuitabilityService>
 
-export { createMockAddressService, createMockCaseAdminCaseloadService, createMockEligibilityAndSuitabilityService }
+const createMockUserService = () => new UserService(null) as jest.Mocked<UserService>
+
+export {
+  createMockAddressService,
+  createMockCaseAdminCaseloadService,
+  createMockEligibilityAndSuitabilityService,
+  createMockUserService,
+}

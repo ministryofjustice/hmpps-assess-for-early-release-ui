@@ -13,6 +13,7 @@ import {
   ResidentSummary,
   AddResidentRequest,
   CheckRequestSummary,
+  DeliusStaff,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
@@ -309,8 +310,8 @@ const createResidentSummary = ({
 const createCheckRequestsForAssessmentSummary = ({
   requestType = 'STANDARD_ADDRESS',
   requestId = '1',
-  caAdditionalInfo = null,
-  ppAdditionalInfo = null,
+  caAdditionalInfo = '',
+  ppAdditionalInfo = '',
   dateRequested = new Date('2024-11-05'),
   preferencePriority = 'FIRST',
   status = 'IN_PROGRESS',
@@ -335,6 +336,35 @@ const createCheckRequestsForAssessmentSummary = ({
   },
 ]
 
+const createStaffDetails = ({
+  id = 2000,
+  code = 'ABC',
+  email = 'jbloggs@probation.gov.uk',
+  teams = [
+    {
+      code: 'teamCode-1',
+      description: 'lauCode',
+    },
+    {
+      code: 'teamCode-2',
+      description: 'lauCode',
+    },
+    {
+      code: 'teamCode-3',
+      description: 'lauCode',
+    },
+    {
+      code: 'teamCode-4',
+      description: 'lauCode',
+    },
+  ],
+} = {}): DeliusStaff => ({
+  id,
+  code,
+  email,
+  teams,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -351,4 +381,5 @@ export {
   createAddResidentRequest,
   createResidentSummary,
   createCheckRequestsForAssessmentSummary,
+  createStaffDetails,
 }

@@ -14,6 +14,7 @@ import type {
   AssessmentSummary,
   CheckRequestSummary,
   CriterionCheck,
+  DeliusStaff,
   EligibilityAndSuitabilityCaseView,
   EligibilityCriterionView,
   OffenderSummary,
@@ -205,5 +206,9 @@ export default class AssessForEarlyReleaseApiClient {
       ...residentSummary,
       dateOfBirth: parseIsoDate(residentSummary.dateOfBirth),
     }
+  }
+
+  async getStaffDetailsByUsername(username: string) {
+    return this.restClient.get<DeliusStaff>({ path: `/staff?username=${username}` })
   }
 }
