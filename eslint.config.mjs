@@ -7,7 +7,5 @@ export default hmppsConfig({
   extraFrontendGlobals: {
     // jquery
     $: 'readable',
-    // GA4
-    gtag: 'readable',
   },
 })
