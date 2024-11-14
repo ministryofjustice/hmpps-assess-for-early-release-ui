@@ -65,13 +65,15 @@ const createAssessmentSummary = ({
   location,
   status,
   policyVersion,
-  tasks: [
-    { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
-    { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
-    { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-    { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
-    { name: 'PRINT_LICENCE', progress: 'LOCKED' },
-  ],
+  tasks: {
+    PRISON_CA: [
+      { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+      { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+      { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+      { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+    ],
+  },
 })
 
 const createEligibilityAndSuitabilityCaseView = ({
@@ -97,13 +99,15 @@ const createEligibilityAndSuitabilityCaseView = ({
     location,
     status,
     policyVersion,
-    tasks: [
-      { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
-      { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
-      { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
-      { name: 'PRINT_LICENCE', progress: 'LOCKED' },
-    ],
+    tasks: {
+      PRISON_CA: [
+        { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+        { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+        { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+        { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+        { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+      ],
+    },
   },
   overallStatus: 'NOT_STARTED',
   eligibilityStatus: 'NOT_STARTED',
@@ -137,13 +141,15 @@ const createEligibilityCriterionView = ({
     location,
     status,
     policyVersion,
-    tasks: [
-      { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
-      { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
-      { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
-      { name: 'PRINT_LICENCE', progress: 'LOCKED' },
-    ],
+    tasks: {
+      PRISON_CA: [
+        { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+        { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+        { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+        { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+        { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+      ],
+    },
   },
   criterion,
   nextCriterion,
@@ -172,13 +178,15 @@ const createSuitabilityCriterionView = ({
     location,
     status,
     policyVersion,
-    tasks: [
-      { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
-      { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
-      { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
-      { name: 'PRINT_LICENCE', progress: 'LOCKED' },
-    ],
+    tasks: {
+      PRISON_CA: [
+        { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+        { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+        { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+        { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+        { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+      ],
+    },
   },
   criterion,
   nextCriterion,
