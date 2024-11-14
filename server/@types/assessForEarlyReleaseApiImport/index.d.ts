@@ -152,6 +152,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/case-admin-additional-information': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Adds case admin additional information to an address.
+     * @description Adds case admin additional information to an address check request.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['updateCaseAdminAdditionalInformation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/standard-address-check-request': {
     parameters: {
       query?: never
@@ -221,6 +244,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/staff': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns staff details that match the name parameter
+     * @description Returns staff details that match the name parameter
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getStaffDetailsByUsername']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     parameters: {
       query?: never
@@ -233,6 +279,29 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ROLE_QUEUE_ADMIN */
     get: operations['getDlqMessages']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/probation/community-offender-manager/staff-id/{staffId}/caseload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the caseload for a community offender manager.
+     * @description Returns a list of offenders that require residential checks to be performed by a community offender manager.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getComCaseload']
     put?: never
     post?: never
     delete?: never
@@ -524,6 +593,14 @@ export interface components {
         [key: string]: boolean
       }
     }
+    /** @description Request for updating the case admin additional information for an address check request */
+    UpdateCaseAdminAdditionInfoRequest: {
+      /**
+       * @description The case admin additional information about an address check request
+       * @example Additional information...
+       */
+      additionalInformation: string
+    }
     /** @description Request for adding a standard address check request */
     AddStandardAddressCheckRequest: {
       /**
@@ -772,6 +849,25 @@ export interface components {
        */
       requestType: 'CAS'
     }
+    Detail: {
+      code: string
+      description?: string
+    }
+    Name: {
+      forename: string
+      middleName?: string
+      surname: string
+    }
+    User: {
+      /** Format: int64 */
+      id?: number
+      code?: string
+      name?: components['schemas']['Name']
+      teams?: components['schemas']['Detail'][]
+      username?: string
+      email?: string
+      unallocated?: boolean
+    }
     DlqMessage: {
       body: {
         [key: string]: Record<string, never>
@@ -814,6 +910,11 @@ export interface components {
        * @example 2026-08-23
        */
       hdced: string
+      /**
+       * @description The full name of the probation practitioner responsible for this offender
+       * @example Mark Coombes
+       */
+      probationPractitioner?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1019,6 +1120,18 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1040,18 +1153,6 @@ export interface components {
        */
       dateRequested: string
       requestType: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
   }
   responses: never
@@ -1301,6 +1402,60 @@ export interface operations {
       }
     }
   }
+  updateCaseAdminAdditionalInformation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCaseAdminAdditionInfoRequest']
+      }
+    }
+    responses: {
+      /** @description The case admin additional information has been updated. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   addStandardAddressCheckRequest: {
     parameters: {
       query?: never
@@ -1443,6 +1598,55 @@ export interface operations {
       }
     }
   }
+  getStaffDetailsByUsername: {
+    parameters: {
+      query: {
+        username: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns staff details matching the supplied name */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['User']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Could not find staff with username */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getDlqMessages: {
     parameters: {
       query?: {
@@ -1463,6 +1667,46 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
+  getComCaseload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns a list of offenders that require residential checks to be performed */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummary'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

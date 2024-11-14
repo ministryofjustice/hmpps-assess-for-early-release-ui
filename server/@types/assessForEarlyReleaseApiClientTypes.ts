@@ -48,3 +48,5 @@ export type ResidentSummary = ParsingDates<_ResidentSummary, 'dateOfBirth' | 'da
 
 export type EligibilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['eligibilityStatus']
 export type SuitabilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['suitabilityStatus']
+
+export type DeliusStaff = components['schemas']['User']
