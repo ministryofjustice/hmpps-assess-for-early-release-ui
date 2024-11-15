@@ -29,6 +29,8 @@ describe('GET', () => {
       req.middleware.clientToken,
       req.params.prisonNumber,
     )
-    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/assessment', { assessmentSummary })
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/assessment', {
+      assessmentSummary: { ...assessmentSummary, tasks: assessmentSummary.tasks.PRISON_CA },
+    })
   })
 })

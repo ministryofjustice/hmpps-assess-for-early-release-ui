@@ -51,7 +51,7 @@ export default class EligibilityAndSuitabilityService {
     },
   ) {
     const payload = this.sanitiseForm(criterion, form)
-    logger.info('save check called', prisonNumber, type, criterion, payload)
+    logger.info('save check called', prisonNumber, type, criterion.code)
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.submitAnswer(prisonNumber, {
       type,

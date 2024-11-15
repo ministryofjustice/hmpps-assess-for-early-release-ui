@@ -10,6 +10,8 @@ export default class AssessmentRoutes {
       req.params.prisonNumber,
     )
 
-    res.render('pages/caseAdmin/assessment', { assessmentSummary })
+    res.render('pages/caseAdmin/assessment', {
+      assessmentSummary: { ...assessmentSummary, tasks: assessmentSummary.tasks.PRISON_CA },
+    })
   }
 }
