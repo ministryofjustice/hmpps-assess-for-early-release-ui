@@ -43,7 +43,8 @@ describe('GET', () => {
           hdced: parseIsoDate('2022-01-08'),
           name: 'Jim Smith',
           probationPractitioner: 'CVl_COM',
-          remainingDays: 1,
+          prisonNumber: 'A1234AB',
+          workingDaysToHdced: 1,
         },
       ],
     })

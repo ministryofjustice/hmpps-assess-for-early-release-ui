@@ -38,12 +38,14 @@ const createOffenderSummary = ({
   forename = 'Jim',
   surname = 'Smith',
   hdced = addDays(startOfDay(new Date()), 3),
+  probationPractitioner = 'CVl_COM',
 } = {}): OffenderSummary => ({
   prisonNumber,
   bookingId,
   forename,
   surname,
   hdced,
+  probationPractitioner,
 })
 
 const createAssessmentSummary = ({
@@ -377,13 +379,15 @@ const createStaffDetails = ({
 const createComCase = ({
   name = 'Jim Smith',
   probationPractitioner = 'CVl_COM',
+  prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-01-08'),
-  remainingDays = 1,
+  workingDaysToHdced = 1,
 } = {}): ComCase => ({
   hdced,
   probationPractitioner,
+  prisonNumber,
   name,
-  remainingDays,
+  workingDaysToHdced,
 })
 
 export {

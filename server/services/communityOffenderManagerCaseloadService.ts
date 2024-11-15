@@ -6,9 +6,10 @@ import { ProbationUser } from '../interfaces/hmppsUser'
 
 export type Case = {
   name: string
+  prisonNumber: string
   probationPractitioner: string
   hdced: Date
-  remainingDays: number
+  workingDaysToHdced: number
 }
 
 export default class CommunityOffenderManagerCaseloadService {
@@ -21,9 +22,10 @@ export default class CommunityOffenderManagerCaseloadService {
     const result = await assessForEarlyReleaseApiClient.getCommunityOffenderManagerCaseload(user.deliusStaffIdentifier)
     return result.map(offender => ({
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
-      probationPractitioner: offender.prisonNumber,
+      prisonNumber: offender.prisonNumber,
+      probationPractitioner: offender.probationPractitioner,
       hdced: offender.hdced,
-      remainingDays: differenceInDays(offender.hdced, startOfDay(new Date())),
+      workingDaysToHdced: differenceInDays(offender.hdced, startOfDay(new Date())),
     }))
   }
 }

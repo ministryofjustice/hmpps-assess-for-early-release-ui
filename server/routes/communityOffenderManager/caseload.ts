@@ -16,9 +16,10 @@ export default class CaseloadRoutes {
       return {
         createLink: 'paths.prison.assessment.home(offender)',
         name: offender.name,
+        prisonNumber: offender.prisonNumber,
         probationPractitioner: offender.probationPractitioner,
         hdced: offender.hdced,
-        remainingDays: offender.remainingDays,
+        workingDaysToHdced: offender.workingDaysToHdced,
       }
     })
     res.render('pages/communityOffenderManager/caseload', { caseload })
