@@ -42,5 +42,6 @@ export {
   CaseAdminCaseloadService,
   OptOutService,
   EligibilityAndSuitabilityService,
+  CommunityOffenderManagerCaseloadService,
   UserService,
 }

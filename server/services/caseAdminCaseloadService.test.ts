@@ -6,7 +6,7 @@ const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 
-describe('COM Caseload Service', () => {
+describe('CA Caseload Service', () => {
   let caseAdminCaseloadService: CaseAdminCaseloadService
 
   beforeEach(() => {

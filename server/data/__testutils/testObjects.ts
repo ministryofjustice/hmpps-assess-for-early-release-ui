@@ -17,6 +17,7 @@ import {
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
+import { Case as ComCase } from '../../services/communityOffenderManagerCaseloadService'
 import { parseIsoDate } from '../../utils/utils'
 
 const createCase = ({
@@ -373,6 +374,18 @@ const createStaffDetails = ({
   teams,
 })
 
+const createComCase = ({
+  name = 'Jim Smith',
+  probationPractitioner = 'CVl_COM',
+  hdced = parseIsoDate('2022-01-08'),
+  remainingDays = 1,
+} = {}): ComCase => ({
+  hdced,
+  probationPractitioner,
+  name,
+  remainingDays,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -390,4 +403,5 @@ export {
   createResidentSummary,
   createCheckRequestsForAssessmentSummary,
   createStaffDetails,
+  createComCase,
 }
