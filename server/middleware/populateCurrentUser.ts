@@ -31,7 +31,7 @@ export default function populateCurrentUser(userService: UserService): RequestHa
 
       if (res.locals.user.authSource === 'delius') {
         // Assemble user information from Delius
-        const probationUser = await userService.getStaffDetailsByUsername(req.middleware.clientToken, res.locals.user)
+        const probationUser = await userService.getStaffDetailsByUsername(req?.middleware?.clientToken, res.locals.user)
         res.locals.user.deliusStaffIdentifier = probationUser?.id
         res.locals.user.deliusStaffCode = probationUser?.code
       }
