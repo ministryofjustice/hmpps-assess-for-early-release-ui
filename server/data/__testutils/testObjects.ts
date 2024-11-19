@@ -17,6 +17,7 @@ import {
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import { Case } from '../../services/caseAdminCaseloadService'
+import { Case as ComCase } from '../../services/communityOffenderManagerCaseloadService'
 import { parseIsoDate } from '../../utils/utils'
 
 const createCase = ({
@@ -37,12 +38,14 @@ const createOffenderSummary = ({
   forename = 'Jim',
   surname = 'Smith',
   hdced = addDays(startOfDay(new Date()), 3),
+  probationPractitioner = 'CVl_COM',
 } = {}): OffenderSummary => ({
   prisonNumber,
   bookingId,
   forename,
   surname,
   hdced,
+  probationPractitioner,
 })
 
 const createAssessmentSummary = ({
@@ -373,6 +376,20 @@ const createStaffDetails = ({
   teams,
 })
 
+const createComCase = ({
+  name = 'Jim Smith',
+  probationPractitioner = 'CVl_COM',
+  prisonNumber = 'A1234AB',
+  hdced = parseIsoDate('2022-01-08'),
+  workingDaysToHdced = 1,
+} = {}): ComCase => ({
+  hdced,
+  probationPractitioner,
+  prisonNumber,
+  name,
+  workingDaysToHdced,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -390,4 +407,5 @@ export {
   createResidentSummary,
   createCheckRequestsForAssessmentSummary,
   createStaffDetails,
+  createComCase,
 }

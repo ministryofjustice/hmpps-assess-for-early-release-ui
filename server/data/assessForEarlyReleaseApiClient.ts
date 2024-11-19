@@ -211,4 +211,13 @@ export default class AssessForEarlyReleaseApiClient {
   async getStaffDetailsByUsername(username: string) {
     return this.restClient.get<DeliusStaff>({ path: `/staff?username=${username}` })
   }
+
+  async getCommunityOffenderManagerCaseload(staffId: number): Promise<OffenderSummary[]> {
+    const caseAdminCaseload = await this.restClient.get<_OffenderSummary[]>({
+      path: `/probation/community-offender-manager/staff-id/${staffId}/caseload`,
+    })
+    return caseAdminCaseload.map(c => {
+      return { ...c, hdced: parseIsoDate(c.hdced) }
+    })
+  }
 }

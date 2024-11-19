@@ -32,11 +32,9 @@ export default function populateCurrentUser(userService: UserService): RequestHa
       if (res.locals.user.authSource === 'delius') {
         // Assemble user information from Delius
         const probationUser = await userService.getStaffDetailsByUsername(req?.middleware?.clientToken, res.locals.user)
-
         res.locals.user.deliusStaffIdentifier = probationUser?.id
         res.locals.user.deliusStaffCode = probationUser?.code
       }
-
       next()
     } catch (error) {
       logger.error(error, `Failed to populate user details for: ${res.locals.user && res.locals.user.username}`)

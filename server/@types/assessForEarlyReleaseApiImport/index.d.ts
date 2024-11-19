@@ -287,6 +287,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/probation/community-offender-manager/staff-id/{staffId}/caseload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the caseload for a community offender manager.
+     * @description Returns a list of offenders that require residential checks to be performed by a community offender manager.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getComCaseload']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prison/{prisonCode}/case-admin/caseload': {
     parameters: {
       query?: never
@@ -887,6 +910,11 @@ export interface components {
        * @example 2026-08-23
        */
       hdced: string
+      /**
+       * @description The full name of the probation practitioner responsible for this offender
+       * @example Mark Coombes
+       */
+      probationPractitioner?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1098,10 +1126,17 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * @description The date / time the check was requested on
-       * @example 2021-07-05T10:35:17
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
        */
-      dateRequested: string
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1119,17 +1154,10 @@ export interface components {
        */
       preferencePriority: 'FIRST' | 'SECOND'
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
+       * @description The date / time the check was requested on
+       * @example 2021-07-05T10:35:17
        */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      dateRequested: string
       requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
   }
@@ -1645,6 +1673,46 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
+  getComCaseload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns a list of offenders that require residential checks to be performed */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummary'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

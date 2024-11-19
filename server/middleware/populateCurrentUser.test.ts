@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import populateCurrentUser from './populateCurrentUser'
-import { createMockHmppsAuthClient } from '../data/__testutils/mocks'
 import { mockRequest, mockResponse } from '../routes/__testutils/requestTestUtils'
 import { createMockUserService } from '../services/__testutils/mock'
 import { createStaffDetails } from '../data/__testutils/testObjects'
@@ -24,9 +23,7 @@ function createToken(authSource: string, authorities: string[]) {
 
 const userService = createMockUserService()
 
-const token = 'token-1'
 const middleware = populateCurrentUser(userService)
-const hmppsAuthClient = createMockHmppsAuthClient()
 const req = mockRequest({ middleware: {} })
 const res = mockResponse({
   locals: {
@@ -39,7 +36,6 @@ const staffDetails = createStaffDetails({})
 
 beforeEach(() => {
   jest.resetAllMocks()
-  hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
 })
 
 afterEach(() => {
