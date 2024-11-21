@@ -37,7 +37,7 @@ export default function populateCurrentUser(userService: UserService): RequestHa
       }
       next()
     } catch (error) {
-      logger.error(error, `Failed to populate user details for: ${res.locals.user && res.locals.user.username}`)
+      logger.error(error, `Failed to populate user details for: ${res.locals.user?.username}`)
       next(error)
     }
   }
