@@ -72,6 +72,7 @@ export default {
   apis: {
     hmppsAuth: {
       url: get('HMPPS_AUTH_URL', 'http://localhost:9090/auth', requiredInProduction),
+      healthPath: '/health/ping',
       externalUrl: get('HMPPS_AUTH_EXTERNAL_URL', get('HMPPS_AUTH_URL', 'http://localhost:9090/auth')),
       timeout: {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
@@ -85,6 +86,7 @@ export default {
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
@@ -94,6 +96,12 @@ export default {
     },
     hmppsComponents: {
       url: get('HMPPS_COMPONENT_API_URL', 'http://localhost:9091', requiredInProduction),
+      healthPath: '/ping',
+      timeout: {
+        response: Number(get('HEALTH_COMPONENTS_API_TIMEOUT_RESPONSE', 5000)),
+        deadline: Number(get('HEALTH_COMPONENTS_API_TIMEOUT_DEADLINE', 5000)),
+      },
+      agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
     },
     assessForEarlyReleaseApi: {
       url: get('AFER_API_URL', 'http://localhost:8089', requiredInProduction),

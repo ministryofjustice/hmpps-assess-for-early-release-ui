@@ -1,6 +1,5 @@
 import type { AvailableComponent, Component } from '@hmpps-components'
 import RestClient from './restClient'
-import type { ApiConfig } from '../config'
 import config from '../config'
 
 export default class HmppsComponentsClient {
@@ -10,7 +9,7 @@ export default class HmppsComponentsClient {
 
   constructor(userToken: Express.User['token']) {
     this.userToken = userToken
-    this.restClient = new RestClient('hmppsComponentsClient', config.apis.hmppsComponents as ApiConfig, userToken)
+    this.restClient = new RestClient('hmppsComponentsClient', config.apis.hmppsComponents, userToken)
   }
 
   async getComponents<T extends Array<AvailableComponent>>(components: T): Promise<Record<T[number], Component>> {
