@@ -27,8 +27,8 @@ test.describe('Can change, remove & save assessments', () => {
     await expect(page.getByText('Check your answers')).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Preferred address' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Second address' })).toBeVisible()
-    await expect(page.getByTestId('prefered-address-residental-details')).toBeVisible()
-    await expect(page.getByTestId('second-address-residental-details')).toBeVisible()
+    await expect(page.getByTestId('preferred-address-residential-details')).toBeVisible()
+    await expect(page.getByTestId('second-address-residential-details')).toBeVisible()
 
     await expect(page.getByTestId('save')).toBeVisible()
   })
@@ -47,8 +47,8 @@ test.describe('Can change, remove & save assessments', () => {
 
     await expect(page.getByRole('heading', { name: 'Preferred address' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Second address' })).not.toBeVisible()
-    await expect(page.getByTestId('prefered-address-residental-details')).toBeVisible()
-    await expect(page.getByText('second-address-residental-details')).not.toBeVisible()
+    await expect(page.getByTestId('preferred-address-residential-details')).toBeVisible()
+    await expect(page.getByText('second-address-residential-details')).not.toBeVisible()
 
     const removeLink = await page.getByRole('link', { name: 'Remove preferred address' }).getAttribute('href')
     expect(removeLink).toContain(

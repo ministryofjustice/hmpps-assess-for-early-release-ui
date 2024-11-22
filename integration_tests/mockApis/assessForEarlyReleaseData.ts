@@ -113,7 +113,20 @@ export const assessmentSummary = (
   },
 })
 
-const address = {
+const address1 = {
+  firstLine: '97, HARTLAND ROAD',
+  secondLine: '',
+  town: 'READING',
+  postcode: 'RG2 8AF',
+  uprn: '310030567',
+  county: 'READING',
+  country: 'England',
+  xcoordinate: 472231.0,
+  ycoordinate: 170070.0,
+  addressLastUpdated: new Date('2020-06-25'),
+}
+
+const address2 = {
   firstLine: '99, HARTLAND ROAD',
   secondLine: '',
   town: 'READING',
@@ -146,7 +159,7 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
     dateRequested: new Date('2024-11-05'),
     preferencePriority: 'FIRST',
     status: 'IN_PROGRESS',
-    address,
+    address: address1,
     residents: [createResidentSummary(1, true)],
   },
   {
@@ -157,7 +170,7 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
     dateRequested: new Date('2024-11-05'),
     preferencePriority: 'SECOND',
     status: 'IN_PROGRESS',
-    address,
+    address: address2,
     residents: [createResidentSummary(2, false)],
   },
 ]

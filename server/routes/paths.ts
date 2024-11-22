@@ -7,25 +7,28 @@ const showPaths = supportHome.path('/paths')
 
 const prisonCaseload = prison.path('caseload')
 const probationCaseload = probation.path('caseload')
-const assessmentHome = prison.path('assessment/:prisonNumber')
+const prisonAssessmentHome = prison.path('assessment/:prisonNumber')
+const probationAssessmentHome = probation.path('assessment/:prisonNumber')
 
-const tasklist = assessmentHome.path('initial-checks')
+const tasklist = prisonAssessmentHome.path('initial-checks')
 const check = tasklist.path(':type/:checkCode')
 
-const optOutCheck = assessmentHome.path('opt-out-check')
-const optOut = assessmentHome.path('opt-out')
+const optOutCheck = prisonAssessmentHome.path('opt-out-check')
+const optOut = prisonAssessmentHome.path('opt-out')
 
-const curfewAddress = assessmentHome.path('curfew-address')
-const findAddress = curfewAddress.path('find-address')
-const selectAddress = curfewAddress.path('select-address')
-const noAddressFound = curfewAddress.path('no-address-found')
-const addResidentDetails = curfewAddress.path('resident-details/:checkRequestId')
-const moreInformationRequiredCheck = curfewAddress.path(':checkRequestId/more-information-required-check')
-const moreInformationRequired = curfewAddress.path(':checkRequestId/more-information-required')
-const requestMoreAddressChecks = curfewAddress.path('/request-more-address-checks')
-const deleteAddressCheckRequest = curfewAddress.path(':checkRequestId/request-more-address-checks/delete')
-const checkYourAnswers = curfewAddress.path('/check-your-answers')
-const deleteCheckYourAnswers = curfewAddress.path(':checkRequestId/check-your-answers/delete')
+const prisonCurfewAddress = prisonAssessmentHome.path('curfew-address')
+const probationCurfewAddress = probationAssessmentHome.path('curfew-address')
+const findAddress = prisonCurfewAddress.path('find-address')
+const selectAddress = prisonCurfewAddress.path('select-address')
+const noAddressFound = prisonCurfewAddress.path('no-address-found')
+const addResidentDetails = prisonCurfewAddress.path('resident-details/:checkRequestId')
+const moreInformationRequiredCheck = prisonCurfewAddress.path(':checkRequestId/more-information-required-check')
+const moreInformationRequired = prisonCurfewAddress.path(':checkRequestId/more-information-required')
+const requestMoreAddressChecks = prisonCurfewAddress.path('/request-more-address-checks')
+const deleteAddressCheckRequest = prisonCurfewAddress.path(':checkRequestId/request-more-address-checks/delete')
+const checkYourAnswers = prisonCurfewAddress.path('/check-your-answers')
+const checkCurfewAddresses = probationCurfewAddress.path('/check-addresses')
+const deleteCheckYourAnswers = prisonCurfewAddress.path(':checkRequestId/check-your-answers/delete')
 
 const paths = {
   support: {
@@ -35,7 +38,7 @@ const paths = {
   prison: {
     prisonCaseload,
     assessment: {
-      home: assessmentHome,
+      home: prisonAssessmentHome,
       initialChecks: {
         tasklist,
         check,
@@ -58,6 +61,11 @@ const paths = {
   },
   probation: {
     probationCaseload,
+    assessment: {
+      curfewAddress: {
+        checkCurfewAddresses,
+      },
+    },
   },
 }
 

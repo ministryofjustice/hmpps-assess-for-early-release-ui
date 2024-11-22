@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+
+{% set pageTitle = applicationName + " - Check curfew addresses or CAS areas" %}
+{% set preferredAddress = checkRequestsForAssessmentSummary | find('preferencePriority', 'FIRST') %}
+{% set secondAddress = checkRequestsForAssessmentSummary | find('preferencePriority', 'SECOND') %}
+
+{% block content %}
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-l">Check curfew addresses or CAS areas</h1>
+                {{ govukInsetText({
+                    html: "Address and risk checks must be completed by dd MMM YYYY.
+                    <br>You can <a href='#'>report a delay to other people</a> working on this application."
+                }) }}
+                <h2 class="govuk-heading-m">Proposed curfew addresses</h2>
+                {{ checkAddressSummary({
+                    title: "Preferred address",
+                    displayPriority: true,
+                    assessmentSummary: preferredAddress
+                }) }}
+                {% if secondAddress %}
+                    {{ checkAddressSummary({
+                        title: "Second address",
+                        displayPriority: true,
+                        assessmentSummary: preferredAddress
+                    }) }}
+                {% endif %}
+                {{ govukButton({
+                    text: "Return to application overview",
+                    href: "#",
+                    preventDoubleClick: true,
+                    classes: "govuk-button--secondary",
+                    attributes: { "data-qa": "return-to-application-overview" }
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

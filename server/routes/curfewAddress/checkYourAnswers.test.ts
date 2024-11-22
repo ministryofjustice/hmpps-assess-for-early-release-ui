@@ -41,7 +41,7 @@ describe('check your answers summary', () => {
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/checkYourAnswers', {
         assessmentSummary,
-        checkRequestsForassessmentSummary: [addressSummary],
+        checkRequestsForAssessmentSummary: [addressSummary],
       })
     })
   })

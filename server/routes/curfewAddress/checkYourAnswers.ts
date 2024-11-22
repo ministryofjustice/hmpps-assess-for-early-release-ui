@@ -14,14 +14,14 @@ export default class CheckYourAnswersRoutes {
       req?.middleware?.clientToken,
       prisonNumber,
     )
-    const checkRequestsForassessmentSummary = await this.addressService.getCheckRequestsForAssessment(
+    const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
       prisonNumber,
     )
 
     res.render('pages/curfewAddress/checkYourAnswers', {
       assessmentSummary,
-      checkRequestsForassessmentSummary,
+      checkRequestsForAssessmentSummary,
     })
   }
 
@@ -40,12 +40,12 @@ export default class CheckYourAnswersRoutes {
       Number(checkRequestId),
     )
 
-    const checkRequestsForassessmentSummary = await this.addressService.getCheckRequestsForAssessment(
+    const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
       prisonNumber,
     )
 
-    if (checkRequestsForassessmentSummary.length > 0) {
+    if (checkRequestsForAssessmentSummary.length > 0) {
       return res.redirect(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
     }
 
