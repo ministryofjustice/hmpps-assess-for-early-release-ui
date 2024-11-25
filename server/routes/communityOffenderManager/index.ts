@@ -7,6 +7,7 @@ import CaseloadRoutes from './caseload'
 import { Services } from '../../services'
 import paths from '../paths'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
+import AssessmentRoutes from './assessment'
 
 export default function Index({
   addressService,
@@ -20,6 +21,9 @@ export default function Index({
 
   const caseload = new CaseloadRoutes(communityOffenderManagerCaseloadService)
   get(paths.probation.probationCaseload, caseload.GET)
+
+  const assessmentHandler = new AssessmentRoutes(communityOffenderManagerCaseloadService)
+  get(paths.probation.assessment.home, assessmentHandler.GET)
 
   const checkCurfewAddressesRoutes = new CheckCurfewAddressesRoutes(addressService, caseAdminCaseloadService)
   get(paths.probation.assessment.curfewAddress.checkCurfewAddresses, checkCurfewAddressesRoutes.GET)

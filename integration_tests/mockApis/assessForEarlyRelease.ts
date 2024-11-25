@@ -5,7 +5,39 @@ import {
   _AssessmentSummary,
   AddressSummary,
   CheckRequestSummary,
+  _OffenderSummary,
+  DeliusStaff,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
+
+const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/staff\\?username=${username}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: staff,
+    },
+  })
+
+const stubGetComCaseload = (staffId: number, list: _OffenderSummary[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/probation/community-offender-manager/staff-id/${staffId}/caseload`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: list,
+    },
+  })
 
 const stubGetAssessmentSummary = (assessmentSummary: _AssessmentSummary) =>
   stubFor({
@@ -268,6 +300,8 @@ const stubGetCheckRequestsForAssessment = (prisonNumber: string, addressSummary:
   })
 
 export default {
+  stubDeliusStaff,
+  stubGetComCaseload,
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,
   stubGetEligibilityCriterionView,

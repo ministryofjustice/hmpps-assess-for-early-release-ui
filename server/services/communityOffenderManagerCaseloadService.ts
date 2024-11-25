@@ -3,6 +3,7 @@ import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
 import { ProbationUser } from '../interfaces/hmppsUser'
+import { AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export type Case = {
   name: string
@@ -27,5 +28,10 @@ export default class CommunityOffenderManagerCaseloadService {
       hdced: offender.hdced,
       workingDaysToHdced: differenceInDays(offender.hdced, startOfDay(new Date())),
     }))
+  }
+
+  public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
   }
 }

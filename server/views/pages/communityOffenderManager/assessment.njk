@@ -27,10 +27,9 @@
             {{ personalDetails(assessmentSummary) }}
         </div>
         <div class="govuk-grid-column-one-half">
-            {{ actions(paths.prison.assessment.optOutCheck({ prisonNumber: assessmentSummary.prisonNumber })) }}
         </div>
         <div class="govuk-grid-column-full">
-            {{ tasks('PRISON_CA', assessmentSummary) }}
+            {{ tasks('PROBATION_COM', assessmentSummary) }}
         </div>
     </div>
 {% endblock %}

@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
-import { assessmentSummary, createCheckRequestsForAssessmentSummary } from './mockApis/assessForEarlyReleaseData'
-import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
+import { assessmentSummary, createCheckRequestsForAssessmentSummary } from '../mockApis/assessForEarlyReleaseData'
+import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 
-import { login, resetStubs } from './testUtils'
-import paths from '../server/routes/paths'
-import playwrightConfig from '../playwright.config'
+import { login, resetStubs } from '../testUtils'
+import paths from '../../server/routes/paths'
+import playwrightConfig from '../../playwright.config'
 
 test.describe('Can change, remove & save assessments', () => {
   test.afterEach(async () => {

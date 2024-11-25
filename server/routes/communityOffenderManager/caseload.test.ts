@@ -39,7 +39,7 @@ describe('GET', () => {
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
       caseload: [
         {
-          createLink: 'paths.prison.assessment.home(offender)',
+          createLink: '/probation/assessment/A1234AB',
           hdced: parseIsoDate('2022-01-08'),
           name: 'Jim Smith',
           probationPractitioner: 'CVl_COM',
