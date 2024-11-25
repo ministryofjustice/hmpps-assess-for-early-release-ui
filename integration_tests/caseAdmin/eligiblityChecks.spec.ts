@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
-import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
-import { login, resetStubs } from './testUtils'
-import paths from '../server/routes/paths'
+import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
+import { login, resetStubs } from '../testUtils'
+import paths from '../../server/routes/paths'
 
 import {
   assessmentSummary,
@@ -10,7 +10,7 @@ import {
   eligibilityCriterion2,
   eligibilityCriterion2Ineligible,
   suitabilityCriterion1,
-} from './mockApis/assessForEarlyReleaseData'
+} from '../mockApis/assessForEarlyReleaseData'
 
 test.describe('Eligiblity checks', () => {
   test.beforeEach(async () => {

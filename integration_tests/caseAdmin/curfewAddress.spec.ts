@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test'
-import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
-import { assessmentSummary } from './mockApis/assessForEarlyReleaseData'
+import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
+import { assessmentSummary } from '../mockApis/assessForEarlyReleaseData'
 
-import { login, resetStubs } from './testUtils'
-import paths from '../server/routes/paths'
-import { AddressSummary } from '../server/@types/assessForEarlyReleaseApiClientTypes'
-import playwrightConfig from '../playwright.config'
+import { login, resetStubs } from '../testUtils'
+import paths from '../../server/routes/paths'
+import { AddressSummary } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
+import playwrightConfig from '../../playwright.config'
 
 test.describe('Can add a curfew address and a main resident', () => {
   test.afterEach(async () => {

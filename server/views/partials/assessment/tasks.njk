@@ -6,7 +6,7 @@
   <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
   {{ govukButton({
     text: 'Start',
-    href: params.task.path(params.assessment),
+    href: params.task.path(params.assessment) if params.task.path,
     classes: "govuk-!-margin-bottom-1"
   }) }}
 {% endmacro %}
@@ -15,7 +15,7 @@
   <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
   {{ govukButton({
     text: 'Continue',
-    href: params.task.path(params.assessment),
+    href: params.task.path(params.assessment) if params.task.path,
     classes: "govuk-!-margin-bottom-1"
   }) }}
 {% endmacro %}
@@ -60,10 +60,10 @@
     {% endswitch %}  
 {%- endmacro -%}
 
-{%  macro tasks(params) %}
+{%  macro tasks(userType, params) %}
   {% set tasksCards = [] %} 
   {% for taskProgress in params.tasks %}
-      {% set task = tasksList | find('code', taskProgress.name) %}
+      {% set task = tasksList[userType] | find('code', taskProgress.name) %}
 
       {% set tasksCards = (tasksCards.push(
         { 

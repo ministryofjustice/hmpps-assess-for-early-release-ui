@@ -1,10 +1,13 @@
-import {
+import type {
   CheckRequestSummary,
   EligibilityCriterionProgress,
   ResidentSummary,
   SuitabilityCriterionProgress,
+  TaskCode,
   _AssessmentSummary,
+  _OffenderSummary,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
+import { tasks } from '../../server/config/tasks'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
 export const eligibilityCriterion1: EligibilityCriterionProgress = {
@@ -110,6 +113,10 @@ export const assessmentSummary = (
       { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
       { name: 'PRINT_LICENCE', progress: 'LOCKED' },
     ],
+    PROBATION_COM: tasks.PROBATION_COM.map((task, i) => ({
+      name: task.code as TaskCode,
+      progress: i === 0 ? 'READY_TO_START' : 'LOCKED',
+    })),
   },
 })
 
@@ -174,3 +181,12 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
     residents: [createResidentSummary(2, false)],
   },
 ]
+
+export const createOffenderSummary = (prisonNumber: string): _OffenderSummary => ({
+  prisonNumber,
+  bookingId: 1,
+  forename: 'Jim',
+  surname: 'Smith',
+  hdced: '2024-01-20',
+  probationPractitioner: 'Mark Coombes',
+})

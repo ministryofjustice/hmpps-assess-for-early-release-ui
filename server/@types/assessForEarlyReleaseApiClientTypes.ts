@@ -50,3 +50,6 @@ export type EligibilityStatus = components['schemas']['EligibilityAndSuitability
 export type SuitabilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['suitabilityStatus']
 
 export type DeliusStaff = components['schemas']['User']
+
+export type UserRole = 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT'
+export type TaskCode = components['schemas']['TaskProgress']['name']

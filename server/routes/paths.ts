@@ -62,6 +62,7 @@ const paths = {
   probation: {
     probationCaseload,
     assessment: {
+      home: probationAssessmentHome,
       curfewAddress: {
         checkCurfewAddresses,
       },

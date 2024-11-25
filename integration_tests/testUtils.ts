@@ -12,17 +12,19 @@ export async function login(
     authorities,
     active = true,
     feComponentsFail = true,
+    authSource = 'nomis',
   }: {
     authorities: string[]
     active?: boolean
     feComponentsFail?: boolean
+    authSource?: 'nomis' | 'delius'
   },
 ) {
   await Promise.all([
     favicon(),
     signIn(),
     signOut(),
-    token({ authorities }),
+    token({ authorities, authSource }),
     tokenVerification.stubVerifyToken(active),
     feComponentsFail ? feComponent.stubFeComponentsFail() : feComponent.stubFeComponentsSuccess(),
   ])

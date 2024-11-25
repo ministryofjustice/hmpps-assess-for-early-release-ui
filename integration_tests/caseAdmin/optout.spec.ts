@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
-import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
-import { assessmentSummary } from './mockApis/assessForEarlyReleaseData'
+import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
+import { assessmentSummary } from '../mockApis/assessForEarlyReleaseData'
 
-import { login, resetStubs } from './testUtils'
-import AssessmentStatus from '../server/enumeration/assessmentStatus'
-import paths from '../server/routes/paths'
+import { login, resetStubs } from '../testUtils'
+import AssessmentStatus from '../../server/enumeration/assessmentStatus'
+import paths from '../../server/routes/paths'
 
 test.describe('Opt out', () => {
   test.afterEach(async () => {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import CommunityOffenderManagerCaseloadService from '../../services/communityOffenderManagerCaseloadService'
 import { ProbationUser } from '../../interfaces/hmppsUser'
+import paths from '../paths'
 
 export default class CaseloadRoutes {
   constructor(private readonly communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService) {}
@@ -14,7 +15,7 @@ export default class CaseloadRoutes {
 
     const caseload = offenderSummaryList.map(offender => {
       return {
-        createLink: 'paths.prison.assessment.home(offender)',
+        createLink: paths.probation.assessment.home(offender),
         name: offender.name,
         prisonNumber: offender.prisonNumber,
         probationPractitioner: offender.probationPractitioner,

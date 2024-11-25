@@ -1,5 +1,5 @@
 import { addDays, startOfDay } from 'date-fns'
-import {
+import type {
   AssessmentSummary,
   EligibilityCriterionProgress,
   EligibilityAndSuitabilityCaseView,
@@ -14,11 +14,13 @@ import {
   AddResidentRequest,
   CheckRequestSummary,
   DeliusStaff,
+  TaskCode,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
-import { Case } from '../../services/caseAdminCaseloadService'
-import { Case as ComCase } from '../../services/communityOffenderManagerCaseloadService'
+import type { Case } from '../../services/caseAdminCaseloadService'
+import type { Case as ComCase } from '../../services/communityOffenderManagerCaseloadService'
 import { parseIsoDate } from '../../utils/utils'
+import { tasks } from '../../config/tasks'
 
 const createCase = ({
   prisonNumber = 'A1234AB',
@@ -69,13 +71,14 @@ const createAssessmentSummary = ({
   status,
   policyVersion,
   tasks: {
-    PRISON_CA: [
-      { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
-      { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
-      { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
-      { name: 'PRINT_LICENCE', progress: 'LOCKED' },
-    ],
+    PRISON_CA: tasks.PRISON_CA.map((task, i) => ({
+      name: task.code as TaskCode,
+      progress: i === 0 ? 'READY_TO_START' : 'LOCKED',
+    })),
+    PROBATION_COM: tasks.PROBATION_COM.map((task, i) => ({
+      name: task.code as TaskCode,
+      progress: i === 0 ? 'READY_TO_START' : 'LOCKED',
+    })),
   },
 })
 

@@ -1,6 +1,6 @@
 import { CommunityOffenderManagerCaseloadService } from '.'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { ProbationUser } from '../interfaces/hmppsUser'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
@@ -41,6 +41,21 @@ describe('COM Caseload Service', () => {
           workingDaysToHdced: 3,
         },
       ])
+    })
+  })
+  describe('Assessment Summary', () => {
+    const assessmentSummary = createAssessmentSummary({})
+
+    it('get assessment summary', async () => {
+      assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+
+      const result = await communityOffenderManagerCaseloadService.getAssessmentSummary(
+        token,
+        assessmentSummary.prisonNumber,
+      )
+
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(result).toEqual(assessmentSummary)
     })
   })
 })

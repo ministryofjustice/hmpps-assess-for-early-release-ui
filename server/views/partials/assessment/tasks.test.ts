@@ -3,7 +3,7 @@ import { renderTemplate } from '../../../utils/__testutils/templateTestUtils'
 describe('tasks', () => {
   it('Initial state', () => {
     const $ = renderTemplate(
-      ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks(assessmentSummary) }}',
+      ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks("PRISON_CA", assessmentSummary) }}',
       {
         assessmentSummary: {
           forename: 'Bob',
@@ -46,7 +46,7 @@ describe('tasks', () => {
 
   it('After eligibility checks pass', () => {
     const $ = renderTemplate(
-      ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks(assessmentSummary) }}',
+      ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks("PRISON_CA", assessmentSummary) }}',
       {
         assessmentSummary: {
           forename: 'Bob',

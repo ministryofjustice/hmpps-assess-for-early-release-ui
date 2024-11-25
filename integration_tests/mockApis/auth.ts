@@ -66,7 +66,7 @@ const signOut = () =>
     },
   })
 
-const token = ({ authorities }: { authorities: string[] }) =>
+const token = ({ authorities, authSource }: { authorities: string[]; authSource: 'nomis' | 'delius' }) =>
   stubFor({
     request: {
       method: 'POST',
@@ -81,6 +81,7 @@ const token = ({ authorities }: { authorities: string[] }) =>
       jsonBody: {
         access_token: createToken(authorities),
         token_type: 'bearer',
+        auth_source: authSource,
         user_name: 'USER1',
         expires_in: 599,
         scope: 'read',
