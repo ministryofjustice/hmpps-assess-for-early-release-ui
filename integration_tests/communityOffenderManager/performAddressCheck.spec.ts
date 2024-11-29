@@ -26,7 +26,7 @@ test.describe('Can perform address checks', () => {
 
     const initialTask = page.getByTestId('CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION')
     await expect(initialTask).toBeVisible()
-    await expect(initialTask.getByText('Check addresses or community accomodation')).toContainText('Ready to start')
+    await expect(initialTask.getByText('Check addresses or community accommodation')).toContainText('Ready to start')
 
     // etc...
   })
