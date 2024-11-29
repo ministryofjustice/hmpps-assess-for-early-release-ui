@@ -41,6 +41,7 @@ describe('check your answers summary', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/checkCurfewAddresses', {
         assessmentSummary,
+        prisonNumber: req.params.prisonNumber,
         checkRequestsForAssessmentSummary: [addressSummary],
       })
     })
