@@ -1,19 +1,22 @@
 import { addDays, startOfDay } from 'date-fns'
-import type {
-  AssessmentSummary,
-  EligibilityCriterionProgress,
-  EligibilityAndSuitabilityCaseView,
-  OffenderSummary,
-  SuitabilityCriterionProgress,
-  EligibilityCriterionView,
-  SuitabilityCriterionView,
+import {
+  AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
-  StandardAddressCheckRequestSummary,
-  ResidentSummary,
-  AddResidentRequest,
+  AssessmentSummary,
   CheckRequestSummary,
   DeliusStaff,
+  EligibilityAndSuitabilityCaseView,
+  EligibilityCriterionProgress,
+  EligibilityCriterionView,
+  OffenderSummary,
+  ResidentialChecksTaskProgress,
+  ResidentialChecksView,
+  ResidentialCheckTaskStatus,
+  ResidentSummary,
+  StandardAddressCheckRequestSummary,
+  SuitabilityCriterionProgress,
+  SuitabilityCriterionView,
   TaskCode,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
@@ -393,6 +396,78 @@ const createComCase = ({
   workingDaysToHdced,
 })
 
+const createChecksTasks = (): ResidentialChecksTaskProgress[] => {
+  return [
+    {
+      code: 'address-details-and-informed-consent',
+      taskName: 'Address details and informed consent',
+      status: 'NOT_STARTED',
+    },
+    {
+      code: 'police-check',
+      taskName: 'Police check',
+      status: 'NOT_STARTED',
+    },
+    {
+      code: 'children-services-check',
+      taskName: "Children's services check",
+      status: 'NOT_STARTED',
+    },
+    {
+      code: 'assess-this-persons-risk',
+      taskName: "Assess this person's risk",
+      status: 'NOT_STARTED',
+    },
+    {
+      code: 'suitability-decision',
+      taskName: 'Suitability decision',
+      status: 'NOT_STARTED',
+    },
+    {
+      code: 'make-a-risk-management-decision',
+      taskName: 'Make a risk management decision',
+      status: 'NOT_STARTED',
+    },
+  ]
+}
+
+const createResidentialChecksView = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
+  prisonNumber = 'A1234AB',
+  hdced = parseIsoDate('2022-08-01'),
+  crd = parseIsoDate('2022-08-10'),
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
+  overallStatus = 'NOT_STARTED' as ResidentialCheckTaskStatus,
+  residentialChecksTasks = createChecksTasks(),
+} = {}): ResidentialChecksView => ({
+  assessmentSummary: {
+    forename,
+    surname,
+    dateOfBirth,
+    prisonNumber,
+    hdced,
+    crd,
+    location,
+    status,
+    policyVersion,
+    tasks: {
+      PRISON_CA: [
+        { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+        { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+        { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+        { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+        { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+      ],
+    },
+  },
+  overallStatus,
+  tasks: residentialChecksTasks,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -410,5 +485,6 @@ export {
   createResidentSummary,
   createCheckRequestsForAssessmentSummary,
   createStaffDetails,
+  createResidentialChecksView,
   createComCase,
 }

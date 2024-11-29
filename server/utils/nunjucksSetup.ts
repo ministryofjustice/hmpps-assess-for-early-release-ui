@@ -179,7 +179,7 @@ export function registerNunjucks(app?: express.Express): Environment {
   })
 
   njkEnv.addGlobal('residentialChecks', {
-    residentialCheckTaskLabel: (status: ResidentialCheckTaskStatus) => {
+    taskStatusLabel: (status: ResidentialCheckTaskStatus) => {
       switch (status) {
         case 'NOT_STARTED':
           return {

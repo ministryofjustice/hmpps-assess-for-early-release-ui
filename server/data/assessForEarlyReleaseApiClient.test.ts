@@ -10,6 +10,7 @@ import {
   createEligibilityCriterionProgress,
   createSuitabilityCriterionView,
   createSuitabilityCriterionProgress,
+  createResidentialChecksView,
 } from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
 
@@ -180,6 +181,37 @@ describe('assessForEarlyReleaseApiClient', () => {
 
       await assessForEarlyReleaseApiClient.optOut(prisonNumber, { reasonType: 'NOWHERE_TO_STAY' })
       expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
+
+  describe('Residential checks', () => {
+    it('should get resident checks view', async () => {
+      const residentialChecksView = createResidentialChecksView()
+
+      const apiResponse = {
+        ...residentialChecksView,
+        assessmentSummary: {
+          ...residentialChecksView.assessmentSummary,
+          dateOfBirth: toIsoDate(residentialChecksView.assessmentSummary.dateOfBirth),
+          hdced: toIsoDate(residentialChecksView.assessmentSummary.hdced),
+          crd: toIsoDate(residentialChecksView.assessmentSummary.crd),
+        },
+      }
+
+      const addressCheckRequestId = 1
+      fakeAferApi
+        .get(
+          `/offender/${residentialChecksView.assessmentSummary.prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
+        )
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      const response = await assessForEarlyReleaseApiClient.getResidentialChecksView(
+        residentialChecksView.assessmentSummary.prisonNumber,
+        addressCheckRequestId,
+      )
+      expect(fakeAferApi.isDone()).toBe(true)
+      expect(response).toEqual(apiResponse)
     })
   })
 })

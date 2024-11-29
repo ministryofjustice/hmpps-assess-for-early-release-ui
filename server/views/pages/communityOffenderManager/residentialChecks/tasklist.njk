@@ -16,7 +16,7 @@
             {{ checkAddressSummary({
                 prisonNumber: prisonNumber,
                 title: priority,
-                addressCheckRequest: addressCheckRequest
+                addressCheckSummary: addressCheckSummary
             }) }}
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -28,7 +28,7 @@
                             text: task.taskName
                         },
                         href: "#",
-                        status: residentialChecks.residentialCheckTaskLabel(task.status)
+                        status: residentialChecks.taskStatusLabel(task.status)
                     }
                 ), tasks) %}
             {% endfor %}

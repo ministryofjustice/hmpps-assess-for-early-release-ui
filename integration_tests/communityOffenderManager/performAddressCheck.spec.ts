@@ -22,7 +22,7 @@ test.describe('Can perform address checks', () => {
 
     await page.goto(paths.probation.probationCaseload({}))
 
-    page.getByRole('link', { name: 'Jim Smith' }).click()
+    await page.getByRole('link', { name: 'Jim Smith' }).click()
 
     const initialTask = page.getByTestId('CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION')
     await expect(initialTask).toBeVisible()
