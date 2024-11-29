@@ -13,6 +13,7 @@ const probationAssessmentHome = probation.path('assessment/:prisonNumber')
 const tasklist = prisonAssessmentHome.path('initial-checks')
 const check = tasklist.path(':type/:checkCode')
 
+const addressCheckTasklist = probationAssessmentHome.path('address-checks/:checkRequestId')
 const optOutCheck = prisonAssessmentHome.path('opt-out-check')
 const optOut = prisonAssessmentHome.path('opt-out')
 
@@ -65,6 +66,7 @@ const paths = {
       home: probationAssessmentHome,
       curfewAddress: {
         checkCurfewAddresses,
+        addressCheckTasklist,
       },
     },
   },

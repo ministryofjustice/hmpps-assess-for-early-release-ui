@@ -4,7 +4,7 @@
         <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
                 <h2 class="govuk-summary-card__title">{{ params.title }}</h2>
-                {% if params.assessmentSummary.status === 'UNSUITABLE' %}
+                {% if params.addressCheckRequest.status === 'UNSUITABLE' %}
                     <ul class="govuk-summary-card__actions">
                         <li class="govuk-summary-card__action">
                             <span class="moj-badge moj-badge--black moj-badge--large address-check-status">Unsuitable</span>
@@ -16,20 +16,24 @@
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__value">
-                            {{ params.assessmentSummary.address.firstLine }}<br>
-                            {{ params.assessmentSummary.address.town }}<br>
-                            {{ params.assessmentSummary.address.postcode }}<br><br>
-                            {% if params.assessmentSummary.status === 'UNSUITABLE' %}
-                                <a href="#" class="govuk-link govuk-link--no-visited-state">Edit checks</a>
-                            {% else %}
-                                {{ govukButton({
-                                    text: "Start checks",
-                                    preventDoubleClick: true,
-                                    attributes: {
-                                        "data-qa": "address-start-checks"
-                                    }
-                                }) }}
-                            {%  endif %}
+                            {{ params.addressCheckRequest.address.firstLine }}<br>
+                            {{ params.addressCheckRequest.address.town }}<br>
+                            {{ params.addressCheckRequest.address.postcode }}
+                            {% if params.displayAction %}
+                                <br><br>
+                                {% if params.addressCheckRequest.status === 'UNSUITABLE' %}
+                                    <a href="#" class="govuk-link govuk-link--no-visited-state">Edit checks</a>
+                                {% else %}
+                                    {{ govukButton({
+                                        text: "Start checks",
+                                        href: paths.probation.assessment.curfewAddress.addressCheckTasklist | toPath({ prisonNumber: params.prisonNumber, checkRequestId: params.addressCheckRequest.requestId | string }),
+                                        preventDoubleClick: true,
+                                        attributes: {
+                                            "data-qa": "address-start-checks"
+                                        }
+                                    }) }}
+                                {% endif %}
+                            {% endif %}
                         </dt>
                     </div>
                 </dl>

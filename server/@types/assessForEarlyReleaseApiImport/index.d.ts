@@ -448,6 +448,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the residential checks for an offender's current assessment
+     * @description Returns details of the current status of the residential checks for an offender's current assessment
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getResidentialChecksView']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/address-check-requests': {
     parameters: {
       query?: never
@@ -749,18 +772,6 @@ export interface components {
        * @example See ResidentSummary
        */
       residents: components['schemas']['ResidentSummary'][]
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -836,18 +847,6 @@ export interface components {
        */
       requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
     }
     Detail: {
       code: string
@@ -1122,6 +1121,37 @@ export interface components {
       failureType?: 'INELIGIBLE' | 'UNSUITABLE'
       /** @description Reasons why someone is ineligible */
       failedCheckReasons: string[]
+    }
+    /** @description The progress on a specific residential checks task for an assessment */
+    ResidentialChecksTaskProgress: {
+      /**
+       * @description The unique code to identify this task
+       * @example address-details-and-informed-consent
+       */
+      code: string
+      /**
+       * @description The name of the check as it would appear in a task list
+       * @example Address details and informed consent
+       */
+      taskName: string
+      /**
+       * @description Status of this criterion for a specific case
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+    }
+    /** @description A view on the progress of the residential checks for an assessment */
+    ResidentialChecksView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      /**
+       * @description Overall status of residential checks for the assessment
+       * @example IN_PROGRESS
+       * @enum {string}
+       */
+      overallStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /** @description Details of current residential checks */
+      tasks: components['schemas']['ResidentialChecksTaskProgress'][]
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
@@ -1960,6 +1990,56 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getResidentialChecksView: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the residential checks for the offender's current assessment */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An offender with the provided prison number does not exist */
+      404: {
         headers: {
           [name: string]: unknown
         }

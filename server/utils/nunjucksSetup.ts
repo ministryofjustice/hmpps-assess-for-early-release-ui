@@ -14,6 +14,7 @@ import {
   AddressSummary,
   AssessmentSummary,
   EligibilityStatus,
+  ResidentialCheckTaskStatus,
   SuitabilityStatus,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { tasks } from '../config/tasks'
@@ -173,6 +174,40 @@ export function registerNunjucks(app?: express.Express): Environment {
           }
         default:
           throw Error(`Unknown status: ${suitabilityStatus}`)
+      }
+    },
+  })
+
+  njkEnv.addGlobal('residentialChecks', {
+    residentialCheckTaskLabel: (status: ResidentialCheckTaskStatus) => {
+      switch (status) {
+        case 'NOT_STARTED':
+          return {
+            tag: {
+              text: 'Incomplete',
+              classes: 'govuk-tag--blue',
+            },
+          }
+        case 'IN_PROGRESS':
+          return {
+            tag: {
+              text: 'Incomplete',
+              classes: 'govuk-tag--blue',
+            },
+          }
+        case 'SUITABLE':
+          return {
+            text: 'Completed',
+          }
+        case 'UNSUITABLE':
+          return {
+            tag: {
+              text: 'Ineligible',
+              classes: 'govuk-tag--red',
+            },
+          }
+        default:
+          throw Error(`Unknown status: ${status}`)
       }
     },
   })

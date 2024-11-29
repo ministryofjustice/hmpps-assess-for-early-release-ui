@@ -45,8 +45,8 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
   PROBATION_COM: [
     {
       code: 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
-      title: 'Check addresses or community accomodation',
-      path: undefined,
+      title: 'Check addresses or community accommodation',
+      path: paths.probation.assessment.curfewAddress.checkCurfewAddresses,
     },
     {
       code: 'MAKE_A_RISK_MANAGEMENT_DECISION',

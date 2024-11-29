@@ -1,0 +1,43 @@
+{% extends "layout.njk" %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% set pageTitle = applicationName + " - Residential Checks" %}
+
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Check if a curfew address is suitable</h1>
+            {% if addressCheckRequest.preferencePriority === 'FIRST' %}
+                {% set priority = "Preferred address" %}
+            {% else %}
+                {% set priority = "Second address" %}
+            {% endif %}
+            {{ checkAddressSummary({
+                prisonNumber: prisonNumber,
+                title: priority,
+                addressCheckRequest: addressCheckRequest
+            }) }}
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            {% set tasks =  [] %}
+            {% for task in residentialChecksView.tasks %}
+                {% set tasks = (tasks.push(
+                    {
+                        title: {
+                            text: task.taskName
+                        },
+                        href: "#",
+                        status: residentialChecks.residentialCheckTaskLabel(task.status)
+                    }
+                ), tasks) %}
+            {% endfor %}
+
+            <h2>Address checks</h2>
+            {{ govukTaskList({
+                idPrefix: "residential-check-task",
+                items: tasks
+            }) }}
+        </div>
+    </div>
+{% endblock %}
