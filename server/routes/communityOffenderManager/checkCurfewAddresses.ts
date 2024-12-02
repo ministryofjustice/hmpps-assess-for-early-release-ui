@@ -21,6 +21,7 @@ export default class CheckCurfewAddressesRoutes {
 
     res.render('pages/curfewAddress/checkCurfewAddresses', {
       assessmentSummary,
+      prisonNumber,
       checkRequestsForAssessmentSummary,
     })
   }

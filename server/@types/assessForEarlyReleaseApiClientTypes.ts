@@ -53,3 +53,8 @@ export type DeliusStaff = components['schemas']['User']
 
 export type UserRole = 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT'
 export type TaskCode = components['schemas']['TaskProgress']['name']
+
+export type _ResidentialChecksView = components['schemas']['ResidentialChecksView']
+export type ResidentialChecksView = ParsingDates<_ResidentialChecksView, 'dateOfBirth' | 'hdced' | 'crd'>
+export type ResidentialChecksTaskProgress = components['schemas']['ResidentialChecksTaskProgress']
+export type ResidentialCheckTaskStatus = components['schemas']['ResidentialChecksTaskProgress']['status']

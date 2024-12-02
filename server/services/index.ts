@@ -7,6 +7,7 @@ import OptOutService from './optOutService'
 import AddressService from './addressService'
 import CommunityOffenderManagerCaseloadService from './communityOffenderManagerCaseloadService'
 import UserService from './userService'
+import ResidentialChecksService from './residentialChecksService'
 
 export const services = () => {
   const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder, hmppsAuthClient } = dataAccess
@@ -19,17 +20,19 @@ export const services = () => {
   const communityOffenderManagerCaseloadService = new CommunityOffenderManagerCaseloadService(
     assessForEarlyReleaseApiClientBuilder,
   )
+  const residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClientBuilder)
   const userService = new UserService(assessForEarlyReleaseApiClientBuilder)
 
   return {
     addressService,
     auditService,
-    hmppsComponentsService,
     caseAdminCaseloadService,
-    hmppsAuthClient,
-    optOutService,
-    eligibilityAndSuitabilityService,
     communityOffenderManagerCaseloadService,
+    eligibilityAndSuitabilityService,
+    hmppsAuthClient,
+    hmppsComponentsService,
+    optOutService,
+    residentialChecksService,
     userService,
   }
 }
@@ -37,11 +40,12 @@ export const services = () => {
 export type Services = ReturnType<typeof services>
 
 export {
-  HmppsComponentsService,
   AddressService,
   CaseAdminCaseloadService,
-  OptOutService,
-  EligibilityAndSuitabilityService,
   CommunityOffenderManagerCaseloadService,
+  EligibilityAndSuitabilityService,
+  HmppsComponentsService,
+  OptOutService,
+  ResidentialChecksService,
   UserService,
 }

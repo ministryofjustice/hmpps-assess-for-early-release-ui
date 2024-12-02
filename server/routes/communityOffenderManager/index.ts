@@ -8,11 +8,13 @@ import { Services } from '../../services'
 import paths from '../paths'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
 import AssessmentRoutes from './assessment'
+import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
 
 export default function Index({
   addressService,
   caseAdminCaseloadService,
   communityOffenderManagerCaseloadService,
+  residentialChecksService,
 }: Services): Router {
   const router = Router()
 
@@ -27,6 +29,9 @@ export default function Index({
 
   const checkCurfewAddressesRoutes = new CheckCurfewAddressesRoutes(addressService, caseAdminCaseloadService)
   get(paths.probation.assessment.curfewAddress.checkCurfewAddresses, checkCurfewAddressesRoutes.GET)
+
+  const residentialChecksTasksRoutes = new ResidentialChecksTasklistRoutes(addressService, residentialChecksService)
+  get(paths.probation.assessment.curfewAddress.addressCheckTasklist, residentialChecksTasksRoutes.GET)
 
   return router
 }

@@ -18,15 +18,17 @@
                 }) }}
                 <h2 class="govuk-heading-m">Proposed curfew addresses</h2>
                 {{ checkAddressSummary({
+                    prisonNumber: prisonNumber,
                     title: "Preferred address",
-                    displayPriority: true,
-                    assessmentSummary: preferredAddress
+                    addressCheckRequest: preferredAddress,
+                    displayAction: true
                 }) }}
                 {% if secondAddress %}
                     {{ checkAddressSummary({
+                        prisonNumber: prisonNumber,
                         title: "Second address",
-                        displayPriority: true,
-                        assessmentSummary: preferredAddress
+                        addressCheckRequest: secondAddress,
+                        displayAction: true
                     }) }}
                 {% endif %}
                 {{ govukButton({

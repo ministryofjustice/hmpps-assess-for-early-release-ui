@@ -251,6 +251,37 @@ describe('nunjucksSetup', () => {
     })
   })
 
+  describe('residentialCheckTaskLabel', () => {
+    test('with NOT_STARTED:', () => {
+      const result = renderTemplate('{{- residentialChecks.taskStatusLabel("NOT_STARTED") | dumpJson -}}', {})
+      expect(result).toContain(`"text": "Incomplete"`)
+      expect(result).toContain(`"classes": "govuk-tag--blue"`)
+    })
+    test('with IN_PROGRESS:', () => {
+      const result = renderTemplate('{{- residentialChecks.taskStatusLabel("IN_PROGRESS")  | dumpJson -}}', {})
+      expect(result).toContain(`"text": "Incomplete"`)
+    })
+    test('with SUITABLE:', () => {
+      const result = renderTemplate('{{- residentialChecks.taskStatusLabel("SUITABLE")  | dumpJson -}}', {})
+      expect(result).toContain(`"text": "Completed"`)
+    })
+    test('with UNSUITABLE:', () => {
+      const result = renderTemplate('{{- residentialChecks.taskStatusLabel("UNSUITABLE")  | dumpJson -}}', {})
+      expect(result).toContain(`"text": "Ineligible"`)
+      expect(result).toContain(`"classes": "govuk-tag--red"`)
+    })
+    test('with unknown:', () => {
+      expect(() => renderTemplate('{{- residentialChecks.taskStatusLabel("unknown") | dumpJson -}}', {})).toThrow(
+        'Error: Unknown status: unknown',
+      )
+    })
+    test('with undefined:', () => {
+      expect(() => renderTemplate('{{- residentialChecks.taskStatusLabel(undefined) | dumpJson -}}', {})).toThrow(
+        'Error: Unknown status: undefined',
+      )
+    })
+  })
+
   describe('toAddressView & valuesToList', () => {
     test('should return firstLine, secondLine, town, postcode from addressSummary as string format', () => {
       const result = renderTemplate('{{- addressSummary | toAddressView | valuesToList -}}', {

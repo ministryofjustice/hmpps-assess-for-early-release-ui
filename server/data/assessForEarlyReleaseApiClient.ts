@@ -19,6 +19,7 @@ import type {
   EligibilityCriterionView,
   OffenderSummary,
   OptOutRequest,
+  ResidentialChecksView,
   ResidentSummary,
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
@@ -218,6 +219,12 @@ export default class AssessForEarlyReleaseApiClient {
     })
     return caseAdminCaseload.map(c => {
       return { ...c, hdced: parseIsoDate(c.hdced) }
+    })
+  }
+
+  async getResidentialChecksView(prisonNumber: string, addressCheckRequestId: number): Promise<ResidentialChecksView> {
+    return this.restClient.get<ResidentialChecksView>({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
     })
   }
 }
