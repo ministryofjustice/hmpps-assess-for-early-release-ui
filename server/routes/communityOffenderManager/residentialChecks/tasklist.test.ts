@@ -8,7 +8,7 @@ import ResidentialChecksTasklistRoutes from './tasklist'
 import { createMockAddressService, createMockResidentialChecksService } from '../../../services/__testutils/mock'
 
 const assessmentSummary = createAssessmentSummary({})
-const addressCheckSummary = createStandardAddressCheckRequestSummary()
+const addressCheckRequest = createStandardAddressCheckRequestSummary()
 const residentialChecksView = createResidentialChecksView()
 
 const addressService = createMockAddressService()
@@ -21,7 +21,7 @@ let residentialChecksTaskListRoutes: ResidentialChecksTasklistRoutes
 
 beforeEach(() => {
   residentialChecksTaskListRoutes = new ResidentialChecksTasklistRoutes(addressService, residentialChecksService)
-  addressService.getStandardAddressCheckRequest.mockResolvedValue(addressCheckSummary)
+  addressService.getStandardAddressCheckRequest.mockResolvedValue(addressCheckRequest)
   residentialChecksService.getResidentialChecksView.mockResolvedValue(residentialChecksView)
 })
 
@@ -32,7 +32,7 @@ afterEach(() => {
 describe('GET', () => {
   it('should render list of residential checks tasks', async () => {
     req.params.prisonNumber = assessmentSummary.prisonNumber
-    req.params.checkRequestId = addressCheckSummary.requestId.toString()
+    req.params.checkRequestId = addressCheckRequest.requestId.toString()
 
     await residentialChecksTaskListRoutes.GET(req, res)
 
@@ -49,7 +49,7 @@ describe('GET', () => {
     )
 
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/residentialChecks/tasklist', {
-      addressCheckSummary,
+      addressCheckRequest,
       residentialChecksView,
     })
   })

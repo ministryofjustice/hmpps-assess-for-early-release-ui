@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test'
-import { assessmentSummary, createOffenderSummary } from '../mockApis/assessForEarlyReleaseData'
+import {
+  assessmentSummary,
+  createCheckRequestsForAssessmentSummary,
+  createOffenderSummary,
+} from '../mockApis/assessForEarlyReleaseData'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 
 import { login, resetStubs } from '../testUtils'
@@ -10,13 +14,18 @@ test.describe('Can perform address checks', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
-  test('Should display assessment summary', async ({ page }) => {
+
+  test('Can check if a curfew address is suitable ', async ({ page }) => {
     const prisonNumber = 'A1234AE'
     const staffId = 2000
+    const addressCheckRequestId = 1
 
     await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ id: staffId }))
-    await assessForEarlyRelease.stubGetComCaseload(2000, [createOffenderSummary(prisonNumber)])
+    await assessForEarlyRelease.stubGetComCaseload(staffId, [createOffenderSummary(prisonNumber)])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, createCheckRequestsForAssessmentSummary)
+    await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)
+    await assessForEarlyRelease.stubGetResidentialChecksView(prisonNumber, addressCheckRequestId)
 
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
 
@@ -28,6 +37,20 @@ test.describe('Can perform address checks', () => {
     await expect(initialTask).toBeVisible()
     await expect(initialTask.getByText('Check addresses or community accommodation')).toContainText('Ready to start')
 
-    // etc...
+    await page.locator('[data-qa="CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION"] .govuk-button').click()
+
+    await expect(page.getByText('Proposed curfew addresses')).toBeVisible()
+    await expect(page.getByText('Preferred address')).toBeVisible()
+    await expect(page.getByText('Second address')).toBeVisible()
+    await expect(page.getByTestId('return-to-application-overview')).toBeVisible()
+
+    const startChecksButtons = page.getByTestId('address-start-checks')
+    await expect(startChecksButtons).toHaveCount(2)
+    await expect(startChecksButtons).toHaveText(['Start checks', 'Start checks'])
+
+    await startChecksButtons.nth(0).click()
+    await expect(page.getByText('Check if a curfew address is suitable')).toBeVisible()
+    const tasks = page.locator('[data-qa="residential-checks-task-list"] .govuk-task-list__link')
+    await expect(tasks).toHaveCount(6)
   })
 })

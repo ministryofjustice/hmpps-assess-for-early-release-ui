@@ -14,6 +14,7 @@ test.describe('Can add a curfew address and a main resident', () => {
   test('Case admin can find and select an address and then add a resident', async ({ page }) => {
     const prisonNumber = 'A1234AE'
     const postcode = 'RG11DB'
+    const addressCheckRequestId = 1
     const addressSummaries = [
       {
         uprn: '310010433',
@@ -56,8 +57,8 @@ test.describe('Can add a curfew address and a main resident', () => {
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubGetAddressesForPostcode(postcode, addressSummaries)
     await assessForEarlyRelease.stubAddStandardAddressCheckRequest(prisonNumber)
-    await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, 1)
-    await assessForEarlyRelease.stubAddStandardAddressCheckRequestResident(prisonNumber, 1)
+    await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)
+    await assessForEarlyRelease.stubAddResident(prisonNumber, addressCheckRequestId)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 

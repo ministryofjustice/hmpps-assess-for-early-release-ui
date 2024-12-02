@@ -10,7 +10,7 @@ export default class ResidentialChecksTasklistRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
 
-    const addressCheckSummary = await this.addressService.getStandardAddressCheckRequest(
+    const addressCheckRequest = await this.addressService.getStandardAddressCheckRequest(
       req?.middleware?.clientToken,
       prisonNumber,
       Number(checkRequestId),
@@ -23,7 +23,7 @@ export default class ResidentialChecksTasklistRoutes {
     )
 
     res.render('pages/communityOffenderManager/residentialChecks/tasklist', {
-      addressCheckSummary,
+      addressCheckRequest,
       residentialChecksView,
     })
   }

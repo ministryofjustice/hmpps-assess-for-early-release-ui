@@ -299,6 +299,106 @@ const stubGetCheckRequestsForAssessment = (prisonNumber: string, addressSummary:
     },
   })
 
+const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestId: number) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        assessmentSummary: {
+          forename: 'dave',
+          surname: 'smith',
+          dateOfBirth: '2024-09-18',
+          prisonNumber: 'A1234AE',
+          hdced: '2024-09-20',
+          crd: null,
+          location: 'Moorland (HMP & YOI)',
+          status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
+          policyVersion: '1.0',
+          tasks: {
+            PRISON_CA: [
+              {
+                name: 'ASSESS_ELIGIBILITY',
+                progress: 'COMPLETE',
+              },
+              {
+                name: 'ENTER_CURFEW_ADDRESS',
+                progress: 'COMPLETE',
+              },
+              {
+                name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION',
+                progress: 'LOCKED',
+              },
+              {
+                name: 'PREPARE_FOR_RELEASE',
+                progress: 'LOCKED',
+              },
+              {
+                name: 'PRINT_LICENCE',
+                progress: 'LOCKED',
+              },
+            ],
+            PROBATION_COM: [
+              {
+                name: 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
+                progress: 'READY_TO_START',
+              },
+              {
+                name: 'MAKE_A_RISK_MANAGEMENT_DECISION',
+                progress: 'LOCKED',
+              },
+              {
+                name: 'SEND_CHECKS_TO_PRISON',
+                progress: 'LOCKED',
+              },
+              {
+                name: 'CREATE_LICENCE',
+                progress: 'LOCKED',
+              },
+            ],
+          },
+        },
+        overallStatus: 'NOT_STARTED',
+        tasks: [
+          {
+            code: 'address-details-and-informed-consent',
+            taskName: 'Address details and informed consent',
+            status: 'NOT_STARTED',
+          },
+          {
+            code: 'police-check',
+            taskName: 'Police check',
+            status: 'NOT_STARTED',
+          },
+          {
+            code: 'children-services-check',
+            taskName: "Children's services check",
+            status: 'NOT_STARTED',
+          },
+          {
+            code: 'assess-this-persons-risk',
+            taskName: "Assess this person's risk",
+            status: 'NOT_STARTED',
+          },
+          {
+            code: 'suitability-decision',
+            taskName: 'Suitability decision',
+            status: 'NOT_STARTED',
+          },
+          {
+            code: 'make-a-risk-management-decision',
+            taskName: 'Make a risk management decision',
+            status: 'NOT_STARTED',
+          },
+        ],
+      },
+    },
+  })
+
 export default {
   stubDeliusStaff,
   stubGetComCaseload,
@@ -312,6 +412,7 @@ export default {
   stubGetAddressesForPostcode,
   stubAddStandardAddressCheckRequest,
   stubGetStandardAddressCheckRequest,
-  stubAddStandardAddressCheckRequestResident: stubAddResident,
+  stubAddResident,
   stubGetCheckRequestsForAssessment,
+  stubGetResidentialChecksView,
 }

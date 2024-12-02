@@ -16,7 +16,7 @@
             {{ checkAddressSummary({
                 prisonNumber: prisonNumber,
                 title: priority,
-                addressCheckSummary: addressCheckSummary
+                addressCheckRequest: addressCheckRequest
             }) }}
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -36,7 +36,10 @@
             <h2>Address checks</h2>
             {{ govukTaskList({
                 idPrefix: "residential-check-task",
-                items: tasks
+                items: tasks,
+                attributes: {
+                    "data-qa": "residential-checks-task-list"
+                }
             }) }}
         </div>
     </div>
