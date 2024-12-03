@@ -20,7 +20,7 @@ export default class CommunityOffenderManagerCaseloadService {
 
   public async getCommunityOffenderManagerCaseload(token: string, user: ProbationUser): Promise<Case[]> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    const result = await assessForEarlyReleaseApiClient.getCommunityOffenderManagerCaseload(user.deliusStaffIdentifier)
+    const result = await assessForEarlyReleaseApiClient.getCommunityOffenderManagerCaseload(user.deliusStaffCode)
     return result.map(offender => ({
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
       prisonNumber: offender.prisonNumber,
