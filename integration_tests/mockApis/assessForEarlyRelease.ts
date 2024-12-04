@@ -24,11 +24,11 @@ const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
     },
   })
 
-const stubGetComCaseload = (staffId: number, list: _OffenderSummary[]) =>
+const stubGetComCaseload = (staffCode: string, list: _OffenderSummary[]) =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/afer-api/probation/community-offender-manager/staff-id/${staffId}/caseload`,
+      urlPattern: `/afer-api/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
     },
     response: {
       status: 200,

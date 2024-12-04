@@ -287,7 +287,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/probation/community-offender-manager/staff-id/{staffId}/caseload': {
+  '/probation/community-offender-manager/staff-code/{staffCode}/caseload': {
     parameters: {
       query?: never
       header?: never
@@ -1712,7 +1712,7 @@ export interface operations {
       query?: never
       header?: never
       path: {
-        staffId: number
+        staffCode: string
       }
       cookie?: never
     }
