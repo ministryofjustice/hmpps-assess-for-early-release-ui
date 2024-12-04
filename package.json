@@ -128,7 +128,7 @@
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "cheerio": "^1.0.0",
-    "chokidar": "^4.0.1",
+    "chokidar": "^3.6.0",
     "concurrently": "^9.1.0",
     "esbuild": "^0.24.0",
     "esbuild-plugin-clean": "^1.0.1",
