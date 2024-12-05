@@ -213,9 +213,9 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.get<DeliusStaff>({ path: `/staff?username=${username}` })
   }
 
-  async getCommunityOffenderManagerCaseload(staffId: number): Promise<OffenderSummary[]> {
+  async getCommunityOffenderManagerCaseload(staffCode: string): Promise<OffenderSummary[]> {
     const caseAdminCaseload = await this.restClient.get<_OffenderSummary[]>({
-      path: `/probation/community-offender-manager/staff-id/${staffId}/caseload`,
+      path: `/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
     })
     return caseAdminCaseload.map(c => {
       return { ...c, hdced: parseIsoDate(c.hdced) }

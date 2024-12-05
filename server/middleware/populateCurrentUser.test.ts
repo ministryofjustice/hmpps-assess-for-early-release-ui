@@ -67,8 +67,7 @@ describe('populateCurrentUser', () => {
 
     expect(res.locals.user).toEqual(
       expect.objectContaining({
-        deliusStaffCode: 'ABC',
-        deliusStaffIdentifier: 2000,
+        deliusStaffCode: 'STAFF1',
       }),
     )
     expect(userService.getStaffDetailsByUsername).toHaveBeenCalled()

@@ -355,7 +355,7 @@ const createCheckRequestsForAssessmentSummary = ({
 
 const createStaffDetails = ({
   id = 2000,
-  code = 'ABC',
+  code = 'STAFF1',
   email = 'jbloggs@probation.gov.uk',
   teams = [
     {

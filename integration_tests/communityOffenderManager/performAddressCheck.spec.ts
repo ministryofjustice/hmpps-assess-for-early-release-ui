@@ -17,11 +17,11 @@ test.describe('Can perform address checks', () => {
 
   test('Can check if a curfew address is suitable ', async ({ page }) => {
     const prisonNumber = 'A1234AE'
-    const staffId = 2000
+    const staffCode = 'STAFF1'
     const addressCheckRequestId = 1
 
-    await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ id: staffId }))
-    await assessForEarlyRelease.stubGetComCaseload(staffId, [createOffenderSummary(prisonNumber)])
+    await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ code: staffCode }))
+    await assessForEarlyRelease.stubGetComCaseload(staffCode, [createOffenderSummary(prisonNumber)])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, createCheckRequestsForAssessmentSummary)
     await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)

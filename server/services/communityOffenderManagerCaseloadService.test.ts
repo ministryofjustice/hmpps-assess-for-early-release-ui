@@ -7,7 +7,7 @@ const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const user = {
-  deliusStaffIdentifier: 1,
+  deliusStaffCode: 'STAFF1',
 } as ProbationUser
 
 describe('COM Caseload Service', () => {
