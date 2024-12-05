@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+{% from "taskFormBuilder.njk" import taskFormBuilder %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% set pageTitle = applicationName + " - Address details and informed consent" %}
+
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Police checks</h1>
+            {{ taskFormBuilder(task) }}
+        </div>
+    </div>
+{% endblock %}
+

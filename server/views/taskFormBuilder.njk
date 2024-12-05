@@ -1,0 +1,66 @@
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% macro taskFormBuilder(config) %}
+    {% for section in config.sections  %}
+            {% if section.header %}
+                <h2 class="govuk-heading-m govuk-!-margin-top-8">{{ section.header }}</h2>
+            {% endif %}
+            {% if section.hintText %}
+                <p class="govuk-body">{{ section.hintText }}</p>
+            {% endif %}
+            {% for question in section.questions %}
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    {{ question.text }}
+                </legend>
+                {%  if question.hintText %}
+                    <div class="govuk-hint">
+                        {{ question.hintText | safe }}
+                    </div>
+                {% endif %}
+
+                {% set input = question.input %}
+                {% if input.type == 'RADIO' %}
+                    {% set options = [] %}
+                    {% for option in input.options %}
+                        {% set options = (options.push({
+                            text: option.value,
+                            value: option.value
+                        }), options) %}
+                    {% endfor %}
+
+                    {{ govukRadios({
+                        name: input.name,
+                        items: options
+                    }) }}
+                {% endif %}
+
+                {% if input.type == 'DATE' %}
+                    {{ govukDateInput({
+                        hint: params.hint,
+                        items: [
+                            {
+                                label: 'Day',
+                                classes: 'govuk-input--width-2'
+                            },
+                            {
+                                label: 'Month',
+                                classes: 'govuk-input--width-2'
+                            },
+                            {
+                                label: 'Year',
+                                classes: 'govuk-input--width-4'
+                            }
+                        ]
+                    }) }}
+                {% endif %}
+
+                {% if input.type == 'TEXT' %}
+                    {{ govukInput({
+                        name: input.name
+                    }) }}
+                {% endif %}
+            {% endfor %}
+    {%  endfor %}
+{%  endmacro %}
