@@ -49,6 +49,7 @@ describe('GET', () => {
     )
 
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/residentialChecks/tasklist', {
+      prisonNumber: req.params.prisonNumber,
       addressCheckRequest,
       residentialChecksView,
     })
