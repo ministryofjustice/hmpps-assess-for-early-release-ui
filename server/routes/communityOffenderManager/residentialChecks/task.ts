@@ -17,8 +17,8 @@ export default class ResidentialChecksTaskRoutes {
       taskCode,
     )
 
-    res.render(`pages/communityOffenderManager/residentialChecks/task/{taskCode}`, {
-      task,
+    res.render(`pages/communityOffenderManager/residentialChecks/tasks/${taskCode}`, {
+      task: task.taskConfig,
     })
   }
 }
