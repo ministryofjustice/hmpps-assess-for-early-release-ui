@@ -37,7 +37,7 @@ export default function Index({ addressService, caseAdminCaseloadService }: Serv
   get(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.GET)
   post(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.POST)
 
-  const moreInfoRequiredCheckHandler = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService)
+  const moreInfoRequiredCheckHandler = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressService)
   get(paths.prison.assessment.curfewAddress.moreInformationRequiredCheck, moreInfoRequiredCheckHandler.GET)
   post(paths.prison.assessment.curfewAddress.moreInformationRequiredCheck, moreInfoRequiredCheckHandler.POST)
 

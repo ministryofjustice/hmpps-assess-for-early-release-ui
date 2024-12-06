@@ -4,6 +4,7 @@ import type {
   AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
+  UpdateCaseAdminAdditionInfoRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class AddressService {
@@ -58,5 +59,19 @@ export default class AddressService {
   ) {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.addResident(prisonNumber, addressCheckRequestId, addResidentRequest)
+  }
+
+  public async updateCaseAdminAdditionalInformation(
+    token: string,
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
+  ) {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.updateCaseAdminAdditionalInformation(
+      prisonNumber,
+      addressCheckRequestId,
+      updateCaseAdminAdditionInfoRequest,
+    )
   }
 }
