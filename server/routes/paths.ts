@@ -24,7 +24,6 @@ const selectAddress = prisonCurfewAddress.path('select-address')
 const noAddressFound = prisonCurfewAddress.path('no-address-found')
 const addResidentDetails = prisonCurfewAddress.path('resident-details/:checkRequestId')
 const moreInformationRequiredCheck = prisonCurfewAddress.path(':checkRequestId/more-information-required-check')
-// const moreInformationRequired = prisonCurfewAddress.path(':checkRequestId/more-information-required')
 const requestMoreAddressChecks = prisonCurfewAddress.path('/request-more-address-checks')
 const deleteAddressCheckRequest = prisonCurfewAddress.path(':checkRequestId/request-more-address-checks/delete')
 const checkYourAnswers = prisonCurfewAddress.path('/check-your-answers')
@@ -52,7 +51,6 @@ const paths = {
         noAddressFound,
         addResidentDetails,
         moreInformationRequiredCheck,
-        // moreInformationRequired,
         requestMoreAddressChecks,
         deleteAddressCheckRequest,
         checkYourAnswers,
