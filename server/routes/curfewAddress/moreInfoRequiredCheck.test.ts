@@ -4,18 +4,19 @@ import { convertToTitleCase } from '../../utils/utils'
 import { ValidationError } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
-import { createAssessmentSummary } from '../../data/__testutils/testObjects'
+import { createAssessmentSummary, createStandardAddressCheckRequestSummary } from '../../data/__testutils/testObjects'
 
 let moreInfoRequiredCheckRoutes: MoreInfoRequiredCheckRoutes
 
 const assessmentSummary = createAssessmentSummary({})
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
+const addressCheckRequestSummary = createStandardAddressCheckRequestSummary({})
 const req = mockRequest({})
 const res = mockResponse({})
 
 beforeEach(() => {
-  moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService)
+  moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressCheckRequestSummary)
   caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
 })
 

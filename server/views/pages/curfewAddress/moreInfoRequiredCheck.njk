@@ -3,6 +3,7 @@
 {% from "partials/offenderSummary.njk" import offenderSummary %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 
 
 {% set pageTitle = applicationName + " - More information required check" %}
@@ -14,11 +15,13 @@
         {% include 'partials/errorSummary.njk' %}
         {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
         {% set addMoreInfo %}
-            {{ govukTextarea({
-                id: "add-more-info",
+            {{ govukCharacterCount({
                 name: "addMoreInfo",
+                id: "add-more-info",
+                maxlength: 1000,
                 label: {
-                    text: "Add more information"
+                    text: "Add more information",
+                    isPageHeading: true
                 }
             }) }}
         {% endset -%}
