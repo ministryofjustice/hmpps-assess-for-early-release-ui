@@ -399,6 +399,20 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
     },
   })
 
+const stubGetUpdateCaseAdminAdditionalInformation = (prisonNumber: string, requestId: number) =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/address-request/${requestId}/case-admin-additional-information`,
+    },
+    response: {
+      status: 204,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    },
+  })
+
 export default {
   stubDeliusStaff,
   stubGetComCaseload,
@@ -415,4 +429,5 @@ export default {
   stubAddResident,
   stubGetCheckRequestsForAssessment,
   stubGetResidentialChecksView,
+  stubGetUpdateCaseAdminAdditionalInformation,
 }

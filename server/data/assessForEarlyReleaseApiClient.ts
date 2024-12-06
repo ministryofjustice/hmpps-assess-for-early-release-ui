@@ -23,6 +23,7 @@ import type {
   ResidentSummary,
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
+  UpdateCaseAdminAdditionInfoRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -225,6 +226,17 @@ export default class AssessForEarlyReleaseApiClient {
   async getResidentialChecksView(prisonNumber: string, addressCheckRequestId: number): Promise<ResidentialChecksView> {
     return this.restClient.get<ResidentialChecksView>({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
+    })
+  }
+
+  async updateCaseAdminAdditionalInformation(
+    prisonNumber: string,
+    requestId: number,
+    updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
+  ): Promise<void> {
+    return this.restClient.put({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}/case-admin-additional-information`,
+      data: updateCaseAdminAdditionInfoRequest,
     })
   }
 }

@@ -1,5 +1,5 @@
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
+import { createMockCaseAdminCaseloadService, createMockAddressService } from '../../services/__testutils/mock'
 import { convertToTitleCase } from '../../utils/utils'
 import { ValidationError } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
@@ -11,11 +11,12 @@ let moreInfoRequiredCheckRoutes: MoreInfoRequiredCheckRoutes
 const assessmentSummary = createAssessmentSummary({})
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
+const addressService = createMockAddressService()
 const req = mockRequest({})
 const res = mockResponse({})
 
 beforeEach(() => {
-  moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService)
+  moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressService)
   caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
 })
 
@@ -51,6 +52,8 @@ describe('POST', () => {
     req.body.moreInfoRequiredCheck = 'no'
     await moreInfoRequiredCheckRoutes.POST(req, res)
 
+    expect(addressService.updateCaseAdminAdditionalInformation).not.toHaveBeenCalled()
+
     expect(res.redirect).toHaveBeenCalledWith(
       paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
         prisonNumber: req.params.prisonNumber,
@@ -60,12 +63,21 @@ describe('POST', () => {
 
   it('should redirect to moreInformationRequired page if moreInfoRequiredCheck is yes', async () => {
     req.body.moreInfoRequiredCheck = 'yes'
+    req.body.addMoreInfo = 'more info'
     await moreInfoRequiredCheckRoutes.POST(req, res)
 
+    expect(addressService.updateCaseAdminAdditionalInformation).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      req.params.prisonNumber,
+      Number(req.params.checkRequestId),
+      {
+        additionalInformation: req.body.addMoreInfo,
+      },
+    )
+
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.moreInformationRequired({
+      paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
         prisonNumber: req.params.prisonNumber,
-        checkRequestId: req.params.checkRequestId,
       }),
     )
   })
