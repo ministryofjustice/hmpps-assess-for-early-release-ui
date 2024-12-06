@@ -28,6 +28,7 @@
         <form method="POST">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             {{ govukRadios({
+                id: "more-info-required-check",
                 idPrefix: "radio-option",
                 name:  "moreInfoRequiredCheck",
                 fieldset: {
