@@ -7,7 +7,6 @@ import {
   CheckRequestSummary,
   _OffenderSummary,
   DeliusStaff,
-  UpdateCaseAdminAdditionInfoRequest,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 
 const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
