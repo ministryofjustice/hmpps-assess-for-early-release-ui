@@ -41,6 +41,38 @@ test.describe('Can add more information for address checks', () => {
     )
   })
 
+  test('Should throw validation error if user clicks on continue with out adding more info', async ({ page }) => {
+    const prisonNumber = 'A1234AE'
+    const checkRequestId = createCheckRequestsForAssessmentSummary[0].requestId
+
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, [
+      createCheckRequestsForAssessmentSummary[0],
+    ])
+    await assessForEarlyRelease.stubGetUpdateCaseAdminAdditionalInformation(prisonNumber, checkRequestId)
+
+    await login(page, { authorities: ['ROLE_LICENCE_CA'] })
+
+    await page.goto(
+      paths.prison.assessment.curfewAddress.moreInformationRequiredCheck({ prisonNumber, checkRequestId }),
+    )
+
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}/prison/assessment/${prisonNumber}/curfew-address/${checkRequestId}/more-information-required-check`,
+    )
+
+    await expect(page.getByRole('heading', { name: 'Do you need to enter any more' })).toBeVisible()
+    await page.getByLabel('Yes').click()
+    await expect(page.getByLabel('Add more information')).toBeVisible()
+    await page.getByRole('button', { name: 'Continue' }).click()
+    await expect(page.getByRole('link', { name: 'Please enter information' })).toBeVisible()
+    await expect(page.getByText('Error: Please enter')).toBeVisible()
+
+    await expect(page).not.toHaveURL(
+      `${playwrightConfig.use.baseURL}/prison/assessment/${prisonNumber}/curfew-address/request-more-address-checks`,
+    )
+  })
+
   test('Should not display add more info text box, if user selects option no', async ({ page }) => {
     const prisonNumber = 'A1234AE'
     const checkRequestId = createCheckRequestsForAssessmentSummary[0].requestId

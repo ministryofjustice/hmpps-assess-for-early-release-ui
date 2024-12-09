@@ -4,6 +4,7 @@ import { convertToTitleCase } from '../../utils/utils'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
 import { UpdateCaseAdminAdditionInfoRequest } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { FieldValidationError } from '../../@types/FieldValidationError'
 
 export default class MoreInfoRequiredCheckRoutes {
   constructor(
@@ -25,9 +26,22 @@ export default class MoreInfoRequiredCheckRoutes {
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    const validationMessage = 'Please select whether you need to enter any more information'
-    validateRequest(req, body => {
-      return body.moreInfoRequiredCheck ? [] : [{ field: 'moreInfoRequiredCheck', message: validationMessage }]
+    const { moreInfoRequiredCheck, addMoreInfo } = req.body
+    validateRequest(req, () => {
+      const validationErrors: FieldValidationError[] = []
+
+      if (moreInfoRequiredCheck === 'yes' && !addMoreInfo) {
+        validationErrors.push({ field: 'addMoreInfo', message: 'Please enter information' })
+      }
+
+      if (!moreInfoRequiredCheck) {
+        validationErrors.push({
+          field: 'moreInfoRequiredCheck',
+          message: 'Please select whether you need to enter any more information',
+        })
+      }
+
+      return validationErrors
     })
 
     const { prisonNumber } = req.params
