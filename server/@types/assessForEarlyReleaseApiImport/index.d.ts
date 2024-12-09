@@ -471,6 +471,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks/tasks/{taskCode}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns details of a residential checks task for an address check request
+     * @description Returns details of a residential checks task for an address check request
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getResidentialChecksTask']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/address-check-requests': {
     parameters: {
       query?: never
@@ -1153,20 +1176,44 @@ export interface components {
       /** @description Details of current residential checks */
       tasks: components['schemas']['ResidentialChecksTaskProgress'][]
     }
-    /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
-    CheckRequestSummary: {
+    Input: {
+      name: string
+      /** @enum {string} */
+      type: 'TEXT' | 'RADIO' | 'DATE' | 'ADDRESS' | 'CHECKBOX'
+      options?: components['schemas']['Option'][]
+    }
+    Option: {
+      value: string
+    }
+    /** @description A view on the progress of the residential checks for an assessment */
+    ResidentialChecksTaskView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      taskConfig: components['schemas']['Task']
       /**
-       * @description The status of the check request
-       * @example SUITABLE
+       * @description The current status of the task
        * @enum {string}
        */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
+      taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+    }
+    Section: {
+      header?: string
+      hintText?: string
+      questions: components['schemas']['TaskQuestion'][]
+    }
+    /** @description Details of the task */
+    Task: {
+      code: string
+      name: string
+      sections: components['schemas']['Section'][]
+    }
+    TaskQuestion: {
+      code: string
+      text: string
+      hintText?: string
+      input: components['schemas']['Input']
+    }
+    /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
+    CheckRequestSummary: {
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1188,6 +1235,18 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
   }
@@ -2039,6 +2098,57 @@ export interface operations {
         }
       }
       /** @description An offender with the provided prison number does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getResidentialChecksTask: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+        taskCode: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns details of the residential check task with the specified code for the specified address check request */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksTaskView']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with provided id and prison number does not exist */
       404: {
         headers: {
           [name: string]: unknown

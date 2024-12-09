@@ -19,6 +19,7 @@ import type {
   EligibilityCriterionView,
   OffenderSummary,
   OptOutRequest,
+  ResidentialChecksTaskView,
   ResidentialChecksView,
   ResidentSummary,
   StandardAddressCheckRequestSummary,
@@ -168,7 +169,7 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async deleteAddressCheckRequest(prisonNumber: string, requestId: number) {
+  async deleteAddressCheckRequest(prisonNumber: string, requestId: number): Promise<void> {
     return this.restClient.delete({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
     })
@@ -228,6 +229,14 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
     })
   }
+
+  async getResidentialChecksTask(
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    taskCode: string,
+  ): Promise<ResidentialChecksTaskView> {
+    return this.restClient.get<ResidentialChecksTaskView>({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
 
   async updateCaseAdminAdditionalInformation(
     prisonNumber: string,
