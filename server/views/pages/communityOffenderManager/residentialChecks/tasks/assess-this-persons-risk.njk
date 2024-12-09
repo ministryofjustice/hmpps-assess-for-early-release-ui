@@ -1,16 +1,30 @@
 {% extends "layout.njk" %}
 {% from "taskFormBuilder.njk" import taskFormBuilder %}
-{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
-{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Address details and informed consent" %}
+{% set pageTitle = applicationName + " - Assess this person's risk" %}
 
 {% block content %}
     <div class="govuk-grid-row govuk-body">
-            <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Police checks</h1>
-            {{ taskFormBuilder(task) }}
+        <div class="govuk-grid-column-two-thirds">
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <h1 class="govuk-heading-l">Assess this person's risk</h1>
+                {{ taskFormBuilder(task) }}
+                <div class="govuk-button-group govuk-!-margin-top-6">
+                    {{ govukButton({
+                        text: "Save",
+                        attributes: { 'data-qa': 'save' },
+                        preventDoubleClick: true
+                    }) }}
+                    {{ govukButton({
+                        text: "Cancel",
+                        classes: "govuk-button--secondary",
+                        attributes: { 'data-qa': 'save' },
+                        preventDoubleClick: true
+                    }) }}
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
-

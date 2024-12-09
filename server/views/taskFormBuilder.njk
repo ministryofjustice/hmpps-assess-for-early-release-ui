@@ -1,6 +1,7 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% macro taskFormBuilder(config) %}
     {% for section in config.sections  %}
@@ -57,7 +58,7 @@
                 {% endif %}
 
                 {% if input.type == 'TEXT' %}
-                    {{ govukInput({
+                    {{ govukTextarea({
                         name: input.name
                     }) }}
                 {% endif %}
