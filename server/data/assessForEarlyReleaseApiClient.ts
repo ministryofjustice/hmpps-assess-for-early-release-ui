@@ -5,6 +5,7 @@ import type {
   _EligibilityAndSuitabilityCaseView,
   _EligibilityCriterionView,
   _OffenderSummary,
+  _ResidentialChecksTaskView,
   _ResidentSummary,
   _StandardAddressCheckRequestSummary,
   _SuitabilityCriterionView,
@@ -235,8 +236,20 @@ export default class AssessForEarlyReleaseApiClient {
     addressCheckRequestId: number,
     taskCode: string,
   ): Promise<ResidentialChecksTaskView> {
-    return this.restClient.get<ResidentialChecksTaskView>({
+    const task = await this.restClient.get<_ResidentialChecksTaskView>({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
+    })
+
+    return {
+      ...task,
+      assessmentSummary: {
+        ...task.assessmentSummary,
+        dateOfBirth: parseIsoDate(task.assessmentSummary.dateOfBirth),
+        hdced: parseIsoDate(task.assessmentSummary.hdced),
+        crd: parseIsoDate(task.assessmentSummary.crd),
+      },
+    }
+  }
 
   async updateCaseAdminAdditionalInformation(
     prisonNumber: string,
