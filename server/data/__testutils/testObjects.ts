@@ -10,7 +10,9 @@ import {
   EligibilityCriterionProgress,
   EligibilityCriterionView,
   OffenderSummary,
+  ResidentialChecksTask,
   ResidentialChecksTaskProgress,
+  ResidentialChecksTaskView,
   ResidentialChecksView,
   ResidentialCheckTaskStatus,
   ResidentSummary,
@@ -431,6 +433,83 @@ const createChecksTasks = (): ResidentialChecksTaskProgress[] => {
   ]
 }
 
+const createResidentialChecksTask = (): ResidentialChecksTask => {
+  return {
+    code: 'assess-this-persons-risk',
+    name: "Assess this person's risk",
+    sections: [
+      {
+        header: 'Risk management information',
+        hintText: null,
+        questions: [
+          {
+            code: 'pom-prison-behaviour-information',
+            text: 'What information has the POM provided about the behaviour of {offenderForename} while in prison?',
+            hintText:
+              'Find out if there are any concerns about them being released on HDC or if there have been any changes to their level of risk.',
+            input: {
+              name: 'pom-prison-behaviour-information',
+              type: 'TEXT',
+              options: null,
+            },
+          },
+          {
+            code: 'mental-health-treatment-needs',
+            text: 'Does {offenderForename} need any mental health treatment to help manage risk?',
+            hintText: 'If so, it should be considered as part of your risk management planning actions.',
+            input: {
+              name: 'mental-health-treatment-needs',
+              type: 'RADIO',
+              options: [
+                {
+                  value: 'Yes',
+                },
+                {
+                  value: 'No',
+                },
+              ],
+            },
+          },
+          {
+            code: 'is-there-a-vlo-officer-for-case',
+            text: 'Is there a victim liaison officer (VLO) for this case?',
+            hintText: null,
+            input: {
+              name: 'vlo-officer-for-case',
+              type: 'RADIO',
+              options: [
+                {
+                  value: 'Yes',
+                },
+                {
+                  value: 'No',
+                },
+              ],
+            },
+          },
+          {
+            code: 'information-that-cannot-be-disclosed-to-offender',
+            text: 'Is there any information that cannot be disclosed to {offenderForename}?',
+            hintText: null,
+            input: {
+              name: 'information-that-cannot-be-disclosed',
+              type: 'RADIO',
+              options: [
+                {
+                  value: 'Yes',
+                },
+                {
+                  value: 'No',
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  }
+}
+
 const createResidentialChecksView = ({
   forename = 'Jim',
   surname = 'Smith',
@@ -468,6 +547,41 @@ const createResidentialChecksView = ({
   tasks: residentialChecksTasks,
 })
 
+const createResidentialChecksTaskView = ({
+  forename = 'Jim',
+  surname = 'Smith',
+  dateOfBirth = parseIsoDate('1976-04-14'),
+  prisonNumber = 'A1234AB',
+  hdced = parseIsoDate('2022-08-01'),
+  crd = parseIsoDate('2022-08-10'),
+  location = 'Prison',
+  status = AssessmentStatus.NOT_STARTED,
+  policyVersion = '1.0',
+} = {}): ResidentialChecksTaskView => ({
+  assessmentSummary: {
+    forename,
+    surname,
+    dateOfBirth,
+    prisonNumber,
+    hdced,
+    crd,
+    location,
+    status,
+    policyVersion,
+    tasks: {
+      PRISON_CA: [
+        { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
+        { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
+        { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
+        { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+        { name: 'PRINT_LICENCE', progress: 'LOCKED' },
+      ],
+    },
+  },
+  taskConfig: createResidentialChecksTask(),
+  taskStatus: 'NOT_STARTED',
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -486,5 +600,6 @@ export {
   createCheckRequestsForAssessmentSummary,
   createStaffDetails,
   createResidentialChecksView,
+  createResidentialChecksTaskView,
   createComCase,
 }

@@ -5,6 +5,7 @@ import type {
   _EligibilityAndSuitabilityCaseView,
   _EligibilityCriterionView,
   _OffenderSummary,
+  _ResidentialChecksTaskView,
   _ResidentSummary,
   _StandardAddressCheckRequestSummary,
   _SuitabilityCriterionView,
@@ -19,6 +20,7 @@ import type {
   EligibilityCriterionView,
   OffenderSummary,
   OptOutRequest,
+  ResidentialChecksTaskView,
   ResidentialChecksView,
   ResidentSummary,
   StandardAddressCheckRequestSummary,
@@ -168,7 +170,7 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async deleteAddressCheckRequest(prisonNumber: string, requestId: number) {
+  async deleteAddressCheckRequest(prisonNumber: string, requestId: number): Promise<void> {
     return this.restClient.delete({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
     })
@@ -227,6 +229,26 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.get<ResidentialChecksView>({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
     })
+  }
+
+  async getResidentialChecksTask(
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    taskCode: string,
+  ): Promise<ResidentialChecksTaskView> {
+    const task = await this.restClient.get<_ResidentialChecksTaskView>({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
+    })
+
+    return {
+      ...task,
+      assessmentSummary: {
+        ...task.assessmentSummary,
+        dateOfBirth: parseIsoDate(task.assessmentSummary.dateOfBirth),
+        hdced: parseIsoDate(task.assessmentSummary.hdced),
+        crd: parseIsoDate(task.assessmentSummary.crd),
+      },
+    }
   }
 
   async updateCaseAdminAdditionalInformation(

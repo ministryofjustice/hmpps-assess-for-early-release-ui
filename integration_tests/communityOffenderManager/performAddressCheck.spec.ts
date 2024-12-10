@@ -26,6 +26,7 @@ test.describe('Can perform address checks', () => {
     await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, createCheckRequestsForAssessmentSummary)
     await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)
     await assessForEarlyRelease.stubGetResidentialChecksView(prisonNumber, addressCheckRequestId)
+    await assessForEarlyRelease.stubGetResidentialChecksTask(prisonNumber, addressCheckRequestId)
 
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
 
@@ -52,5 +53,11 @@ test.describe('Can perform address checks', () => {
     await expect(page.getByText('Check if a curfew address is suitable')).toBeVisible()
     const tasks = page.locator('[data-qa="residential-checks-task-list"] .govuk-task-list__link')
     await expect(tasks).toHaveCount(6)
+
+    await page
+      .locator('[data-qa="residential-checks-task-list"] a[href*="address-details-and-informed-consent"]')
+      .click()
+    await expect(page.getByText('Check if a curfew address is suitable')).toBeVisible()
+    await expect(page.getByText('Is the address connected to an electricity supply')).toBeVisible()
   })
 })

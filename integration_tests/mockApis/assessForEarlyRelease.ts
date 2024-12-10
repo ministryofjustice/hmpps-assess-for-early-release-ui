@@ -313,7 +313,7 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
           forename: 'dave',
           surname: 'smith',
           dateOfBirth: '2024-09-18',
-          prisonNumber: 'A1234AE',
+          prisonNumber,
           hdced: '2024-09-20',
           crd: null,
           location: 'Moorland (HMP & YOI)',
@@ -399,6 +399,105 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
     },
   })
 
+const stubGetResidentialChecksTask = (prisonNumber: string, addressCheckRequestId: number) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/address-details-and-informed-consent`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        assessmentSummary: {
+          forename: 'FIRST-1',
+          surname: 'LAST-1',
+          dateOfBirth: '1978-03-20',
+          prisonNumber: 'A1234AA',
+          hdced: '2020-10-25',
+          crd: '2020-11-14',
+          location: 'Birmingham (HMP)',
+          status: 'ELIGIBLE_AND_SUITABLE',
+          policyVersion: '1.0',
+          tasks: {
+            PRISON_CA: [
+              {
+                name: 'ASSESS_ELIGIBILITY',
+                progress: 'COMPLETE',
+              },
+              {
+                name: 'ENTER_CURFEW_ADDRESS',
+                progress: 'READY_TO_START',
+              },
+              {
+                name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION',
+                progress: 'LOCKED',
+              },
+              { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+              {
+                name: 'PRINT_LICENCE',
+                progress: 'LOCKED',
+              },
+            ],
+          },
+        },
+        taskConfig: {
+          code: 'address-details-and-informed-consent',
+          name: 'Address details and informed consent',
+          sections: [
+            {
+              header: null,
+              hintText: null,
+              questions: [
+                {
+                  code: 'connected-to-an-electricity-supply',
+                  text: 'Is the address connected to an electricity supply?',
+                  hintText: null,
+                  input: {
+                    name: 'electricity-supply',
+                    type: 'RADIO',
+                    options: [{ value: 'Yes' }, { value: 'No' }],
+                  },
+                },
+              ],
+            },
+            {
+              header: 'Informed consent',
+              hintText: null,
+              questions: [
+                {
+                  code: 'have-you-visited-this-address-in-person',
+                  text: 'Have you visited this address in person?',
+                  hintText: 'It is not mandatory to do so.',
+                  input: {
+                    name: 'visited-address',
+                    type: 'RADIO',
+                    options: [
+                      { value: 'I have visited this address and spoken to the main occupier' },
+                      { value: 'I have not visited the address but I have spoken to the main occupier' },
+                    ],
+                  },
+                },
+                {
+                  code: 'main-occupier-given-consent',
+                  text: 'Has the main occupier given informed consent for {offenderForename} to be released here?',
+                  hintText:
+                    '<p>They must understand</p>\n<ul class="govuk-list govuk-list--bullet">\n  <li>what HDC involves</li>\n  <li>the offences {offenderForename} committed</li>\n</ul>',
+                  input: {
+                    name: 'main-occupier-consent',
+                    type: 'RADIO',
+                    options: [{ value: 'Yes' }, { value: 'No' }],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        taskStatus: 'NOT_STARTED',
+      },
+    },
+  })
+
 const stubGetUpdateCaseAdminAdditionalInformation = (prisonNumber: string, requestId: number) =>
   stubFor({
     request: {
@@ -429,5 +528,6 @@ export default {
   stubAddResident,
   stubGetCheckRequestsForAssessment,
   stubGetResidentialChecksView,
+  stubGetResidentialChecksTask,
   stubGetUpdateCaseAdminAdditionalInformation,
 }

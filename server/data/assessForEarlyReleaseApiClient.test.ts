@@ -1,7 +1,11 @@
 import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
-import { _AssessmentSummary, _OffenderSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import {
+  _AssessmentSummary,
+  _OffenderSummary,
+  _ResidentialChecksTaskView,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
   createAssessmentSummary,
   createOffenderSummary,
@@ -11,6 +15,7 @@ import {
   createSuitabilityCriterionView,
   createSuitabilityCriterionProgress,
   createResidentialChecksView,
+  createResidentialChecksTaskView,
 } from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
 
@@ -212,6 +217,37 @@ describe('assessForEarlyReleaseApiClient', () => {
       )
       expect(fakeAferApi.isDone()).toBe(true)
       expect(response).toEqual(apiResponse)
+    })
+
+    it('should get residential checks task', async () => {
+      const taskView = createResidentialChecksTaskView()
+      const { prisonNumber } = taskView.assessmentSummary
+      const taskCode = taskView.taskConfig.code
+      const addressCheckRequestId = 1
+      const apiResponse: _ResidentialChecksTaskView = {
+        ...taskView,
+        assessmentSummary: {
+          ...taskView.assessmentSummary,
+          dateOfBirth: toIsoDate(taskView.assessmentSummary.dateOfBirth),
+          hdced: toIsoDate(taskView.assessmentSummary.hdced),
+          crd: toIsoDate(taskView.assessmentSummary.crd),
+        },
+      }
+
+      fakeAferApi
+        .get(
+          `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
+        )
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      const response = await assessForEarlyReleaseApiClient.getResidentialChecksTask(
+        prisonNumber,
+        addressCheckRequestId,
+        taskCode,
+      )
+      expect(fakeAferApi.isDone()).toBe(true)
+      expect(response).toEqual(taskView)
     })
   })
 })
