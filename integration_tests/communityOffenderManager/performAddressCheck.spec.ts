@@ -59,5 +59,6 @@ test.describe('Can perform address checks', () => {
       .click()
     await expect(page.getByText('Check if a curfew address is suitable')).toBeVisible()
     await expect(page.getByText('Is the address connected to an electricity supply')).toBeVisible()
+    await expect(page.getByText('They must understand')).toBeVisible()
   })
 })
