@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express'
 import { AddressService, ResidentialChecksService } from '../../../services'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
 
 export default class ResidentialChecksTaskRoutes {
   constructor(
@@ -22,9 +24,24 @@ export default class ResidentialChecksTaskRoutes {
       taskCode,
     )
 
+    const addressCheckRequest = await this.addressService.getStandardAddressCheckRequest(
+      req?.middleware?.clientToken,
+      prisonNumber,
+      Number(checkRequestId),
+    )
+
     const templateToRender = taskTemplateOverrides[taskCode] || defaultTemplate
     res.render(`pages/communityOffenderManager/residentialChecks/tasks/${templateToRender}`, {
+      prisonNumber,
       task: task.taskConfig,
+      addressCheckRequest,
+    })
+  }
+
+  POST = async (req: Request, res: Response): Promise<void> => {
+    validateRequest(req, () => {
+      const validationErrors: FieldValidationError[] = []
+      return validationErrors
     })
   }
 }

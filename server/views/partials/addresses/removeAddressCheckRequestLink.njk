@@ -1,0 +1,6 @@
+{%  macro removeAddressCheckRequestLink(prisonNumber, requestId) %}
+    {{ paths.prison.assessment.curfewAddress.deleteCheckYourAnswers | toPath({
+        checkRequestId: requestId | string,
+        prisonNumber: prisonNumber
+    }) }}
+{% endmacro %}

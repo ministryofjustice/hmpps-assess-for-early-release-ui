@@ -20,7 +20,18 @@ export default function Index({
   const router = Router()
 
   const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
-    router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER]), asyncMiddleware(handler))
+    router.get(
+      routerPath.pattern,
+      roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER, AuthRole.CASE_ADMIN]),
+      asyncMiddleware(handler),
+    )
+
+  const post = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
+    router.post(
+      routerPath.pattern,
+      roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER, AuthRole.CASE_ADMIN]),
+      asyncMiddleware(handler),
+    )
 
   const caseload = new CaseloadRoutes(communityOffenderManagerCaseloadService)
   get(paths.probation.probationCaseload, caseload.GET)
@@ -36,6 +47,7 @@ export default function Index({
 
   const residentialChecksTaskRoutes = new ResidentialChecksTaskRoutes(addressService, residentialChecksService)
   get(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.GET)
+  post(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.POST)
 
   return router
 }

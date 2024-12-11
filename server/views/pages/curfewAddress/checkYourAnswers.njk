@@ -1,28 +1,16 @@
 {% extends "layout.njk" %}
-{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "partials/addresses/changeResidentLink.njk" import changeResidentLink %}
+{% from "partials/addresses/removeAddressCheckRequestLink.njk" import removeAddressCheckRequestLink %}
 {% from "partials/assessment/addressSummary.njk" import addressSummary %}
 {% from "partials/assessment/residentSummary.njk" import residentSummary %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitle = applicationName + " - Check your answers" %}
 {% set backLinkHref = "/" %}
-{% set addressCount = addressSummary.length %}
 {% set preferredAddress = checkRequestsForAssessmentSummary | find('preferencePriority', 'FIRST') %}
 {% set secondAddress = checkRequestsForAssessmentSummary | find('preferencePriority', 'SECOND') %}
-{%  macro getRemoveAddressLink(requestId) %}
-    {{ paths.prison.assessment.curfewAddress.deleteCheckYourAnswers | toPath({ 
-                            checkRequestId: requestId | string,
-                            prisonNumber: assessmentSummary.prisonNumber
-                            }) }}
-{% endmacro %}
-
-{%  macro getChangeAddressLink(requestId) %}
-    {{ paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
-                                checkRequestId: requestId | string,
-                                prisonNumber: assessmentSummary.prisonNumber
-                                }) }}
-{% endmacro %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -43,13 +31,13 @@
                         assessmentSummary: preferredAddress,
                         links: [
                             {
-                                href: getChangeAddressLink(preferredAddress.requestId),
+                                href: changeResidentLink(assessmentSummary.prisonNumber, preferredAddress.requestId),
                                 text: "Change",
                                 visuallyHiddenText: "change preferred address",
                                 classes: "change-preferred-address"
                             } ,
                             {
-                                href: getRemoveAddressLink(preferredAddress.requestId),
+                                href: removeAddressCheckRequestLink(assessmentSummary.prisonNumber, preferredAddress.requestId),
                                 text: "Remove preferred address",
                                 visuallyHiddenText: "remove preferred address",
                                 classes: "remove-preferred-address"
@@ -59,7 +47,7 @@
                     <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="preferred-address-residential-details" >Details of residents</h3>
                     {% for resident in preferredAddress.residents %}
                         {{ residentSummary({ resident: resident, 
-                        links: [{ href: getChangeAddressLink(preferredAddress.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
+                        links: [{ href: changeResidentLink(assessmentSummary.prisonNumber, preferredAddress.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
                     {% endfor %}
 
 
@@ -70,13 +58,13 @@
                             assessmentSummary: secondAddress,
                             links: [
                                 {
-                                    href: getChangeAddressLink(secondAddress.requestId),
+                                    href: changeResidentLink(assessmentSummary.prisonNumber, secondAddress.requestId),
                                     text: "Change",
                                     visuallyHiddenText: "change second address",
                                     classes: "change-second-address"
                                 },
                                 {
-                                    href: getRemoveAddressLink(secondAddress.requestId),
+                                    href: removeAddressCheckRequestLink(assessmentSummary.prisonNumber, secondAddress.requestId),
                                     text: "Remove second address",
                                     visuallyHiddenText: "remove second address",
                                     classes: "remove-second-address"
@@ -87,7 +75,7 @@
                         <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="second-address-residential-details">Details of residents</h3>
                         {% for resident in secondAddress.residents %}
                             {{ residentSummary({ resident: resident, 
-                            links: [{ href: getChangeAddressLink(secondAddress.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
+                            links: [{ href: changeResidentLink(assessmentSummary.prisonNumber, secondAddress.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
                         {% endfor %}
                     {% endif %}
 
