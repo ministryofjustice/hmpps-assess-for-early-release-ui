@@ -8,6 +8,11 @@ export default class ResidentialChecksTaskRoutes {
   ) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
+    const defaultTemplate = 'residentialChecksTask'
+    const taskTemplateOverrides: Record<string, string> = {
+      'address-details-and-informed-consent': 'address-details-and-informed-consent',
+      'make-a-risk-management-decision': 'make-a-risk-management-decision',
+    }
     const { checkRequestId, prisonNumber, taskCode } = req.params
 
     const task = await this.residentialChecksService.getResidentialChecksTask(
@@ -17,7 +22,8 @@ export default class ResidentialChecksTaskRoutes {
       taskCode,
     )
 
-    res.render(`pages/communityOffenderManager/residentialChecks/tasks/${taskCode}`, {
+    const templateToRender = taskTemplateOverrides[taskCode] || defaultTemplate
+    res.render(`pages/communityOffenderManager/residentialChecks/tasks/${templateToRender}`, {
       task: task.taskConfig,
     })
   }

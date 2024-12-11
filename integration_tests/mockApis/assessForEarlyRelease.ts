@@ -443,7 +443,7 @@ const stubGetResidentialChecksTask = (prisonNumber: string, addressCheckRequestI
         },
         taskConfig: {
           code: 'address-details-and-informed-consent',
-          name: 'Address details and informed consent',
+          name: 'Check if a curfew address is suitable',
           sections: [
             {
               header: null,

@@ -3,12 +3,12 @@
 {% from "taskFormBuilder.njk" import taskFormBuilder %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - " + taskName %}
+{% set pageTitle = applicationName + " - " + task.name %}
 
 {% block content %}
     <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">{{ taskName }}</h1>
+        <h1 class="govuk-heading-l">{{ task.name }}</h1>
 
         {% block beforeForm %}
         {% endblock %}
