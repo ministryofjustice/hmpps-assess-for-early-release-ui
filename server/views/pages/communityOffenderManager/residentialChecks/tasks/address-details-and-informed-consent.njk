@@ -1,0 +1,62 @@
+{% extends "./residentialChecksTask.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "partials/addresses/changeResidentLink.njk" import changeResidentLink %}
+{% from "partials/addresses/removeAddressCheckRequestLink.njk" import removeAddressCheckRequestLink %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+{% from "partials/assessment/residentSummary.njk" import residentSummary %}
+
+{% block beforeForm %}
+    {% if addressCheckRequest.preferencePriority === 'FIRST' %}
+        {% set addressTitle = "Preferred address" %}
+    {% else %}
+        {% set addressTitle = "Second address" %}
+    {% endif %}
+
+    <h2 class="govuk-heading-m">Address details</h2>
+    {{ checkAddressSummary({
+        prisonNumber: prisonNumber,
+        title: addressTitle,
+        addressCheckRequest: addressCheckRequest
+    }) }}
+
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">Additional information</h2>
+        </div>
+        <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__value">
+                        {{ addressCheckRequest.caAdditionalInfo }}
+                    </dt>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <h2 class="govuk-heading-m">Check details of residents</h2>
+    <form method="POST" action="{{ paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+        checkRequestId: addressCheckRequest.requestId | string,
+        prisonNumber: prisonNumber
+    }) }}">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {% for resident in addressCheckRequest.residents %}
+            {{ residentSummary({ resident: resident,
+                links: [{
+                    href: changeResidentLink(prisonNumber, addressCheckRequest.requestId),
+                    text: "Change",
+                    visuallyHiddenText: "change residents"
+                }
+                ]})
+            }}
+        {% endfor %}
+        <div class="moj-button-action govuk-!-margin-top-4">
+            {{ govukButton({
+                text: "Add another resident",
+                classes: "govuk-button--secondary"
+            }) }}
+        </div>
+    </form>
+{% endblock %}

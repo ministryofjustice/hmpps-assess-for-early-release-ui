@@ -27,7 +27,11 @@
                         title: {
                             text: task.taskName
                         },
-                        href: "#",
+                        href: paths.probation.assessment.curfewAddress.addressCheckTask | toPath({
+                            prisonNumber: prisonNumber,
+                            checkRequestId: addressCheckRequest.requestId | string,
+                            taskCode: task.code
+                        }),
                         status: residentialChecks.taskStatusLabel(task.status)
                     }
                 ), tasks) %}

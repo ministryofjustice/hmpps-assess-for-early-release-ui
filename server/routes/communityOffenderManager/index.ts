@@ -9,6 +9,7 @@ import paths from '../paths'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
 import AssessmentRoutes from './assessment'
 import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
+import ResidentialChecksTaskRoutes from './residentialChecks/task'
 
 export default function Index({
   addressService,
@@ -19,7 +20,18 @@ export default function Index({
   const router = Router()
 
   const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
-    router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER]), asyncMiddleware(handler))
+    router.get(
+      routerPath.pattern,
+      roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER, AuthRole.CASE_ADMIN]),
+      asyncMiddleware(handler),
+    )
+
+  const post = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
+    router.post(
+      routerPath.pattern,
+      roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER, AuthRole.CASE_ADMIN]),
+      asyncMiddleware(handler),
+    )
 
   const caseload = new CaseloadRoutes(communityOffenderManagerCaseloadService)
   get(paths.probation.probationCaseload, caseload.GET)
@@ -30,8 +42,12 @@ export default function Index({
   const checkCurfewAddressesRoutes = new CheckCurfewAddressesRoutes(addressService, caseAdminCaseloadService)
   get(paths.probation.assessment.curfewAddress.checkCurfewAddresses, checkCurfewAddressesRoutes.GET)
 
-  const residentialChecksTasksRoutes = new ResidentialChecksTasklistRoutes(addressService, residentialChecksService)
-  get(paths.probation.assessment.curfewAddress.addressCheckTasklist, residentialChecksTasksRoutes.GET)
+  const residentialChecksTaskListRoutes = new ResidentialChecksTasklistRoutes(addressService, residentialChecksService)
+  get(paths.probation.assessment.curfewAddress.addressCheckTasklist, residentialChecksTaskListRoutes.GET)
+
+  const residentialChecksTaskRoutes = new ResidentialChecksTaskRoutes(addressService, residentialChecksService)
+  get(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.GET)
+  post(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.POST)
 
   return router
 }

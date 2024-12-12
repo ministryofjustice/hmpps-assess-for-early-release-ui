@@ -23,6 +23,7 @@ export default class ResidentialChecksTasklistRoutes {
     )
 
     res.render('pages/communityOffenderManager/residentialChecks/tasklist', {
+      prisonNumber,
       addressCheckRequest,
       residentialChecksView,
     })

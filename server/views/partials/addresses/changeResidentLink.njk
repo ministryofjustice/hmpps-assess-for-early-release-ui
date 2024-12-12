@@ -1,0 +1,6 @@
+{%  macro changeResidentLink(prisonNumber, requestId) %}
+    {{ paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+        checkRequestId: requestId | string,
+        prisonNumber: prisonNumber
+    }) }}
+{% endmacro %}

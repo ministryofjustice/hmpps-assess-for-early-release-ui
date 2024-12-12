@@ -1,0 +1,11 @@
+{% extends "./residentialChecksTask.njk" %}
+
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+
+{% block beforeForm %}
+    {{ checkAddressSummary({
+        prisonNumber: prisonNumber,
+        title: 'Proposed address',
+        addressCheckRequest: addressCheckRequest
+    }) }}
+{% endblock %}
