@@ -29,7 +29,7 @@
                             "id": "caAssessForHDCCard",
                             "href": '/prison/caseload',
                             "clickable": "true",
-                            "heading": "Home detention curfew (HDC)",
+                            "heading": "Home detention curfew (HDC - CA)",
                             "description": "View assessment and assess offender."
                         }) }}
                     </div>
@@ -41,7 +41,19 @@
                             "id": "comAssessForHDCCard",
                             "href": '/probation/caseload',
                             "clickable": "true",
-                            "heading": "Home detention curfew (HDC)",
+                            "heading": "Home detention curfew (HDC - COM)",
+                            "description": "View assessment and assess offender."
+                        }) }}
+                    </div>
+                {% endif %}
+
+                {% if shouldShowDmAssessForHDCCard %}
+                    <div class="govuk-grid-column-one-third card-group__item">
+                        {{ card({
+                            "id": "dmAssessForHDCCard",
+                            "href": '/decisionMaker/caseload',
+                            "clickable": "true",
+                            "heading": "Home detention curfew (HDC - DM)",
                             "description": "View assessment and assess offender."
                         }) }}
                     </div>

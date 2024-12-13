@@ -250,4 +250,23 @@ describe('assessForEarlyReleaseApiClient', () => {
       expect(response).toEqual(taskView)
     })
   })
+
+  describe('getDecisionMakerCaseload', () => {
+    const offenderSummaryList = [createOffenderSummary({})]
+
+    it('should return data from api', async () => {
+      const prisonCode = 'MDI'
+      const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
+        return { ...c, hdced: toIsoDate(c.hdced) }
+      })
+
+      fakeAferApi
+        .get(`/prison/${prisonCode}/decision-maker/caseload`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      const output = await assessForEarlyReleaseApiClient.getDecisionMakerCaseload(prisonCode)
+      expect(output).toEqual(offenderSummaryList)
+    })
+  })
 })

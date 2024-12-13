@@ -8,6 +8,7 @@ import AddressService from './addressService'
 import CommunityOffenderManagerCaseloadService from './communityOffenderManagerCaseloadService'
 import UserService from './userService'
 import ResidentialChecksService from './residentialChecksService'
+import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 
 export const services = () => {
   const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder, hmppsAuthClient } = dataAccess
@@ -22,6 +23,7 @@ export const services = () => {
   )
   const residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClientBuilder)
   const userService = new UserService(assessForEarlyReleaseApiClientBuilder)
+  const decisionMakerCaseloadService = new DecisionMakerCaseloadService(assessForEarlyReleaseApiClientBuilder)
 
   return {
     addressService,
@@ -34,6 +36,7 @@ export const services = () => {
     optOutService,
     residentialChecksService,
     userService,
+    decisionMakerCaseloadService,
   }
 }
 
@@ -48,4 +51,5 @@ export {
   OptOutService,
   ResidentialChecksService,
   UserService,
+  DecisionMakerCaseloadService,
 }

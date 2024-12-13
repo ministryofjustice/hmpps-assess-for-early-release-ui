@@ -3,10 +3,12 @@ import { path } from 'static-path'
 const supportHome = path('/support')
 const prison = path('/prison')
 const probation = path('/probation')
+const decisionMaker = path('/decisionMaker')
 const showPaths = supportHome.path('/paths')
 
 const prisonCaseload = prison.path('caseload')
 const probationCaseload = probation.path('caseload')
+const decisionMakerCaseload = decisionMaker.path('caseload')
 const prisonAssessmentHome = prison.path('assessment/:prisonNumber')
 const probationAssessmentHome = probation.path('assessment/:prisonNumber')
 
@@ -69,6 +71,9 @@ const paths = {
         addressCheckTask,
       },
     },
+  },
+  decisionMaker: {
+    decisionMakerCaseload,
   },
 }
 

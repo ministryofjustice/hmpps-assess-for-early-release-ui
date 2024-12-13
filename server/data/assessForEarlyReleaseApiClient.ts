@@ -261,4 +261,13 @@ export default class AssessForEarlyReleaseApiClient {
       data: updateCaseAdminAdditionInfoRequest,
     })
   }
+
+  async getDecisionMakerCaseload(prisonCode: string): Promise<OffenderSummary[]> {
+    const decisionMakerCaseload = await this.restClient.get<_OffenderSummary[]>({
+      path: `/prison/${prisonCode}/decision-maker/caseload`,
+    })
+    return decisionMakerCaseload.map(c => {
+      return { ...c, hdced: parseIsoDate(c.hdced) }
+    })
+  }
 }

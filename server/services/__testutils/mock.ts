@@ -2,6 +2,7 @@ import {
   AddressService,
   CaseAdminCaseloadService,
   CommunityOffenderManagerCaseloadService,
+  DecisionMakerCaseloadService,
   EligibilityAndSuitabilityService,
   ResidentialChecksService,
   UserService,
@@ -25,6 +26,9 @@ const createMockUserService = () => new UserService(null) as jest.Mocked<UserSer
 const createMockResidentialChecksService = () =>
   new ResidentialChecksService(null) as jest.Mocked<ResidentialChecksService>
 
+const createMockDecisionMakerCaseloadService = () =>
+  new DecisionMakerCaseloadService(null) as jest.Mocked<DecisionMakerCaseloadService>
+
 export {
   createMockAddressService,
   createMockCaseAdminCaseloadService,
@@ -32,4 +36,5 @@ export {
   createMockResidentialChecksService,
   createMockUserService,
   createMockCommunityOffenderManagerCaseloadService,
+  createMockDecisionMakerCaseloadService,
 }
