@@ -23,6 +23,7 @@ describe('Route Handlers - Home', () => {
           shouldShowSupportCard: false,
           shouldShowCaAssessForHDCCard: false,
           shouldShowComAssessForHDCCard: false,
+          shouldShowDmAssessForHDCCard: true,
         })
       })
 
@@ -33,6 +34,7 @@ describe('Route Handlers - Home', () => {
           shouldShowSupportCard: true,
           shouldShowCaAssessForHDCCard: true,
           shouldShowComAssessForHDCCard: false,
+          shouldShowDmAssessForHDCCard: false,
         })
       })
     })
@@ -45,6 +47,7 @@ describe('Route Handlers - Home', () => {
           shouldShowSupportCard: false,
           shouldShowCaAssessForHDCCard: false,
           shouldShowComAssessForHDCCard: false,
+          shouldShowDmAssessForHDCCard: true,
         })
       })
 
@@ -55,6 +58,31 @@ describe('Route Handlers - Home', () => {
           shouldShowSupportCard: false,
           shouldShowCaAssessForHDCCard: false,
           shouldShowComAssessForHDCCard: true,
+          shouldShowDmAssessForHDCCard: false,
+        })
+      })
+    })
+
+    describe('Decision maker role', () => {
+      it('With wrong auth role', async () => {
+        req = getReqWithRolesAndSource([AuthRole.CASE_ADMIN], 'nomis')
+        await handler.GET(req, res)
+        expect(res.render).toHaveBeenCalledWith('pages/index', {
+          shouldShowSupportCard: false,
+          shouldShowCaAssessForHDCCard: true,
+          shouldShowComAssessForHDCCard: false,
+          shouldShowDmAssessForHDCCard: false,
+        })
+      })
+
+      it('With correct auth role', async () => {
+        req = getReqWithRolesAndSource([AuthRole.DECISION_MAKER], 'nomis')
+        await handler.GET(req, res)
+        expect(res.render).toHaveBeenCalledWith('pages/index', {
+          shouldShowSupportCard: false,
+          shouldShowCaAssessForHDCCard: false,
+          shouldShowComAssessForHDCCard: false,
+          shouldShowDmAssessForHDCCard: true,
         })
       })
     })

@@ -7,6 +7,7 @@ import caseAdminRoutes from './caseAdmin'
 import optOutRoutes from './optout'
 import curfewAddressRoutes from './curfewAddress'
 import communityOffenderManager from './communityOffenderManager'
+import decisionMakerRoutes from './decisionMaker'
 
 export default function routes(services: Services): Router {
   const router = Router()
@@ -16,6 +17,7 @@ export default function routes(services: Services): Router {
   router.use(optOutRoutes(services))
   router.use(curfewAddressRoutes(services))
   router.use(communityOffenderManager(services))
+  router.use(decisionMakerRoutes(services))
 
   return router
 }

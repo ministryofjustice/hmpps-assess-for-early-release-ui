@@ -8,6 +8,7 @@ export default class HomeRoutes {
       shouldShowSupportCard: hasRole(req.user, AuthRole.SUPPORT),
       shouldShowCaAssessForHDCCard: hasRole(req.user, AuthRole.CASE_ADMIN),
       shouldShowComAssessForHDCCard: hasRole(req.user, AuthRole.RESPONSIBLE_OFFICER),
+      shouldShowDmAssessForHDCCard: hasRole(req.user, AuthRole.DECISION_MAKER),
     }
     res.render('pages/index', viewContext)
   }
