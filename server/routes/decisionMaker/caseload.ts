@@ -13,7 +13,7 @@ export default class CaseloadRoutes {
 
     const caseload = offenderSummaryList.map(offender => {
       return {
-        createLink: paths.prison.assessment.home(offender),
+        createLink: paths.decisionMaker.assessment.home(offender),
         name: offender.name,
         prisonNumber: offender.prisonNumber,
         hdced: offender.hdced,
