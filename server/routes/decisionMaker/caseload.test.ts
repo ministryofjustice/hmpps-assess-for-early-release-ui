@@ -31,7 +31,7 @@ describe('GET', () => {
     expect(res.render).toHaveBeenCalledWith('pages/decisionMaker/caseload', {
       caseload: [
         {
-          createLink: '/prison/assessment/A1234AB',
+          createLink: '/decisionMaker/assessment/A1234AB',
           hdced: parseIsoDate('2022-01-08'),
           name: 'Jim Smith',
           prisonNumber: 'A1234AB',

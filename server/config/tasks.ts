@@ -66,5 +66,21 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       lockedDescription: () => 'You can do this if a decision maker in prison approves George for HDC release.',
     },
   ],
-  PRISON_DM: [],
+  PRISON_DM: [
+    {
+      code: 'CONFIRM_RELEASE',
+      title: 'Confirm release',
+      path: undefined,
+    },
+    {
+      code: 'APPROVE_LICENCE',
+      title: 'Approve licence',
+      path: undefined,
+    },
+    {
+      code: 'OPT_IN',
+      title: 'Opt in',
+      path: undefined,
+    },
+  ],
 }

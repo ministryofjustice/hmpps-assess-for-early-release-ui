@@ -6,6 +6,7 @@ import AuthRole from '../../enumeration/authRole'
 import paths from '../paths'
 import { Services } from '../../services'
 import CaseloadRoutes from './caseload'
+import AssessmentRoutes from './assessment'
 
 export default function Index({ decisionMakerCaseloadService }: Services): Router {
   const router = Router()
@@ -15,6 +16,9 @@ export default function Index({ decisionMakerCaseloadService }: Services): Route
 
   const caseload = new CaseloadRoutes(decisionMakerCaseloadService)
   get(paths.decisionMaker.decisionMakerCaseload, caseload.GET)
+
+  const assessmentHandler = new AssessmentRoutes(decisionMakerCaseloadService)
+  get(paths.decisionMaker.assessment.home, assessmentHandler.GET)
 
   return router
 }

@@ -11,6 +11,7 @@ const probationCaseload = probation.path('caseload')
 const decisionMakerCaseload = decisionMaker.path('caseload')
 const prisonAssessmentHome = prison.path('assessment/:prisonNumber')
 const probationAssessmentHome = probation.path('assessment/:prisonNumber')
+const decisionMakerAssessmentHome = decisionMaker.path('assessment/:prisonNumber')
 
 const tasklist = prisonAssessmentHome.path('initial-checks')
 const check = tasklist.path(':type/:checkCode')
@@ -74,6 +75,9 @@ const paths = {
   },
   decisionMaker: {
     decisionMakerCaseload,
+    assessment: {
+      home: decisionMakerAssessmentHome,
+    },
   },
 }
 

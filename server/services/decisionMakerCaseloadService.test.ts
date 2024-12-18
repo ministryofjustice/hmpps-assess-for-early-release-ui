@@ -1,5 +1,5 @@
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
@@ -34,6 +34,19 @@ describe('Decision maker Caseload Service', () => {
           remainingDays: 3,
         },
       ])
+    })
+  })
+
+  describe('Assessment Summary', () => {
+    const assessmentSummary = createAssessmentSummary({})
+
+    it('get assessment summary', async () => {
+      assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+
+      const result = await decisionMakerCaseloadService.getAssessmentSummary(token, assessmentSummary.prisonNumber)
+
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(result).toEqual(assessmentSummary)
     })
   })
 })
