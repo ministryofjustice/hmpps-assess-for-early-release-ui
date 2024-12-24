@@ -25,6 +25,8 @@ import setUpEnvironmentName from './middleware/setUpEnvironmentName'
 import phaseNameSetup from './middleware/phaseNameSetup'
 import config from './config'
 import setUpValidationMiddleware from './middleware/setUpValidationMiddleware'
+import GotenbergClient from './data/gotenbergClient'
+import pdfRenderer from './utils/pdfRenderer'
 
 export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
   const app = express()
@@ -44,6 +46,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   phaseNameSetup(app, config.phaseName)
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
+  app.use(pdfRenderer(new GotenbergClient()))
   app.use(setUpCsrf())
   app.use(populateClientToken(services.hmppsAuthClient))
   app.use(setUpCurrentUser(services.userService))

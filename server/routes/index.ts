@@ -8,6 +8,7 @@ import optOutRoutes from './optout'
 import curfewAddressRoutes from './curfewAddress'
 import communityOffenderManager from './communityOffenderManager'
 import decisionMakerRoutes from './decisionMaker'
+import assessmentPdfRoutes from './pdf'
 
 export default function routes(services: Services): Router {
   const router = Router()
@@ -18,6 +19,7 @@ export default function routes(services: Services): Router {
   router.use(curfewAddressRoutes(services))
   router.use(communityOffenderManager(services))
   router.use(decisionMakerRoutes(services))
+  router.use(assessmentPdfRoutes(services))
 
   return router
 }

@@ -270,4 +270,12 @@ export default class AssessForEarlyReleaseApiClient {
       return { ...c, hdced: parseIsoDate(c.hdced) }
     })
   }
+
+  async getPdf({ title, message }: { title: string; message: string }): Promise<Buffer> {
+    return this.restClient.get<Buffer>({
+      path: `/pdf`,
+      query: { title, message },
+      responseType: 'arraybuffer',
+    })
+  }
 }
