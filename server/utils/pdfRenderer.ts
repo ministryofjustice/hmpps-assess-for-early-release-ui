@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import GotenbergClient from '../data/gotenbergClient'
-import logger from '../../logger'
 
 /*
  * This function accepts a Gotenberg client as its only argument.
@@ -11,7 +9,7 @@ import logger from '../../logger'
  */
 
 // TODO: Revisit to fully define these types for the "any" placeholders
-export default function pdfRenderer(client: GotenbergClient) {
+export default function pdfRenderer() {
   return (req: Request, res: Response, next: NextFunction) => {
     res.renderPDF = (
       view: string,
@@ -28,12 +26,7 @@ export default function pdfRenderer(client: GotenbergClient) {
         res.header('Content-Transfer-Encoding', 'binary')
         res.header('Content-Disposition', `inline; filename=${options.filename}`)
 
-        return client
-          .renderPdf(pageData)
-          .then(buffer => res.send(buffer))
-          .catch(reason => {
-            logger.warn(reason)
-          })
+        return res.send(pageData)
       })
     }
     next()

@@ -46,7 +46,7 @@ export default function createApp(services: Services, applicationInfo: Applicati
   phaseNameSetup(app, config.phaseName)
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
-  app.use(pdfRenderer(new GotenbergClient()))
+  app.use(pdfRenderer())
   app.use(setUpCsrf())
   app.use(populateClientToken(services.hmppsAuthClient))
   app.use(setUpCurrentUser(services.userService))
