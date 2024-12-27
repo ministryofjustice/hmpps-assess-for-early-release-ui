@@ -25,7 +25,6 @@ import setUpEnvironmentName from './middleware/setUpEnvironmentName'
 import phaseNameSetup from './middleware/phaseNameSetup'
 import config from './config'
 import setUpValidationMiddleware from './middleware/setUpValidationMiddleware'
-import GotenbergClient from './data/gotenbergClient'
 import pdfRenderer from './utils/pdfRenderer'
 
 export default function createApp(services: Services, applicationInfo: ApplicationInfo): express.Application {
