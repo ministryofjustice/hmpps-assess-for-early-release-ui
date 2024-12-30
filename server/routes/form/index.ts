@@ -5,16 +5,16 @@ import roleCheckMiddleware from '../../middleware/roleCheckMiddleware'
 import AuthRole from '../../enumeration/authRole'
 import paths from '../paths'
 import { Services } from '../../services'
-import AssessmentPdfRoutes from './assessmentPdf'
+import AssessmentFormRoutes from './assessmentForm'
 
-export default function Index({ pdfService }: Services): Router {
+export default function Index({ formService }: Services): Router {
   const router = Router()
 
   const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
     router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.DECISION_MAKER]), asyncMiddleware(handler))
 
-  const assessmentPdfRoutes = new AssessmentPdfRoutes(pdfService)
-  get(paths.forms.pdf, assessmentPdfRoutes.GET)
+  const assessmentFormRoutes = new AssessmentFormRoutes(formService)
+  get(paths.forms.pdf, assessmentFormRoutes.GET)
 
   return router
 }

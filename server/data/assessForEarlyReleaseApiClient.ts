@@ -271,7 +271,7 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getPdf({ title, message }: { title: string; message: string }): Promise<Buffer> {
+  async getForm({ title, message }: { title: string; message: string }): Promise<Buffer> {
     return this.restClient.get<Buffer>({
       path: `/pdf`,
       query: { title, message },

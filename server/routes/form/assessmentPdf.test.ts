@@ -1,8 +1,8 @@
-import { createMockPdfService } from '../../services/__testutils/mock'
+import { createMockFormService } from '../../services/__testutils/mock'
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import AssessmentPdfRoutes from './assessmentPdf'
+import AssessmentPdfRoutes from './assessmentForm'
 
-const pdfService = createMockPdfService()
+const formService = createMockFormService()
 const req = mockRequest({})
 const res = mockResponse({})
 const pdfBuffer = Buffer.from('pdf')
@@ -10,8 +10,8 @@ const pdfBuffer = Buffer.from('pdf')
 let assessmentPdfRoutes: AssessmentPdfRoutes
 
 beforeEach(() => {
-  assessmentPdfRoutes = new AssessmentPdfRoutes(pdfService)
-  pdfService.getPdf.mockResolvedValue(pdfBuffer)
+  assessmentPdfRoutes = new AssessmentPdfRoutes(formService)
+  formService.getForm.mockResolvedValue(pdfBuffer)
 })
 
 afterEach(() => {
@@ -21,10 +21,10 @@ afterEach(() => {
 describe('GET', () => {
   it('should render pdf', async () => {
     await assessmentPdfRoutes.GET(req, res)
-    expect(pdfService.getPdf).toHaveBeenCalledWith(req.middleware.clientToken, {
+    expect(formService.getForm).toHaveBeenCalledWith(req.middleware.clientToken, {
       title: 'Title from UI',
       message: 'Message from UI',
     })
-    expect(res.renderPDF).toHaveBeenCalledWith('pages/forms/assessmentPdf', pdfBuffer, {})
+    expect(res.renderPDF).toHaveBeenCalledWith(pdfBuffer, {})
   })
 })

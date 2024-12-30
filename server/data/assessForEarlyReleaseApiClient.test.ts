@@ -282,7 +282,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, pdfBuffer)
 
-      const output = await assessForEarlyReleaseApiClient.getPdf({ title, message })
+      const output = await assessForEarlyReleaseApiClient.getForm({ title, message })
       expect(output).toEqual(pdfBuffer)
     })
   })
