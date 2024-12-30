@@ -4,6 +4,7 @@ import {
   CommunityOffenderManagerCaseloadService,
   DecisionMakerCaseloadService,
   EligibilityAndSuitabilityService,
+  PdfService,
   ResidentialChecksService,
   UserService,
 } from '..'
@@ -29,6 +30,8 @@ const createMockResidentialChecksService = () =>
 const createMockDecisionMakerCaseloadService = () =>
   new DecisionMakerCaseloadService(null) as jest.Mocked<DecisionMakerCaseloadService>
 
+const createMockPdfService = () => new PdfService(null) as jest.Mocked<PdfService>
+
 export {
   createMockAddressService,
   createMockCaseAdminCaseloadService,
@@ -37,4 +40,5 @@ export {
   createMockUserService,
   createMockCommunityOffenderManagerCaseloadService,
   createMockDecisionMakerCaseloadService,
+  createMockPdfService,
 }

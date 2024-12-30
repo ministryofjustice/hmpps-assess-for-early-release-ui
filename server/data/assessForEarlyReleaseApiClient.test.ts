@@ -269,4 +269,21 @@ describe('assessForEarlyReleaseApiClient', () => {
       expect(output).toEqual(offenderSummaryList)
     })
   })
+
+  describe('getPdf', () => {
+    it('should return pdf', async () => {
+      const title = 'Title from UI'
+      const message = 'Message from UI'
+      const pdfBuffer = Buffer.from('pdf')
+
+      fakeAferApi
+        .get('/pdf')
+        .query({ title, message })
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, pdfBuffer)
+
+      const output = await assessForEarlyReleaseApiClient.getPdf({ title, message })
+      expect(output).toEqual(pdfBuffer)
+    })
+  })
 })

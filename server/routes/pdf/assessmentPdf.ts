@@ -6,8 +6,8 @@ export default class AssessmentPdfRoutes {
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const responsePdf = await this.pdfService.getPdf(req?.middleware?.clientToken, {
-      title: 'Nishanth',
-      message: 'Mahasamudram',
+      title: 'Title from UI',
+      message: 'Message from UI',
     })
 
     res.renderPDF('pages/forms/assessmentPdf', responsePdf, {})
