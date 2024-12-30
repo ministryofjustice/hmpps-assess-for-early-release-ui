@@ -28,7 +28,7 @@ export declare global {
     }
 
     interface Response {
-      renderPDF(pageData: Record<Buffer, unknown>, options: Record<string, unknown>): void
+      renderPDF(options: Record<string, unknown>, pageData: Record<Buffer, unknown>): void
     }
 
     interface Locals {

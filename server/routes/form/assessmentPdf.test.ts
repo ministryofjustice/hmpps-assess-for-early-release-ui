@@ -25,6 +25,6 @@ describe('GET', () => {
       title: 'Title from UI',
       message: 'Message from UI',
     })
-    expect(res.renderPDF).toHaveBeenCalledWith(pdfBuffer, {})
+    expect(res.renderPDF).toHaveBeenCalledWith({ filename: 'document.pdf' }, pdfBuffer)
   })
 })

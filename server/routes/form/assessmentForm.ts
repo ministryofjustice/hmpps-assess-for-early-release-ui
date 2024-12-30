@@ -10,6 +10,6 @@ export default class AssessmentFormRoutes {
       message: 'Message from UI',
     })
 
-    res.renderPDF(pageData, {})
+    res.renderPDF({ filename: 'document.pdf' }, pageData)
   }
 }
