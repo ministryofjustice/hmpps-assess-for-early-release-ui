@@ -5,6 +5,8 @@ const prison = path('/prison')
 const probation = path('/probation')
 const decisionMaker = path('/decisionMaker')
 const showPaths = supportHome.path('/paths')
+const forms = path('/forms')
+const pdf = forms.path('pdf')
 
 const prisonCaseload = prison.path('caseload')
 const probationCaseload = probation.path('caseload')
@@ -78,6 +80,9 @@ const paths = {
     assessment: {
       home: decisionMakerAssessmentHome,
     },
+  },
+  forms: {
+    pdf,
   },
 }
 

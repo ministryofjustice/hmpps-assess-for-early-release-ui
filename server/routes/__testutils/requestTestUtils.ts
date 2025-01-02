@@ -73,6 +73,7 @@ const mockResponse = ({ locals = { context: {}, user: {} } }: ResponseParams): j
     set: jest.fn(),
     redirect: jest.fn(),
     render: jest.fn(),
+    renderPDF: jest.fn(),
     cookie: jest.fn(),
     clearCookie: jest.fn(),
   }) as unknown as jest.Mocked<Response>

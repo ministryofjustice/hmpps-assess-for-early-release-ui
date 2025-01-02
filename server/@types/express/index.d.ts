@@ -27,6 +27,10 @@ export declare global {
       flash(type: string, message: unknown): unknown
     }
 
+    interface Response {
+      renderPDF(options: Record<string, unknown>, pageData: Record<Buffer, unknown>): void
+    }
+
     interface Locals {
       user: HmppsUser
     }
