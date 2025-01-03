@@ -20,5 +20,8 @@ generic-service:
     # Needs to be updated
     PHASE_BANNER_LINK: 'https://assess-for-early-release-dev.hmpps.service.justice.gov.uk'
 
+  scheduledDowntime:
+    enabled: true
+
 generic-prometheus-alerts:
   alertSeverity: 
