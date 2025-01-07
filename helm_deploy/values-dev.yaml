@@ -24,4 +24,5 @@ generic-service:
     enabled: true
 
 generic-prometheus-alerts:
-  alertSeverity: 
+  alertSeverity: cvl-alerts-non-prod
+  businessHoursOnly: true
