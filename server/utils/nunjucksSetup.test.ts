@@ -1,5 +1,6 @@
 import nunjucks from 'nunjucks'
 import { registerNunjucks } from './nunjucksSetup'
+import paths from '../routes/paths'
 
 describe('nunjucksSetup', () => {
   const renderTemplate = (template: string, model: Record<string, unknown>) => {
@@ -14,7 +15,7 @@ describe('nunjucksSetup', () => {
         '{{- paths.prison.assessment.initialChecks.tasklist | toPath({prisonNumber: "A1224"}) -}} ',
         {},
       )
-      expect(result).toStrictEqual('/prison/assessment/A1224/initial-checks')
+      expect(result).toStrictEqual(paths.prison.assessment.initialChecks.tasklist({ prisonNumber: 'A1224' }))
     })
 
     test('with incorrect args:', () => {
