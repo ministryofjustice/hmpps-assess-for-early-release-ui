@@ -70,7 +70,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     await page.getByTestId('useThisAddress').click()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}/omu/assessment/A1234AE/enter-curfew-address-or-cas-area/add-details-of-residents/1`,
+      `${playwrightConfig.use.baseURL}/${paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId: '1' })}`,
     )
 
     const forename = 'Bob'
