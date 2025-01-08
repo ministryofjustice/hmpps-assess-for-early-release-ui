@@ -56,7 +56,7 @@ describe('POST', () => {
     await requestMoreAddressChecksRoutes.POST(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.checkYourAnswers({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({
         prisonNumber: req.params.prisonNumber,
       }),
     )
@@ -67,7 +67,7 @@ describe('POST', () => {
     await requestMoreAddressChecksRoutes.POST(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.findAddress({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
         prisonNumber: req.params.prisonNumber,
       }),
     )
@@ -90,7 +90,9 @@ describe('DELETE', () => {
   it('should redirect to request more address checks page', async () => {
     await requestMoreAddressChecksRoutes.DELETE(req, res)
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.requestMoreAddressChecks({ prisonNumber: req.params.prisonNumber }),
+      paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks({
+        prisonNumber: req.params.prisonNumber,
+      }),
     )
   })
 })

@@ -25,12 +25,12 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
-  app.locals.applicationName = 'Hmpps Assess For Early Release Ui'
+  app.locals.applicationName = 'Assess for early release – DPS'
   app.locals.dpsUrl = config.dpsUrl
   app.locals.environmentName = config.environmentName
   app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
 
-  // Cachebusting version string
+  // Cache busting version string
   if (production) {
     // Version only changes with each commit
     app.locals.version = applicationInfo.gitShortHash

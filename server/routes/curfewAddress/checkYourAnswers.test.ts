@@ -80,7 +80,7 @@ describe('check your answers summary', () => {
     it('should redirect to check your answers page if the address count is greater than one', async () => {
       await checkYourAnswersRoutes.DELETE(req, res)
       expect(res.redirect).toHaveBeenCalledWith(
-        paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber: req.params.prisonNumber }),
+        paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber: req.params.prisonNumber }),
       )
     })
 

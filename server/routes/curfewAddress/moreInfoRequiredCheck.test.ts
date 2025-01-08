@@ -55,7 +55,7 @@ describe('POST', () => {
     expect(addressService.updateCaseAdminAdditionalInformation).not.toHaveBeenCalled()
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks({
         prisonNumber: req.params.prisonNumber,
       }),
     )
@@ -76,7 +76,7 @@ describe('POST', () => {
     )
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks({
         prisonNumber: req.params.prisonNumber,
       }),
     )

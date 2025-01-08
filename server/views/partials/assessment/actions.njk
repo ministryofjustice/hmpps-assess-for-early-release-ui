@@ -3,7 +3,7 @@
 {%  macro actions(optOutLink) %}
     {% set actions = [
         {
-            key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optInOutAction' href=" + optOutLink + ">Opt in/out</a>" },
+            key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optInOutAction' href=" + optOutLink + ">Opt out</a>" },
             value: { html: '' }
         }
     ]
@@ -13,7 +13,7 @@
         attributes: { id: 'actions' },
         card: {
             title: {
-            text: "Actions"
+            text: "Shortcuts"
             }
         },
         rows: actions

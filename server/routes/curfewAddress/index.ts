@@ -23,33 +23,45 @@ export default function Index({ addressService, caseAdminCaseloadService }: Serv
     router.post(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const findAddressHandler = new FindAddressRoutes(addressService, caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.findAddress, findAddressHandler.GET)
-  post(paths.prison.assessment.curfewAddress.findAddress, findAddressHandler.POST)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress, findAddressHandler.GET)
+  post(paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress, findAddressHandler.POST)
 
   const selectAddressHandler = new SelectAddressRoutes(addressService, caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.selectAddress, selectAddressHandler.GET)
-  post(paths.prison.assessment.curfewAddress.selectAddress, selectAddressHandler.POST)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress, selectAddressHandler.GET)
+  post(paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress, selectAddressHandler.POST)
 
   const noAddressFoundHandler = new NoAddressFoundRoutes(caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.noAddressFound, noAddressFoundHandler.GET)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.noAddressFound, noAddressFoundHandler.GET)
 
   const addResidentDetailsHandler = new AddResidentDetailsRoutes(addressService, caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.GET)
-  post(paths.prison.assessment.curfewAddress.addResidentDetails, addResidentDetailsHandler.POST)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails, addResidentDetailsHandler.GET)
+  post(paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails, addResidentDetailsHandler.POST)
 
   const moreInfoRequiredCheckHandler = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressService)
-  get(paths.prison.assessment.curfewAddress.moreInformationRequiredCheck, moreInfoRequiredCheckHandler.GET)
-  post(paths.prison.assessment.curfewAddress.moreInformationRequiredCheck, moreInfoRequiredCheckHandler.POST)
+  get(
+    paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck,
+    moreInfoRequiredCheckHandler.GET,
+  )
+  post(
+    paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck,
+    moreInfoRequiredCheckHandler.POST,
+  )
 
   const requestMoreAddressChecksRoutes = new RequestMoreAddressChecksRoutes(addressService, caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.requestMoreAddressChecks, requestMoreAddressChecksRoutes.GET)
-  post(paths.prison.assessment.curfewAddress.requestMoreAddressChecks, requestMoreAddressChecksRoutes.POST)
-  get(paths.prison.assessment.curfewAddress.deleteAddressCheckRequest, requestMoreAddressChecksRoutes.DELETE)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks, requestMoreAddressChecksRoutes.GET)
+  post(
+    paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks,
+    requestMoreAddressChecksRoutes.POST,
+  )
+  get(
+    paths.prison.assessment.enterCurfewAddressOrCasArea.deleteAddressCheckRequest,
+    requestMoreAddressChecksRoutes.DELETE,
+  )
 
   const checkYourAnswersRoutes = new CheckYourAnswersRoutes(addressService, caseAdminCaseloadService)
-  get(paths.prison.assessment.curfewAddress.checkYourAnswers, checkYourAnswersRoutes.GET)
-  post(paths.prison.assessment.curfewAddress.checkYourAnswers, checkYourAnswersRoutes.POST)
-  get(paths.prison.assessment.curfewAddress.deleteCheckYourAnswers, checkYourAnswersRoutes.DELETE)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers, checkYourAnswersRoutes.GET)
+  post(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers, checkYourAnswersRoutes.POST)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.deleteCheckYourAnswers, checkYourAnswersRoutes.DELETE)
 
   return router
 }

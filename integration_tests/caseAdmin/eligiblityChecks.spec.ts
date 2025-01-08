@@ -12,7 +12,7 @@ import {
   suitabilityCriterion1,
 } from '../mockApis/assessForEarlyReleaseData'
 
-test.describe('Eligiblity checks', () => {
+test.describe('Eligibility checks', () => {
   test.beforeEach(async () => {
     await resetStubs()
   })
@@ -104,11 +104,11 @@ test.describe('Eligiblity checks', () => {
 
     await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
 
-    expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
-    expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
-    expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
-    expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
-    expect(page.getByTestId('failureType')).toContainText('Ineligible')
-    expect(page.getByTestId('failureReasons')).toContainText('question-1')
+    await expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
+    await expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
+    await expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
+    await expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
+    await expect(page.getByTestId('failureType')).toContainText('Ineligible')
+    await expect(page.getByTestId('failureReasons')).toContainText('question-1')
   })
 })

@@ -1,7 +1,7 @@
 import { dataAccess, hmppsComponentsClientBuilder } from '../data'
 import AuditService from './auditService'
 import CaseAdminCaseloadService from './caseAdminCaseloadService'
-import EligibilityAndSuitabilityService from './eligiblityAndSuitabilityService'
+import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
 import HmppsComponentsService from './hmppsComponentsService'
 import OptOutService from './optOutService'
 import AddressService from './addressService'

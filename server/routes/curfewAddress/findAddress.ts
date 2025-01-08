@@ -41,12 +41,12 @@ export default class FindAddressRoutes {
     const addresses = await this.addressService.findAddressesForPostcode(req?.middleware?.clientToken, postcode)
     if (addresses.length === 0) {
       return res.redirect(
-        `${paths.prison.assessment.curfewAddress.noAddressFound({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.noAddressFound({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
       )
     }
 
     return res.redirect(
-      `${paths.prison.assessment.curfewAddress.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
+      `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
     )
   }
 }

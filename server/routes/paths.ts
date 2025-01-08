@@ -1,40 +1,41 @@
 import { path } from 'static-path'
 
 const supportHome = path('/support')
-const prison = path('/prison')
-const probation = path('/probation')
-const decisionMaker = path('/decisionMaker')
+
 const showPaths = supportHome.path('/paths')
 const forms = path('/forms')
 const pdf = forms.path('pdf')
 
-const prisonCaseload = prison.path('caseload')
-const probationCaseload = probation.path('caseload')
-const decisionMakerCaseload = decisionMaker.path('caseload')
-const prisonAssessmentHome = prison.path('assessment/:prisonNumber')
-const probationAssessmentHome = probation.path('assessment/:prisonNumber')
-const decisionMakerAssessmentHome = decisionMaker.path('assessment/:prisonNumber')
-
-const tasklist = prisonAssessmentHome.path('initial-checks')
+const prison = path('/omu')
+const prisonCaseload = prison.path('case-list')
+const prisonAssessmentHome = prison.path('application-overview/:prisonNumber')
+const currentAssessment = prison.path('assessment/:prisonNumber')
+const tasklist = currentAssessment.path('assess-eligibility-and-suitability')
 const check = tasklist.path(':type/:checkCode')
+const enterCurfewAddressOrCasArea = currentAssessment.path('enter-curfew-address-or-cas-area')
+const optOutCheck = enterCurfewAddressOrCasArea.path('opt-in-opt-out')
+const optOut = enterCurfewAddressOrCasArea.path('opt-out-reason')
+const findAddress = enterCurfewAddressOrCasArea.path('find-address')
+const selectAddress = enterCurfewAddressOrCasArea.path('select-an-address')
+const noAddressFound = enterCurfewAddressOrCasArea.path('no-address-found')
+const addResidentDetails = enterCurfewAddressOrCasArea.path('add-details-of-residents/:checkRequestId')
+const moreInformationRequiredCheck = enterCurfewAddressOrCasArea.path(':checkRequestId/additional-information')
+const requestMoreAddressChecks = enterCurfewAddressOrCasArea.path('/add-another')
+const deleteAddressCheckRequest = enterCurfewAddressOrCasArea.path(':checkRequestId/add-another/delete')
+const checkYourAnswers = enterCurfewAddressOrCasArea.path('check-address-details')
+const deleteCheckYourAnswers = enterCurfewAddressOrCasArea.path(':checkRequestId/check-address-details/delete')
 
+const probation = path('/probation')
+const probationCaseload = probation.path('caseload')
+const probationAssessmentHome = probation.path('assessment/:prisonNumber')
 const addressCheckTasklist = probationAssessmentHome.path('address-checks/:checkRequestId')
 const addressCheckTask = addressCheckTasklist.path(':taskCode')
-const optOutCheck = prisonAssessmentHome.path('opt-out-check')
-const optOut = prisonAssessmentHome.path('opt-out')
-
-const prisonCurfewAddress = prisonAssessmentHome.path('curfew-address')
 const probationCurfewAddress = probationAssessmentHome.path('curfew-address')
-const findAddress = prisonCurfewAddress.path('find-address')
-const selectAddress = prisonCurfewAddress.path('select-address')
-const noAddressFound = prisonCurfewAddress.path('no-address-found')
-const addResidentDetails = prisonCurfewAddress.path('resident-details/:checkRequestId')
-const moreInformationRequiredCheck = prisonCurfewAddress.path(':checkRequestId/more-information-required-check')
-const requestMoreAddressChecks = prisonCurfewAddress.path('/request-more-address-checks')
-const deleteAddressCheckRequest = prisonCurfewAddress.path(':checkRequestId/request-more-address-checks/delete')
-const checkYourAnswers = prisonCurfewAddress.path('/check-your-answers')
 const checkCurfewAddresses = probationCurfewAddress.path('/check-addresses')
-const deleteCheckYourAnswers = prisonCurfewAddress.path(':checkRequestId/check-your-answers/delete')
+
+const decisionMaker = path('/decisionMaker')
+const decisionMakerCaseload = decisionMaker.path('caseload')
+const decisionMakerAssessmentHome = decisionMaker.path('assessment/:prisonNumber')
 
 const paths = {
   support: {
@@ -49,9 +50,9 @@ const paths = {
         tasklist,
         check,
       },
-      optOutCheck,
-      optOut,
-      curfewAddress: {
+      enterCurfewAddressOrCasArea: {
+        optOutCheck,
+        optOut,
         findAddress,
         selectAddress,
         noAddressFound,

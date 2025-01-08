@@ -8,7 +8,7 @@
 {% block content %}
     <div class="grid-row">
         <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l">Assess For Early Release</h1>
+            <h1 class="govuk-heading-l">Assess for early release</h1>
             <div class="govuk-grid-row card-group">
 
                 {% if shouldShowSupportCard %}
@@ -27,9 +27,9 @@
                     <div class="govuk-grid-column-one-third card-group__item">
                         {{ card({
                             "id": "caAssessForHDCCard",
-                            "href": '/prison/caseload',
+                            "href": paths.prison.prisonCaseload | toPath(),
                             "clickable": "true",
-                            "heading": "Home detention curfew (HDC - CA)",
+                            "heading": " Home detention curfew (HDC)",
                             "description": "View assessment and assess offender."
                         }) }}
                     </div>

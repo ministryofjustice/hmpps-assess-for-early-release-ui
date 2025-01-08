@@ -39,4 +39,4 @@ const formatDate = (date: Date, pattern: string, defaultValue: string = null) =>
   return date ? format(date, pattern) : defaultValue
 }
 
-export { convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate }
+export { properCase, convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate }

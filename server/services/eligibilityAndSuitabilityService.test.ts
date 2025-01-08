@@ -7,7 +7,7 @@ import {
   createSuitabilityCriterionView,
   createQuestion,
 } from '../data/__testutils/testObjects'
-import EligibilityAndSuitabilityService from './eligiblityAndSuitabilityService'
+import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
@@ -54,7 +54,7 @@ describe('EligibilityAndSuitabilityService', () => {
         const result = await eligibilityAndSuitabilityService.getCriterion(
           token,
           criterionView.assessmentSummary.prisonNumber,
-          'eligibility',
+          'eligibility-check',
           criterionView.criterion.code,
         )
 
@@ -75,7 +75,7 @@ describe('EligibilityAndSuitabilityService', () => {
         const result = await eligibilityAndSuitabilityService.getCriterion(
           token,
           criterionView.assessmentSummary.prisonNumber,
-          'suitability',
+          'suitability-check',
           criterionView.criterion.code,
         )
 

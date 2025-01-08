@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../services'
 import { convertToTitleCase } from '../../utils/utils'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
+import paths from '../paths'
 
 export default class OptOutCheckRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -26,9 +27,15 @@ export default class OptOutCheckRoutes {
     })
 
     if (req.body.considerForHdc === 'yes') {
-      return res.redirect(`/prison/assessment/${req.params.prisonNumber}/curfew-address/find-address`)
+      return res.redirect(
+        paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({ prisonNumber: req.params.prisonNumber }),
+      )
     }
 
-    return res.redirect(`/prison/assessment/${req.params.prisonNumber}/opt-out`)
+    return res.redirect(
+      paths.prison.assessment.enterCurfewAddressOrCasArea.optOut({
+        prisonNumber: req.params.prisonNumber,
+      }),
+    )
   }
 }

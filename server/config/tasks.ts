@@ -1,5 +1,6 @@
 import { AssessmentSummary, UserRole } from '../@types/assessForEarlyReleaseApiClientTypes'
 import paths from '../routes/paths'
+import { properCase } from '../utils/utils'
 
 export type Task = {
   code: string
@@ -21,14 +22,14 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       code: 'ENTER_CURFEW_ADDRESS',
       title: 'Enter curfew addresses or CAS areas',
       lockedDescription: assessment =>
-        `You can start this task if ${assessment.forename} is eligible and suitable for HDC.`,
-      path: paths.prison.assessment.optOutCheck,
+        `You can start this task if ${properCase(assessment.forename)} is eligible and suitable for HDC.`,
+      path: paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck,
     },
     {
       code: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION',
       title: 'Review application and send for decision',
       lockedDescription: assessment =>
-        `You can complete this task if a probation practitioner finds a suitable address and agrees ${assessment.forename} can be released on HDC.`,
+        `You can complete this task if a probation practitioner finds a suitable address and agrees ${properCase(assessment.forename)} can be released on HDC.`,
     },
     {
       code: 'PREPARE_FOR_RELEASE',
@@ -52,7 +53,7 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       code: 'MAKE_A_RISK_MANAGEMENT_DECISION',
       title: 'Make a risk management decision',
       lockedDescription: assessment =>
-        `You can start this task if ${assessment.forename} is eligible and suitable for HDC.`,
+        `You can start this task if ${properCase(assessment.forename)} is eligible and suitable for HDC.`,
       path: undefined,
     },
     {

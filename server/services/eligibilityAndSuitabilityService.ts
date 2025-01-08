@@ -21,16 +21,16 @@ export default class EligibilityAndSuitabilityService {
   public async getCriterion(
     token: string,
     prisonNumber: string,
-    type: 'eligibility' | 'suitability',
+    type: 'eligibility-check' | 'suitability-check',
     checkCode: string,
   ): Promise<CriterionView> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
 
-    if (type === 'eligibility') {
+    if (type === 'eligibility-check') {
       return assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, checkCode)
     }
 
-    if (type === 'suitability') {
+    if (type === 'suitability-check') {
       return assessForEarlyReleaseApiClient.getSuitabilityCriterionView(prisonNumber, checkCode)
     }
     throw new Error(`Unknown type: ${type}`)

@@ -4,7 +4,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess Offender" %}
+{% set pageTitle = criterion.questions[0].text + " - " + applicationName %}
 {% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
 
 {% block content %}

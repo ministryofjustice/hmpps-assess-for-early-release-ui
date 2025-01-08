@@ -5,13 +5,13 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 
-{% set pageTitle = applicationName + " - More address checks" %}
+{% set pageTitle = "Do you need to add another? – " + applicationName %}
 {% set backLinkHref = "/" %}
 {% set addressCount = addressSummary.length %}
 {% set items = [] %}
 {# Change link to update address
 {
-    href: paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+    href: paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails | toPath({
         checkRequestId:data.requestId,
         prisonNumber: assessmentSummary.prisonNumber
     }),
@@ -37,7 +37,7 @@
                     actions: {
                         items: [
                             {
-                                href: paths.prison.assessment.curfewAddress.deleteAddressCheckRequest | toPath({ 
+                                href: paths.prison.assessment.enterCurfewAddressOrCasArea.deleteAddressCheckRequest | toPath({
                                     checkRequestId:data.requestId | string,
                                     prisonNumber:assessmentSummary.prisonNumber
                                 }),
@@ -60,7 +60,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-l govuk-!-margin-top-6">
-                        You have added {% if addressCount == 1 %}one{% else %}{{ addressCount }}{% endif %} address{% if uploadCount > 1 %}es{% endif %}
+                        You have added {% if addressCount === 1 %}one{% else %}{{ addressCount }}{% endif %} address{% if addressCount > 1 %}es{% endif %}
                     </h1>
                     {{ govukSummaryList({
                         rows: items
@@ -102,7 +102,7 @@
                                      {{ govukButton({
                                         text: "Check your answers",
                                         attributes: { 'data-qa': 'checkYourAnswers' },
-                                        href: paths.prison.assessment.curfewAddress.checkYourAnswers | toPath({ prisonNumber: assessmentSummary.prisonNumber })
+                                        href: paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers | toPath({ prisonNumber: assessmentSummary.prisonNumber })
                                     }) if addressCount > 1 }}
                                 </div>
                             </div>

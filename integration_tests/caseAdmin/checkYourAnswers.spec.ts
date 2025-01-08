@@ -18,10 +18,10 @@ test.describe('Can change, remove & save assessments', () => {
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
-    await page.goto(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
+    await page.goto(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber }))
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber })}`,
+      `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber })}`,
     )
 
     await expect(page.getByText('Check your answers')).toBeVisible()
@@ -43,7 +43,7 @@ test.describe('Can change, remove & save assessments', () => {
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
-    await page.goto(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
+    await page.goto(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber }))
 
     await expect(page.getByRole('heading', { name: 'Preferred address' })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Second address' })).not.toBeVisible()
@@ -52,12 +52,12 @@ test.describe('Can change, remove & save assessments', () => {
 
     const removeLink = await page.getByRole('link', { name: 'Remove preferred address' }).getAttribute('href')
     expect(removeLink).toContain(
-      paths.prison.assessment.curfewAddress.deleteCheckYourAnswers({ prisonNumber, checkRequestId: '1' }),
+      paths.prison.assessment.enterCurfewAddressOrCasArea.deleteCheckYourAnswers({ prisonNumber, checkRequestId: '1' }),
     )
 
-    const chnageLink = await page.getByRole('link', { name: 'Change  change preferred' }).getAttribute('href')
-    expect(chnageLink).toContain(
-      paths.prison.assessment.curfewAddress.addResidentDetails({ prisonNumber, checkRequestId: '1' }),
+    const changeLink = await page.getByRole('link', { name: 'Change  change preferred' }).getAttribute('href')
+    expect(changeLink).toContain(
+      paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId: '1' }),
     )
 
     await expect(page.getByTestId('save')).toBeVisible()

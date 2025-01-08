@@ -32,7 +32,7 @@ export default class SelectAddressRoutes {
           },
         )
         return res.redirect(
-          paths.prison.assessment.curfewAddress.addResidentDetails({
+          paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({
             prisonNumber: req.params.prisonNumber,
             checkRequestId: checkRequestSummary.requestId.toString(),
           }),
@@ -44,13 +44,15 @@ export default class SelectAddressRoutes {
           name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
         },
         foundAddresses: this.toAddressView(addresses),
-        findAddressUrl: paths.prison.assessment.curfewAddress.findAddress({ prisonNumber: req.params.prisonNumber }),
+        findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
+          prisonNumber: req.params.prisonNumber,
+        }),
         formattedPostcode: this.formatPostcode(postcode),
       })
     }
 
     return res.redirect(
-      `${paths.prison.assessment.curfewAddress.findAddress({ prisonNumber: req.params.prisonNumber })}`,
+      `${paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({ prisonNumber: req.params.prisonNumber })}`,
     )
   }
 
@@ -75,7 +77,7 @@ export default class SelectAddressRoutes {
     )
 
     return res.redirect(
-      paths.prison.assessment.curfewAddress.addResidentDetails({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({
         prisonNumber: req.params.prisonNumber,
         checkRequestId: checkRequestSummary.requestId.toString(),
       }),
