@@ -1,5 +1,5 @@
 {%  macro removeAddressCheckRequestLink(prisonNumber, requestId) %}
-    {{ paths.prison.assessment.curfewAddress.deleteCheckYourAnswers | toPath({
+    {{ paths.prison.assessment.enterCurfewAddressOrCasArea.deleteCheckYourAnswers | toPath({
         checkRequestId: requestId | string,
         prisonNumber: prisonNumber
     }) }}

@@ -5,7 +5,7 @@
         <p data-qa="bannerHeading" class="govuk-notification-banner__heading">
         {{ assessmentSummary | toFullName }} is eligible for HDC
         </p>
-        <p>    
+        <p>
             Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
         </p>
     {% endset %}
@@ -17,12 +17,12 @@
         <p data-qa="bannerHeading" class="govuk-notification-banner__heading">
         {{ assessmentSummary | toFullName }} is ineligible for HDC
         </p>
-        <p>    
+        <p>
             Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
         </p>
         <p>
             Result: <span data-qa="failureType">{{ criteria.failureType | title }}</span></br>
-            Reason: <span data-qa="failureReasons">{{ criteria.failedCheckReasons }}</span>     
+            Reason: <span data-qa="failureReasons">{{ criteria.failedCheckReasons }}</span>
         </p>
     {% endset %}
     {{ govukNotificationBanner({ html: html }) }}

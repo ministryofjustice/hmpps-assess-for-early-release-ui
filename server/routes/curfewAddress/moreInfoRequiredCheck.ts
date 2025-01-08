@@ -59,7 +59,7 @@ export default class MoreInfoRequiredCheckRoutes {
     }
 
     return res.redirect(
-      paths.prison.assessment.curfewAddress.requestMoreAddressChecks({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks({
         prisonNumber,
       }),
     )

@@ -75,7 +75,9 @@ describe('select address routes', () => {
             addressLastUpdated: new Date('2020-06-25'),
           },
         ],
-        findAddressUrl: paths.prison.assessment.curfewAddress.findAddress({ prisonNumber: req.params.prisonNumber }),
+        findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
+          prisonNumber: req.params.prisonNumber,
+        }),
         formattedPostcode: 'SO12 8UF',
       })
     })
@@ -101,7 +103,7 @@ describe('select address routes', () => {
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
-        paths.prison.assessment.curfewAddress.addResidentDetails({
+        paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({
           prisonNumber: req.params.prisonNumber,
           checkRequestId: '1',
         }),
@@ -130,7 +132,7 @@ describe('select address routes', () => {
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
-        paths.prison.assessment.curfewAddress.addResidentDetails({
+        paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({
           prisonNumber: req.params.prisonNumber,
           checkRequestId: '1',
         }),

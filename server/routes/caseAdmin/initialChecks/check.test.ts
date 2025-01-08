@@ -7,6 +7,7 @@ import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockEligibilityAndSuitabilityService } from '../../../services/__testutils/mock'
 import CheckRoutes from './check'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 
 const eligibilityAndSuitabilityService = createMockEligibilityAndSuitabilityService()
 const req = mockRequest({})
@@ -73,7 +74,7 @@ describe('POST', () => {
     })
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
-    req.params.type = 'eligibility'
+    req.params.type = 'eligibility-check'
     req.params.checkCode = eligibilityCheck1.code
     req.body = validPayload
 
@@ -86,7 +87,13 @@ describe('POST', () => {
       req.params.checkCode,
     )
 
-    expect(res.redirect).toHaveBeenCalledWith('/prison/assessment/A1234AB/initial-checks/eligibility/code-2')
+    expect(res.redirect).toHaveBeenCalledWith(
+      paths.prison.assessment.initialChecks.check({
+        prisonNumber: req.params.prisonNumber,
+        type: 'eligibility-check',
+        checkCode: 'code-2',
+      }),
+    )
   })
 
   it('should throw validation error when no answer provided', async () => {
@@ -125,6 +132,8 @@ describe('POST', () => {
       req.params.checkCode,
     )
 
-    expect(res.redirect).toHaveBeenCalledWith('/prison/assessment/A1234AB/initial-checks')
+    expect(res.redirect).toHaveBeenCalledWith(
+      paths.prison.assessment.initialChecks.tasklist({ prisonNumber: req.params.prisonNumber }),
+    )
   })
 })

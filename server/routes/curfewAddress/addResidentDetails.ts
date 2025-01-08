@@ -75,7 +75,7 @@ export default class AddResidentDetailsRoutes {
     })
 
     return res.redirect(
-      paths.prison.assessment.curfewAddress.moreInformationRequiredCheck({
+      paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({
         prisonNumber: req.params.prisonNumber,
         checkRequestId,
       }),

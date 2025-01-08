@@ -62,7 +62,7 @@ test.describe('Can add a curfew address and a main resident', () => {
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
-    await page.goto(paths.prison.assessment.curfewAddress.findAddress({ prisonNumber }))
+    await page.goto(paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({ prisonNumber }))
     await page.getByTestId('addressInput').fill(postcode)
     await page.getByTestId('searchAddresses').click()
 
@@ -70,7 +70,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     await page.getByTestId('useThisAddress').click()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}/prison/assessment/A1234AE/curfew-address/resident-details/1`,
+      `${playwrightConfig.use.baseURL}/omu/assessment/A1234AE/enter-curfew-address-or-cas-area/add-details-of-residents/1`,
     )
 
     const forename = 'Bob'
@@ -84,7 +84,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     await page.getByTestId('addResidentContinue').click()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.prison.assessment.curfewAddress.moreInformationRequiredCheck({ prisonNumber, checkRequestId: '1' })}`,
+      `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber, checkRequestId: '1' })}`,
     )
   })
 })

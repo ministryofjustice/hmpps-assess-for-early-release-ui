@@ -3,6 +3,7 @@ import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import { parseIsoDate } from '../../utils/utils'
+import paths from '../paths'
 
 const offenderSummaryList = [createCase({})]
 
@@ -29,7 +30,7 @@ describe('GET', () => {
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
       caseload: [
         {
-          createLink: '/prison/assessment/A1234AB',
+          createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
           hdced: parseIsoDate('2022-01-08'),
           name: 'Jim Smith',
           prisonNumber: 'A1234AB',

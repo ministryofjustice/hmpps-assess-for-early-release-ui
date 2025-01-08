@@ -37,7 +37,7 @@
     </div>
 
     <h2 class="govuk-heading-m">Check details of residents</h2>
-    <form method="POST" action="{{ paths.prison.assessment.curfewAddress.addResidentDetails | toPath({
+    <form method="POST" action="{{ paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails | toPath({
         checkRequestId: addressCheckRequest.requestId | string,
         prisonNumber: prisonNumber
     }) }}">

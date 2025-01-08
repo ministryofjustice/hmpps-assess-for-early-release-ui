@@ -46,7 +46,7 @@ export default class CheckYourAnswersRoutes {
     )
 
     if (checkRequestsForAssessmentSummary.length > 0) {
-      return res.redirect(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
+      return res.redirect(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber }))
     }
 
     return res.redirect(paths.prison.assessment.home({ prisonNumber }))

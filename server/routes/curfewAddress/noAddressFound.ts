@@ -18,7 +18,9 @@ export default class NoAddressFoundRoutes {
         name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
       },
       postcode: req.params.postcode,
-      findAddressUrl: paths.prison.assessment.curfewAddress.findAddress({ prisonNumber: req.params.prisonNumber }),
+      findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
+        prisonNumber: req.params.prisonNumber,
+      }),
     })
   }
 }

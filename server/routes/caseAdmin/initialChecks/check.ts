@@ -12,7 +12,7 @@ export default class CheckRoutes {
     const { criterion, assessmentSummary } = await this.eligibilityAndSuitabilityService.getCriterion(
       req?.middleware?.clientToken,
       prisonNumber,
-      type as 'eligibility' | 'suitability',
+      type as 'eligibility-check' | 'suitability-check',
       checkCode,
     )
 
@@ -25,7 +25,7 @@ export default class CheckRoutes {
     const { criterion, nextCriterion } = await this.eligibilityAndSuitabilityService.getCriterion(
       req?.middleware?.clientToken,
       prisonNumber,
-      type as 'eligibility' | 'suitability',
+      type as 'eligibility-check' | 'suitability-check',
       checkCode,
     )
 
@@ -39,7 +39,7 @@ export default class CheckRoutes {
 
     await this.eligibilityAndSuitabilityService.saveCriterionAnswers(req?.middleware?.clientToken, {
       prisonNumber,
-      type: type as 'eligibility' | 'suitability',
+      type: type.replace('-check', '') as 'eligibility' | 'suitability',
       criterion,
       form: req.body,
     })

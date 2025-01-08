@@ -35,10 +35,10 @@ export default class RequestMoreAddressChecksRoutes {
     })
 
     if (req.body.moreAddressChecks === 'no') {
-      return res.redirect(paths.prison.assessment.curfewAddress.checkYourAnswers({ prisonNumber }))
+      return res.redirect(paths.prison.assessment.enterCurfewAddressOrCasArea.checkYourAnswers({ prisonNumber }))
     }
 
-    return res.redirect(paths.prison.assessment.curfewAddress.findAddress({ prisonNumber }))
+    return res.redirect(paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({ prisonNumber }))
   }
 
   DELETE = async (req: Request, res: Response): Promise<void> => {
@@ -49,6 +49,6 @@ export default class RequestMoreAddressChecksRoutes {
       Number(checkRequestId),
     )
 
-    return res.redirect(paths.prison.assessment.curfewAddress.requestMoreAddressChecks({ prisonNumber }))
+    return res.redirect(paths.prison.assessment.enterCurfewAddressOrCasArea.requestMoreAddressChecks({ prisonNumber }))
   }
 }

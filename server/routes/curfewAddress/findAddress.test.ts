@@ -61,7 +61,7 @@ describe('find address routes', () => {
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
-        `${paths.prison.assessment.curfewAddress.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${req.body.searchQuery}`,
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${req.body.searchQuery}`,
       )
     })
   })

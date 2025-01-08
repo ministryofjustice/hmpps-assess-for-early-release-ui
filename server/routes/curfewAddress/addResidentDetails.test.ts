@@ -81,7 +81,7 @@ describe('add resident details routes', () => {
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
-        `${paths.prison.assessment.curfewAddress.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
       )
     })
   })
