@@ -61,4 +61,7 @@ export type ResidentialCheckTaskStatus = components['schemas']['ResidentialCheck
 export type _ResidentialChecksTaskView = components['schemas']['ResidentialChecksTaskView']
 export type ResidentialChecksTaskView = ParsingDates<_ResidentialChecksTaskView, 'dateOfBirth' | 'hdced' | 'crd'>
 export type ResidentialChecksTask = components['schemas']['Task']
+export type SaveResidentialChecksTaskAnswersRequest = components['schemas']['SaveResidentialChecksTaskAnswersRequest']
+export type ResidentialChecksTaskAnswersSummary = components['schemas']['ResidentialChecksTaskAnswersSummary']
+
 export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCaseAdminAdditionInfoRequest']

@@ -5,6 +5,7 @@ import {
   _AssessmentSummary,
   _OffenderSummary,
   _ResidentialChecksTaskView,
+  SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
   createAssessmentSummary,
@@ -248,6 +249,33 @@ describe('assessForEarlyReleaseApiClient', () => {
       )
       expect(fakeAferApi.isDone()).toBe(true)
       expect(response).toEqual(taskView)
+    })
+
+    it('should save residential checks task answers', async () => {
+      const taskView = createResidentialChecksTaskView()
+      const { prisonNumber } = taskView.assessmentSummary
+      const addressCheckRequestId = 1
+      const saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest = {
+        taskCode: 'assess-this-persons-risk',
+        answers: {
+          'question-1': 'an answer',
+          'question-2': 'Yes',
+        },
+      }
+
+      fakeAferApi
+        .post(
+          `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/answers`,
+        )
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(201)
+
+      await assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+        prisonNumber,
+        addressCheckRequestId,
+        saveAnswersRequest,
+      )
+      expect(fakeAferApi.isDone()).toBe(true)
     })
   })
 

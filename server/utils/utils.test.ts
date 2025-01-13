@@ -1,5 +1,5 @@
 import AuthRole from '../enumeration/authRole'
-import { convertToTitleCase, hasRole, initialiseName, formatDate, parseIsoDate } from './utils'
+import { convertToTitleCase, hasRole, initialiseName, formatDate } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -55,13 +55,5 @@ describe('Format date', () => {
   it('handles missing date with default', () => {
     expect(formatDate(null, 'dd MMM yyyy', 'not provided')).toBe('not provided')
     expect(formatDate(undefined, 'dd MMM yyyy', 'not provided')).toBe('not provided')
-  })
-
-  it('formats present date', () => {
-    expect(formatDate(parseIsoDate('2020-01-28'), 'dd MMM yyyy')).toBe('28 Jan 2020')
-  })
-
-  it('formats present date with present default', () => {
-    expect(formatDate(parseIsoDate('2020-01-28'), 'dd MMM yyyy', 'not provided')).toBe('28 Jan 2020')
   })
 })

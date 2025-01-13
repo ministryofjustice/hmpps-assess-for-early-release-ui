@@ -244,6 +244,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks/answers': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Saves answers for a residential checks task.
+     * @description Save the answers for a residential checks task.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    post: operations['saveResidentialChecksTaskAnswers']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/staff': {
     parameters: {
       query?: never
@@ -310,6 +333,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prison/{prisonCode}/decision-maker/caseload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the caseload for a decision maker within a prison
+     * @description Returns a list of offenders that requires approval
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getDecisionMakerCaseload']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prison/{prisonCode}/case-admin/caseload': {
     parameters: {
       query?: never
@@ -325,6 +371,29 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     get: operations['getCaseAdminCaseload']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/pdf': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns pdf
+     * @description Returns pdf
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getPdf']
     put?: never
     post?: never
     delete?: never
@@ -587,7 +656,6 @@ export interface paths {
     trace?: never
   }
 }
-export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -795,6 +863,12 @@ export interface components {
        * @example See ResidentSummary
        */
       residents: components['schemas']['ResidentSummary'][]
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -870,6 +944,36 @@ export interface components {
        */
       requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
+    }
+    /** @description The request type to save a set of answers for a residential checks task. */
+    SaveResidentialChecksTaskAnswersRequest: {
+      /** @description The task code for these answers relate to */
+      taskCode: string
+      answers: components['schemas']['MapStringAny']
+    }
+    /** @description The answers to a residential checks task. */
+    ResidentialChecksTaskAnswersSummary: {
+      /**
+       * Format: int64
+       * @description A unique identifier for this set of task answers
+       */
+      answersId: number
+      /**
+       * Format: int64
+       * @description A unique identifier the address check request associated with these answers
+       */
+      addressCheckRequestId: number
+      /** @description The task code for these answers relate to */
+      taskCode: string
+      answers: components['schemas']['MapStringAny']
+      /** @description The version of the task these answers relate to */
+      taskVersion: string
     }
     Detail: {
       code: string
@@ -1027,6 +1131,9 @@ export interface components {
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
         | 'SEND_CHECKS_TO_PRISON'
         | 'CREATE_LICENCE'
+        | 'CONFIRM_RELEASE'
+        | 'APPROVE_LICENCE'
+        | 'OPT_IN'
       /**
        * @description The state of this task for a specific assessment
        * @example Smith
@@ -1235,20 +1342,23 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
       /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
-      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
+    MapStringAny: {
+      [key: string]: string
+    }
   }
   responses: never
   parameters: never
@@ -1256,7 +1366,6 @@ export interface components {
   headers: never
   pathItems: never
 }
-export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {
@@ -1693,6 +1802,60 @@ export interface operations {
       }
     }
   }
+  saveResidentialChecksTaskAnswers: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SaveResidentialChecksTaskAnswersRequest']
+      }
+    }
+    responses: {
+      /** @description The task answers have been saved. */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksTaskAnswersSummary']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified request id does not exist for the provided offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getStaffDetailsByUsername: {
     parameters: {
       query: {
@@ -1806,6 +1969,46 @@ export interface operations {
       }
     }
   }
+  getDecisionMakerCaseload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonCode: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns a list of offenders that requires approval */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummary'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getCaseAdminCaseload: {
     parameters: {
       query?: never
@@ -1837,6 +2040,65 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPdf: {
+    parameters: {
+      query: {
+        title: string
+        message: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns pdf */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/pdf': string
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Could not find */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unexpected error occurred while converting HTML to PDF */
+      500: {
         headers: {
           [name: string]: unknown
         }
