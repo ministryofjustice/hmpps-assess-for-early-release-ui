@@ -2,7 +2,10 @@ import type { Request, Response } from 'express'
 import { AddressService, ResidentialChecksService } from '../../../services'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
-import { SaveResidentialChecksTaskAnswersRequest } from '../../../@types/assessForEarlyReleaseApiClientTypes'
+import {
+  MapStringAny,
+  SaveResidentialChecksTaskAnswersRequest,
+} from '../../../@types/assessForEarlyReleaseApiClientTypes'
 import paths from '../../paths'
 import { ProblemDetail } from '../../../@types/ProblemDetail'
 import getFormDate from '../../../utils/dateUtils'
@@ -52,12 +55,18 @@ export default class ResidentialChecksTaskRoutes {
       taskCode,
     )
 
-    const answers: { [key: string]: string } = {}
+    const answers: MapStringAny = {}
     for (const section of task.taskConfig.sections) {
       for (const question of section.questions) {
         const { input } = question
         if (question.input.type === 'DATE') {
           answers[question.input.name] = getFormDate(input.name, req.body)
+        } else if (question.input.dataType === 'BOOLEAN') {
+          const answer = req.body[input.name]
+          if (answer) {
+            const formValue = (answer as string)?.toLowerCase()
+            answers[question.input.name] = formValue === 'yes' || formValue === 'true'
+          }
         } else {
           answers[input.name] = req.body[input.name]
         }

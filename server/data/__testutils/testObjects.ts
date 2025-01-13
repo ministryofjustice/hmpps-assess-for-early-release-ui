@@ -450,6 +450,7 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'pom-prison-behaviour-information',
               type: 'TEXT',
+              dataType: 'STRING',
               options: null,
             },
           },
@@ -460,11 +461,14 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'mental-health-treatment-needs',
               type: 'RADIO',
+              dataType: 'BOOLEAN',
               options: [
                 {
+                  text: 'Yes',
                   value: 'Yes',
                 },
                 {
+                  text: 'No',
                   value: 'No',
                 },
               ],
@@ -477,12 +481,15 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'vlo-officer-for-case',
               type: 'RADIO',
+              dataType: 'BOOLEAN',
               options: [
                 {
+                  text: 'Yes',
                   value: 'Yes',
                 },
                 {
-                  value: 'No',
+                  text: 'No',
+                  value: 'Yes',
                 },
               ],
             },
@@ -494,12 +501,15 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'information-that-cannot-be-disclosed',
               type: 'RADIO',
+              dataType: 'BOOLEAN',
               options: [
                 {
-                  value: 'Yes',
+                  text: 'Yes',
+                  value: 'true',
                 },
                 {
-                  value: 'No',
+                  text: 'No',
+                  value: 'false',
                 },
               ],
             },

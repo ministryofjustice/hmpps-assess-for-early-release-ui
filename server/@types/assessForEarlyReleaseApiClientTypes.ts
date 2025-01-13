@@ -65,3 +65,4 @@ export type SaveResidentialChecksTaskAnswersRequest = components['schemas']['Sav
 export type ResidentialChecksTaskAnswersSummary = components['schemas']['ResidentialChecksTaskAnswersSummary']
 
 export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCaseAdminAdditionInfoRequest']
+export type MapStringAny = components['schemas']['MapStringAny']

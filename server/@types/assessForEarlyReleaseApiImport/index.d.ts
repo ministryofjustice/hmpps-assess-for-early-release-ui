@@ -1288,8 +1288,11 @@ export interface components {
       /** @enum {string} */
       type: 'TEXT' | 'RADIO' | 'DATE' | 'ADDRESS' | 'CHECKBOX'
       options?: components['schemas']['Option'][]
+      /** @enum {string} */
+      dataType: 'STRING' | 'BOOLEAN'
     }
     Option: {
+      text: string
       value: string
     }
     /** @description A view on the progress of the residential checks for an assessment */
@@ -1342,7 +1345,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      requestType: string
       /**
        * Format: int64
        * @description Unique internal identifier for this request
@@ -1355,9 +1357,10 @@ export interface components {
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
-      [key: string]: string
+      [key: string]: string | boolean
     }
   }
   responses: never

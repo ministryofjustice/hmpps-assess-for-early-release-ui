@@ -26,7 +26,7 @@
                     {% set options = [] %}
                     {% for option in input.options %}
                         {% set options = (options.push({
-                            text: option.value,
+                            text: option.text,
                             value: option.value
                         }), options) %}
                     {% endfor %}
