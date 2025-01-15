@@ -8,7 +8,7 @@ import {
 } from '../../../@types/assessForEarlyReleaseApiClientTypes'
 import paths from '../../paths'
 import { ProblemDetail } from '../../../@types/ProblemDetail'
-import getFormDate from '../../../utils/dateUtils'
+import { getFormDate, toFormDate } from '../../../utils/dateUtils'
 
 export default class ResidentialChecksTaskRoutes {
   constructor(
@@ -37,11 +37,32 @@ export default class ResidentialChecksTaskRoutes {
       Number(checkRequestId),
     )
 
+    let submittedForm: { [key: string]: string } = {}
+    for (const section of task.taskConfig.sections) {
+      for (const question of section.questions) {
+        const { input } = question
+        const answer = task.answers[input.name]
+        if (answer !== undefined && answer !== null) {
+          if (input.type === 'DATE') {
+            submittedForm = {
+              ...submittedForm,
+              ...toFormDate(input.name, answer as string),
+            }
+          } else if (input.dataType === 'BOOLEAN') {
+            submittedForm[input.name] = answer ? 'Yes' : 'No'
+          } else {
+            submittedForm[input.name] = answer as string
+          }
+        }
+      }
+    }
+
     const templateToRender = taskTemplateOverrides[taskCode] || defaultTemplate
     res.render(`pages/communityOffenderManager/residentialChecks/tasks/${templateToRender}`, {
       prisonNumber,
       task: task.taskConfig,
       addressCheckRequest,
+      submittedForm,
     })
   }
 

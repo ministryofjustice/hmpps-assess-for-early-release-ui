@@ -34,4 +34,16 @@ function getFormDate(namePrefix: string, reqBody: Record<string, string>): strin
   return undefined
 }
 
-export default getFormDate
+function toFormDate(namePrefix: string, dateString: string): { [key: string]: string } {
+  if (!dateString || dateString.length < 10) {
+    return {}
+  }
+
+  return {
+    [`${namePrefix}-year`]: dateString ? dateString.slice(0, 4) : undefined,
+    [`${namePrefix}-month`]: dateString ? dateString.slice(5, 7) : undefined,
+    [`${namePrefix}-day`]: dateString ? dateString.slice(8, 10) : undefined,
+  }
+}
+
+export { getFormDate, toFormDate }

@@ -404,31 +404,37 @@ const createChecksTasks = (): ResidentialChecksTaskProgress[] => {
       code: 'address-details-and-informed-consent',
       taskName: 'Address details and informed consent',
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
       code: 'police-check',
       taskName: 'Police check',
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
       code: 'children-services-check',
       taskName: "Children's services check",
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
       code: 'assess-this-persons-risk',
       taskName: "Assess this person's risk",
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
       code: 'suitability-decision',
       taskName: 'Suitability decision',
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
       code: 'make-a-risk-management-decision',
       taskName: 'Make a risk management decision',
       status: 'NOT_STARTED',
+      answers: {},
     },
   ]
 }
@@ -590,6 +596,7 @@ const createResidentialChecksTaskView = ({
   },
   taskConfig: createResidentialChecksTask(),
   taskStatus: 'NOT_STARTED',
+  answers: {},
 })
 
 export {

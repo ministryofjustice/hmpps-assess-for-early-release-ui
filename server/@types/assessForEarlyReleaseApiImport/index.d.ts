@@ -961,11 +961,6 @@ export interface components {
     ResidentialChecksTaskAnswersSummary: {
       /**
        * Format: int64
-       * @description A unique identifier for this set of task answers
-       */
-      answersId: number
-      /**
-       * Format: int64
        * @description A unique identifier the address check request associated with these answers
        */
       addressCheckRequestId: number
@@ -1270,6 +1265,7 @@ export interface components {
        * @enum {string}
        */
       status: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      answers: components['schemas']['MapStringAny']
     }
     /** @description A view on the progress of the residential checks for an assessment */
     ResidentialChecksView: {
@@ -1304,6 +1300,7 @@ export interface components {
        * @enum {string}
        */
       taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      answers: components['schemas']['MapStringAny']
     }
     Section: {
       header?: string

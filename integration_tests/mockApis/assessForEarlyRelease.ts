@@ -494,6 +494,7 @@ const stubGetResidentialChecksTask = (prisonNumber: string, addressCheckRequestI
           ],
         },
         taskStatus: 'NOT_STARTED',
+        answers: {},
       },
     },
   })
