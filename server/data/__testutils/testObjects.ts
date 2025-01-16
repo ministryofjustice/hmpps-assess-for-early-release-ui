@@ -487,11 +487,11 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
               options: [
                 {
                   text: 'Yes',
-                  value: 'Yes',
+                  value: 'true',
                 },
                 {
                   text: 'No',
-                  value: 'No',
+                  value: 'false',
                 },
               ],
             },
@@ -506,11 +506,11 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
               options: [
                 {
                   text: 'Yes',
-                  value: 'Yes',
+                  value: 'true',
                 },
                 {
                   text: 'No',
-                  value: 'Yes',
+                  value: 'false',
                 },
               ],
             },
