@@ -401,38 +401,56 @@ const createComCase = ({
 const createChecksTasks = (): ResidentialChecksTaskProgress[] => {
   return [
     {
-      code: 'address-details-and-informed-consent',
-      taskName: 'Address details and informed consent',
+      config: {
+        code: 'address-details-and-informed-consent',
+        name: 'Address details and informed consent',
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
     {
-      code: 'police-check',
-      taskName: 'Police check',
+      config: {
+        code: 'police-check',
+        name: 'Police check',
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
     {
-      code: 'children-services-check',
-      taskName: "Children's services check",
+      config: {
+        code: 'children-services-check',
+        name: "Children's services check",
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
     {
-      code: 'assess-this-persons-risk',
-      taskName: "Assess this person's risk",
+      config: {
+        code: 'assess-this-persons-risk',
+        name: "Assess this person's risk",
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
     {
-      code: 'suitability-decision',
-      taskName: 'Suitability decision',
+      config: {
+        code: 'suitability-decision',
+        name: 'Suitability decision',
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
     {
-      code: 'make-a-risk-management-decision',
-      taskName: 'Make a risk management decision',
+      config: {
+        code: 'make-a-risk-management-decision',
+        name: 'Make a risk management decision',
+        sections: [],
+      },
       status: 'NOT_STARTED',
       answers: {},
     },
@@ -456,7 +474,6 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'pom-prison-behaviour-information',
               type: 'TEXT',
-              dataType: 'STRING',
               options: null,
             },
           },
@@ -467,7 +484,6 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'mental-health-treatment-needs',
               type: 'RADIO',
-              dataType: 'BOOLEAN',
               options: [
                 {
                   text: 'Yes',
@@ -487,7 +503,6 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'vlo-officer-for-case',
               type: 'RADIO',
-              dataType: 'BOOLEAN',
               options: [
                 {
                   text: 'Yes',
@@ -507,7 +522,6 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
             input: {
               name: 'information-that-cannot-be-disclosed',
               type: 'RADIO',
-              dataType: 'BOOLEAN',
               options: [
                 {
                   text: 'Yes',

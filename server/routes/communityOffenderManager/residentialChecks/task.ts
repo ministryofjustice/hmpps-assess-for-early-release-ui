@@ -4,10 +4,10 @@ import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
 import {
   MapStringAny,
+  ProblemDetail,
   SaveResidentialChecksTaskAnswersRequest,
 } from '../../../@types/assessForEarlyReleaseApiClientTypes'
 import paths from '../../paths'
-import { ProblemDetail } from '../../../@types/ProblemDetail'
 import { getFormDate, toFormDate } from '../../../utils/dateUtils'
 
 export default class ResidentialChecksTaskRoutes {
@@ -48,10 +48,8 @@ export default class ResidentialChecksTaskRoutes {
               ...submittedForm,
               ...toFormDate(input.name, answer as string),
             }
-          } else if (input.dataType === 'BOOLEAN') {
-            submittedForm[input.name] = answer ? 'Yes' : 'No'
           } else {
-            submittedForm[input.name] = answer as string
+            submittedForm[input.name] = `${answer}`
           }
         }
       }
@@ -82,12 +80,6 @@ export default class ResidentialChecksTaskRoutes {
         const { input } = question
         if (question.input.type === 'DATE') {
           answers[question.input.name] = getFormDate(input.name, req.body)
-        } else if (question.input.dataType === 'BOOLEAN') {
-          const answer = req.body[input.name]
-          if (answer) {
-            const formValue = (answer as string)?.toLowerCase()
-            answers[question.input.name] = formValue === 'yes' || formValue === 'true'
-          }
         } else {
           answers[input.name] = req.body[input.name]
         }

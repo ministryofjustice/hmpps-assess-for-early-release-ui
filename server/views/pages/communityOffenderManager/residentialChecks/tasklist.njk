@@ -25,12 +25,12 @@
                 {% set tasks = (tasks.push(
                     {
                         title: {
-                            text: task.taskName
+                            text: task.config.name
                         },
                         href: paths.probation.assessment.curfewAddress.addressCheckTask | toPath({
                             prisonNumber: prisonNumber,
                             checkRequestId: addressCheckRequest.requestId | string,
-                            taskCode: task.code
+                            taskCode: task.config.code
                         }),
                         status: residentialChecks.taskStatusLabel(task.status)
                     }

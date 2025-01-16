@@ -970,6 +970,15 @@ export interface components {
       /** @description The version of the task these answers relate to */
       taskVersion: string
     }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
+    }
     Detail: {
       code: string
       description?: string
@@ -1247,18 +1256,19 @@ export interface components {
       /** @description Reasons why someone is ineligible */
       failedCheckReasons: string[]
     }
+    Input: {
+      name: string
+      /** @enum {string} */
+      type: 'TEXT' | 'RADIO' | 'DATE' | 'ADDRESS' | 'CHECKBOX'
+      options?: components['schemas']['Option'][]
+    }
+    Option: {
+      text: string
+      value: string
+    }
     /** @description The progress on a specific residential checks task for an assessment */
     ResidentialChecksTaskProgress: {
-      /**
-       * @description The unique code to identify this task
-       * @example address-details-and-informed-consent
-       */
-      code: string
-      /**
-       * @description The name of the check as it would appear in a task list
-       * @example Address details and informed consent
-       */
-      taskName: string
+      config: components['schemas']['Task']
       /**
        * @description Status of this criterion for a specific case
        * @example NOT_STARTED
@@ -1279,29 +1289,6 @@ export interface components {
       /** @description Details of current residential checks */
       tasks: components['schemas']['ResidentialChecksTaskProgress'][]
     }
-    Input: {
-      name: string
-      /** @enum {string} */
-      type: 'TEXT' | 'RADIO' | 'DATE' | 'ADDRESS' | 'CHECKBOX'
-      options?: components['schemas']['Option'][]
-      /** @enum {string} */
-      dataType: 'STRING' | 'BOOLEAN'
-    }
-    Option: {
-      text: string
-      value: string
-    }
-    /** @description A view on the progress of the residential checks for an assessment */
-    ResidentialChecksTaskView: {
-      assessmentSummary: components['schemas']['AssessmentSummary']
-      taskConfig: components['schemas']['Task']
-      /**
-       * @description The current status of the task
-       * @enum {string}
-       */
-      taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      answers: components['schemas']['MapStringAny']
-    }
     Section: {
       header?: string
       hintText?: string
@@ -1319,8 +1306,32 @@ export interface components {
       hintText?: string
       input: components['schemas']['Input']
     }
+    /** @description A view on the progress of the residential checks for an assessment */
+    ResidentialChecksTaskView: {
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      taskConfig: components['schemas']['Task']
+      /**
+       * @description The current status of the task
+       * @enum {string}
+       */
+      taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      answers: components['schemas']['MapStringAny']
+    }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1342,19 +1353,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean
@@ -1825,6 +1823,15 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['ResidentialChecksTaskAnswersSummary']
+        }
+      }
+      /** @description The request is invalid, e.g. the answers are not valid for the task */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ProblemDetail']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
