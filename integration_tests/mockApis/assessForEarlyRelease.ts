@@ -170,7 +170,7 @@ const getSubmittedEligibilityChecks = (assessmentSummary: _AssessmentSummary) =>
     if (!requests.length) {
       throw new Error('No matching requests')
     }
-    return requests.map(request => JSON.parse(request.body))
+    return requests.map((request: { body: string }) => JSON.parse(request.body))
   })
 
 const stubGetAddressesForPostcode = (postcode: string, addressSummaries: AddressSummary[]) =>
@@ -310,14 +310,14 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: {
         assessmentSummary: {
-          forename: 'dave',
-          surname: 'smith',
-          dateOfBirth: '2024-09-18',
-          prisonNumber,
-          hdced: '2024-09-20',
-          crd: null,
-          location: 'Moorland (HMP & YOI)',
-          status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
+          forename: 'FIRST-1',
+          surname: 'LAST-1',
+          dateOfBirth: '1978-03-20',
+          prisonNumber: 'A1234AA',
+          hdced: '2020-10-25',
+          crd: '2020-11-14',
+          location: 'Birmingham (HMP)',
+          status: 'ELIGIBLE_AND_SUITABLE',
           policyVersion: '1.0',
           tasks: {
             PRISON_CA: [
@@ -327,7 +327,7 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
               },
               {
                 name: 'ENTER_CURFEW_ADDRESS',
-                progress: 'COMPLETE',
+                progress: 'READY_TO_START',
               },
               {
                 name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION',
@@ -342,57 +342,405 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
                 progress: 'LOCKED',
               },
             ],
-            PROBATION_COM: [
-              {
-                name: 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
-                progress: 'READY_TO_START',
-              },
-              {
-                name: 'MAKE_A_RISK_MANAGEMENT_DECISION',
-                progress: 'LOCKED',
-              },
-              {
-                name: 'SEND_CHECKS_TO_PRISON',
-                progress: 'LOCKED',
-              },
-              {
-                name: 'CREATE_LICENCE',
-                progress: 'LOCKED',
-              },
-            ],
           },
         },
         overallStatus: 'NOT_STARTED',
         tasks: [
           {
-            code: 'address-details-and-informed-consent',
-            taskName: 'Address details and informed consent',
+            config: {
+              code: 'address-details-and-informed-consent',
+              name: 'Address details and informed consent',
+              sections: [
+                {
+                  header: null,
+                  hintText: null,
+                  questions: [
+                    {
+                      code: 'connected-to-an-electricity-supply',
+                      text: 'Is the address connected to an electricity supply?',
+                      hintText: null,
+                      input: {
+                        name: 'electricitySupply',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+                {
+                  header: 'Informed consent',
+                  hintText: null,
+                  questions: [
+                    {
+                      code: 'have-you-visited-this-address-in-person',
+                      text: 'Have you visited this address in person?',
+                      hintText: 'It is not mandatory to do so.',
+                      input: {
+                        name: 'visitedAddress',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'I have visited this address and spoken to the main occupier',
+                            value: 'I_HAVE_VISITED_THIS_ADDRESS_AND_SPOKEN_TO_THE_MAIN_OCCUPIER',
+                          },
+                          {
+                            text: 'I have not visited the address but I have spoken to the main occupier',
+                            value: 'I_HAVE_NOT_VISITED_THE_ADDRESS_BUT_I_HAVE_SPOKEN_TO_THE_MAIN_OCCUPIER',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'main-occupier-given-consent',
+                      text: 'Has the main occupier given informed consent for {offenderForename} to be released here?',
+                      hintText:
+                        '<p>They must understand</p>\n<ul class="govuk-list govuk-list--bullet">\n  <li>what HDC involves</li>\n  <li>the offences {offenderForename} committed</li>\n</ul>',
+                      input: {
+                        name: 'mainOccupierConsentGiven',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
           {
-            code: 'police-check',
-            taskName: 'Police check',
+            config: {
+              code: 'police-check',
+              name: 'Police checks',
+              sections: [
+                {
+                  header: 'Police checks',
+                  hintText:
+                    'You must request and consider information from the police about the domestic abuse and\nchild wellbeing risks of releasing this person to the proposed address.',
+                  questions: [
+                    {
+                      code: 'date-police-information-requested',
+                      text: 'Enter the date that you requested this information',
+                      hintText: 'For example, 31 3 1980',
+                      input: {
+                        name: 'informationRequested',
+                        type: 'DATE',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'date-police-sent-information',
+                      text: 'Enter the date that the police sent this information',
+                      hintText: 'For example, 31 3 1980',
+                      input: {
+                        name: 'informationSent',
+                        type: 'DATE',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'policeInformationSummary',
+                      text: 'Summarise the information the police provided',
+                      hintText: null,
+                      input: {
+                        name: 'informationSummary',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
           {
-            code: 'children-services-check',
-            taskName: "Children's services check",
+            config: {
+              code: 'children-services-check',
+              name: "Children's services check",
+              sections: [
+                {
+                  header: "Children's services checks",
+                  hintText:
+                    "You must request and consider information from children's services about the domestic abuse and\nchild wellbeing risks of releasing this person to the proposed address.",
+                  questions: [
+                    {
+                      code: 'date-children-services-information-requested',
+                      text: 'Enter the date that you requested this information',
+                      hintText: 'For example, 31 3 1980',
+                      input: {
+                        name: 'informationRequested',
+                        type: 'DATE',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'date-children-services-information-sent',
+                      text: "Enter the date that children's services sent this information",
+                      hintText: 'For example, 31 3 1980',
+                      input: {
+                        name: 'informationSent',
+                        type: 'DATE',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'children-services-information-summary',
+                      text: "Summarise the information children's services provided",
+                      hintText: null,
+                      input: {
+                        name: 'informationSummary',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
           {
-            code: 'assess-this-persons-risk',
-            taskName: "Assess this person's risk",
+            config: {
+              code: 'assess-this-persons-risk',
+              name: "Assess this person's risk",
+              sections: [
+                {
+                  header: 'Risk management information',
+                  hintText: null,
+                  questions: [
+                    {
+                      code: 'pom-prison-behaviour-information',
+                      text: 'What information has the POM provided about the behaviour of {offenderForename} while in prison?',
+                      hintText:
+                        'Find out if there are any concerns about them being released on HDC or if there have been any changes to their level of risk.',
+                      input: {
+                        name: 'pomPrisonBehaviourInformation',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'mental-health-treatment-needs',
+                      text: 'Does {offenderForename} need any mental health treatment to help manage risk?',
+                      hintText: 'If so, it should be considered as part of your risk management planning actions.',
+                      input: {
+                        name: 'mentalHealthTreatmentNeeds',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'is-there-a-vlo-officer-for-case',
+                      text: 'Is there a victim liaison officer (VLO) for this case?',
+                      hintText: null,
+                      input: {
+                        name: 'vloOfficerForCase',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'information-that-cannot-be-disclosed-to-offender',
+                      text: 'Is there any information that cannot be disclosed to {offenderForename}?',
+                      hintText: null,
+                      input: {
+                        name: 'informationThatCannotBeDisclosed',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
           {
-            code: 'suitability-decision',
-            taskName: 'Suitability decision',
+            config: {
+              code: 'suitability-decision',
+              name: 'Suitability decision',
+              sections: [
+                {
+                  header: null,
+                  hintText: null,
+                  questions: [
+                    {
+                      code: '69b608d0-35e1-44ea-9982-84d1cf6c0045',
+                      text: 'Is this address suitable for {offenderForename} to be released to?',
+                      hintText: null,
+                      input: {
+                        name: 'addressSuitable',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'e7ac8d33-fc04-4660-9d0e-bf121acf703f',
+                      text: 'Add information to support your decision',
+                      hintText: null,
+                      input: {
+                        name: 'addressSuitableInformation',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: '084edb2b-a52b-4723-b425-0069719fd5f9',
+                      text: 'Do you need to add any more information about {offenderForename} or the proposed address for the monitoring contractor?',
+                      hintText: null,
+                      input: {
+                        name: 'additionalInformationNeeded',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'cf8ffa01-6c3e-4710-875b-cff5b14e5c95',
+                      text: 'Add more information',
+                      hintText: null,
+                      input: {
+                        name: 'moreInformation',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
           {
-            code: 'make-a-risk-management-decision',
-            taskName: 'Make a risk management decision',
+            config: {
+              code: 'make-a-risk-management-decision',
+              name: 'Make a risk management decision',
+              sections: [
+                {
+                  header: null,
+                  hintText: null,
+                  questions: [
+                    {
+                      code: 'can-offender-be-managed-safely',
+                      text: 'Can {offenderForename} be managed safely in the community if they are released to the proposed address or CAS area?',
+                      hintText: null,
+                      input: {
+                        name: 'canOffenderBeManagedSafely',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      code: 'information-to-support-decision',
+                      text: 'Add information to support your decision',
+                      hintText: null,
+                      input: {
+                        name: 'informationToSupportDecision',
+                        type: 'TEXT',
+                        options: null,
+                      },
+                    },
+                    {
+                      code: 'any-risk-management-planning-actions-needed',
+                      text: 'Are any risk management planning actions needed prior to release before the address or CAS area can be suitable?',
+                      hintText: null,
+                      input: {
+                        name: 'riskManagementPlanningActionsNeeded',
+                        type: 'RADIO',
+                        options: [
+                          {
+                            text: 'Yes',
+                            value: 'true',
+                          },
+                          {
+                            text: 'No',
+                            value: 'false',
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
             status: 'NOT_STARTED',
+            answers: {},
           },
         ],
       },
@@ -443,7 +791,7 @@ const stubGetResidentialChecksTask = (prisonNumber: string, addressCheckRequestI
         },
         taskConfig: {
           code: 'address-details-and-informed-consent',
-          name: 'Check if a curfew address is suitable',
+          name: 'Address details and informed consent',
           sections: [
             {
               header: null,
