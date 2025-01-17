@@ -20,9 +20,11 @@ import type {
   EligibilityCriterionView,
   OffenderSummary,
   OptOutRequest,
+  ResidentialChecksTaskAnswersSummary,
   ResidentialChecksTaskView,
   ResidentialChecksView,
   ResidentSummary,
+  SaveResidentialChecksTaskAnswersRequest,
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
   UpdateCaseAdminAdditionInfoRequest,
@@ -249,6 +251,17 @@ export default class AssessForEarlyReleaseApiClient {
         crd: parseIsoDate(task.assessmentSummary.crd),
       },
     }
+  }
+
+  async saveResidentialChecksTaskAnswers(
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    answersRequest: SaveResidentialChecksTaskAnswersRequest,
+  ): Promise<ResidentialChecksTaskAnswersSummary> {
+    return this.restClient.post<ResidentialChecksTaskAnswersSummary>({
+      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/answers`,
+      data: answersRequest,
+    })
   }
 
   async updateCaseAdminAdditionalInformation(

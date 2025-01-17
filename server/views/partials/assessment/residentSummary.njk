@@ -39,14 +39,14 @@
                 }), actionItems) %}
     {% endfor %}
     {{ govukSummaryList({
-                        card: {
-                            title: {
-                            text: "Main occupier"
-                            },
-                            actions: {
-                            items: actionItems
-                            }
-                        },
-                        rows: residents
-                    }) }}
+        card: {
+            title: {
+                text: "Main occupier"
+            },
+            actions: {
+                items: actionItems
+            }
+        },
+        rows: residents
+    }) }}
 {% endmacro %}

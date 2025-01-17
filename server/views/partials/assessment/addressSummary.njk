@@ -33,14 +33,14 @@
     {% endfor %}
 
     {{ govukSummaryList({
-            card: {
-                            title: {
-                            text: "Address details"
-                            },
-                            actions: {
-                            items: actionItems
-                            }
-                        },
-            rows: address
+        card: {
+            title: {
+                text: "Address details"
+            },
+            actions: {
+                items: actionItems
+            }
+        },
+        rows: address
     }) }}
 {% endmacro %}
