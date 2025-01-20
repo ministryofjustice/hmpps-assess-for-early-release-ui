@@ -424,7 +424,11 @@ const stubGetResidentialChecksView = (prisonNumber: string, addressCheckRequestI
               ],
             },
             status: 'NOT_STARTED',
-            answers: {},
+            answers: {
+              visitedAddress: 'I_HAVE_NOT_VISITED_THE_ADDRESS_BUT_I_HAVE_SPOKEN_TO_THE_MAIN_OCCUPIER',
+              electricitySupply: true,
+              mainOccupierConsentGiven: false,
+            },
           },
           {
             config: {

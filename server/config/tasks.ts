@@ -60,6 +60,7 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       code: 'SEND_CHECKS_TO_PRISON',
       title: 'Send checks to prison',
       lockedDescription: () => `You can start this when you have completed address and risk checks.`,
+      path: paths.probation.assessment.reviewInformation,
     },
     {
       code: 'CREATE_LICENCE',
