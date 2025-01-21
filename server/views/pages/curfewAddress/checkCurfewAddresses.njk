@@ -33,7 +33,7 @@
                 {% endif %}
                 {{ govukButton({
                     text: "Return to application overview",
-                    href: "#",
+                    href: paths.probation.assessment.home | toPath({ prisonNumber: prisonNumber }),
                     preventDoubleClick: true,
                     classes: "govuk-button--secondary",
                     attributes: { "data-qa": "return-to-application-overview" }

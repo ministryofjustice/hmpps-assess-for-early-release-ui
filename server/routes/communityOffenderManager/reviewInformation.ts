@@ -20,12 +20,12 @@ export default class ReviewInformationRoutes {
       prisonNumber,
     )
 
-    const preferredAddressCheck = checkRequestsForAssessmentSummary.filter(
+    const preferredAddressCheck = checkRequestsForAssessmentSummary.find(
       summary => summary.requestType === 'STANDARD_ADDRESS' && summary.preferencePriority === 'FIRST',
-    )[0] as StandardAddressCheckRequestSummary
-    const secondAddressCheck = checkRequestsForAssessmentSummary.filter(
+    ) as StandardAddressCheckRequestSummary
+    const secondAddressCheck = checkRequestsForAssessmentSummary.find(
       summary => summary.requestType === 'STANDARD_ADDRESS' && summary.preferencePriority === 'SECOND',
-    )[0] as StandardAddressCheckRequestSummary
+    ) as StandardAddressCheckRequestSummary
 
     const preferredAddressChecksView = await this.residentialChecksService.getResidentialChecksView(
       req?.middleware?.clientToken,

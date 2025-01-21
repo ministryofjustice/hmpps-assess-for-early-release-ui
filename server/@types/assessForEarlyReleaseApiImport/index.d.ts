@@ -1321,17 +1321,17 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1714,7 +1714,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['AddResidentRequest']
+        'application/json': components['schemas']['AddResidentRequest'][]
       }
     }
     responses: {
@@ -1724,7 +1724,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['ResidentSummary']
+          'application/json': components['schemas']['ResidentSummary'][]
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
