@@ -16,7 +16,7 @@
 
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-                {{ taskFormBuilder(task, submittedForm, validationErrors) }}
+                {{ taskFormBuilder(task, answers, submittedForm, validationErrors) }}
                 <div class="govuk-button-group govuk-!-margin-top-6">
                     {{ govukButton({
                         text: "Save",

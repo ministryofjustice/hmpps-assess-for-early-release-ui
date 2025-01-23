@@ -188,13 +188,6 @@ export function registerNunjucks(app?: express.Express): Environment {
               classes: 'govuk-tag--blue',
             },
           }
-        case 'IN_PROGRESS':
-          return {
-            tag: {
-              text: 'Incomplete',
-              classes: 'govuk-tag--blue',
-            },
-          }
         case 'SUITABLE':
           return {
             text: 'Completed',

@@ -52,6 +52,7 @@ export default function Index({
 
   const reviewInformationRoutes = new ReviewInformationRoutes(addressService, residentialChecksService)
   get(paths.probation.assessment.reviewInformation, reviewInformationRoutes.GET)
+  post(paths.probation.assessment.reviewInformation, reviewInformationRoutes.POST)
 
   return router
 }
