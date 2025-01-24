@@ -4,10 +4,10 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% macro taskFormBuilder(config, answers, submittedForm, validationErrors) %}
-    {% if answers | length %}
-        {% set formValues = answers %}
-    {% else %}
+    {% if submittedForm | length %}
         {% set formValues = submittedForm %}
+    {% else %}
+        {% set formValues = answers %}
     {% endif %}
 
     {% for section in config.sections  %}
