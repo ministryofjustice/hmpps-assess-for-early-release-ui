@@ -197,19 +197,19 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks` })
   }
 
-  async addResident(
+  async addResidents(
     prisonNumber: string,
     addressCheckRequestId: number,
-    addResidentRequest: AddResidentRequest,
-  ): Promise<ResidentSummary> {
-    const residentSummary = (await this.restClient.post<_ResidentSummary>({
+    addResidentsRequest: AddResidentRequest[],
+  ): Promise<ResidentSummary[]> {
+    const residentsSummary = (await this.restClient.post<_ResidentSummary[]>({
       path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
-      data: addResidentRequest,
-    })) as _ResidentSummary
-    return {
-      ...residentSummary,
-      dateOfBirth: parseIsoDate(residentSummary.dateOfBirth),
-    }
+      data: addResidentsRequest,
+    })) as _ResidentSummary[]
+
+    return residentsSummary.map(r => {
+      return { ...r, dateOfBirth: parseIsoDate(r.dateOfBirth) }
+    })
   }
 
   async getStaffDetailsByUsername(username: string) {

@@ -1607,7 +1607,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['AddResidentRequest']
+        'application/json': components['schemas']['AddResidentRequest'][]
       }
     }
     responses: {

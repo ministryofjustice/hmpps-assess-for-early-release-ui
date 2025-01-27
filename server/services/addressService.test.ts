@@ -104,11 +104,11 @@ describe('Address Service', () => {
 
     const addResidentRequest = createAddResidentRequest()
     const residentSummary = createResidentSummary()
-    assessForEarlyReleaseApiClient.addResident.mockResolvedValue(residentSummary)
+    assessForEarlyReleaseApiClient.addResidents.mockResolvedValue([residentSummary])
 
-    const result = await addressService.addResident(token, prisonNumber, requestId, addResidentRequest)
+    const result = await addressService.addResidents(token, prisonNumber, requestId, [addResidentRequest])
 
     expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
-    expect(result).toEqual(residentSummary)
+    expect(result).toEqual([residentSummary])
   })
 })

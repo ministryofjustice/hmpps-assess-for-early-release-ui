@@ -39,4 +39,10 @@ const formatDate = (date: Date, pattern: string, defaultValue: string = null) =>
   return date ? format(date, pattern) : defaultValue
 }
 
-export { properCase, convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate }
+const getOrdinal = (n: number): string => {
+  const s = ['th', 'st', 'nd', 'rd']
+  const v = n % 100
+  return n + (s[(v - 20) % 10] || s[v] || s[0])
+}
+
+export { properCase, convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate, getOrdinal }

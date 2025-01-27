@@ -4,7 +4,8 @@ import { createMockAddressService, createMockCaseAdminCaseloadService } from '..
 import { convertToTitleCase } from '../../utils/utils'
 import { ValidationError } from '../../middleware/setUpValidationMiddleware'
 import paths from '../paths'
-import AddResidentDetailsRoutes from './addResidentDetails'
+import AddResidentDetailsRoutes, { OtherResident } from './addResidentDetails'
+import { _ResidentSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 const assessmentSummary = createAssessmentSummary({})
 const addressCheckRequestSummary = createStandardAddressCheckRequestSummary({})
@@ -53,6 +54,8 @@ describe('add resident details routes', () => {
           postcode: 'RG2 8AF',
           town: 'Reading',
         },
+        mainResident: addressCheckRequestSummary.residents[0],
+        otherResidents: [],
       })
     })
   })
@@ -70,19 +73,99 @@ describe('add resident details routes', () => {
       req.body.forename = 'Corina'
       req.body.surname = 'Ridgeway'
       req.body.relation = 'sister'
-      req.body.age = 84
+      req.body.skipOtherResidentValidation = 'false'
+      req.body.residentId = 1
+      req.body.phoneNumber = '3434567890'
+      req.body.otherResident = [
+        {
+          day: '11',
+          month: '01',
+          year: '1985',
+          residentId: 2,
+          forename: 'James',
+          surname: 'Bluff',
+          relation: 'brother',
+          age: 89,
+          isMainResident: false,
+        },
+      ]
+
+      const { residentId, forename, surname, phoneNumber, relation } = req.body
+      const mainResident = {
+        residentId,
+        forename,
+        surname,
+        phoneNumber,
+        relation,
+        isMainResident: true,
+      } as _ResidentSummary
+
+      const otherResident = {
+        residentId: req.body.otherResident[0].residentId,
+        forename: req.body.otherResident[0].forename,
+        surname: req.body.otherResident[0].surname,
+        relation: req.body.otherResident[0].relation,
+        dateOfBirth: '1985-01-11',
+        age: req.body.otherResident[0].age,
+        isMainResident: false,
+      }
 
       await addResidentDetailsRoutes.POST(req, res)
 
-      expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
+      expect(addressService.addResidents).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
+        [mainResident, otherResident],
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
       )
+    })
+  })
+
+  describe('transformToResidentSummary', () => {
+    it('transforms valid otherResident data to ResidentSummary', () => {
+      const otherResident = {
+        residentId: 2,
+        forename: 'James',
+        surname: 'Bluff',
+        relation: 'brother',
+        day: '11',
+        month: '01',
+        year: '1985',
+        age: 89,
+      }
+
+      const expectedResidentSummary = {
+        residentId: 2,
+        forename: 'James',
+        surname: 'Bluff',
+        relation: 'brother',
+        dateOfBirth: '1985-01-11',
+        age: 89,
+        isMainResident: false,
+      }
+
+      const result = addResidentDetailsRoutes.transformToResidentSummary(otherResident as OtherResident)
+      expect(result).toEqual(expectedResidentSummary)
+    })
+
+    it('returns undefined if forename, surname, or relation is missing', () => {
+      const otherResident = {
+        residentId: 2,
+        forename: '',
+        surname: 'Bluff',
+        relation: 'brother',
+        day: '11',
+        month: '01',
+        year: '1985',
+        age: 89,
+      }
+
+      const result = addResidentDetailsRoutes.transformToResidentSummary(otherResident as OtherResident)
+      expect(result).toBeNull()
     })
   })
 })

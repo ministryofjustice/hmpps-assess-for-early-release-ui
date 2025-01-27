@@ -5,58 +5,74 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "./addOtherResidentDetails.njk" import addOtherResidentDetails %}
 
 {% set pageTitle = "Add details of residents - " + applicationName %}
-{% set backLinkHref = "/" %}¡
+{% set backLinkHref = "/" %}
+{% set otherResidents = submittedForm.otherResident | default(otherResidents) %}
 
 {% block content %}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        {% include 'partials/errorSummary.njk' %}
-        {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
-        <h1 class="govuk-heading-l govuk-!-margin-top-6">
-            Add details of residents
-        </h1>
-        <div class="govuk-summary-card">
-            <div class="govuk-summary-card__title-wrapper">
-                <h2 class="govuk-summary-card__title">Preferred address</h2>
-                <ul class="govuk-summary-card__actions">
-                    <li class="govuk-summary-card__action">
-                        <a class="govuk-link govuk-link--no-visited-state" href=paths.prison.assessment.curfewAddress.findAddress | toPath(prisonNumber: assessmentSummary.prisonNumber)>Change<span class="govuk-visually-hidden"> preferred address</span></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="govuk-summary-card__content">
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__value">
-                            {{ address.line1 }}<br>
-                            {{ address.town }}<br>
-                            {{ address.postcode }}<br><br>
-                        </dt>
-                    </div>
-                </dl>
-            </div>
-        </div>
-        <form method="POST">
+        <form id="addOtherResidentForm" method="POST">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            <input type="hidden" name="prisonerName" value="{{ assessmentSummary.name }}">
+            <input type="hidden" id="skipOtherResidentValidation" name="skipOtherResidentValidation" value="false">
+            <input type="hidden" id="otherResidentsExists" name="otherResidentsExists" value="{{ otherResidents | length > 0 }}">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                Add details of residents
+            </h1>
+            <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                    <h2 class="govuk-summary-card__title">Preferred address</h2>
+                    <ul class="govuk-summary-card__actions">
+                        <li class="govuk-summary-card__action">
+                            <a class="govuk-link govuk-link--no-visited-state" href=paths.prison.assessment.curfewAddress.findAddress | toPath(prisonNumber: assessmentSummary.prisonNumber)>Change<span class="govuk-visually-hidden"> preferred address</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-summary-card__content">
+                    <dl class="govuk-summary-list">
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__value">
+                                {{ address.line1 }}<br>
+                                {{ address.town }}<br>
+                                {{ address.postcode }}<br><br>
+                            </dt>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+    
             {% call govukFieldset({
                 legend: {
                     text: "Main occupier",
                     classes: "govuk-fieldset__legend--m",
                     isPageHeading: false
-                }
+                },
+                classes: 'govuk-!-margin-bottom-8 govuk-!-margin-top-8'
             }) %}
+                {{ govukInput({
+                        id: 'residentId',
+                        name: 'residentId',
+                        value: mainResident.residentId,
+                        type: 'hidden',
+                        attributes: {
+                            'data-qa': 'resident-id'
+                        }
+                }) }}
                 {{ govukInput({
                     id: 'forename',
                     label: {
                         text: 'First name'
                     },
                     name: "forename",
-                    autocomplete: "given-name",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('forename'),
-                    value: submittedForm.forename,
+                    value: submittedForm.forename | default(mainResident.forename),
                     attributes: {
                         'data-qa': 'resident-forename'
                     }
@@ -67,10 +83,9 @@
                         text: 'Last name'
                     },
                     name: "surname",
-                    autocomplete: "family-name",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('surname'),
-                    value: submittedForm.surname,
+                    value:  submittedForm.surname | default(mainResident.surname),
                     attributes: {
                         'data-qa': 'resident-surname'
                     }
@@ -81,68 +96,69 @@
                         text: 'Phone number'
                     },
                     name: "phoneNumber",
-                    autocomplete: "tel-national",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('phoneNumber'),
-                    value: submittedForm.phoneNumber
+                    value: submittedForm.phoneNumber |  default(mainResident.phoneNumber)
                 }) }}
                 {{ govukInput({
                     id: 'relation',
                     label: {
-                        text: 'Relation'
+                        text: 'Relationship'
                     },
                     name: "relation",
                     classes: 'govuk-!-width-one-half',
                     errorMessage: validationErrors | findError('relation'),
-                    value: submittedForm.relation,
+                    value: submittedForm.relation | default(mainResident.relation),
                     attributes: {
                         'data-qa': 'resident-relation'
                     }
                 }) }}
-                {{ govukDateInput({
-                    id: "dateOfBirth",
-                    namePrefix: "date-of-birth",
-                    fieldset: {
-                        legend: {
-                            text: "Date of birth (optional)",
-                            classes: "govuk-fieldset__legend--m"
-                        }
-                    },
-                    hint: {
-                        text: "For example, 31 3 1980"
-                    },
-                    errorMessage: validationErrors | findError('dateOfBirth')
-                }) }}
-                {{ govukInput({
-                    id: 'age',
-                    label: {
-                        text: 'Age'
-                    },
-                    name: "age",
-                    classes: 'govuk-input govuk-input--width-3',
-                    errorMessage: validationErrors | findError('age'),
-                    value: submittedForm.age,
-                    attributes: {
-                        'data-qa': 'resident-age'
-                    }
-                }) }}
+            {% endcall %}
+
+            
+            <div id="otherResidentsContainer" data-module="moj-add-another">
+                {% for otherResident in otherResidents %}
+                    {{ addOtherResidentDetails({ index: loop.index0, otherResident: otherResident, validationErrors: validationErrors, showRemoveBtn: otherResidents | length > 1}) }}
+                {% else %}
+                    {{ addOtherResidentDetails({ index: 0, otherResident: {}, validationErrors: validationErrors, showRemoveBtn: false }) }}
+                {% endfor %}
+
                 <div class="moj-button-action govuk-!-margin-top-4">
                     {{ govukButton({
                         text: "Add another resident",
-                        classes: "govuk-button--secondary"
+                        classes: "govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4",
+                        attributes: { 'data-qa': 'add-another-resident', 'id': 'addAnotherResidentButton' }
                     }) }}
                 </div>
-                <div class="moj-button-action govuk-!-margin-top-4">
+            </div>
+            
+            <div id="otherResidentsEmptyContainer">
+                <div class="govuk-!-margin-top-4">
                     {{ govukButton({
-                        text: "Continue",
-                        preventDoubleClick: true,
-                        attributes: {
-                            'data-qa': 'addResidentContinue'
-                        }
+                        text: "Add another resident",
+                        classes: "govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4",
+                        attributes: { 'data-qa': 'add-another-resident', 'id': 'addAnotherResidentEmptyButton' }
                     }) }}
                 </div>
-            {% endcall %}
-        </form>
+            </div>
+
+            <div class="moj-button-action govuk-!-margin-top-8">
+                {{ govukButton({
+                    text: "Continue",
+                    preventDoubleClick: true,
+                    attributes: {
+                        'data-qa': 'addResidentContinue',
+                        'type': 'submit',
+                        'name': 'action',
+                        'value': 'continue',
+                        'id': 'continueButton'
+                    }
+                }) }}
+            </div>
     </div>
 </div>
+{% endblock %}
+
+{% block pageScripts %}
+    <script src="/assets/js/addOtherResident.js"></script>
 {% endblock %}
