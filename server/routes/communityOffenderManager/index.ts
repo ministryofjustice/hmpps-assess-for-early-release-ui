@@ -10,6 +10,7 @@ import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
 import AssessmentRoutes from './assessment'
 import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
 import ResidentialChecksTaskRoutes from './residentialChecks/task'
+import ReviewInformationRoutes from './reviewInformation'
 
 export default function Index({
   addressService,
@@ -48,6 +49,10 @@ export default function Index({
   const residentialChecksTaskRoutes = new ResidentialChecksTaskRoutes(addressService, residentialChecksService)
   get(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.GET)
   post(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.POST)
+
+  const reviewInformationRoutes = new ReviewInformationRoutes(addressService, residentialChecksService)
+  get(paths.probation.assessment.reviewInformation, reviewInformationRoutes.GET)
+  post(paths.probation.assessment.reviewInformation, reviewInformationRoutes.POST)
 
   return router
 }

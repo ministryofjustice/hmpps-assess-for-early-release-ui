@@ -288,6 +288,7 @@ const createStandardAddressCheckRequestSummary = ({
   status,
   address,
   residents,
+  requestType: 'STANDARD_ADDRESS',
 })
 
 const createAddResidentRequest = ({
@@ -403,34 +404,121 @@ const createComCase = ({
 const createChecksTasks = (): ResidentialChecksTaskProgress[] => {
   return [
     {
-      code: 'address-details-and-informed-consent',
-      taskName: 'Address details and informed consent',
+      config: {
+        code: 'address-details-and-informed-consent',
+        name: 'Address details and informed consent',
+        sections: [
+          {
+            header: null,
+            hintText: null,
+            questions: [
+              {
+                code: 'connected-to-an-electricity-supply',
+                text: 'Is the address connected to an electricity supply?',
+                hintText: null,
+                input: {
+                  name: 'electricitySupply',
+                  type: 'RADIO',
+                  options: [
+                    { text: 'Yes', value: 'true' },
+                    { text: 'No', value: 'false' },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            header: 'Informed consent',
+            hintText: null,
+            questions: [
+              {
+                code: 'have-you-visited-this-address-in-person',
+                text: 'Have you visited this address in person?',
+                hintText: 'It is not mandatory to do so.',
+                input: {
+                  name: 'visitedAddress',
+                  type: 'RADIO',
+                  options: [
+                    {
+                      text: 'I have visited this address and spoken to the main occupier',
+                      value: 'I_HAVE_VISITED_THIS_ADDRESS_AND_SPOKEN_TO_THE_MAIN_OCCUPIER',
+                    },
+                    {
+                      text: 'I have not visited the address but I have spoken to the main occupier',
+                      value: 'I_HAVE_NOT_VISITED_THE_ADDRESS_BUT_I_HAVE_SPOKEN_TO_THE_MAIN_OCCUPIER',
+                    },
+                  ],
+                },
+              },
+              {
+                code: 'main-occupier-given-consent',
+                text: 'Has the main occupier given informed consent for {offenderForename} to be released here?',
+                hintText:
+                  '<p>They must understand</p>\n<ul class="govuk-list govuk-list--bullet">\n  <li>what HDC involves</li>\n  <li>the offences {offenderForename} committed</li>\n</ul>',
+                input: {
+                  name: 'mainOccupierConsentGiven',
+                  type: 'RADIO',
+                  options: [
+                    { text: 'Yes', value: 'true' },
+                    { text: 'No', value: 'false' },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
       status: 'NOT_STARTED',
+      answers: {
+        visitedAddress: 'I_HAVE_NOT_VISITED_THE_ADDRESS_BUT_I_HAVE_SPOKEN_TO_THE_MAIN_OCCUPIER',
+        electricitySupply: false,
+        mainOccupierConsentGiven: false,
+      },
     },
     {
-      code: 'police-check',
-      taskName: 'Police check',
+      config: {
+        code: 'police-check',
+        name: 'Police check',
+        sections: [],
+      },
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
-      code: 'children-services-check',
-      taskName: "Children's services check",
+      config: {
+        code: 'children-services-check',
+        name: "Children's services check",
+        sections: [],
+      },
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
-      code: 'assess-this-persons-risk',
-      taskName: "Assess this person's risk",
+      config: {
+        code: 'assess-this-persons-risk',
+        name: "Assess this person's risk",
+        sections: [],
+      },
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
-      code: 'suitability-decision',
-      taskName: 'Suitability decision',
+      config: {
+        code: 'suitability-decision',
+        name: 'Suitability decision',
+        sections: [],
+      },
       status: 'NOT_STARTED',
+      answers: {},
     },
     {
-      code: 'make-a-risk-management-decision',
-      taskName: 'Make a risk management decision',
+      config: {
+        code: 'make-a-risk-management-decision',
+        name: 'Make a risk management decision',
+        sections: [],
+      },
       status: 'NOT_STARTED',
+      answers: {},
     },
   ]
 }
@@ -464,10 +552,12 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
               type: 'RADIO',
               options: [
                 {
-                  value: 'Yes',
+                  text: 'Yes',
+                  value: 'true',
                 },
                 {
-                  value: 'No',
+                  text: 'No',
+                  value: 'false',
                 },
               ],
             },
@@ -481,10 +571,12 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
               type: 'RADIO',
               options: [
                 {
-                  value: 'Yes',
+                  text: 'Yes',
+                  value: 'true',
                 },
                 {
-                  value: 'No',
+                  text: 'No',
+                  value: 'false',
                 },
               ],
             },
@@ -498,10 +590,12 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
               type: 'RADIO',
               options: [
                 {
-                  value: 'Yes',
+                  text: 'Yes',
+                  value: 'true',
                 },
                 {
-                  value: 'No',
+                  text: 'No',
+                  value: 'false',
                 },
               ],
             },
@@ -582,6 +676,7 @@ const createResidentialChecksTaskView = ({
   },
   taskConfig: createResidentialChecksTask(),
   taskStatus: 'NOT_STARTED',
+  answers: {},
 })
 
 export {

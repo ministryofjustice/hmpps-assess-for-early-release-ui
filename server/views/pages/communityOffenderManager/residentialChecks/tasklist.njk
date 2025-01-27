@@ -1,6 +1,7 @@
 {% extends "layout.njk" %}
-{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
 
 {% set pageTitle = applicationName + " - Residential Checks" %}
 
@@ -25,12 +26,12 @@
                 {% set tasks = (tasks.push(
                     {
                         title: {
-                            text: task.taskName
+                            text: task.config.name
                         },
                         href: paths.probation.assessment.curfewAddress.addressCheckTask | toPath({
                             prisonNumber: prisonNumber,
                             checkRequestId: addressCheckRequest.requestId | string,
-                            taskCode: task.code
+                            taskCode: task.config.code
                         }),
                         status: residentialChecks.taskStatusLabel(task.status)
                     }
@@ -44,6 +45,15 @@
                 attributes: {
                     "data-qa": "residential-checks-task-list"
                 }
+            }) }}
+            {{ govukButton({
+                text: "Return to address or are details",
+                href: paths.probation.assessment.curfewAddress.checkCurfewAddresses | toPath({ prisonNumber: prisonNumber })
+            }) }}
+            {{ govukButton({
+                text: "Return to application overview",
+                href: paths.probation.assessment.home | toPath({ prisonNumber: prisonNumber }),
+                classes: "govuk-button--secondary"
             }) }}
         </div>
     </div>

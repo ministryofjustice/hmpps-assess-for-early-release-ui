@@ -258,10 +258,6 @@ describe('nunjucksSetup', () => {
       expect(result).toContain(`"text": "Incomplete"`)
       expect(result).toContain(`"classes": "govuk-tag--blue"`)
     })
-    test('with IN_PROGRESS:', () => {
-      const result = renderTemplate('{{- residentialChecks.taskStatusLabel("IN_PROGRESS")  | dumpJson -}}', {})
-      expect(result).toContain(`"text": "Incomplete"`)
-    })
     test('with SUITABLE:', () => {
       const result = renderTemplate('{{- residentialChecks.taskStatusLabel("SUITABLE")  | dumpJson -}}', {})
       expect(result).toContain(`"text": "Completed"`)

@@ -3,7 +3,13 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
-{% macro taskFormBuilder(config) %}
+{% macro taskFormBuilder(config, answers, submittedForm, validationErrors) %}
+    {% if submittedForm | length %}
+        {% set formValues = submittedForm %}
+    {% else %}
+        {% set formValues = answers %}
+    {% endif %}
+
     {% for section in config.sections  %}
             {% if section.header %}
                 <h2 class="govuk-heading-m govuk-!-margin-top-8">{{ section.header }}</h2>
@@ -26,31 +32,41 @@
                     {% set options = [] %}
                     {% for option in input.options %}
                         {% set options = (options.push({
-                            text: option.value,
+                            text: option.text,
                             value: option.value
                         }), options) %}
                     {% endfor %}
 
                     {{ govukRadios({
                         name: input.name,
-                        items: options
+                        value: formValues[input.name],
+                        items: options,
+                        errorMessage: validationErrors | findError(input.name)
                     }) }}
                 {% endif %}
 
                 {% if input.type == 'DATE' %}
                     {{ govukDateInput({
                         hint: params.hint,
+                        namePrefix: input.name,
+                        errorMessage: validationErrors | findError(input.name),
                         items: [
                             {
                                 label: 'Day',
+                                name: 'day',
+                                value: formValues[input.name + "-day"],
                                 classes: 'govuk-input--width-2'
                             },
                             {
                                 label: 'Month',
+                                name: 'month',
+                                value: formValues[input.name + "-month"],
                                 classes: 'govuk-input--width-2'
                             },
                             {
                                 label: 'Year',
+                                name: 'year',
+                                value: formValues[input.name + "-year"],
                                 classes: 'govuk-input--width-4'
                             }
                         ]
@@ -59,7 +75,9 @@
 
                 {% if input.type == 'TEXT' %}
                     {{ govukTextarea({
-                        name: input.name
+                        name: input.name,
+                        value: formValues[input.name],
+                        errorMessage: validationErrors | findError(input.name)
                     }) }}
                 {% endif %}
             {% endfor %}

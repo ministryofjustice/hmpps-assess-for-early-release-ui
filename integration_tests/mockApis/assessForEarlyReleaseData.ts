@@ -146,10 +146,10 @@ const address2 = {
   addressLastUpdated: new Date('2020-06-25'),
 }
 
-const createResidentSummary = (residentId, isMainResident): ResidentSummary => ({
+const createResidentSummary = (residentId: number, isMainResident: boolean): ResidentSummary => ({
   residentId,
-  forename: 'Tommy',
-  surname: 'Johnson',
+  forename: `Tommy`,
+  surname: `Johnson-${residentId}`,
   phoneNumber: '07527341960',
   relation: 'mother',
   dateOfBirth: new Date('1985-03-31'),

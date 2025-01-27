@@ -57,7 +57,7 @@ test.describe('Can perform address checks', () => {
     await page
       .locator('[data-qa="residential-checks-task-list"] a[href*="address-details-and-informed-consent"]')
       .click()
-    await expect(page.getByText('Check if a curfew address is suitable')).toBeVisible()
+    await expect(page.getByText('Address details and informed consent')).toBeVisible()
     await expect(page.getByText('Is the address connected to an electricity supply')).toBeVisible()
     await expect(page.getByText('They must understand')).toBeVisible()
   })

@@ -1,0 +1,60 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/addresses/changeResidentLink.njk" import changeResidentLink %}
+{% from "partials/assessment/checkAddressSummary.njk" import checkAddressSummary %}
+{% from "partials/assessment/residentSummary.njk" import residentSummary %}
+{% from "partials/residentialChecksSummary.njk" import residentialChecksSummary %}
+
+{% set pageTitle = "Review information and send checks to prison - " + applicationName%}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
+                Review information and send checks to prison
+            </h1>
+            <h3 class="govuk-heading-m govuk-!-margin-top-6">
+                Preferred address -
+            </h3>
+            {{ checkAddressSummary({
+                prisonNumber: prisonNumber,
+                title: "Preferred address",
+                addressCheckRequest: preferredAddressCheck,
+                displayAction: false
+            }) }}
+            <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="preferred-address-residential-details">Details of residents</h3>
+            {% for resident in preferredAddressCheck.residents %}
+                {{ residentSummary({ resident: resident,
+                    links: [{ href: changeResidentLink(prisonNumber, preferredAddressCheck.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
+            {% endfor %}
+
+            {{ residentialChecksSummary(prisonNumber, preferredAddressCheck, preferredAddressTaskView) }}
+
+            {% if secondAddressCheck %}
+                <h3 class="govuk-heading-m govuk-!-margin-top-6">
+                     Second address -
+                </h3>
+                {{ checkAddressSummary({
+                    prisonNumber: prisonNumber,
+                    title: "Preferred address",
+                    addressCheckRequest: secondAddressCheck,
+                    displayAction: false
+                }) }}
+                <h3 class="govuk-heading-s govuk-!-margin-top-6" data-qa="preferred-address-residential-details">Details of residents</h3>
+                {% for resident in secondAddressCheck.residents %}
+                    {{ residentSummary({ resident: resident,
+                        links: [{ href: changeResidentLink(prisonNumber, secondAddressCheck.requestId), text: "Change", visuallyHiddenText: "change residents"}]}) }}
+                {% endfor %}
+
+                {{ residentialChecksSummary(prisonNumber, secondAddressCheck, secondAddressTaskView) }}
+            {% endif %}
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {{ govukButton({
+                    text: "Send to prison",
+                    preventDoubleClick: true
+                }) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

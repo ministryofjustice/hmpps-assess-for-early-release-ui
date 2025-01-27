@@ -1,4 +1,4 @@
-import express, { Router, Request, Response, NextFunction } from 'express'
+import express, { NextFunction, Request, Response, Router } from 'express'
 
 import { FieldValidationError } from '../@types/FieldValidationError'
 
@@ -18,11 +18,8 @@ export function validateRequest(request: Request, validator: Validator) {
 
 export function validationMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
-    const validationErrors = req.flash(FLASH_KEY_VALIDATION_ERRORS)
-    res.locals.validationErrors = validationErrors
-
-    const submittedForm = req.flash(FLASH_KEY_SUBMITTED_FORM)?.[0]
-    res.locals.submittedForm = submittedForm
+    res.locals.validationErrors = req.flash(FLASH_KEY_VALIDATION_ERRORS)
+    res.locals.submittedForm = req.flash(FLASH_KEY_SUBMITTED_FORM)?.[0]
     next()
   } catch (err) {
     next(err)

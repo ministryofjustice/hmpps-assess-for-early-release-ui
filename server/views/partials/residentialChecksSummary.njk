@@ -1,0 +1,39 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro residentialChecksSummary(prisonNumber, addressCheck, taskView) %}
+    <h3 class="govuk-heading-s govuk-!-margin-top-6">Suitability checks</h3>
+    {% for task in taskView %}
+        {% set taskQuestionAnswers = [] %}
+        {% for questionAnswer in task.questionAnswers %}
+            {% set taskQuestionAnswers = (taskQuestionAnswers.push({
+                key: {
+                    text: questionAnswer.question,
+                    classes: "govuk-!-font-weight-regular"
+                },
+                value: {
+                    text: questionAnswer.answer,
+                    classes: "govuk-!-font-weight-bold"
+                }
+            }), taskQuestionAnswers) %}
+        {% endfor %}
+
+        {{ govukSummaryList({
+            card: {
+                title: {
+                    text: task.name
+                },
+                actions: {
+                    items: [{
+                        href: paths.probation.assessment.curfewAddress.addressCheckTask | toPath({
+                            prisonNumber: prisonNumber,
+                            checkRequestId: addressCheck.requestId | string,
+                            taskCode: task.code
+                        }),
+                        text: "Change"
+                    }]
+                }
+            },
+            rows: taskQuestionAnswers
+        }) }}
+    {% endfor %}
+{% endmacro %}

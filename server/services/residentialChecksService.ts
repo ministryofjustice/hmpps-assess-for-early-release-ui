@@ -1,4 +1,9 @@
-import type { ResidentialChecksTaskView, ResidentialChecksView } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type {
+  ResidentialChecksTaskAnswersSummary,
+  ResidentialChecksTaskView,
+  ResidentialChecksView,
+  SaveResidentialChecksTaskAnswersRequest,
+} from '../@types/assessForEarlyReleaseApiClientTypes'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
@@ -24,5 +29,19 @@ export default class ResidentialChecksService {
   ): Promise<ResidentialChecksTaskView> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.getResidentialChecksTask(prisonNumber, addressCheckRequestId, taskCode)
+  }
+
+  public async saveResidentialChecksTaskAnswers(
+    token: string,
+    prisonNumber: string,
+    addressCheckRequestId: number,
+    saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest,
+  ): Promise<ResidentialChecksTaskAnswersSummary> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+      prisonNumber,
+      addressCheckRequestId,
+      saveAnswersRequest,
+    )
   }
 }

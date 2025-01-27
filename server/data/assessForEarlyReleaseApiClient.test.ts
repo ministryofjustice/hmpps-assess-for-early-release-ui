@@ -5,6 +5,7 @@ import {
   _AssessmentSummary,
   _OffenderSummary,
   _ResidentialChecksTaskView,
+  SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
   createAssessmentSummary,
@@ -249,6 +250,33 @@ describe('assessForEarlyReleaseApiClient', () => {
       expect(fakeAferApi.isDone()).toBe(true)
       expect(response).toEqual(taskView)
     })
+
+    it('should save residential checks task answers', async () => {
+      const taskView = createResidentialChecksTaskView()
+      const { prisonNumber } = taskView.assessmentSummary
+      const addressCheckRequestId = 1
+      const saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest = {
+        taskCode: 'assess-this-persons-risk',
+        answers: {
+          'question-1': 'an answer',
+          'question-2': 'Yes',
+        },
+      }
+
+      fakeAferApi
+        .post(
+          `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/answers`,
+        )
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(201)
+
+      await assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+        prisonNumber,
+        addressCheckRequestId,
+        saveAnswersRequest,
+      )
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
   })
 
   describe('getDecisionMakerCaseload', () => {
@@ -284,6 +312,20 @@ describe('assessForEarlyReleaseApiClient', () => {
 
       const output = await assessForEarlyReleaseApiClient.getForm({ title, message })
       expect(output).toEqual(pdfBuffer)
+    })
+  })
+
+  describe('Submit assessment', () => {
+    const { prisonNumber } = createAssessmentSummary({})
+
+    it('submit assessment for pre-decision checks', async () => {
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber)
+      expect(fakeAferApi.isDone()).toBe(true)
     })
   })
 })

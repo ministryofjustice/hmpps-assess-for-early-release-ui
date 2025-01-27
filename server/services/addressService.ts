@@ -57,6 +57,11 @@ export default class AddressService {
     return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber)
   }
 
+  public async submitAssessmentForPreDecisionChecks(token: string, prisonNumber: string): Promise<void> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    return assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber)
+  }
+
   public async addResidents(
     token: string,
     prisonNumber: string,
