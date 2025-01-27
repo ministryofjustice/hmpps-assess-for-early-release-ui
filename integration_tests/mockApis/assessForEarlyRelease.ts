@@ -244,6 +244,7 @@ const stubGetStandardAddressCheckRequest = (prisonNumber: string, requestId: num
           yCoordinate: 170067,
           addressLastUpdated: '2020-06-25',
         },
+        residents: [],
       },
     },
   })
@@ -257,32 +258,34 @@ const stubAddResident = (prisonNumber: string, requestId: number) =>
     response: {
       status: 200,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: {
-        residentId: 1,
-        forename: 'Josie',
-        surname: 'Roberts',
-        relation: 'mother',
-        age: 97,
-        isMainResident: true,
-        standardAddressCheckRequest: {
-          requestId: 1,
-          dateRequested: '2024-10-09',
-          preferencePriority: 'FIRST',
-          status: 'IN_PROGRESS',
-          address: {
-            uprn: '310010433',
-            firstLine: '97, HARTLAND ROAD',
-            secondLine: '',
-            town: 'READING',
-            county: 'READING',
-            postcode: 'RG2 8AF',
-            country: 'England',
-            xCoordinate: 472219,
-            yCoordinate: 170067,
-            addressLastUpdated: '2020-06-25',
+      jsonBody: [
+        {
+          residentId: 1,
+          forename: 'Josie',
+          surname: 'Roberts',
+          relation: 'mother',
+          age: 97,
+          isMainResident: true,
+          standardAddressCheckRequest: {
+            requestId: 1,
+            dateRequested: '2024-10-09',
+            preferencePriority: 'FIRST',
+            status: 'IN_PROGRESS',
+            address: {
+              uprn: '310010433',
+              firstLine: '97, HARTLAND ROAD',
+              secondLine: '',
+              town: 'READING',
+              county: 'READING',
+              postcode: 'RG2 8AF',
+              country: 'England',
+              xCoordinate: 472219,
+              yCoordinate: 170067,
+              addressLastUpdated: '2020-06-25',
+            },
           },
         },
-      },
+      ],
     },
   })
 

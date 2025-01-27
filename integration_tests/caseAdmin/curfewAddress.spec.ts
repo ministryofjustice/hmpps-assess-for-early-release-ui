@@ -76,11 +76,9 @@ test.describe('Can add a curfew address and a main resident', () => {
     const forename = 'Bob'
     const surname = 'Carragher'
     const relation = 'sister'
-    const age = '53'
     await page.getByTestId('resident-forename').fill(forename)
     await page.getByTestId('resident-surname').fill(surname)
     await page.getByTestId('resident-relation').fill(relation)
-    await page.getByTestId('resident-age').fill(age)
     await page.getByTestId('addResidentContinue').click()
 
     await expect(page).toHaveURL(

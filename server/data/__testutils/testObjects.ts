@@ -289,7 +289,6 @@ const createStandardAddressCheckRequestSummary = ({
   address,
   residents,
   requestType: 'STANDARD_ADDRESS',
-  residents,
 })
 
 const createAddResidentRequest = ({
