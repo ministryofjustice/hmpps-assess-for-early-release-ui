@@ -249,6 +249,68 @@ const stubGetStandardAddressCheckRequest = (prisonNumber: string, requestId: num
     },
   })
 
+const stubGetStandardAddressCheckRequestWithResidents = (prisonNumber: string, requestId: number) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        requestId: 1,
+        dateRequested: '2024-10-09',
+        preferencePriority: 'FIRST',
+        status: 'IN_PROGRESS',
+        address: {
+          uprn: '310010433',
+          firstLine: '97, HARTLAND ROAD',
+          secondLine: '',
+          town: 'READING',
+          county: 'READING',
+          postcode: 'RG2 8AF',
+          country: 'England',
+          xCoordinate: 472219,
+          yCoordinate: 170067,
+          addressLastUpdated: '2020-06-25',
+        },
+        residents: [
+          {
+            residentId: 1,
+            forename: 'Tommy',
+            surname: 'Johnson',
+            phoneNumber: '07527341960',
+            relation: 'mother',
+            dateOfBirth: '1985-03-31',
+            age: 38,
+            isMainResident: true,
+          },
+          {
+            residentId: 2,
+            forename: 'Andy',
+            surname: 'James',
+            phoneNumber: '07527341987',
+            relation: 'Brother',
+            dateOfBirth: '1985-03-31',
+            age: 58,
+            isMainResident: false,
+          },
+          {
+            residentId: 3,
+            forename: 'Tom',
+            surname: 'Cook',
+            phoneNumber: '07527341998',
+            relation: '',
+            dateOfBirth: '1985-03-31',
+            age: 28,
+            isMainResident: false,
+          },
+        ],
+      },
+    },
+  })
+
 const stubAddResident = (prisonNumber: string, requestId: number) =>
   stubFor({
     request: {
@@ -881,6 +943,7 @@ export default {
   stubGetAddressesForPostcode,
   stubAddStandardAddressCheckRequest,
   stubGetStandardAddressCheckRequest,
+  stubGetStandardAddressCheckRequestWithResidents,
   stubAddResident,
   stubGetCheckRequestsForAssessment,
   stubGetResidentialChecksView,
