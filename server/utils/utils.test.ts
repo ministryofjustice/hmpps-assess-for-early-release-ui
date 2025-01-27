@@ -1,5 +1,5 @@
 import AuthRole from '../enumeration/authRole'
-import { convertToTitleCase, hasRole, initialiseName, formatDate } from './utils'
+import { convertToTitleCase, hasRole, initialiseName, formatDate, getOrdinal } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -55,5 +55,52 @@ describe('Format date', () => {
   it('handles missing date with default', () => {
     expect(formatDate(null, 'dd MMM yyyy', 'not provided')).toBe('not provided')
     expect(formatDate(undefined, 'dd MMM yyyy', 'not provided')).toBe('not provided')
+  })
+})
+
+describe('getOrdinal', () => {
+  it('returns the correct ordinal suffix for 1', () => {
+    const result = getOrdinal(1)
+    expect(result).toBe('1st')
+  })
+
+  it('returns the correct ordinal suffix for 2', () => {
+    const result = getOrdinal(2)
+    expect(result).toBe('2nd')
+  })
+
+  it('returns the correct ordinal suffix for 3', () => {
+    const result = getOrdinal(3)
+    expect(result).toBe('3rd')
+  })
+
+  it('returns the correct ordinal suffix for 4', () => {
+    const result = getOrdinal(4)
+    expect(result).toBe('4th')
+  })
+
+  it('returns the correct ordinal suffix for 11', () => {
+    const result = getOrdinal(11)
+    expect(result).toBe('11th')
+  })
+
+  it('returns the correct ordinal suffix for 13', () => {
+    const result = getOrdinal(13)
+    expect(result).toBe('13th')
+  })
+
+  it('returns the correct ordinal suffix for 21', () => {
+    const result = getOrdinal(21)
+    expect(result).toBe('21st')
+  })
+
+  it('returns the correct ordinal suffix for 101', () => {
+    const result = getOrdinal(101)
+    expect(result).toBe('101st')
+  })
+
+  it('returns the correct ordinal suffix for 111', () => {
+    const result = getOrdinal(111)
+    expect(result).toBe('111th')
   })
 })
