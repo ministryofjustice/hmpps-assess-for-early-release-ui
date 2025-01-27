@@ -1,5 +1,3 @@
-// import * as mojFrontend from '@ministryofjustice/frontend'
-
 document.addEventListener('DOMContentLoaded', () => {
   const continueButton = document.getElementById('continueButton')
   const skipOtherResidentValidationInput = document.getElementById('skipOtherResidentValidation')
