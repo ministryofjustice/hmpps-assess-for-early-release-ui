@@ -28,8 +28,8 @@
             value: params.otherResident.residentId | default(''),
             type: 'hidden',
             attributes: {
-                'data-name': 'otherResident[%index%][residentId]',
-                'data-id': 'otherResident[%index%][residentId]'
+                'data-name': 'otherResident[' + params.index + '][residentId]',
+                'data-id': 'otherResident[' + params.index + '][residentId]'
             }
         }) }}
         {{ govukInput({
@@ -43,8 +43,8 @@
             errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][forename]'),
             value: params.otherResident.forename,
             attributes: {
-                'data-name': 'otherResident[%index%][forename]',
-                'data-id': 'otherResident[%index%][forename]'
+                'data-name': 'otherResident[' + params.index + '][forename]',
+                'data-id': 'otherResident[' + params.index + '][forename]'
             }
         }) }}
         {{ govukInput({
@@ -58,8 +58,8 @@
             errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][surname]'),
             value: params.otherResident.surname,
             attributes: {
-                'data-name': 'otherResident[%index%][surname]',
-                'data-id': 'otherResident[%index%][surname]'
+                'data-name': 'otherResident[' + params.index + '][surname]',
+                'data-id': 'otherResident[' + params.index + '][surname]'
             }
         }) }}
         {{ govukInput({
@@ -73,8 +73,8 @@
             errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][relation]'),
             value: params.otherResident.relation,
             attributes: {
-                'data-name': 'otherResident[%index%][relation]',
-                'data-id': 'otherResident[%index%][relation]'
+                'data-name': 'otherResident[' + params.index + '][relation]',
+                'data-id': 'otherResident[' + params.index + '][relation]'
             }
         }) }}
         {{ govukInput({
@@ -116,8 +116,8 @@
                     classes: 'govuk-input--width-2',
                     value: params.otherResident.dateOfBirth | getDay,
                     attributes: {
-                        'data-name': 'otherResident[%index%][day]',
-                        'data-id': 'otherResident[%index%][day]'
+                        'data-name': 'otherResident[' + params.index + '][day]',
+                        'data-id': 'otherResident[' + params.index + '][day]'
                     }
                 },
                 {
@@ -138,8 +138,8 @@
                     classes: 'govuk-input--width-4',
                     value: params.otherResident.dateOfBirth | getYear,
                     attributes: {
-                        'data-name': 'otherResident[%index%][year]',
-                        'data-id': 'otherResident[%index%][year]'
+                        'data-name': 'otherResident[' + params.index + '][year]',
+                        'data-id': 'otherResident[' + params.index + '][year]'
                     }
                 }
             ]
