@@ -5,6 +5,7 @@ import {
   StandardAddressCheckRequestSummary,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import { formatDate, parseIsoDate } from '../../utils/utils'
+import paths from '../paths'
 
 export default class ReviewInformationRoutes {
   constructor(
@@ -50,6 +51,12 @@ export default class ReviewInformationRoutes {
       secondAddressCheck,
       secondAddressTaskView,
     })
+  }
+
+  POST = async (req: Request, res: Response): Promise<void> => {
+    const { prisonNumber } = req.params
+    await this.addressService.submitAssessmentForPreDecisionChecks(req?.middleware?.clientToken, prisonNumber)
+    return res.redirect(paths.probation.assessment.home({ prisonNumber }))
   }
 
   taskQuestionAnswerView(tasks: ResidentialChecksTaskProgress[]) {

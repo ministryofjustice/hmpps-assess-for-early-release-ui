@@ -48,10 +48,13 @@
 
                 {{ residentialChecksSummary(prisonNumber, secondAddressCheck, secondAddressTaskView) }}
             {% endif %}
-            {{ govukButton({
-                text: "Send to prison",
-                preventDoubleClick: true
-            }) }}
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {{ govukButton({
+                    text: "Send to prison",
+                    preventDoubleClick: true
+                }) }}
+            </form>
         </div>
     </div>
 {% endblock %}

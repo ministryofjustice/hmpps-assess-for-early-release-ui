@@ -37,19 +37,19 @@ export default class ResidentialChecksTaskRoutes {
       Number(checkRequestId),
     )
 
-    let submittedForm: { [key: string]: string } = {}
+    let answers: { [key: string]: string } = {}
     for (const section of task.taskConfig.sections) {
       for (const question of section.questions) {
         const { input } = question
         const answer = task.answers[input.name]
         if (answer !== undefined && answer !== null) {
           if (input.type === 'DATE') {
-            submittedForm = {
-              ...submittedForm,
+            answers = {
+              ...answers,
               ...toFormDate(input.name, answer as string),
             }
           } else {
-            submittedForm[input.name] = `${answer}`
+            answers[input.name] = `${answer}`
           }
         }
       }
@@ -60,7 +60,7 @@ export default class ResidentialChecksTaskRoutes {
       prisonNumber,
       task: task.taskConfig,
       addressCheckRequest,
-      submittedForm,
+      answers,
     })
   }
 

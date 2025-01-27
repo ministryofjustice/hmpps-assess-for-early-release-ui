@@ -3,7 +3,13 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
-{% macro taskFormBuilder(config, submittedForm, validationErrors) %}
+{% macro taskFormBuilder(config, answers, submittedForm, validationErrors) %}
+    {% if submittedForm | length %}
+        {% set formValues = submittedForm %}
+    {% else %}
+        {% set formValues = answers %}
+    {% endif %}
+
     {% for section in config.sections  %}
             {% if section.header %}
                 <h2 class="govuk-heading-m govuk-!-margin-top-8">{{ section.header }}</h2>
@@ -33,7 +39,7 @@
 
                     {{ govukRadios({
                         name: input.name,
-                        value: submittedForm[input.name],
+                        value: formValues[input.name],
                         items: options,
                         errorMessage: validationErrors | findError(input.name)
                     }) }}
@@ -48,19 +54,19 @@
                             {
                                 label: 'Day',
                                 name: 'day',
-                                value: submittedForm[input.name + "-day"],
+                                value: formValues[input.name + "-day"],
                                 classes: 'govuk-input--width-2'
                             },
                             {
                                 label: 'Month',
                                 name: 'month',
-                                value: submittedForm[input.name + "-month"],
+                                value: formValues[input.name + "-month"],
                                 classes: 'govuk-input--width-2'
                             },
                             {
                                 label: 'Year',
                                 name: 'year',
-                                value: submittedForm[input.name + "-year"],
+                                value: formValues[input.name + "-year"],
                                 classes: 'govuk-input--width-4'
                             }
                         ]
@@ -70,7 +76,7 @@
                 {% if input.type == 'TEXT' %}
                     {{ govukTextarea({
                         name: input.name,
-                        value: submittedForm[input.name],
+                        value: formValues[input.name],
                         errorMessage: validationErrors | findError(input.name)
                     }) }}
                 {% endif %}

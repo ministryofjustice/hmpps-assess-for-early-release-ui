@@ -199,6 +199,10 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks` })
   }
 
+  async submitAssessmentForPreDecisionChecks(prisonNumber: string): Promise<void> {
+    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks` })
+  }
+
   async addResident(
     prisonNumber: string,
     addressCheckRequestId: number,

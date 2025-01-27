@@ -314,4 +314,18 @@ describe('assessForEarlyReleaseApiClient', () => {
       expect(output).toEqual(pdfBuffer)
     })
   })
+
+  describe('Submit assessment', () => {
+    const { prisonNumber } = createAssessmentSummary({})
+
+    it('submit assessment for pre-decision checks', async () => {
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber)
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
 })
