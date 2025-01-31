@@ -28,10 +28,9 @@ test.describe('Can add, edit & remove residents', () => {
     )
 
     await expect(page.getByText('Main occupier')).toBeVisible()
-    await expect(page.getByText('Other residents')).not.toBeVisible()
+    await expect(page.getByText('Other residents (optional)')).toBeVisible()
 
-    await expect(page.getByTestId('add-another-resident')).not.toBeVisible()
-    await expect(page.getByTestId('add-another-empty-resident')).toBeVisible()
+    await expect(page.getByTestId('add-another-resident')).toBeVisible()
     await expect(page.getByTestId('addResidentContinue')).toBeVisible()
   })
 
