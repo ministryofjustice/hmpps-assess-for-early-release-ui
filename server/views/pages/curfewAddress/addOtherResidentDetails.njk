@@ -6,7 +6,7 @@
 {% macro addOtherResidentDetails(params) %}
     {% call govukFieldset({
         legend: {
-            text: 'Other residents',
+            text: 'Other residents (optional)',
             classes: "moj-add-another__title govuk-fieldset__legend--m",
             id: 'otherResident[' + params.index + ']',
             name: 'otherResident[' + params.index + ']',
@@ -14,9 +14,9 @@
         },
         classes: 'govuk-fieldset moj-add-another__item',
         attributes: {
-                'data-name': 'otherResident[%index%]',
-                'data-id': 'otherResident[%index%]'
-            }
+            'data-name': 'otherResident[%index%]',
+            'data-id': 'otherResident[%index%]'
+        }
     }) %}
         {{ govukInput({
             id: 'otherResident[' + params.index + '][residentId]',
@@ -77,6 +77,21 @@
                 'data-id': 'otherResident[%index%][relation]'
             }
         }) }}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][age]',
+            label: {
+                text: 'Age',
+                classes: 'govuk-!-font-weight-bold'
+            },
+            name: 'otherResident[' + params.index + '][age]',
+            classes: 'govuk-input govuk-input--width-3',
+            errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][age]'),
+            value: params.otherResident.age,
+            attributes: {
+                'data-name': 'otherResident[%index%][age]',
+                'data-id': 'otherResident[%index%][age]'
+            }
+        }) }}
         {{ govukDateInput({
             id: 'otherResident[' + params.index + '][dateOfBirth]',
             name: 'otherResident[' + params.index + '][dateOfBirth]',
@@ -86,7 +101,11 @@
             fieldset: {
                 legend: {
                     text: "Date of birth (optional)",
-                    classes: "govuk-fieldset__legend--m"
+                    classes: "govuk-fieldset__legend--s",
+                    attributes: {
+                        'data-name': 'removeOtherResident[%index%][dateOfBirth]',
+                        'data-id': 'removeOtherResident[%index%][dateOfBirth]'
+                    }
                 }
             },
             items: [
@@ -125,30 +144,9 @@
                 }
             ]
         }) }}
-        {{ govukInput({
-            id: 'otherResident[' + params.index + '][age]',
-            label: {
-                text: 'Age',
-                classes: 'govuk-!-font-weight-bold'
-            },
-            name: 'otherResident[' + params.index + '][age]',
-            classes: 'govuk-input govuk-input--width-3',
-            value: params.otherResident.age,
-            attributes: {
-                'data-name': 'otherResident[%index%][age]',
-                'data-id': 'otherResident[%index%][age]'
-            }
-        }) }}
         {{ govukButton({
                 text: "Remove",
-                id: 'removeOtherResident[' + params.index + ']',
-                name: 'removeOtherResident[' + params.index + ']',
-                classes: "govuk-button--secondary moj-add-another__remove-button remove-button",
-                attributes: {
-                    'data-name': 'removeOtherResident[%index%]',
-                    'data-id': 'removeOtherResident[%index%]',
-                    'data-qa': 'removeOtherResident[' + params.index + ']'
-                }
+                classes: "govuk-button--secondary moj-add-another__remove-button remove-button"
         }) if params.showRemoveBtn }}
     {% endcall %}     
 {% endmacro %}

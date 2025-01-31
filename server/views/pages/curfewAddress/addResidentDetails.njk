@@ -8,7 +8,6 @@
 
 {% set pageTitle = "Add details of residents - " + applicationName %}
 {% set backLinkHref = "/" %}
-{% set otherResidents = submittedForm.otherResident | default(otherResidents) %}
 
 {% block content %}
 <div class="govuk-grid-row">
@@ -16,8 +15,6 @@
         <form id="addOtherResidentForm" method="POST">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             <input type="hidden" name="prisonerName" value="{{ assessmentSummary.name }}">
-            <input type="hidden" id="skipOtherResidentValidation" name="skipOtherResidentValidation" value="false">
-            <input type="hidden" id="otherResidentsExists" name="otherResidentsExists" value="{{ otherResidents | length > 0 }}">
             {% include 'partials/errorSummary.njk' %}
             {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
             <h1 class="govuk-heading-l govuk-!-margin-top-6">
@@ -116,8 +113,8 @@
 
             
             <div id="otherResidentsContainer" data-module="moj-add-another">
-                {% for otherResident in otherResidents %}
-                    {{ addOtherResidentDetails({ index: loop.index0, otherResident: otherResident, validationErrors: validationErrors, showRemoveBtn: otherResidents | length > 1}) }}
+                {% for otherResident in submittedForm.otherResident | default(otherResidents) %}
+                    {{ addOtherResidentDetails({ index: loop.index0, otherResident: otherResident, validationErrors: validationErrors, showRemoveBtn: submittedForm.otherResident | default(otherResidents) | length > 1}) }}
                 {% else %}
                     {{ addOtherResidentDetails({ index: 0, otherResident: {}, validationErrors: validationErrors, showRemoveBtn: false }) }}
                 {% endfor %}
@@ -127,16 +124,6 @@
                         text: "Add another resident",
                         classes: "govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4",
                         attributes: { 'data-qa': 'add-another-resident', 'id': 'addAnotherResidentButton' }
-                    }) }}
-                </div>
-            </div>
-            
-            <div id="otherResidentsEmptyContainer">
-                <div class="govuk-!-margin-top-4">
-                    {{ govukButton({
-                        text: "Add another resident",
-                        classes: "govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4",
-                        attributes: { 'data-qa': 'add-another-empty-resident', 'id': 'addAnotherResidentEmptyButton' }
                     }) }}
                 </div>
             </div>
@@ -156,8 +143,4 @@
             </div>
     </div>
 </div>
-{% endblock %}
-
-{% block pageScripts %}
-    <script src="/assets/js/addOtherResident.js"></script>
 {% endblock %}

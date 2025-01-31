@@ -55,16 +55,9 @@ export default class AddResidentDetailsRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
-    const {
-      residentId,
-      forename,
-      surname,
-      phoneNumber,
-      relation,
-      otherResident,
-      prisonerName,
-      skipOtherResidentValidation,
-    } = req.body
+    const { residentId, forename, surname, phoneNumber, relation, prisonerName } = req.body
+
+    let { otherResident } = req.body
 
     validateRequest(req, () => {
       const validationErrors: FieldValidationError[] = []
@@ -84,31 +77,51 @@ export default class AddResidentDetailsRoutes {
         })
       }
 
-      if (skipOtherResidentValidation === 'false' && otherResident) {
+      if (otherResident) {
+        otherResident = otherResident.filter((resident: OtherResident) => {
+          if (this.areAllFieldsEmpty(resident)) {
+            return false
+          }
+          return true
+        })
+
         otherResident.forEach((resident: OtherResident, index: number) => {
-          const residentIndexMessage =
-            otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
-          if (!resident.forename) {
-            validationErrors.push({
-              field: `otherResident[${index}][forename]`,
-              message: `Enter${residentIndexMessage} first name`,
-            })
+          if (this.areAllFieldsEmpty(resident)) {
+            otherResident.splice(index, 1)
           }
+          if (!!resident.forename || !!resident.surname || !!resident.relation) {
+            const residentIndexMessage =
+              otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
+            if (!resident.forename) {
+              validationErrors.push({
+                field: `otherResident[${index}][forename]`,
+                message: `Enter${residentIndexMessage} first name`,
+              })
+            }
 
-          if (!resident.surname) {
-            validationErrors.push({
-              field: `otherResident[${index}][surname]`,
-              message: `Enter${residentIndexMessage} last name`,
-            })
-          }
+            if (!resident.surname) {
+              validationErrors.push({
+                field: `otherResident[${index}][surname]`,
+                message: `Enter${residentIndexMessage} last name`,
+              })
+            }
 
-          if (!resident.relation) {
-            validationErrors.push({
-              field: `otherResident[${index}][relation]`,
-              message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
-            })
+            if (!resident.relation) {
+              validationErrors.push({
+                field: `otherResident[${index}][relation]`,
+                message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
+              })
+            }
+
+            if (!resident.age) {
+              validationErrors.push({
+                field: `otherResident[${index}][age]`,
+                message: `Enter${residentIndexMessage} age`,
+              })
+            }
           }
         })
+        req.body.otherResident = otherResident
       }
 
       return validationErrors
@@ -157,5 +170,17 @@ export default class AddResidentDetailsRoutes {
       age: age || null,
       isMainResident: false,
     }
+  }
+
+  areAllFieldsEmpty(resident: OtherResident): boolean {
+    return (
+      !resident.forename &&
+      !resident.surname &&
+      !resident.relation &&
+      !resident.day &&
+      !resident.month &&
+      !resident.year &&
+      !resident.age
+    )
   }
 }

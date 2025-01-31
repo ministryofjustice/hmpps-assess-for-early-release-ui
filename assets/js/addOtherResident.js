@@ -1,35 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const continueButton = document.getElementById('continueButton')
-  const skipOtherResidentValidationInput = document.getElementById('skipOtherResidentValidation')
-  const addAnotherResidentEmptyButton = document.getElementById('addAnotherResidentEmptyButton')
-  const otherResidentsContainer = document.getElementById('otherResidentsContainer')
-  const otherResidentsEmptyContainer = document.getElementById('otherResidentsEmptyContainer')
-  const otherResidentsExists = document.getElementById('otherResidentsExists').value === 'true'
-  const errorSummaryVisible = document.querySelector('.govuk-error-summary') !== null
-
-  if (!otherResidentsExists) {
-    otherResidentsContainer.style.display = 'none'
-  } else {
-    otherResidentsEmptyContainer.style.display = 'none'
+  window.mojFrontend.AddAnother.prototype.resetItem = item => {
+    item.find('[data-name], [data-id]').each((index, el) => {
+      const element = el
+      if (element) {
+        element.value = ''
+      }
+    })
+    item.find('.govuk-error-message').remove()
+    const classesToReset = ['govuk-form-group--error', 'govuk-input--error', 'govuk-textarea--error']
+    classesToReset.forEach(c => {
+      item.find(`.${c}`).removeClass(c)
+    })
   }
-
-  if (errorSummaryVisible) {
-    otherResidentsContainer.style.display = 'block'
-    otherResidentsEmptyContainer.style.display = 'none'
-  }
-
-  addAnotherResidentEmptyButton.addEventListener('click', () => {
-    otherResidentsEmptyContainer.style.display = 'none'
-    otherResidentsContainer.style.display = 'block'
-  })
-
-  continueButton.addEventListener('click', () => {
-    if (otherResidentsContainer.style.display === 'none') {
-      skipOtherResidentValidationInput.value = 'true'
-    } else {
-      skipOtherResidentValidationInput.value = 'false'
-    }
-  })
 
   window.mojFrontend.AddAnother.prototype.createRemoveButton = item => {
     item.append(
