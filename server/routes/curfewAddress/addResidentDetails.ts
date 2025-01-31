@@ -89,19 +89,36 @@ export default class AddResidentDetailsRoutes {
               message: `Enter${residentIndexMessage} first name`,
             })
           }
+          if (!!resident.forename || !!resident.surname || !!resident.relation) {
+            const residentIndexMessage =
+              otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
+            if (!resident.forename) {
+              validationErrors.push({
+                field: `otherResident[${index}][forename]`,
+                message: `Enter${residentIndexMessage} first name`,
+              })
+            }
 
-          if (!resident.surname) {
-            validationErrors.push({
-              field: `otherResident[${index}][surname]`,
-              message: `Enter${residentIndexMessage} last name`,
-            })
-          }
+            if (!resident.surname) {
+              validationErrors.push({
+                field: `otherResident[${index}][surname]`,
+                message: `Enter${residentIndexMessage} last name`,
+              })
+            }
 
-          if (!resident.relation) {
-            validationErrors.push({
-              field: `otherResident[${index}][relation]`,
-              message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
-            })
+            if (!resident.relation) {
+              validationErrors.push({
+                field: `otherResident[${index}][relation]`,
+                message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
+              })
+            }
+
+            if (!resident.age) {
+              validationErrors.push({
+                field: `otherResident[${index}][age]`,
+                message: `Enter${residentIndexMessage} age`,
+              })
+            }
           }
 
           if (!resident.age) {
