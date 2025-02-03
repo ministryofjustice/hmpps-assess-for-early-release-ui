@@ -65,6 +65,14 @@ const createAssessmentSummary = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  responsibleCom = {
+    staffCode: 'N55A023',
+    username: 'afer_com',
+    email: 'after_com@digital.justice.gov.uk',
+    forename: 'a',
+    surname: 'com',
+    team: 'N55LAU',
+  },
 } = {}): AssessmentSummary => ({
   forename,
   surname,
@@ -74,6 +82,7 @@ const createAssessmentSummary = ({
   crd,
   location,
   status,
+  responsibleCom,
   policyVersion,
   tasks: {
     PRISON_CA: tasks.PRISON_CA.map((task, i) => ({

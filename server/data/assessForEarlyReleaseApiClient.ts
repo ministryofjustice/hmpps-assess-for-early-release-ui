@@ -12,6 +12,7 @@ import type {
   AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
+  Agent,
   AssessmentSummary,
   CheckRequestSummary,
   CriterionCheck,
@@ -20,6 +21,7 @@ import type {
   EligibilityCriterionView,
   OffenderSummary,
   OptOutRequest,
+  PrisonUserDetails,
   ResidentialChecksTaskAnswersSummary,
   ResidentialChecksTaskView,
   ResidentialChecksView,
@@ -195,12 +197,18 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async submitAssessmentForAddressChecks(prisonNumber: string): Promise<void> {
-    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks` })
+  async submitAssessmentForAddressChecks(prisonNumber: string, agent: Agent): Promise<void> {
+    return this.restClient.put({
+      path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks`,
+      data: agent,
+    })
   }
 
-  async submitAssessmentForPreDecisionChecks(prisonNumber: string): Promise<void> {
-    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks` })
+  async submitAssessmentForPreDecisionChecks(prisonNumber: string, agent: Agent): Promise<void> {
+    return this.restClient.put({
+      path: `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`,
+      data: agent,
+    })
   }
 
   async addResident(
@@ -220,6 +228,10 @@ export default class AssessForEarlyReleaseApiClient {
 
   async getStaffDetailsByUsername(username: string) {
     return this.restClient.get<DeliusStaff>({ path: `/staff?username=${username}` })
+  }
+
+  async getPrisonUserDetails(username: string): Promise<PrisonUserDetails> {
+    return this.restClient.get<PrisonUserDetails>({ path: `/staff/prison/${username}` })
   }
 
   async getCommunityOffenderManagerCaseload(staffCode: string): Promise<OffenderSummary[]> {

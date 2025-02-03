@@ -8,7 +8,7 @@ export default class CaseloadRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const offenderSummaryList = await this.caseAdminCaseloadService.getCaseAdminCaseload(
       req?.middleware?.clientToken,
-      'MDI',
+      res.locals.activeCaseLoadId,
     )
 
     const caseload = offenderSummaryList.map(offender => {

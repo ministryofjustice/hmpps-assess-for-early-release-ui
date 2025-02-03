@@ -4,6 +4,7 @@ import type {
   AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
+  Agent,
   CheckRequestSummary,
   StandardAddressCheckRequestSummary,
   UpdateCaseAdminAdditionInfoRequest,
@@ -52,14 +53,14 @@ export default class AddressService {
     return assessForEarlyReleaseApiClient.getCheckRequestsForAssessment(prisonNumber)
   }
 
-  public async submitAssessmentForAddressChecks(token: string, prisonNumber: string): Promise<void> {
+  public async submitAssessmentForAddressChecks(token: string, prisonNumber: string, agent: Agent): Promise<void> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber)
+    return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber, agent)
   }
 
-  public async submitAssessmentForPreDecisionChecks(token: string, prisonNumber: string): Promise<void> {
+  public async submitAssessmentForPreDecisionChecks(token: string, prisonNumber: string, agent: Agent): Promise<void> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber)
+    return assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, agent)
   }
 
   public async addResident(

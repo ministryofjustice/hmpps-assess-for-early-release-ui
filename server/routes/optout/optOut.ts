@@ -6,6 +6,7 @@ import { FieldValidationError } from '../../@types/FieldValidationError'
 import OptOutService from '../../services/optOutService'
 import paths from '../paths'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
+import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class OptOutRoutes {
   constructor(
@@ -31,19 +32,31 @@ export default class OptOutRoutes {
     validateRequest(req, body => {
       const validationErrors: FieldValidationError[] = []
 
-      if (!body.optOutReason) {
-        validationErrors.push({ field: 'optOutReason', message: 'Select an opt-out reason' })
+      if (!body.optOutReasonType) {
+        validationErrors.push({ field: 'optOutReasonType', message: 'Select an opt-out reason' })
       }
 
-      if (body.optOutReason === OptOutReasonType.OTHER && !body.otherReason) {
+      if (body.optOutReasonType === OptOutReasonType.OTHER && !body.otherReason) {
         validationErrors.push({ field: 'otherReason', message: 'Enter the reason for opting out' })
       }
 
       return validationErrors
     })
 
-    const { optOutReason, otherReason } = req.body
-    await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, optOutReason, otherReason)
+    const { optOutReasonType, otherReason } = req.body
+    const { user } = res.locals
+
+    const agent: Agent = {
+      username: user.username,
+      role: 'PRISON_CA',
+      onBehalfOf: res.locals.activeCaseLoadId,
+    }
+
+    await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, {
+      optOutReasonType,
+      otherReason,
+      agent,
+    })
     return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
   }
 }

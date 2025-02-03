@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
-import { AddressService, ResidentialChecksService } from '../../services'
+import { AddressService, CaseAdminCaseloadService, ResidentialChecksService } from '../../services'
 import {
+  Agent,
   ResidentialChecksTaskProgress,
   StandardAddressCheckRequestSummary,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
@@ -10,6 +11,7 @@ import paths from '../paths'
 export default class ReviewInformationRoutes {
   constructor(
     private readonly addressService: AddressService,
+    private readonly caseAdminCaseloadService: CaseAdminCaseloadService,
     private readonly residentialChecksService: ResidentialChecksService,
   ) {}
 
@@ -55,7 +57,19 @@ export default class ReviewInformationRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-    await this.addressService.submitAssessmentForPreDecisionChecks(req?.middleware?.clientToken, prisonNumber)
+
+    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
+      req?.middleware?.clientToken,
+      req.params.prisonNumber,
+    )
+
+    const agent: Agent = {
+      username: res.locals.user.username,
+      role: 'PROBATION_COM',
+      onBehalfOf: assessmentSummary.responsibleCom.team,
+    }
+
+    await this.addressService.submitAssessmentForPreDecisionChecks(req?.middleware?.clientToken, prisonNumber, agent)
     return res.redirect(paths.probation.assessment.home({ prisonNumber }))
   }
 

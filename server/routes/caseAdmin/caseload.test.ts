@@ -9,7 +9,11 @@ const offenderSummaryList = [createCase({})]
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
-const res = mockResponse({})
+const res = mockResponse({
+  locals: {
+    activeCaseLoadId: 'MDI',
+  },
+})
 
 let caseloadRoutes: CaseloadRoutes
 

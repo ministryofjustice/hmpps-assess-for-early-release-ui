@@ -185,7 +185,14 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
-      await assessForEarlyReleaseApiClient.optOut(prisonNumber, { reasonType: 'NOWHERE_TO_STAY' })
+      await assessForEarlyReleaseApiClient.optOut(prisonNumber, {
+        reasonType: 'NOWHERE_TO_STAY',
+        agent: {
+          username: 'John Doe',
+          role: 'PRISON_CA',
+          onBehalfOf: 'DOH',
+        },
+      })
       expect(fakeAferApi.isDone()).toBe(true)
     })
   })
@@ -261,6 +268,11 @@ describe('assessForEarlyReleaseApiClient', () => {
           'question-1': 'an answer',
           'question-2': 'Yes',
         },
+        agent: {
+          username: 'John Doe',
+          role: 'PROBATION_COM',
+          onBehalfOf: 'N55LAU',
+        },
       }
 
       fakeAferApi
@@ -324,7 +336,11 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
-      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber)
+      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, {
+        username: 'after_com',
+        role: 'PROBATION_COM',
+        onBehalfOf: 'N55LAU',
+      })
       expect(fakeAferApi.isDone()).toBe(true)
     })
   })

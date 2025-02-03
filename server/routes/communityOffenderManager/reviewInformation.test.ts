@@ -4,7 +4,11 @@ import {
   createResidentialChecksView,
 } from '../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockResidentialChecksService } from '../../services/__testutils/mock'
+import {
+  createMockAddressService,
+  createMockCaseAdminCaseloadService,
+  createMockResidentialChecksService,
+} from '../../services/__testutils/mock'
 import ReviewInformationRoutes from './reviewInformation'
 
 const assessmentSummary = createAssessmentSummary({})
@@ -12,6 +16,7 @@ const checkRequestsForAssessmentSummary = createCheckRequestsForAssessmentSummar
 const residentialChecksView = createResidentialChecksView({})
 
 const addressService = createMockAddressService()
+const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const residentialChecksService = createMockResidentialChecksService()
 const req = mockRequest({})
 const res = mockResponse({})
@@ -20,7 +25,11 @@ describe('Review information and send checks to prison', () => {
   let reviewInformationRoutes: ReviewInformationRoutes
 
   beforeEach(() => {
-    reviewInformationRoutes = new ReviewInformationRoutes(addressService, residentialChecksService)
+    reviewInformationRoutes = new ReviewInformationRoutes(
+      addressService,
+      caseAdminCaseloadService,
+      residentialChecksService,
+    )
     addressService.getCheckRequestsForAssessment.mockResolvedValue(checkRequestsForAssessmentSummary)
     residentialChecksService.getResidentialChecksView.mockResolvedValue(residentialChecksView)
   })

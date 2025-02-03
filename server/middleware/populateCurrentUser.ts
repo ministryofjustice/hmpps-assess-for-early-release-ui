@@ -26,7 +26,12 @@ export default function populateCurrentUser(userService: UserService): RequestHa
       }
 
       if (res.locals.user.authSource === 'nomis') {
+        const prisonUser = await userService.getPrisonUserDetails(
+          req?.middleware?.clientToken,
+          res.locals.user.username,
+        )
         res.locals.user.staffId = parseInt(userId, 10) || undefined
+        res.locals.activeCaseLoadId = prisonUser?.activeCaseLoadId
       }
 
       if (res.locals.user.authSource === 'delius') {
