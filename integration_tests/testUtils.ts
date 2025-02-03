@@ -3,6 +3,8 @@ import tokenVerification from './mockApis/tokenVerification'
 import feComponent from './mockApis/feComponent'
 import { favicon, getSignInUrl, signIn, signOut, token } from './mockApis/auth'
 import { resetStubs } from './mockApis/wiremock'
+import assessForEarlyRelease from './mockApis/assessForEarlyRelease'
+import { createPrisonStaffDetails } from '../server/data/__testutils/testObjects'
 
 export { resetStubs }
 
@@ -20,6 +22,10 @@ export async function login(
     authSource?: 'nomis' | 'delius'
   },
 ) {
+  if (authorities.includes('ROLE_LICENCE_CA')) {
+    await assessForEarlyRelease.stubPrisonStaff(createPrisonStaffDetails())
+  }
+
   await Promise.all([
     favicon(),
     signIn(),

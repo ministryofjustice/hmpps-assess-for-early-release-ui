@@ -10,6 +10,7 @@ import {
   EligibilityCriterionProgress,
   EligibilityCriterionView,
   OffenderSummary,
+  PrisonUserDetails,
   ResidentialChecksTask,
   ResidentialChecksTaskProgress,
   ResidentialChecksTaskView,
@@ -394,6 +395,24 @@ const createStaffDetails = ({
   teams,
 })
 
+const createPrisonStaffDetails = ({
+  staffId = 1234,
+  username = 'USER1',
+  firstName = 'prison',
+  lastName = 'staff',
+  activeCaseLoadId = 'MDI',
+  accountStatus = 'ACTIVE',
+  active = true,
+} = {}): PrisonUserDetails => ({
+  staffId,
+  username,
+  firstName,
+  lastName,
+  activeCaseLoadId,
+  accountStatus,
+  active,
+})
+
 const createComCase = ({
   name = 'Jim Smith',
   probationPractitioner = 'CVl_COM',
@@ -703,6 +722,7 @@ export {
   createResidentSummary,
   createCheckRequestsForAssessmentSummary,
   createStaffDetails,
+  createPrisonStaffDetails,
   createResidentialChecksView,
   createResidentialChecksTaskView,
   createComCase,
