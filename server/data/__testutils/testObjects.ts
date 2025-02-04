@@ -69,7 +69,7 @@ const createAssessmentSummary = ({
   responsibleCom = {
     staffCode: 'N55A023',
     username: 'afer_com',
-    email: 'after_com@digital.justice.gov.uk',
+    email: 'afer_com@digital.justice.gov.uk',
     forename: 'a',
     surname: 'com',
     team: 'N55LAU',

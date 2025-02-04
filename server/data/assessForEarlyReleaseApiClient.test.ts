@@ -337,7 +337,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .reply(200)
 
       await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, {
-        username: 'after_com',
+        username: 'afer_com',
         role: 'PROBATION_COM',
         onBehalfOf: 'N55LAU',
       })
