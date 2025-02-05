@@ -313,6 +313,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/staff/prison/{username}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns staff details for the current prison user
+     * @description Returns staff details for the current prison user
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getPrisonUserDetails']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     parameters: {
       query?: never
@@ -689,6 +712,25 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    /** @description Details of the agent who is requesting a change be made to a resource */
+    Agent: {
+      /**
+       * @description The name of the user requesting the change
+       * @example Bob Smith
+       */
+      username: string
+      /**
+       * @description The role of the user requesting the change
+       * @example PROBATION_COM
+       * @enum {string}
+       */
+      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
+      /**
+       * @description The organisation the user requesting the change is working on behalf of
+       * @example A prison code or probation team code
+       */
+      onBehalfOf?: string
+    }
     ErrorResponse: {
       /** Format: int32 */
       status: number
@@ -711,6 +753,7 @@ export interface components {
        * @example Reason for the offending opting out
        */
       otherDescription?: string
+      agent: components['schemas']['Agent']
     }
     /** @description The answers to the question for a specific criterion */
     CriterionCheck: {
@@ -729,6 +772,7 @@ export interface components {
       answers: {
         [key: string]: boolean
       }
+      agent: components['schemas']['Agent']
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -979,6 +1023,16 @@ export interface components {
       /** @description The task code for these answers relate to */
       taskCode: string
       answers: components['schemas']['MapStringAny']
+      agent: components['schemas']['Agent']
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
@@ -992,15 +1046,6 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
-    }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1020,6 +1065,24 @@ export interface components {
       username?: string
       email?: string
       unallocated?: boolean
+    }
+    PrisonApiUserDetail: {
+      /** Format: int64 */
+      staffId: number
+      username: string
+      firstName: string
+      lastName: string
+      /** Format: int64 */
+      thumbnailId?: number
+      activeCaseLoadId?: string
+      accountStatus: string
+      /** @example 2021-07-05T10:35:17 */
+      lockDate?: string
+      /** @example 2021-07-05T10:35:17 */
+      expiryDate?: string
+      lockedFlag?: boolean
+      expiredFlag?: boolean
+      active: boolean
     }
     DlqMessage: {
       body: {
@@ -1130,6 +1193,12 @@ export interface components {
         | 'POSTPONED'
         | 'OPTED_OUT'
         | 'RELEASED_ON_HDC'
+      responsibleCom?: components['schemas']['ComSummary']
+      /**
+       * @description The team the offender this assessment is assigned to
+       * @example N55LAU
+       */
+      team?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1.0
@@ -1139,6 +1208,34 @@ export interface components {
       tasks: {
         [key: string]: components['schemas']['TaskProgress'][]
       }
+    }
+    /** @description A summary of a community offender manager */
+    ComSummary: {
+      /**
+       * @description The staff code
+       * @example A01B02C
+       */
+      staffCode: string
+      /**
+       * @description The username
+       * @example X33221
+       */
+      username?: string
+      /**
+       * @description The offender managers email address
+       * @example bob.jones@justice.gov.uk
+       */
+      email?: string
+      /**
+       * @description The offender managers first name
+       * @example Bob
+       */
+      forename?: string
+      /**
+       * @description The offender managers surname
+       * @example Jones
+       */
+      surname?: string
     }
     /** @description The progress on a task */
     TaskProgress: {
@@ -1343,6 +1440,19 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
+      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1363,19 +1473,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean
@@ -1461,7 +1558,11 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody?: never
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Agent']
+      }
+    }
     responses: {
       /** @description The offender's current assessment has been sent to the prison case admin for checking. */
       204: {
@@ -1510,7 +1611,11 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody?: never
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Agent']
+      }
+    }
     responses: {
       /** @description The offender's current assessment has been submitted for address checks. */
       204: {
@@ -1603,7 +1708,11 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody?: never
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Agent']
+      }
+    }
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
       204: {
@@ -1974,6 +2083,55 @@ export interface operations {
         }
       }
       /** @description Could not find staff with username */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonUserDetails: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        username: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns staff details for the current prison user */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonApiUserDetail']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Could not find the current user */
       404: {
         headers: {
           [name: string]: unknown

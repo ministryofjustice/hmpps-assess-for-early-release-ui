@@ -1,12 +1,13 @@
-import { stubFor, getMatchingRequests } from './wiremock'
+import { getMatchingRequests, stubFor } from './wiremock'
 import {
-  EligibilityCriterionProgress,
-  SuitabilityCriterionProgress,
   _AssessmentSummary,
+  _OffenderSummary,
   AddressSummary,
   CheckRequestSummary,
-  _OffenderSummary,
   DeliusStaff,
+  EligibilityCriterionProgress,
+  PrisonUserDetails,
+  SuitabilityCriterionProgress,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 
 const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
@@ -14,6 +15,21 @@ const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
     request: {
       method: 'GET',
       urlPattern: `/afer-api/staff\\?username=${username}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: staff,
+    },
+  })
+
+const stubPrisonStaff = (staff: PrisonUserDetails) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/staff/prison/${staff.username}`,
     },
     response: {
       status: 200,
@@ -867,6 +883,7 @@ const stubGetUpdateCaseAdminAdditionalInformation = (prisonNumber: string, reque
 
 export default {
   stubDeliusStaff,
+  stubPrisonStaff,
   stubGetComCaseload,
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,

@@ -1,4 +1,5 @@
 import type {
+  Agent,
   CriterionProgress,
   CriterionView,
   EligibilityAndSuitabilityCaseView,
@@ -43,8 +44,10 @@ export default class EligibilityAndSuitabilityService {
       type,
       criterion,
       form,
+      agent,
     }: {
       prisonNumber: string
+      agent: Agent
       type: 'suitability' | 'eligibility'
       criterion: CriterionProgress
       form: Record<string, unknown>
@@ -57,6 +60,7 @@ export default class EligibilityAndSuitabilityService {
       type,
       code: criterion.code,
       answers: payload,
+      agent,
     })
   }
 

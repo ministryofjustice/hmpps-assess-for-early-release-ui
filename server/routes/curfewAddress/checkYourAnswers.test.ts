@@ -3,6 +3,7 @@ import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import CheckYourAnswersRoutes from './checkYourAnswers'
 import paths from '../paths'
+import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 const assessmentSummary = createAssessmentSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
@@ -10,7 +11,14 @@ const addressSummary = createCheckRequestsForAssessmentSummary({})
 const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
-const res = mockResponse({})
+const res = mockResponse({
+  locals: {
+    user: {
+      username: 'AFER_CA',
+    },
+    activeCaseLoadId: 'KWV',
+  },
+})
 
 describe('check your answers summary', () => {
   let checkYourAnswersRoutes: CheckYourAnswersRoutes
@@ -52,9 +60,15 @@ describe('check your answers summary', () => {
     it('should redirect to assessment home page', async () => {
       await checkYourAnswersRoutes.POST(req, res)
 
+      const agent: Agent = {
+        username: res.locals.user.username,
+        role: 'PRISON_CA',
+        onBehalfOf: res.locals.activeCaseLoadId,
+      }
       expect(addressService.submitAssessmentForAddressChecks).toHaveBeenCalledWith(
         req.middleware.clientToken,
         req.params.prisonNumber,
+        agent,
       )
       expect(res.redirect).toHaveBeenCalledWith(
         paths.prison.assessment.home({

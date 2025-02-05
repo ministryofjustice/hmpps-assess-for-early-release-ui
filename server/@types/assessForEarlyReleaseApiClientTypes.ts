@@ -13,6 +13,8 @@ export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
 export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
 
+export type ComSummary = components['schemas']['ComSummary']
+
 export type _EligibilityAndSuitabilityCaseView = components['schemas']['EligibilityAndSuitabilityCaseView']
 export type EligibilityAndSuitabilityCaseView = ParsingDates<
   _EligibilityAndSuitabilityCaseView,
@@ -50,6 +52,7 @@ export type EligibilityStatus = components['schemas']['EligibilityAndSuitability
 export type SuitabilityStatus = components['schemas']['EligibilityAndSuitabilityCaseView']['suitabilityStatus']
 
 export type DeliusStaff = components['schemas']['User']
+export type PrisonUserDetails = components['schemas']['PrisonApiUserDetail']
 
 export type UserRole = 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT'
 export type TaskCode = components['schemas']['TaskProgress']['name']
@@ -67,3 +70,4 @@ export type ResidentialChecksTaskAnswersSummary = components['schemas']['Residen
 export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCaseAdminAdditionInfoRequest']
 export type MapStringAny = components['schemas']['MapStringAny']
 export type ProblemDetail = components['schemas']['ProblemDetail']
+export type Agent = components['schemas']['Agent']

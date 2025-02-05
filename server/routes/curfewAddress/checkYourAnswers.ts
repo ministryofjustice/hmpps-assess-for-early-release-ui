@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { AddressService, CaseAdminCaseloadService } from '../../services'
 import paths from '../paths'
+import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class CheckYourAnswersRoutes {
   constructor(
@@ -27,8 +28,12 @@ export default class CheckYourAnswersRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-    await this.addressService.submitAssessmentForAddressChecks(req?.middleware?.clientToken, prisonNumber)
-
+    const agent: Agent = {
+      username: res.locals.user.username,
+      role: 'PRISON_CA',
+      onBehalfOf: res.locals.activeCaseLoadId,
+    }
+    await this.addressService.submitAssessmentForAddressChecks(req?.middleware?.clientToken, prisonNumber, agent)
     return res.redirect(paths.prison.assessment.home({ prisonNumber }))
   }
 

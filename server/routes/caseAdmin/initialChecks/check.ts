@@ -37,11 +37,17 @@ export default class CheckRoutes {
       }),
     )
 
+    const { user } = res.locals
     await this.eligibilityAndSuitabilityService.saveCriterionAnswers(req?.middleware?.clientToken, {
       prisonNumber,
       type: type.replace('-check', '') as 'eligibility' | 'suitability',
       criterion,
       form: req.body,
+      agent: {
+        username: user.username,
+        role: 'PRISON_CA',
+        onBehalfOf: res.locals.activeCaseLoadId,
+      },
     })
 
     const nextLocation = nextCriterion

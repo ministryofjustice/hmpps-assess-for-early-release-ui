@@ -86,9 +86,15 @@ export default class ResidentialChecksTaskRoutes {
       }
     }
 
+    const { user } = res.locals
     const saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest = {
       taskCode,
       answers,
+      agent: {
+        username: user.username,
+        role: 'PROBATION_COM',
+        onBehalfOf: task.assessmentSummary.team,
+      },
     }
 
     let problemDetail: ProblemDetail

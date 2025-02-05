@@ -50,7 +50,11 @@ export default function Index({
   get(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.GET)
   post(paths.probation.assessment.curfewAddress.addressCheckTask, residentialChecksTaskRoutes.POST)
 
-  const reviewInformationRoutes = new ReviewInformationRoutes(addressService, residentialChecksService)
+  const reviewInformationRoutes = new ReviewInformationRoutes(
+    addressService,
+    caseAdminCaseloadService,
+    residentialChecksService,
+  )
   get(paths.probation.assessment.reviewInformation, reviewInformationRoutes.GET)
   post(paths.probation.assessment.reviewInformation, reviewInformationRoutes.POST)
 

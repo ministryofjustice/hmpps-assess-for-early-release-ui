@@ -8,10 +8,16 @@ import {
   createQuestion,
 } from '../data/__testutils/testObjects'
 import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent: Agent = {
+  username: 'prison user',
+  role: 'PRISON_CA',
+  onBehalfOf: 'JWO',
+}
 
 describe('EligibilityAndSuitabilityService', () => {
   let eligibilityAndSuitabilityService: EligibilityAndSuitabilityService
@@ -95,6 +101,7 @@ describe('EligibilityAndSuitabilityService', () => {
 
         await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
           prisonNumber: 'A1234AA',
+          agent,
           type: 'eligibility',
           criterion: criterionProgress,
           form: { question1: 'true' },
@@ -105,6 +112,7 @@ describe('EligibilityAndSuitabilityService', () => {
           answers: {
             question1: true,
           },
+          agent,
           code: 'code-1',
           type: 'eligibility',
         })
@@ -115,6 +123,7 @@ describe('EligibilityAndSuitabilityService', () => {
 
         await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
           prisonNumber: 'A1234AA',
+          agent,
           type: 'eligibility',
           criterion: criterionProgress,
           form: { question1: 'false' },
@@ -125,6 +134,7 @@ describe('EligibilityAndSuitabilityService', () => {
           answers: {
             question1: false,
           },
+          agent,
           code: 'code-1',
           type: 'eligibility',
         })
@@ -141,6 +151,7 @@ describe('EligibilityAndSuitabilityService', () => {
 
         await eligibilityAndSuitabilityService.saveCriterionAnswers(token, {
           prisonNumber: 'A1234AA',
+          agent,
           type: 'eligibility',
           criterion: criterionProgress,
           form: { name1: 'false', name2: 'true', name3: 'true' },
@@ -153,6 +164,7 @@ describe('EligibilityAndSuitabilityService', () => {
             name2: true,
             name3: true,
           },
+          agent,
           code: 'code-1',
           type: 'eligibility',
         })

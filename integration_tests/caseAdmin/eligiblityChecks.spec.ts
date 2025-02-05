@@ -73,6 +73,11 @@ test.describe('Eligibility checks', () => {
         answers: {
           question1: true,
         },
+        agent: {
+          username: 'USER1',
+          role: 'PRISON_CA',
+          onBehalfOf: 'MDI',
+        },
         code: 'code-1',
         type: 'eligibility',
       },
@@ -81,12 +86,22 @@ test.describe('Eligibility checks', () => {
           question2: true,
           question3: true,
         },
+        agent: {
+          username: 'USER1',
+          role: 'PRISON_CA',
+          onBehalfOf: 'MDI',
+        },
         code: 'code-2',
         type: 'eligibility',
       },
       {
         answers: {
           question3: true,
+        },
+        agent: {
+          username: 'USER1',
+          role: 'PRISON_CA',
+          onBehalfOf: 'MDI',
         },
         code: 'code-3',
         type: 'suitability',
