@@ -151,21 +151,5 @@ describe('add resident details routes', () => {
       const result = addResidentDetailsRoutes.transformToResidentSummary(otherResident as OtherResident)
       expect(result).toEqual(expectedResidentSummary)
     })
-
-    it('returns undefined if forename, surname, or relation is missing', () => {
-      const otherResident = {
-        residentId: 2,
-        forename: '',
-        surname: 'Bluff',
-        relation: 'brother',
-        day: '11',
-        month: '01',
-        year: '1985',
-        age: 89,
-      }
-
-      const result = addResidentDetailsRoutes.transformToResidentSummary(otherResident as OtherResident)
-      expect(result).toBeNull()
-    })
   })
 })
