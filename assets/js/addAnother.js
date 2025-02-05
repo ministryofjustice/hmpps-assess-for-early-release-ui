@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  alert('addAnother.js loaded')
   window.mojFrontend.AddAnother.prototype.resetItem = item => {
     item.find('[data-name], [data-id]').each((index, el) => {
       const element = el
