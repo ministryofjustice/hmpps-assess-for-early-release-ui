@@ -55,9 +55,7 @@ export default class AddResidentDetailsRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
-    const { residentId, forename, surname, phoneNumber, relation, prisonerName } = req.body
-
-    let { otherResident } = req.body
+    const { residentId, forename, surname, phoneNumber, relation, prisonerName, otherResident } = req.body
 
     validateRequest(req, () => {
       const validationErrors: FieldValidationError[] = []
@@ -78,18 +76,11 @@ export default class AddResidentDetailsRoutes {
       }
 
       if (otherResident) {
-        otherResident = otherResident.filter((resident: OtherResident) => {
-          if (this.areAllFieldsEmpty(resident)) {
-            return false
-          }
-          return true
-        })
-
         otherResident.forEach((resident: OtherResident, index: number) => {
           if (this.areAllFieldsEmpty(resident)) {
             otherResident.splice(index, 1)
           }
-          if (!!resident.forename || !!resident.surname || !!resident.relation) {
+          if (!!resident.forename || !!resident.surname || !!resident.relation || !!resident.age) {
             const residentIndexMessage =
               otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
             if (!resident.forename) {
@@ -121,7 +112,6 @@ export default class AddResidentDetailsRoutes {
             }
           }
         })
-        req.body.otherResident = otherResident
       }
 
       return validationErrors
@@ -157,10 +147,6 @@ export default class AddResidentDetailsRoutes {
     const { residentId, forename, surname, relation, day, month, year, age } = otherResident
     const dateOfBirth = day && month && year ? `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}` : null
 
-    if (!forename || !surname || !relation) {
-      return null
-    }
-
     return {
       residentId,
       forename,
@@ -173,14 +159,6 @@ export default class AddResidentDetailsRoutes {
   }
 
   areAllFieldsEmpty(resident: OtherResident): boolean {
-    return (
-      !resident.forename &&
-      !resident.surname &&
-      !resident.relation &&
-      !resident.day &&
-      !resident.month &&
-      !resident.year &&
-      !resident.age
-    )
+    return !resident.forename && !resident.surname && !resident.relation && !resident.age
   }
 }
