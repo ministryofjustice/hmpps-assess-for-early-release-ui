@@ -5,6 +5,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "partials/offenderSummary.njk" import offenderSummary %}
 {% from "./addOtherResidentDetails.njk" import addOtherResidentDetails %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {% set pageTitle = "Add details of residents - " + applicationName %}
 {% set backLinkHref = "/" %}
@@ -51,64 +52,77 @@
                 },
                 classes: 'govuk-!-margin-bottom-8 govuk-!-margin-top-8'
             }) %}
-                {{ govukInput({
-                        id: 'residentId',
-                        name: 'residentId',
-                        value: mainResident.residentId,
-                        type: 'hidden',
+                {{ govukCheckboxes({
+                    name: "isOffenderMainOccupier",
+                    id: "isOffenderMainOccupier",
+                    classes: "govuk-checkboxes--small",
+                    items: [
+                            {
+                                value: "true",
+                                text: assessmentSummary.name + " is the main occupier"
+                            }
+                    ]
+                }) }}
+                <div id="offenderIsNotMainOccupier">
+                    {{ govukInput({
+                            id: 'residentId',
+                            name: 'residentId',
+                            value: mainResident.residentId,
+                            type: 'hidden',
+                            attributes: {
+                                'data-qa': 'resident-id'
+                            }
+                    }) }}
+                    {{ govukInput({
+                        id: 'forename',
+                        label: {
+                            text: 'First name'
+                        },
+                        name: "forename",
+                        classes: 'govuk-!-width-one-half',
+                        errorMessage: validationErrors | findError('forename'),
+                        value: submittedForm.forename | default(mainResident.forename),
                         attributes: {
-                            'data-qa': 'resident-id'
+                            'data-qa': 'resident-forename'
                         }
-                }) }}
-                {{ govukInput({
-                    id: 'forename',
-                    label: {
-                        text: 'First name'
-                    },
-                    name: "forename",
-                    classes: 'govuk-!-width-one-half',
-                    errorMessage: validationErrors | findError('forename'),
-                    value: submittedForm.forename | default(mainResident.forename),
-                    attributes: {
-                        'data-qa': 'resident-forename'
-                    }
-                }) }}
-                {{ govukInput({
-                    id: 'surname',
-                    label: {
-                        text: 'Last name'
-                    },
-                    name: "surname",
-                    classes: 'govuk-!-width-one-half',
-                    errorMessage: validationErrors | findError('surname'),
-                    value:  submittedForm.surname | default(mainResident.surname),
-                    attributes: {
-                        'data-qa': 'resident-surname'
-                    }
-                }) }}
-                {{ govukInput({
-                    id: 'phoneNumber',
-                    label: {
-                        text: 'Phone number'
-                    },
-                    name: "phoneNumber",
-                    classes: 'govuk-!-width-one-half',
-                    errorMessage: validationErrors | findError('phoneNumber'),
-                    value: submittedForm.phoneNumber |  default(mainResident.phoneNumber)
-                }) }}
-                {{ govukInput({
-                    id: 'relation',
-                    label: {
-                        text: 'Relationship'
-                    },
-                    name: "relation",
-                    classes: 'govuk-!-width-one-half',
-                    errorMessage: validationErrors | findError('relation'),
-                    value: submittedForm.relation | default(mainResident.relation),
-                    attributes: {
-                        'data-qa': 'resident-relation'
-                    }
-                }) }}
+                    }) }}
+                    {{ govukInput({
+                        id: 'surname',
+                        label: {
+                            text: 'Last name'
+                        },
+                        name: "surname",
+                        classes: 'govuk-!-width-one-half',
+                        errorMessage: validationErrors | findError('surname'),
+                        value:  submittedForm.surname | default(mainResident.surname),
+                        attributes: {
+                            'data-qa': 'resident-surname'
+                        }
+                    }) }}
+                    {{ govukInput({
+                        id: 'phoneNumber',
+                        label: {
+                            text: 'Phone number'
+                        },
+                        name: "phoneNumber",
+                        classes: 'govuk-!-width-one-half',
+                        errorMessage: validationErrors | findError('phoneNumber'),
+                        value: submittedForm.phoneNumber |  default(mainResident.phoneNumber)
+                    }) }}
+                    {{ govukInput({
+                        id: 'relation',
+                        label: {
+                            text: 'Relationship'
+                        },
+                        name: "relation",
+                        classes: 'govuk-!-width-one-half',
+                        errorMessage: validationErrors | findError('relation'),
+                        value: submittedForm.relation | default(mainResident.relation),
+                        attributes: {
+                            'data-qa': 'resident-relation'
+                        }
+                    }) }}
+                </div
             {% endcall %}
 
             

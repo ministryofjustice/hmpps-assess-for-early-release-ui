@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const isOffenderMainOccupierCheckbox = document.getElementById('isOffenderMainOccupier')
+  const offenderIsNotMainOccupierElement = document.getElementById('offenderIsNotMainOccupier')
+
+  isOffenderMainOccupierCheckbox.addEventListener('change', () => {
+    if (isOffenderMainOccupierCheckbox.checked) {
+      offenderIsNotMainOccupierElement.style.display = 'none'
+    } else {
+      offenderIsNotMainOccupierElement.style.display = 'block'
+    }
+  })
+
   window.mojFrontend.AddAnother.prototype.resetItem = item => {
     item.find('[data-name], [data-id]').each((index, el) => {
       const element = el
