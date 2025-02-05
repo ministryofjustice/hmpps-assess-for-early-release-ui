@@ -93,7 +93,7 @@ export default class ResidentialChecksTaskRoutes {
       agent: {
         username: user.username,
         role: 'PROBATION_COM',
-        onBehalfOf: task.assessmentSummary.responsibleCom.team,
+        onBehalfOf: task.assessmentSummary.team,
       },
     }
 

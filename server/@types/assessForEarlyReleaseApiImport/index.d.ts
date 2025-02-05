@@ -729,7 +729,7 @@ export interface components {
        * @description The organisation the user requesting the change is working on behalf of
        * @example A prison code or probation team code
        */
-      onBehalfOf: string
+      onBehalfOf?: string
     }
     ErrorResponse: {
       /** Format: int32 */
@@ -1195,6 +1195,11 @@ export interface components {
         | 'RELEASED_ON_HDC'
       responsibleCom?: components['schemas']['ComSummary']
       /**
+       * @description The team the offender this assessment is assigned to
+       * @example N55LAU
+       */
+      team?: string
+      /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1.0
        */
@@ -1231,11 +1236,6 @@ export interface components {
        * @example Jones
        */
       surname?: string
-      /**
-       * @description The team the offender manager is assigned to
-       * @example N55LAU
-       */
-      team?: string
     }
     /** @description The progress on a task */
     TaskProgress: {
@@ -1440,6 +1440,19 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
+      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1460,19 +1473,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean

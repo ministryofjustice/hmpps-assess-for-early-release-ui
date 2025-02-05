@@ -66,7 +66,7 @@ export default class ReviewInformationRoutes {
     const agent: Agent = {
       username: res.locals.user.username,
       role: 'PROBATION_COM',
-      onBehalfOf: assessmentSummary.responsibleCom.team,
+      onBehalfOf: assessmentSummary.team,
     }
 
     await this.addressService.submitAssessmentForPreDecisionChecks(req?.middleware?.clientToken, prisonNumber, agent)
