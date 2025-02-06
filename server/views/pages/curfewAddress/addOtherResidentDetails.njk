@@ -1,0 +1,155 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro addOtherResidentDetails(params) %}
+    {% call govukFieldset({
+        legend: {
+            text: 'Other residents (optional)',
+            classes: "moj-add-another__title govuk-fieldset__legend--m",
+            id: 'otherResident[' + params.index + ']',
+            name: 'otherResident[' + params.index + ']',
+            isPageHeading: false
+        },
+        classes: 'govuk-fieldset moj-add-another__item',
+        attributes: {
+            'data-name': 'otherResident[%index%]',
+            'data-id': 'otherResident[%index%]'
+        }
+    }) %}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][residentId]',
+            label: {
+                text: 'Resident ID',
+                classes: 'govuk-!-font-weight-bold govuk-!-display-none'
+            },
+            name: 'otherResident[' + params.index + '][residentId]',
+            value: params.otherResident.residentId | default(''),
+            type: 'hidden',
+            attributes: {
+                'data-name': 'otherResident[%index%][residentId]',
+                'data-id': 'otherResident[%index%][residentId]'
+            }
+        }) }}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][forename]',
+            label: {
+                text: 'First name',
+                classes: 'govuk-!-font-weight-bold'
+            },
+            name: 'otherResident[' + params.index + '][forename]',
+            classes: 'govuk-!-width-one-half',
+            errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][forename]'),
+            value: params.otherResident.forename,
+            attributes: {
+                'data-name': 'otherResident[%index%][forename]',
+                'data-id': 'otherResident[%index%][forename]'
+            }
+        }) }}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][surname]',
+            label: {
+                text: 'Last name',
+                classes: 'govuk-!-font-weight-bold'
+            },
+            name: 'otherResident[' + params.index + '][surname]',
+            classes: 'govuk-!-width-one-half',
+            errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][surname]'),
+            value: params.otherResident.surname,
+            attributes: {
+                'data-name': 'otherResident[%index%][surname]',
+                'data-id': 'otherResident[%index%][surname]'
+            }
+        }) }}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][relation]',
+            label: {
+                text: 'Relationship',
+                classes: 'govuk-!-font-weight-bold'
+            },
+            name: 'otherResident[' + params.index + '][relation]',
+            classes: 'govuk-!-width-one-half',
+            errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][relation]'),
+            value: params.otherResident.relation,
+            attributes: {
+                'data-name': 'otherResident[%index%][relation]',
+                'data-id': 'otherResident[%index%][relation]'
+            }
+        }) }}
+        {{ govukInput({
+            id: 'otherResident[' + params.index + '][age]',
+            label: {
+                text: 'Age',
+                classes: 'govuk-!-font-weight-bold'
+            },
+            name: 'otherResident[' + params.index + '][age]',
+            classes: 'govuk-input govuk-input--width-3',
+            errorMessage: params.validationErrors | findError('otherResident[' + params.index + '][age]'),
+            value: params.otherResident.age,
+            attributes: {
+                'data-name': 'otherResident[%index%][age]',
+                'data-id': 'otherResident[%index%][age]'
+            }
+        }) }}
+        {{ govukDateInput({
+            id: 'otherResident[' + params.index + '][dateOfBirth]',
+            name: 'otherResident[' + params.index + '][dateOfBirth]',
+            hint: {
+                text: "For example, 31 3 1980"
+            },
+            fieldset: {
+                legend: {
+                    text: "Date of birth (optional)",
+                    classes: "govuk-fieldset__legend--s",
+                    attributes: {
+                        'data-name': 'removeOtherResident[%index%][dateOfBirth]',
+                        'data-id': 'removeOtherResident[%index%][dateOfBirth]'
+                    }
+                }
+            },
+            items: [
+                {
+                    id: 'otherResident[' + params.index + '][day]',
+                    label: 'Day',
+                    name: 'otherResident[' + params.index + '][day]',
+                    classes: 'govuk-input--width-2',
+                    value: params.otherResident.dateOfBirth | getDay,
+                    attributes: {
+                        'data-name': 'otherResident[%index%][day]',
+                        'data-id': 'otherResident[%index%][day]'
+                    }
+                },
+                {
+                    id: 'otherResident[' + params.index + '][month]',
+                    label: 'Month',
+                    name: 'otherResident[' + params.index + '][month]',
+                    classes: 'govuk-input--width-2',
+                    value: params.otherResident.dateOfBirth | getMonth,
+                    attributes: {
+                        'data-name': 'otherResident[%index%][month]',
+                        'data-id': 'otherResident[%index%][month]'
+                    }
+                },
+                {
+                    id: 'otherResident[' + params.index + '][year]',
+                    label: 'Year',
+                    name: 'otherResident[' + params.index + '][year]',
+                    classes: 'govuk-input--width-4',
+                    value: params.otherResident.dateOfBirth | getYear,
+                    attributes: {
+                        'data-name': 'otherResident[%index%][year]',
+                        'data-id': 'otherResident[%index%][year]'
+                    }
+                }
+            ]
+        }) }}
+        {{ govukButton({
+                text: "Remove",
+                classes: "govuk-button--secondary moj-add-another__remove-button remove-button",
+                attributes: {
+                    'data-qa': 'removeOtherResident[' + params.index + ']'
+                }
+        }) if params.showRemoveBtn }}
+    {% endcall %}     
+{% endmacro %}

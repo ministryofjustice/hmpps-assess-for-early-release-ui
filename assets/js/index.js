@@ -1,9 +1,12 @@
 import * as govukFrontend from 'govuk-frontend'
 import * as mojFrontend from '@ministryofjustice/frontend'
 import './card'
+import './addAnother'
 
 govukFrontend.initAll()
 mojFrontend.initAll()
+
+window.mojFrontend = mojFrontend
 
 // Initiate the back links
 $('[class$=js-backlink]').on('click', e => {

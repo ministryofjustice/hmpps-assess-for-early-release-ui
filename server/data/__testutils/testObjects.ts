@@ -288,6 +288,7 @@ const createStandardAddressCheckRequestSummary = ({
   preferencePriority = 'FIRST' as StandardAddressCheckRequestSummary['preferencePriority'],
   status = 'IN_PROGRESS' as StandardAddressCheckRequestSummary['status'],
   address = createAddressSummary({}),
+  residents = [createResidentSummary()],
 } = {}): StandardAddressCheckRequestSummary => ({
   requestId,
   caAdditionalInfo,
@@ -296,6 +297,7 @@ const createStandardAddressCheckRequestSummary = ({
   preferencePriority,
   status,
   address,
+  residents,
   requestType: 'STANDARD_ADDRESS',
 })
 

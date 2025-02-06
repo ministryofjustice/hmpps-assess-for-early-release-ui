@@ -228,5 +228,23 @@ export function registerNunjucks(app?: express.Express): Environment {
     }
   })
 
+  njkEnv.addFilter('getDay', (dateString: string) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.getDate().toString().padStart(2, '0')
+  })
+
+  njkEnv.addFilter('getMonth', (dateString: string) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return (date.getMonth() + 1).toString().padStart(2, '0')
+  })
+
+  njkEnv.addFilter('getYear', (dateString: string) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.getFullYear().toString()
+  })
+
   return njkEnv
 }

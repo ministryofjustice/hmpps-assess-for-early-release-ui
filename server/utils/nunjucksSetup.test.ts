@@ -299,4 +299,52 @@ describe('nunjucksSetup', () => {
       expect(result).toEqual('99, HARTLAND ROAD, READING, RG2 8AF')
     })
   })
+
+  describe('Date utility functions', () => {
+    describe('getDay', () => {
+      it('returns the day of the month as a two-digit string', () => {
+        const date = new Date('2023-10-15')
+        const result = renderTemplate('{{- date | getDay -}}', {
+          date,
+        })
+        expect(result).toBe('15')
+      })
+
+      it('pads single-digit days with a leading zero', () => {
+        const date = new Date('2023-10-05')
+        const result = renderTemplate('{{- date | getDay -}}', {
+          date,
+        })
+        expect(result).toBe('05')
+      })
+    })
+
+    describe('getMonth', () => {
+      it('returns the month as a two-digit string', () => {
+        const date = new Date('2023-10-15')
+        const result = renderTemplate('{{- date | getMonth -}}', {
+          date,
+        })
+        expect(result).toBe('10')
+      })
+
+      it('pads single-digit months with a leading zero', () => {
+        const date = new Date('2023-01-15')
+        const result = renderTemplate('{{- date | getMonth -}}', {
+          date,
+        })
+        expect(result).toBe('01')
+      })
+    })
+
+    describe('getYear', () => {
+      it('returns the year as a four-digit string', () => {
+        const date = new Date('2023-10-15')
+        const result = renderTemplate('{{- date | getYear -}}', {
+          date,
+        })
+        expect(result).toBe('2023')
+      })
+    })
+  })
 })
