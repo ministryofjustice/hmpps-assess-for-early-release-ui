@@ -55,6 +55,10 @@ export default class AddResidentDetailsRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
+
+    req.body.otherResident = req.body.otherResident?.filter(
+      (resident: OtherResident) => !this.areAllFieldsEmpty(resident),
+    )
     const { residentId, forename, surname, phoneNumber, relation, prisonerName, otherResident } = req.body
 
     validateRequest(req, () => {
@@ -75,44 +79,39 @@ export default class AddResidentDetailsRoutes {
         })
       }
 
-      if (otherResident) {
-        otherResident.forEach((resident: OtherResident, index: number) => {
-          if (this.areAllFieldsEmpty(resident)) {
-            otherResident.splice(index, 1)
+      otherResident?.forEach((resident: OtherResident, index: number) => {
+        if (!!resident.forename || !!resident.surname || !!resident.relation || !!resident.age) {
+          const residentIndexMessage =
+            otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
+          if (!resident.forename) {
+            validationErrors.push({
+              field: `otherResident[${index}][forename]`,
+              message: `Enter${residentIndexMessage} first name`,
+            })
           }
-          if (!!resident.forename || !!resident.surname || !!resident.relation || !!resident.age) {
-            const residentIndexMessage =
-              otherResident.length > 1 ? ` the ${getOrdinal(index + 1)} other resident’s` : ' the other resident’s'
-            if (!resident.forename) {
-              validationErrors.push({
-                field: `otherResident[${index}][forename]`,
-                message: `Enter${residentIndexMessage} first name`,
-              })
-            }
 
-            if (!resident.surname) {
-              validationErrors.push({
-                field: `otherResident[${index}][surname]`,
-                message: `Enter${residentIndexMessage} last name`,
-              })
-            }
-
-            if (!resident.relation) {
-              validationErrors.push({
-                field: `otherResident[${index}][relation]`,
-                message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
-              })
-            }
-
-            if (!resident.age) {
-              validationErrors.push({
-                field: `otherResident[${index}][age]`,
-                message: `Enter${residentIndexMessage} age`,
-              })
-            }
+          if (!resident.surname) {
+            validationErrors.push({
+              field: `otherResident[${index}][surname]`,
+              message: `Enter${residentIndexMessage} last name`,
+            })
           }
-        })
-      }
+
+          if (!resident.relation) {
+            validationErrors.push({
+              field: `otherResident[${index}][relation]`,
+              message: `Enter${residentIndexMessage} relationship to ${prisonerName}`,
+            })
+          }
+
+          if (!resident.age) {
+            validationErrors.push({
+              field: `otherResident[${index}][age]`,
+              message: `Enter${residentIndexMessage} age`,
+            })
+          }
+        }
+      })
 
       return validationErrors
     })
