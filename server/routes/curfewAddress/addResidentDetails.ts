@@ -126,13 +126,9 @@ export default class AddResidentDetailsRoutes {
       isMainResident: true,
     } as _ResidentSummary
 
-    const otherResidents = otherResident
-      ? otherResident.map(this.transformToResidentSummary).filter((resident: _ResidentSummary | null) => resident)
-      : []
-
     await this.addressService.addResidents(req?.middleware?.clientToken, prisonNumber, Number(checkRequestId), [
       mainResident,
-      ...otherResidents,
+      ...otherResident.map(this.transformToResidentSummary),
     ])
 
     return res.redirect(
