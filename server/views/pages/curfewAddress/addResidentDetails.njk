@@ -53,17 +53,18 @@
                 classes: 'govuk-!-margin-bottom-8 govuk-!-margin-top-8'
             }) %}
                 {{ govukCheckboxes({
-                    name: "isOffenderMainOccupier",
-                    id: "isOffenderMainOccupier",
+                    name: "isOffender",
+                    id: "isOffender",
                     classes: "govuk-checkboxes--small",
                     items: [
                             {
                                 value: "true",
-                                text: assessmentSummary.name + " is the main occupier"
+                                text: assessmentSummary.name + " is the main occupier",
+                                checked: submittedForm.isOffender | default(mainResident.isOffender)
                             }
                     ]
                 }) }}
-                <div id="offenderIsNotMainOccupier">
+                <div id="mainOccupier">
                     {{ govukInput({
                             id: 'residentId',
                             name: 'residentId',
@@ -122,7 +123,7 @@
                             'data-qa': 'resident-relation'
                         }
                     }) }}
-                </div
+                </div>
             {% endcall %}
 
             

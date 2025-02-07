@@ -54,6 +54,7 @@ const createOffenderSummary = ({
   surname,
   hdced,
   probationPractitioner,
+  isPostponed: false,
 })
 
 const createAssessmentSummary = ({
@@ -317,6 +318,7 @@ const createAddResidentRequest = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender: false,
 })
 
 const createResidentSummary = ({
@@ -337,6 +339,7 @@ const createResidentSummary = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender: false,
 })
 
 const createCheckRequestsForAssessmentSummary = ({

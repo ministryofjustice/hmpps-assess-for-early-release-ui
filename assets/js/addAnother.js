@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const isOffenderMainOccupierCheckbox = document.getElementById('isOffenderMainOccupier')
-  const offenderIsNotMainOccupierElement = document.getElementById('offenderIsNotMainOccupier')
+  const isOffenderMainOccupierCheckbox = document.getElementById('isOffender')
 
-  isOffenderMainOccupierCheckbox.addEventListener('change', () => {
-    if (isOffenderMainOccupierCheckbox.checked) {
-      offenderIsNotMainOccupierElement.style.display = 'none'
-    } else {
-      offenderIsNotMainOccupierElement.style.display = 'block'
-    }
-  })
+  if (isOffenderMainOccupierCheckbox) {
+    // Listen for the change event
+    isOffenderMainOccupierCheckbox.addEventListener('change', handleIsOffenderMainOccupierChange)
+
+    // Call the handler on page load
+    handleIsOffenderMainOccupierChange()
+  }
 
   window.mojFrontend.AddAnother.prototype.resetItem = item => {
     item.find('[data-name], [data-id]').each((index, el) => {
@@ -30,3 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
     )
   }
 })
+
+function handleIsOffenderMainOccupierChange() {
+  const isOffenderMainOccupierCheckbox = document.getElementById('isOffender')
+  const mainOccupierElement = document.getElementById('mainOccupier')
+
+  if (isOffenderMainOccupierCheckbox && mainOccupierElement) {
+    if (isOffenderMainOccupierCheckbox.checked) {
+      mainOccupierElement.style.display = 'none'
+    } else {
+      mainOccupierElement.style.display = 'block'
+    }
+  }
+}

@@ -155,6 +155,7 @@ const createResidentSummary = (residentId: number, isMainResident: boolean): Res
   dateOfBirth: new Date('1985-03-31'),
   age: 38,
   isMainResident,
+  isOffender: false,
 })
 
 export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
@@ -189,4 +190,5 @@ export const createOffenderSummary = (prisonNumber: string): _OffenderSummary =>
   surname: 'Smith',
   hdced: '2024-01-20',
   probationPractitioner: 'Mark Coombes',
+  isPostponed: false,
 })

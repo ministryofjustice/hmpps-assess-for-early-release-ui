@@ -702,6 +702,7 @@ export interface paths {
     trace?: never
   }
 }
+export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -909,6 +910,11 @@ export interface components {
        * @example true
        */
       isMainResident: boolean
+      /**
+       * @description Is offender a main resident at the address
+       * @example true
+       */
+      isOffender: boolean
     }
     /** @description Response object which describes a standard address check request */
     StandardAddressCheckRequestSummary: Omit<
@@ -936,9 +942,21 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
+      /**
+       * Format: int64
+       * @description A unique internal reference for the resident
+       * @example 87320
+       */
+      residentId?: number
       /**
        * @description The resident's forename
        * @example Dave
@@ -976,6 +994,11 @@ export interface components {
        * @example true
        */
       isMainResident: boolean
+      /**
+       * @description Is offender a main resident at the address
+       * @example true
+       */
+      isOffender: boolean
     }
     /** @description Request for adding a CAS check request */
     AddCasCheckRequest: {
@@ -1017,6 +1040,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -1024,15 +1053,6 @@ export interface components {
       taskCode: string
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
-    }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
     }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
@@ -1046,6 +1066,15 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1131,6 +1160,22 @@ export interface components {
        * @example Mark Coombes
        */
       probationPractitioner?: string
+      /**
+       * @description Whether the offender's current assessment has been postponed or not
+       * @example true
+       */
+      isPostponed: boolean
+      /**
+       * Format: date
+       * @description The date that the offender's current assessment was postponed
+       * @example 2028-06-23
+       */
+      postponementDate?: string
+      /**
+       * @description The reason that the offender's current assessment was postponed
+       * @example Have an application pending with the unduly lenient sentence scheme
+       */
+      postponementReason?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1195,7 +1240,7 @@ export interface components {
         | 'RELEASED_ON_HDC'
       responsibleCom?: components['schemas']['ComSummary']
       /**
-       * @description The team the offender this assessment is assigned to
+       * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
       team?: string
@@ -1440,18 +1485,17 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1473,6 +1517,7 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean
@@ -1484,6 +1529,7 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {

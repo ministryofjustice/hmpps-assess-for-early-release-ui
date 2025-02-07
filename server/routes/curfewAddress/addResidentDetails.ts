@@ -59,24 +59,30 @@ export default class AddResidentDetailsRoutes {
     req.body.otherResident = req.body.otherResident?.filter(
       (resident: OtherResident) => !this.areAllFieldsEmpty(resident),
     )
-    const { residentId, forename, surname, phoneNumber, relation, prisonerName, otherResident } = req.body
+    req.body.isOffender = req.body.isOffender || false
+
+    const { residentId, forename, surname, phoneNumber, relation, prisonerName, otherResident, isOffender } = req.body
+
+    const [prisonerForename, prisonerSurname] = prisonerName.split(' ')
 
     validateRequest(req, () => {
       const validationErrors: FieldValidationError[] = []
 
-      if (!forename) {
-        validationErrors.push({ field: 'forename', message: 'Enter the main occupier’s first name' })
-      }
+      if (!isOffender) {
+        if (!forename) {
+          validationErrors.push({ field: 'forename', message: 'Enter the main occupier’s first name' })
+        }
 
-      if (!surname) {
-        validationErrors.push({ field: 'surname', message: 'Enter the main occupier’s last name' })
-      }
+        if (!surname) {
+          validationErrors.push({ field: 'surname', message: 'Enter the main occupier’s last name' })
+        }
 
-      if (!relation) {
-        validationErrors.push({
-          field: 'relation',
-          message: `Enter the main occupier’s relationship to ${prisonerName}`,
-        })
+        if (!relation) {
+          validationErrors.push({
+            field: 'relation',
+            message: `Enter the main occupier’s relationship to ${prisonerName}`,
+          })
+        }
       }
 
       otherResident?.forEach((resident: OtherResident, index: number) => {
@@ -118,11 +124,12 @@ export default class AddResidentDetailsRoutes {
 
     const mainResident = {
       residentId,
-      forename,
-      surname,
-      phoneNumber,
-      relation,
+      forename: isOffender ? prisonerForename : forename,
+      surname: isOffender ? prisonerSurname : surname,
+      phoneNumber: isOffender ? phoneNumber : null,
+      relation: isOffender ? '' : relation,
       isMainResident: true,
+      isOffender,
     } as _ResidentSummary
 
     await this.addressService.addResidents(req?.middleware?.clientToken, prisonNumber, Number(checkRequestId), [
@@ -150,6 +157,7 @@ export default class AddResidentDetailsRoutes {
       dateOfBirth,
       age: age || null,
       isMainResident: false,
+      isOffender: false,
     }
   }
 
