@@ -9,6 +9,10 @@ export type Case = {
   prisonNumber: string
   hdced: Date
   remainingDays: number
+  probationPractitioner: string
+  isPostponed: boolean
+  postponementReason?: string
+  postponementDate?: Date
 }
 
 export default class CaseAdminCaseloadService {
@@ -24,6 +28,10 @@ export default class CaseAdminCaseloadService {
       prisonNumber: offender.prisonNumber,
       hdced: offender.hdced,
       remainingDays: differenceInDays(offender.hdced, startOfDay(new Date())),
+      probationPractitioner: convertToTitleCase(offender.probationPractitioner?.trim()),
+      isPostponed: offender.isPostponed,
+      postponementReason: offender.postponementReason,
+      postponementDate: offender.postponementDate,
     }))
   }
 

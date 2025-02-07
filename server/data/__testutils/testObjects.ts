@@ -33,11 +33,15 @@ const createCase = ({
   name = 'Jim Smith',
   hdced = parseIsoDate('2022-01-08'),
   remainingDays = 1,
+  probationPractitioner = 'Jane Huggins',
+  isPostponed = false,
 } = {}): Case => ({
   prisonNumber,
   hdced,
   name,
   remainingDays,
+  probationPractitioner,
+  isPostponed,
 })
 
 const createOffenderSummary = ({
@@ -47,6 +51,9 @@ const createOffenderSummary = ({
   surname = 'Smith',
   hdced = addDays(startOfDay(new Date()), 3),
   probationPractitioner = 'CVl_COM',
+  isPostponed = false,
+  postponementDate = null,
+  postponementReason = null,
 } = {}): OffenderSummary => ({
   prisonNumber,
   bookingId,
@@ -54,6 +61,9 @@ const createOffenderSummary = ({
   surname,
   hdced,
   probationPractitioner,
+  isPostponed,
+  postponementDate,
+  postponementReason,
 })
 
 const createAssessmentSummary = ({

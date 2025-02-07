@@ -40,6 +40,21 @@ const stubPrisonStaff = (staff: PrisonUserDetails) =>
     },
   })
 
+const stubGetCaseAdminCaseload = (prisonCode: string, caseload: _OffenderSummary[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/prison/${prisonCode}/case-admin/caseload`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: caseload,
+    },
+  })
+
 const stubGetComCaseload = (staffCode: string, list: _OffenderSummary[]) =>
   stubFor({
     request: {
@@ -949,6 +964,7 @@ const stubGetUpdateCaseAdminAdditionalInformation = (prisonNumber: string, reque
 export default {
   stubDeliusStaff,
   stubPrisonStaff,
+  stubGetCaseAdminCaseload,
   stubGetComCaseload,
   stubGetAssessmentSummary,
   stubGetEligibilityAndSuitability,

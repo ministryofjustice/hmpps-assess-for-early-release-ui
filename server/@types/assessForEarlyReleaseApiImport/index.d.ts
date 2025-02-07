@@ -1025,15 +1025,6 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
     }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
-    }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
       /**
@@ -1046,6 +1037,15 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1131,6 +1131,22 @@ export interface components {
        * @example Mark Coombes
        */
       probationPractitioner?: string
+      /**
+       * @description Whether the offender's current assessment has been postponed or not
+       * @example true
+       */
+      isPostponed: boolean
+      /**
+       * Format: date
+       * @description The date that the offender's current assessment was postponed
+       * @example 2028-06-23
+       */
+      postponementDate?: string
+      /**
+       * @description The reason that the offender's current assessment was postponed
+       * @example Have an application pending with the unduly lenient sentence scheme
+       */
+      postponementReason?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1195,7 +1211,7 @@ export interface components {
         | 'RELEASED_ON_HDC'
       responsibleCom?: components['schemas']['ComSummary']
       /**
-       * @description The team the offender this assessment is assigned to
+       * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
       team?: string
@@ -1439,6 +1455,7 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
       /**
        * Format: int64
        * @description Unique internal identifier for this request
@@ -1451,7 +1468,6 @@ export interface components {
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info

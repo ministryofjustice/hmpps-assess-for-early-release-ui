@@ -1,6 +1,7 @@
 import { CaseAdminCaseloadService } from '.'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
+import { convertToTitleCase } from '../utils/utils'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
@@ -19,7 +20,7 @@ describe('CA Caseload Service', () => {
   })
 
   describe('Caseload', () => {
-    it('get caseadmin caseload', async () => {
+    it('get case admin caseload', async () => {
       const aCase = createOffenderSummary({})
       assessForEarlyReleaseApiClient.getCaseAdminCaseload.mockResolvedValue([aCase])
 
@@ -28,10 +29,14 @@ describe('CA Caseload Service', () => {
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
       expect(result).toEqual([
         {
-          name: 'Jim Smith',
-          remainingDays: 3,
-          prisonNumber: 'A1234AB',
+          name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
+          prisonNumber: aCase.prisonNumber,
           hdced: aCase.hdced,
+          remainingDays: 3,
+          probationPractitioner: convertToTitleCase(aCase.probationPractitioner?.trim()),
+          isPostponed: aCase.isPostponed,
+          postponementReason: aCase.postponementReason,
+          postponementDate: aCase.postponementDate,
         },
       ])
     })

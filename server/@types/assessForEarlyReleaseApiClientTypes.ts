@@ -5,15 +5,13 @@ type ParsingDates<T, Fields> = {
 }
 
 export type _OffenderSummary = components['schemas']['OffenderSummary']
-export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced'>
+export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate'>
 
 export type _AddressSummary = components['schemas']['AddressSummary']
 export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
 
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
 export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
-
-export type ComSummary = components['schemas']['ComSummary']
 
 export type _EligibilityAndSuitabilityCaseView = components['schemas']['EligibilityAndSuitabilityCaseView']
 export type EligibilityAndSuitabilityCaseView = ParsingDates<
