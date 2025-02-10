@@ -187,6 +187,9 @@ export const createOffenderSummary = (prisonNumber: string): _OffenderSummary =>
   bookingId: 1,
   forename: 'Jim',
   surname: 'Smith',
-  hdced: '2024-01-20',
+  hdced: '2026-01-20',
   probationPractitioner: 'Mark Coombes',
+  isPostponed: false,
+  postponementDate: null,
+  postponementReason: null,
 })
