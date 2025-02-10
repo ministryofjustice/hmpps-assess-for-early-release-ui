@@ -27,7 +27,11 @@ test.describe('Can add, edit & remove residents', () => {
       `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId })}`,
     )
 
-    await expect(page.getByText('Main occupier')).toBeVisible()
+    await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
+    await expect(page.getByTestId('main-occupier')).toBeVisible()
+    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    const isChecked = await page.locator('#isOffender').isChecked()
+    expect(isChecked).toBe(false)
     await expect(page.getByText('Other residents (optional)')).toBeVisible()
 
     await expect(page.getByTestId('add-another-resident')).toBeVisible()
@@ -39,7 +43,11 @@ test.describe('Can add, edit & remove residents', () => {
     const checkRequestId = '1'
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
-    await assessForEarlyRelease.stubGetStandardAddressCheckRequestWithResidents(prisonNumber, Number(checkRequestId))
+    await assessForEarlyRelease.stubGetStandardAddressCheckRequestWithResidents(
+      prisonNumber,
+      Number(checkRequestId),
+      false,
+    )
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
@@ -51,8 +59,11 @@ test.describe('Can add, edit & remove residents', () => {
       `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId })}`,
     )
 
-    await expect(page.getByText('Main occupier')).toBeVisible()
-
+    await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
+    await expect(page.getByTestId('main-occupier')).toBeVisible()
+    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    const isChecked = await page.locator('#isOffender').isChecked()
+    expect(isChecked).toBe(false)
     await expect(page.getByTestId('add-another-resident')).toBeVisible()
     await expect(page.getByTestId('add-another-empty-resident')).not.toBeVisible()
     await expect(page.getByTestId('addResidentContinue')).toBeVisible()
@@ -69,5 +80,34 @@ test.describe('Can add, edit & remove residents', () => {
     const errorMessages = (await errorSummaryList.allTextContents()).map(message => message.trim())
 
     await expect(errorMessages).toContain('Enter the 2nd other resident’s relationship to Jimmy Quelch')
+  })
+
+  test('Should hide mainOccupier fields when offender is main occupier', async ({ page }) => {
+    const prisonNumber = 'A1234AE'
+    const checkRequestId = '1'
+
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetStandardAddressCheckRequestWithResidents(
+      prisonNumber,
+      Number(checkRequestId),
+      true,
+    )
+
+    await login(page, { authorities: ['ROLE_LICENCE_CA'] })
+
+    await page.goto(
+      paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId }),
+    )
+
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId })}`,
+    )
+
+    await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
+    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    const isChecked = await page.locator('#isOffender').isChecked()
+    expect(isChecked).toBe(true)
+
+    await expect(page.getByTestId('main-occupier')).not.toBeVisible()
   })
 })

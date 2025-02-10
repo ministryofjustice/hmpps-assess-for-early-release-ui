@@ -47,6 +47,7 @@
             {% call govukFieldset({
                 legend: {
                     text: "Main occupier",
+                    id: "mainOccupierHeader",
                     classes: "govuk-fieldset__legend--m",
                     isPageHeading: false
                 },
@@ -64,7 +65,7 @@
                             }
                     ]
                 }) }}
-                <div id="mainOccupier">
+                <div data-qa='main-occupier' id="mainOccupier">
                     {{ govukInput({
                             id: 'residentId',
                             name: 'residentId',

@@ -73,7 +73,6 @@ describe('add resident details routes', () => {
       req.body.forename = 'Corina'
       req.body.surname = 'Ridgeway'
       req.body.relation = 'sister'
-      req.body.skipOtherResidentValidation = 'false'
       req.body.residentId = 1
       req.body.phoneNumber = '3434567890'
       req.body.isOffender = false
@@ -116,6 +115,35 @@ describe('add resident details routes', () => {
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
         [mainResident, otherResident],
+      )
+      expect(res.redirect).toHaveBeenCalledWith(
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
+      )
+    })
+
+    it('add a main resident as offender for a valid POST request', async () => {
+      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.checkRequestId = '693'
+      req.body.residentId = 1
+      req.body.isOffender = true
+      req.body.prisonerName = 'Jim Smith'
+      req.body.otherResident = []
+      const { residentId, isOffender, prisonerName } = req.body
+      const mainResident = {
+        residentId,
+        forename: prisonerName.split(' ')[0],
+        surname: prisonerName.split(' ')[1],
+        phoneNumber: null,
+        relation: null,
+        isMainResident: true,
+        isOffender,
+      } as _ResidentSummary
+      await addResidentDetailsRoutes.POST(req, res)
+      expect(addressService.addResidents).toHaveBeenCalledWith(
+        req?.middleware?.clientToken,
+        req.params.prisonNumber,
+        Number(req.params.checkRequestId),
+        [mainResident],
       )
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
