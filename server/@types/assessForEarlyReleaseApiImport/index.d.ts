@@ -892,7 +892,7 @@ export interface components {
        * @description The resident's relation to the offender
        * @example Mother
        */
-      relation: string
+      relation?: string
       /**
        * Format: date
        * @description The resident's date of birth

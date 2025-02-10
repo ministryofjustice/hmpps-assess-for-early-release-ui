@@ -63,7 +63,7 @@ export default class AddResidentDetailsRoutes {
 
     const { residentId, forename, surname, phoneNumber, relation, prisonerName, otherResident, isOffender } = req.body
 
-    const [prisonerForename, prisonerSurname] = prisonerName.split(' ')
+    const [prisonerForename, prisonerSurname] = prisonerName ? prisonerName.split(' ') : []
 
     validateRequest(req, () => {
       const validationErrors: FieldValidationError[] = []
@@ -126,8 +126,8 @@ export default class AddResidentDetailsRoutes {
       residentId,
       forename: isOffender ? prisonerForename : forename,
       surname: isOffender ? prisonerSurname : surname,
-      phoneNumber: isOffender ? phoneNumber : null,
-      relation: isOffender ? '' : relation,
+      phoneNumber: isOffender ? null : phoneNumber,
+      relation: isOffender ? null : relation,
       isMainResident: true,
       isOffender,
     } as _ResidentSummary
