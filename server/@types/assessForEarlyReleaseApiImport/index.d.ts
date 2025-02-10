@@ -976,7 +976,7 @@ export interface components {
        * @description The resident's relation to the offender
        * @example Mother
        */
-      relation: string
+      relation?: string
       /**
        * Format: date
        * @description The resident's date of birth
@@ -1484,6 +1484,7 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
       /**
        * @description The status of the check request
        * @example SUITABLE
@@ -1517,7 +1518,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean
