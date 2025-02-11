@@ -1,14 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const isOffenderMainOccupierCheckbox = document.getElementById('isOffender')
-
-  if (isOffenderMainOccupierCheckbox) {
-    // Listen for the change event
-    isOffenderMainOccupierCheckbox.addEventListener('change', handleIsOffenderMainOccupierChange)
-
-    // Call the handler on page load
-    handleIsOffenderMainOccupierChange()
-  }
-
   window.mojFrontend.AddAnother.prototype.resetItem = item => {
     item.find('[data-name], [data-id]').each((index, el) => {
       const element = el
@@ -29,16 +19,3 @@ document.addEventListener('DOMContentLoaded', () => {
     )
   }
 })
-
-function handleIsOffenderMainOccupierChange() {
-  const isOffenderMainOccupierCheckbox = document.getElementById('isOffender')
-  const mainOccupierElement = document.getElementById('mainOccupier')
-
-  if (isOffenderMainOccupierCheckbox && mainOccupierElement) {
-    if (isOffenderMainOccupierCheckbox.checked) {
-      mainOccupierElement.style.display = 'none'
-    } else {
-      mainOccupierElement.style.display = 'block'
-    }
-  }
-}

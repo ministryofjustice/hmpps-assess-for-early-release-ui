@@ -11,7 +11,7 @@
 {% set backLinkHref = "/" %}
 
 {% block content %}
-<div class="govuk-grid-row">
+<div class="govuk-grid-row" data-page-id="add-resident-details">
     <div class="govuk-grid-column-two-thirds">
         <form id="addOtherResidentForm" method="POST">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
