@@ -28,17 +28,20 @@ afterEach(() => {
 })
 
 describe('GET', () => {
-  it('should render list of licences for approval', async () => {
+  it('should render case admin caseload', async () => {
     await caseloadRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
-      caseload: [
+      postponedCases: [],
+      toWorkOnByYouCases: [
         {
           createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
           hdced: parseIsoDate('2022-01-08'),
           name: 'Jim Smith',
           prisonNumber: 'A1234AB',
+          probationPractitioner: 'Jane Huggins',
           remainingDays: 1,
+          isPostponed: false,
         },
       ],
     })

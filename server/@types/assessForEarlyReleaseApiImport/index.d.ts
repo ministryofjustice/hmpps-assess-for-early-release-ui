@@ -1486,6 +1486,12 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}

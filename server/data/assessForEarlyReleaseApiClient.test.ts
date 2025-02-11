@@ -41,7 +41,7 @@ describe('assessForEarlyReleaseApiClient', () => {
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
       const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
-        return { ...c, hdced: toIsoDate(c.hdced) }
+        return { ...c, hdced: toIsoDate(c.hdced), postponementDate: toIsoDate(c.postponementDate) }
       })
 
       fakeAferApi
@@ -297,7 +297,7 @@ describe('assessForEarlyReleaseApiClient', () => {
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
       const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
-        return { ...c, hdced: toIsoDate(c.hdced) }
+        return { ...c, hdced: toIsoDate(c.hdced), postponementDate: toIsoDate(c.postponementDate) }
       })
 
       fakeAferApi

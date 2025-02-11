@@ -51,7 +51,7 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/prison/${prisonCode}/case-admin/caseload`,
     })
     return caseAdminCaseload.map(c => {
-      return { ...c, hdced: parseIsoDate(c.hdced) }
+      return { ...c, hdced: parseIsoDate(c.hdced), postponementDate: parseIsoDate(c.postponementDate) }
     })
   }
 
@@ -239,7 +239,7 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
     })
     return caseAdminCaseload.map(c => {
-      return { ...c, hdced: parseIsoDate(c.hdced) }
+      return { ...c, hdced: parseIsoDate(c.hdced), postponementDate: parseIsoDate(c.postponementDate) }
     })
   }
 
@@ -296,7 +296,7 @@ export default class AssessForEarlyReleaseApiClient {
       path: `/prison/${prisonCode}/decision-maker/caseload`,
     })
     return decisionMakerCaseload.map(c => {
-      return { ...c, hdced: parseIsoDate(c.hdced) }
+      return { ...c, hdced: parseIsoDate(c.hdced), postponementDate: parseIsoDate(c.postponementDate) }
     })
   }
 
