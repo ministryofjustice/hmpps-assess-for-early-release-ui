@@ -155,6 +155,7 @@ const createResidentSummary = (residentId: number, isMainResident: boolean): Res
   dateOfBirth: new Date('1985-03-31'),
   age: 38,
   isMainResident,
+  isOffender: false,
 })
 
 export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [

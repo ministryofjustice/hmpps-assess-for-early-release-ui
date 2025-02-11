@@ -702,6 +702,7 @@ export interface paths {
     trace?: never
   }
 }
+export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -891,7 +892,7 @@ export interface components {
        * @description The resident's relation to the offender
        * @example Mother
        */
-      relation: string
+      relation?: string
       /**
        * Format: date
        * @description The resident's date of birth
@@ -909,6 +910,11 @@ export interface components {
        * @example true
        */
       isMainResident: boolean
+      /**
+       * @description Is offender a main resident at the address
+       * @example true
+       */
+      isOffender: boolean
     }
     /** @description Response object which describes a standard address check request */
     StandardAddressCheckRequestSummary: Omit<
@@ -936,9 +942,21 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
+      /**
+       * Format: int64
+       * @description A unique internal reference for the resident
+       * @example 87320
+       */
+      residentId?: number
       /**
        * @description The resident's forename
        * @example Dave
@@ -958,7 +976,7 @@ export interface components {
        * @description The resident's relation to the offender
        * @example Mother
        */
-      relation: string
+      relation?: string
       /**
        * Format: date
        * @description The resident's date of birth
@@ -976,6 +994,11 @@ export interface components {
        * @example true
        */
       isMainResident: boolean
+      /**
+       * @description Is offender a main resident at the address
+       * @example true
+       */
+      isOffender: boolean
     }
     /** @description Request for adding a CAS check request */
     AddCasCheckRequest: {
@@ -1011,6 +1034,12 @@ export interface components {
        */
       requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1469,6 +1498,12 @@ export interface components {
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1500,6 +1535,7 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {

@@ -327,6 +327,7 @@ const createAddResidentRequest = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender: false,
 })
 
 const createResidentSummary = ({
@@ -347,6 +348,7 @@ const createResidentSummary = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender: false,
 })
 
 const createCheckRequestsForAssessmentSummary = ({
