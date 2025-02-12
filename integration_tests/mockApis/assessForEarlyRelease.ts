@@ -280,7 +280,11 @@ const stubGetStandardAddressCheckRequest = (prisonNumber: string, requestId: num
     },
   })
 
-const stubGetStandardAddressCheckRequestWithResidents = (prisonNumber: string, requestId: number) =>
+const stubGetStandardAddressCheckRequestWithResidents = (
+  prisonNumber: string,
+  requestId: number,
+  isOffender: boolean,
+) =>
   stubFor({
     request: {
       method: 'GET',
@@ -316,6 +320,7 @@ const stubGetStandardAddressCheckRequestWithResidents = (prisonNumber: string, r
             dateOfBirth: '1985-03-31',
             age: 38,
             isMainResident: true,
+            isOffender,
           },
           {
             residentId: 2,
@@ -326,6 +331,7 @@ const stubGetStandardAddressCheckRequestWithResidents = (prisonNumber: string, r
             dateOfBirth: '1985-03-31',
             age: 58,
             isMainResident: false,
+            isOffender: false,
           },
           {
             residentId: 3,
@@ -336,6 +342,7 @@ const stubGetStandardAddressCheckRequestWithResidents = (prisonNumber: string, r
             dateOfBirth: '1985-03-31',
             age: 28,
             isMainResident: false,
+            isOffender: false,
           },
         ],
       },

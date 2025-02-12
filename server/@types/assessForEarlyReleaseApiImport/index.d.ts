@@ -702,6 +702,7 @@ export interface paths {
     trace?: never
   }
 }
+export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -941,6 +942,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1027,6 +1034,12 @@ export interface components {
        */
       requestType: 'CAS'
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1478,6 +1491,12 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1522,6 +1541,7 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {
