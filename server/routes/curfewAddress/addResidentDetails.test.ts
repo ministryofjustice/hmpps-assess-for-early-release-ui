@@ -108,7 +108,6 @@ describe('add resident details routes', () => {
         age: req.body.otherResident[0].age,
         isOffender: false,
         isMainResident: false,
-        isOffender: false,
       }
       await addResidentDetailsRoutes.POST(req, res)
       expect(addressService.addResidents).toHaveBeenCalledWith(
