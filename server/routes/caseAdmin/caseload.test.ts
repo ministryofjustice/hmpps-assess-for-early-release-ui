@@ -77,7 +77,7 @@ describe('GET', () => {
           name: 'Jim Smith',
           prisonNumber: 'A1234AB',
           probationPractitioner: 'Jane Huggins',
-          remainingDays: 1,
+          workingDaysToHdced: 1,
           status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
         },
       ],

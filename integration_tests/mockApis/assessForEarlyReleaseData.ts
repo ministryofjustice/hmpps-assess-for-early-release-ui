@@ -196,7 +196,6 @@ export const createOffenderSummary = (prisonNumber: string): _OffenderSummary =>
   isPostponed: false,
   postponementDate: null,
   postponementReason: null,
-  workingDaysToHdced: 0,
   status: 'NOT_STARTED',
   addressChecksComplete: false,
 })

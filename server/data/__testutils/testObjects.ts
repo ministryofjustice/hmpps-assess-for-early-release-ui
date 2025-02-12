@@ -53,7 +53,6 @@ const createOffenderSummary = ({
   forename = 'Jim',
   surname = 'Smith',
   hdced = addDays(startOfDay(new Date()), 3),
-  workingDaysToHdced = 3,
   probationPractitioner = 'CVl_COM',
   isPostponed = false,
   postponementDate = null,
@@ -71,7 +70,6 @@ const createOffenderSummary = ({
   isPostponed,
   postponementDate,
   postponementReason,
-  workingDaysToHdced,
   status,
   addressChecksComplete: false,
 })
