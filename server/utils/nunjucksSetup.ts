@@ -246,5 +246,12 @@ export function registerNunjucks(app?: express.Express): Environment {
     return date.getFullYear().toString()
   })
 
+  njkEnv.addGlobal('tableAttributes', (data: { [key: string]: unknown }, field: string, index: number) => {
+    return {
+      id: `${field}-${index}`,
+      'data-sort-value': data[field],
+    }
+  })
+
   return njkEnv
 }

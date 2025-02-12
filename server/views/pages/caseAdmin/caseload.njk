@@ -1,8 +1,8 @@
 {% extends "layout.njk" %}
-{% from "../../partials/card.njk" import card %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
 
 {% set pageTitle = "Assessing a licence - Caseload - " + applicationName %}
 {% set toWorkOnByYouRows = [] %}
@@ -19,152 +19,57 @@
 {% for offender in toWorkOnByYouCases %}
     {% set toWorkOnByYouRows = (toWorkOnByYouRows.push([
         {
-            attributes: {
-                id: 'name-' + loop.index,
-                "data-sort-value": offender.name
-            },
+            attributes: tableAttributes(offender, 'name', loop.index),
             html: offenderName(offender, loop.index)
         },
         {
-            attributes: {
-                id: 'hdced-' + loop.index,
-                "data-sort-value": offender.hdced | toMillis
-            },
+            attributes: tableAttributes(offender, 'hdced', loop.index),
             html: offender.hdced | formatDate('dd MMM yyyy')
         },
         {
-            attributes: {
-                id: 'remaining-days-' + loop.index,
-                "data-sort-value": offender.remainingDays
-            },
-            html: offender.remainingDays
+            attributes: tableAttributes(offender, 'workingDaysToHdced', loop.index),
+            text: offender.workingDaysToHdced
         }
     ]), toWorkOnByYouRows) %}
 {% endfor %}
 
-{% set toWorkOnByYou %}
+{% set toWorkOnByYouTab %}
     <h2 class="govuk-heading-l">To work on by you</h2>
-    {{ govukTable({
-        attributes: {
-            'data-module': 'moj-sortable-table'
-        },
-        caption: "Caseload to work on by you",
-        captionClasses: "govuk-visually-hidden",
-        head: [{
-            text: "Name",
-            attributes: {
-                "aria-sort": "none"
-            }
+    {{ caseloadTable("Caseload to work on by you", ["Name", "HDCED", "Working days to HDCED"], toWorkOnByYouRows) }}
+{% endset %}
+
+{% for case in postponedCases %}
+    {% set postponedRows = (postponedRows.push([
+        {
+            attributes: tableAttributes(case, 'name', loop.index),
+            html: offenderName(case, loop.index)
         },
         {
-            text: "HDCED",
-            attributes: {
-                "aria-sort": "none"
-            }
+            attributes: tableAttributes(case, 'probationPractitioner', loop.index),
+            text: case.probationPractitioner
         },
         {
-            text: "Remaining days",
-            attributes: {
-                "aria-sort": "none"
-            }
-        }],
-        rows: toWorkOnByYouRows
-    }) }}
+            attributes: tableAttributes(case, 'hdced', loop.index),
+            text: case.hdced | formatDate('dd MMM yyyy')
+        },
+        {
+            attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+            text: case.workingDaysToHdced
+        },
+        {
+            attributes: tableAttributes(case, 'postponed-on', loop.index),
+            text: case.postponementDate | formatDate('dd MMM yyyy')
+        },
+        {
+            attributes: tableAttributes(case, 'postponementReason', loop.index),
+            text: case.postponementReason
+        }
+    ]), postponedRows) %}
+{% endfor %}
 
-    {% for case in postponedCases %}
-        {% set postponedRows = (postponedRows.push([
-            {
-                attributes: {
-                    id: 'name-' + loop.index,
-                    "data-sort-value": case.name
-                },
-                html: offenderName(case, loop.index)
-            },
-            {
-                attributes: {
-                    id: 'com-' + loop.index,
-                    "data-sort-value": case.probationPractitioner
-                },
-                text: case.probationPractitioner
-            },
-            {
-                attributes: {
-                    id: 'hdced-' + loop.index,
-                    "data-sort-value": case.hdced | toMillis
-                },
-                text: case.hdced | formatDate('dd MMM yyyy')
-            },
-            {
-                attributes: {
-                    id: 'remainingDays-' + loop.index,
-                    "data-sort-value": case.remainingDays
-                },
-                text: case.remainingDays
-            },
-            {
-                attributes: {
-                    id: 'postponed-on-' + loop.index,
-                    "data-sort-value": case.postponementDate
-                },
-                text: case.postponementDate | formatDate('dd MMM yyyy')
-            },
-            {
-                attributes: {
-                    id: 'postponementReason-' + loop.index,
-                    "data-sort-value": case.postponementReason
-                },
-                text: case.postponementReason
-            }
-        ]), postponedRows) %}
-    {% endfor %}
-
-    {% set postponed %}
-        <h2 class="govuk-heading-l">Postponed</h2>
-        {{ govukTable({
-            attributes: {
-                'data-module': 'moj-sortable-table'
-            },
-            caption: "Postponed caseload",
-            captionClasses: "govuk-visually-hidden",
-            head: [{
-                text: "Name",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            },
-            {
-                text: "Probation practitioner",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            },
-            {
-                text: "HDCED",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            },
-            {
-                text: "Working days to HDCED",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            },
-            {
-                text: "Postponed on",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            },
-            {
-                text: "Postponement reason",
-                attributes: {
-                    "aria-sort": "none"
-                }
-            }],
-            rows: postponedRows
-        }) }}
-    {% endset %}
+{% set postponedTab %}
+    <h2 class="govuk-heading-l">Postponed</h2>
+    {{ caseloadTable("Postponed caseload", ["Name", "Probation practitioner", "HDCED", "Working days to HDCED", "Postponed on", "Postponement reason"], postponedRows) }}
 {% endset %}
 
 {% block content %}
@@ -180,7 +85,7 @@
                             "data-qa": "to-work-on-by-you"
                         },
                         panel: {
-                            html: toWorkOnByYou
+                            html: toWorkOnByYouTab
                         }
                     },
                     {
@@ -190,7 +95,7 @@
                             "data-qa": "postponed"
                         },
                         panel: {
-                            html: postponed
+                            html: postponedTab
                         }
                     }
                 ]

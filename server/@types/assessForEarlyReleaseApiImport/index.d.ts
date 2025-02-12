@@ -1156,6 +1156,12 @@ export interface components {
        */
       hdced: string
       /**
+       * Format: int32
+       * @description The number of working days until the home detention curfew eligibility date
+       * @example 15
+       */
+      workingDaysToHdced: number
+      /**
        * @description The full name of the probation practitioner responsible for this offender
        * @example Mark Coombes
        */
@@ -1484,19 +1490,6 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      requestType: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
@@ -1524,6 +1517,19 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean

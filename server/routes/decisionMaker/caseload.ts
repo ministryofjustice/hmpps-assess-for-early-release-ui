@@ -17,7 +17,7 @@ export default class CaseloadRoutes {
         name: offender.name,
         prisonNumber: offender.prisonNumber,
         hdced: offender.hdced,
-        remainingDays: offender.remainingDays,
+        workingDaysToHdced: offender.workingDaysToHdced,
       }
     })
     res.render('pages/decisionMaker/caseload', { caseload })
