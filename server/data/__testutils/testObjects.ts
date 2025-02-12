@@ -35,6 +35,7 @@ const createCase = ({
   workingDaysToHdced = 1,
   probationPractitioner = 'Jane Huggins',
   isPostponed = false,
+  status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
 } = {}): Case => ({
   prisonNumber,
   hdced,
@@ -42,6 +43,8 @@ const createCase = ({
   name,
   probationPractitioner,
   isPostponed,
+  status,
+  addressChecksComplete: false,
 })
 
 const createOffenderSummary = ({
@@ -55,6 +58,8 @@ const createOffenderSummary = ({
   isPostponed = false,
   postponementDate = null,
   postponementReason = null,
+  workingDaysToHdced = 3,
+  status = AssessmentStatus.NOT_STARTED,
 } = {}): OffenderSummary => ({
   prisonNumber,
   bookingId,
@@ -66,6 +71,9 @@ const createOffenderSummary = ({
   isPostponed,
   postponementDate,
   postponementReason,
+  workingDaysToHdced,
+  status,
+  addressChecksComplete: false,
 })
 
 const createAssessmentSummary = ({

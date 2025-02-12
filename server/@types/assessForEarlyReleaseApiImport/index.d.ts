@@ -1054,6 +1054,15 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
     }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
+    }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
       /**
@@ -1066,15 +1075,6 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
-    }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1182,6 +1182,35 @@ export interface components {
        * @example Have an application pending with the unduly lenient sentence scheme
        */
       postponementReason?: string
+      /**
+       * @description The status of the offender's current assessment
+       * @example AWAITING_ADDRESS_AND_RISK_CHECKS
+       * @enum {string}
+       */
+      status:
+        | 'NOT_STARTED'
+        | 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS'
+        | 'ELIGIBLE_AND_SUITABLE'
+        | 'AWAITING_ADDRESS_AND_RISK_CHECKS'
+        | 'ADDRESS_AND_RISK_CHECKS_IN_PROGRESS'
+        | 'AWAITING_PRE_DECISION_CHECKS'
+        | 'AWAITING_DECISION'
+        | 'APPROVED'
+        | 'AWAITING_PRE_RELEASE_CHECKS'
+        | 'PASSED_PRE_RELEASE_CHECKS'
+        | 'ADDRESS_UNSUITABLE'
+        | 'AWAITING_REFUSAL'
+        | 'INELIGIBLE_OR_UNSUITABLE'
+        | 'REFUSED'
+        | 'TIMED_OUT'
+        | 'POSTPONED'
+        | 'OPTED_OUT'
+        | 'RELEASED_ON_HDC'
+      /**
+       * @description Whether the address checks for the offender's current assessment have been completed or not
+       * @example false
+       */
+      addressChecksComplete: boolean
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1496,6 +1525,13 @@ export interface components {
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info

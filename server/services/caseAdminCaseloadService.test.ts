@@ -37,6 +37,8 @@ describe('CA Caseload Service', () => {
           isPostponed: aCase.isPostponed,
           postponementReason: aCase.postponementReason,
           postponementDate: aCase.postponementDate,
+          status: 'NOT_STARTED',
+          addressChecksComplete: false,
         },
       ])
     })
