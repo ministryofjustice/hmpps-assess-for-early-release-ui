@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test'
-import { differenceInDays, startOfDay } from 'date-fns'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import { assessmentSummary, createOffenderSummary } from '../mockApis/assessForEarlyReleaseData'
 
@@ -25,6 +24,7 @@ test.describe('Case admin caseload', () => {
       forename: 'Dave',
       surname: 'Roberts',
       hdced: '2026-09-04',
+      workingDaysToHdced: 15,
       isPostponed: true,
       postponementDate: '2025-04-25',
       postponementReason: 'Postponed for some reason',
@@ -41,9 +41,7 @@ test.describe('Case admin caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(`Prison number: ${toWorkOnByYouOffender.prisonNumber}`)).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByYouOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
-    await expect(
-      page.getByText(`${differenceInDays(toWorkOnByYouOffender.hdced, startOfDay(new Date()))}`),
-    ).toBeVisible()
+    await expect(page.getByText('10')).toBeVisible()
 
     await page.getByTestId('postponed').click()
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#postponed`)
@@ -52,7 +50,7 @@ test.describe('Case admin caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(`Prison number: ${postponedOffender.prisonNumber}`)).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(postponedOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
-    await expect(page.getByText(`${differenceInDays(postponedOffender.hdced, startOfDay(new Date()))}`)).toBeVisible()
+    await expect(page.getByText('15')).toBeVisible()
     await expect(
       page.getByText(formatDate(parseIsoDate(postponedOffender.postponementDate), 'dd MMM yyyy')),
     ).toBeVisible()

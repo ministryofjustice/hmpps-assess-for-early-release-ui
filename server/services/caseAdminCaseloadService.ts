@@ -1,4 +1,3 @@
-import { differenceInDays, startOfDay } from 'date-fns'
 import type { AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
@@ -8,7 +7,7 @@ export type Case = {
   name: string
   prisonNumber: string
   hdced: Date
-  remainingDays: number
+  workingDaysToHdced: number
   probationPractitioner: string
   isPostponed: boolean
   postponementReason?: string
@@ -27,7 +26,7 @@ export default class CaseAdminCaseloadService {
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
       prisonNumber: offender.prisonNumber,
       hdced: offender.hdced,
-      remainingDays: differenceInDays(offender.hdced, startOfDay(new Date())),
+      workingDaysToHdced: offender.workingDaysToHdced,
       probationPractitioner: convertToTitleCase(offender.probationPractitioner?.trim()),
       isPostponed: offender.isPostponed,
       postponementReason: offender.postponementReason,

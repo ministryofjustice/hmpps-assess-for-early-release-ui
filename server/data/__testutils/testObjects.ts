@@ -32,14 +32,14 @@ const createCase = ({
   prisonNumber = 'A1234AB',
   name = 'Jim Smith',
   hdced = parseIsoDate('2022-01-08'),
-  remainingDays = 1,
+  workingDaysToHdced = 1,
   probationPractitioner = 'Jane Huggins',
   isPostponed = false,
 } = {}): Case => ({
   prisonNumber,
   hdced,
+  workingDaysToHdced,
   name,
-  remainingDays,
   probationPractitioner,
   isPostponed,
 })
@@ -50,6 +50,7 @@ const createOffenderSummary = ({
   forename = 'Jim',
   surname = 'Smith',
   hdced = addDays(startOfDay(new Date()), 3),
+  workingDaysToHdced = 3,
   probationPractitioner = 'CVl_COM',
   isPostponed = false,
   postponementDate = null,
@@ -60,6 +61,7 @@ const createOffenderSummary = ({
   forename,
   surname,
   hdced,
+  workingDaysToHdced,
   probationPractitioner,
   isPostponed,
   postponementDate,
@@ -319,6 +321,7 @@ const createAddResidentRequest = ({
   dateOfBirth = '1985-03-31',
   age = 38,
   isMainResident = true,
+  isOffender = false,
 } = {}): AddResidentRequest => ({
   forename,
   surname,
@@ -327,6 +330,7 @@ const createAddResidentRequest = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender,
 })
 
 const createResidentSummary = ({
@@ -338,6 +342,7 @@ const createResidentSummary = ({
   dateOfBirth = parseIsoDate('1985-03-31'),
   age = 38,
   isMainResident = true,
+  isOffender = false,
 } = {}): ResidentSummary => ({
   residentId,
   forename,
@@ -347,6 +352,7 @@ const createResidentSummary = ({
   dateOfBirth,
   age,
   isMainResident,
+  isOffender,
 })
 
 const createCheckRequestsForAssessmentSummary = ({

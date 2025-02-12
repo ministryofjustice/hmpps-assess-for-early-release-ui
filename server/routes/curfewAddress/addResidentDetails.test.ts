@@ -108,6 +108,7 @@ describe('add resident details routes', () => {
         dateOfBirth: '1985-01-11',
         age: req.body.otherResident[0].age,
         isMainResident: false,
+        isOffender: false,
       }
 
       await addResidentDetailsRoutes.POST(req, res)
@@ -146,6 +147,7 @@ describe('add resident details routes', () => {
         dateOfBirth: '1985-01-11',
         age: 89,
         isMainResident: false,
+        isOffender: false,
       }
 
       const result = addResidentDetailsRoutes.transformToResidentSummary(otherResident as OtherResident)

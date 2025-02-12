@@ -31,7 +31,7 @@ describe('Decision maker Caseload Service', () => {
           name: 'Jim Smith',
           prisonNumber: 'A1234AB',
           hdced: aCase.hdced,
-          remainingDays: 3,
+          workingDaysToHdced: 3,
         },
       ])
     })

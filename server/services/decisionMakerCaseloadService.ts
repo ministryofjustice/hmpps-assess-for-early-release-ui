@@ -1,4 +1,3 @@
-import { differenceInDays, startOfDay } from 'date-fns'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
@@ -8,7 +7,7 @@ export type Case = {
   name: string
   prisonNumber: string
   hdced: Date
-  remainingDays: number
+  workingDaysToHdced: number
 }
 
 export default class DecisionMakerCaseloadService {
@@ -23,7 +22,7 @@ export default class DecisionMakerCaseloadService {
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
       prisonNumber: offender.prisonNumber,
       hdced: offender.hdced,
-      remainingDays: differenceInDays(offender.hdced, startOfDay(new Date())),
+      workingDaysToHdced: offender.workingDaysToHdced,
     }))
   }
 

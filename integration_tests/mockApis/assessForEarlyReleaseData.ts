@@ -1,14 +1,16 @@
+import { add } from 'date-fns'
 import type {
+  _AssessmentSummary,
+  _OffenderSummary,
   CheckRequestSummary,
   EligibilityCriterionProgress,
   ResidentSummary,
   SuitabilityCriterionProgress,
   TaskCode,
-  _AssessmentSummary,
-  _OffenderSummary,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 import { tasks } from '../../server/config/tasks'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
+import { toIsoDate } from '../../server/utils/utils'
 
 export const eligibilityCriterion1: EligibilityCriterionProgress = {
   code: 'code-1',
@@ -100,7 +102,7 @@ export const assessmentSummary = (
   surname: 'Quelch',
   dateOfBirth: '1974-07-18',
   prisonNumber,
-  hdced: '2025-08-12',
+  hdced: toIsoDate(add(new Date(), { weeks: 1 })),
   crd: '2025-11-29',
   location: 'BMI',
   status,
@@ -155,6 +157,7 @@ const createResidentSummary = (residentId: number, isMainResident: boolean): Res
   dateOfBirth: new Date('1985-03-31'),
   age: 38,
   isMainResident,
+  isOffender: false,
 })
 
 export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
@@ -188,6 +191,7 @@ export const createOffenderSummary = (prisonNumber: string): _OffenderSummary =>
   forename: 'Jim',
   surname: 'Smith',
   hdced: '2026-01-20',
+  workingDaysToHdced: 10,
   probationPractitioner: 'Mark Coombes',
   isPostponed: false,
   postponementDate: null,

@@ -32,7 +32,7 @@ describe('CA Caseload Service', () => {
           name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
           prisonNumber: aCase.prisonNumber,
           hdced: aCase.hdced,
-          remainingDays: 3,
+          workingDaysToHdced: 3,
           probationPractitioner: convertToTitleCase(aCase.probationPractitioner?.trim()),
           isPostponed: aCase.isPostponed,
           postponementReason: aCase.postponementReason,

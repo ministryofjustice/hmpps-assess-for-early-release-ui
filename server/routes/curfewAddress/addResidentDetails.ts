@@ -150,6 +150,7 @@ export default class AddResidentDetailsRoutes {
       dateOfBirth,
       age: age || null,
       isMainResident: false,
+      isOffender: false,
     }
   }
 

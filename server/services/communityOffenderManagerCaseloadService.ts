@@ -1,4 +1,3 @@
-import { differenceInDays, startOfDay } from 'date-fns'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
@@ -26,7 +25,7 @@ export default class CommunityOffenderManagerCaseloadService {
       prisonNumber: offender.prisonNumber,
       probationPractitioner: offender.probationPractitioner,
       hdced: offender.hdced,
-      workingDaysToHdced: differenceInDays(offender.hdced, startOfDay(new Date())),
+      workingDaysToHdced: offender.workingDaysToHdced,
     }))
   }
 
