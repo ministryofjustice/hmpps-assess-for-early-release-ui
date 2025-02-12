@@ -44,6 +44,17 @@ describe('GET', () => {
           isPostponed: false,
         },
       ],
+      withProbationCases: [
+        {
+          createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
+          hdced: parseIsoDate('2022-01-08'),
+          name: 'Jim Smith',
+          prisonNumber: 'A1234AB',
+          probationPractitioner: 'Jane Huggins',
+          remainingDays: 1,
+          isPostponed: false,
+        },
+      ],
     })
   })
 })

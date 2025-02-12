@@ -13,7 +13,8 @@ export default class CaseloadRoutes {
 
     const postponedCases = cases.filter(aCase => aCase.isPostponed).map(aCase => this.mapToViewModel(aCase))
     const toWorkOnByYouCases = cases.filter(aCase => !aCase.isPostponed).map(aCase => this.mapToViewModel(aCase))
-    res.render('pages/caseAdmin/caseload', { toWorkOnByYouCases, postponedCases })
+    const withProbationCases = cases.map(aCase => this.mapToViewModel(aCase))
+    res.render('pages/caseAdmin/caseload', { toWorkOnByYouCases, postponedCases, withProbationCases })
   }
 
   mapToViewModel = (aCase: Case) => {
