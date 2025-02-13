@@ -4,9 +4,9 @@ import paths from '../paths'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 export default class CaseloadRoutes {
-  static readonly POSTPONED_STATUS = [AssessmentStatus.POSTPONED]
+  static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
 
-  static readonly TO_WORK_ON_BY_YOU_STATUS = [
+  static readonly TO_WORK_ON_BY_YOU_STATUSES = [
     AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
     AssessmentStatus.ELIGIBLE_AND_SUITABLE,
     AssessmentStatus.AWAITING_PRE_DECISION_CHECKS,
@@ -15,7 +15,7 @@ export default class CaseloadRoutes {
     AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
   ]
 
-  static readonly WITH_PROBATION_STATUS = [
+  static readonly WITH_PROBATION_STATUSES = [
     AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
     AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     AssessmentStatus.APPROVED,
@@ -29,9 +29,9 @@ export default class CaseloadRoutes {
       res.locals.activeCaseLoadId,
     )
 
-    const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUS)
-    const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUS)
-    const withProbationCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PROBATION_STATUS)
+    const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES)
+    const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES)
+    const withProbationCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PROBATION_STATUSES)
 
     res.render('pages/caseAdmin/caseload', {
       toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
