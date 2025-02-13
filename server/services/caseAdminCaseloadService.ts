@@ -2,6 +2,7 @@ import type { AssessmentSummary } from '../@types/assessForEarlyReleaseApiClient
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
+import AssessmentStatus from '../enumeration/assessmentStatus'
 
 export type Case = {
   name: string
@@ -12,6 +13,8 @@ export type Case = {
   isPostponed: boolean
   postponementReason?: string
   postponementDate?: Date
+  status: AssessmentStatus
+  addressChecksComplete: boolean
 }
 
 export default class CaseAdminCaseloadService {
@@ -31,6 +34,8 @@ export default class CaseAdminCaseloadService {
       isPostponed: offender.isPostponed,
       postponementReason: offender.postponementReason,
       postponementDate: offender.postponementDate,
+      status: offender.status as AssessmentStatus,
+      addressChecksComplete: offender.addressChecksComplete,
     }))
   }
 

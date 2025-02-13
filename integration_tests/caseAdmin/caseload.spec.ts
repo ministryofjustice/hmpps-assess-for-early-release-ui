@@ -7,6 +7,7 @@ import paths from '../../server/routes/paths'
 import { _OffenderSummary } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 import { convertToTitleCase, formatDate, parseIsoDate } from '../../server/utils/utils'
 import playwrightConfig from '../../playwright.config'
+import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
 test.describe('Case admin caseload', () => {
   test.afterEach(async () => {
@@ -28,8 +29,23 @@ test.describe('Case admin caseload', () => {
       isPostponed: true,
       postponementDate: '2025-04-25',
       postponementReason: 'Postponed for some reason',
+      status: AssessmentStatus.POSTPONED,
     }
-    await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [toWorkOnByYouOffender, postponedOffender])
+    const withProbationOffender: _OffenderSummary = {
+      ...createOffenderSummary(prisonNumber),
+      prisonNumber: 'GU3243TB',
+      forename: 'Tim',
+      surname: 'Cook',
+      hdced: '2026-12-04',
+      workingDaysToHdced: 16,
+      probationPractitioner: 'Mark James',
+      status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
+    }
+    await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [
+      toWorkOnByYouOffender,
+      postponedOffender,
+      withProbationOffender,
+    ])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -55,5 +71,16 @@ test.describe('Case admin caseload', () => {
       page.getByText(formatDate(parseIsoDate(postponedOffender.postponementDate), 'dd MMM yyyy')),
     ).toBeVisible()
     await expect(page.getByText(postponedOffender.postponementReason)).toBeVisible()
+
+    await page.getByTestId('with-probation').click()
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#with-probation`)
+    await expect(
+      page.getByText(convertToTitleCase(`${withProbationOffender.forename} ${withProbationOffender.surname}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(`Prison number: ${withProbationOffender.prisonNumber}`)).toBeVisible()
+    await expect(
+      page.getByText(convertToTitleCase(`${withProbationOffender.probationPractitioner}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(formatDate(parseIsoDate(withProbationOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
   })
 })

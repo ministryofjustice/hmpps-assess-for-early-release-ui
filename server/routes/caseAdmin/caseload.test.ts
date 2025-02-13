@@ -4,6 +4,7 @@ import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTes
 import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import { parseIsoDate } from '../../utils/utils'
 import paths from '../paths'
+import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 const offenderSummaryList = [createCase({})]
 
@@ -35,6 +36,7 @@ describe('GET', () => {
       postponedCases: [],
       toWorkOnByYouCases: [
         {
+          addressChecksComplete: false,
           createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
           hdced: parseIsoDate('2022-01-08'),
           workingDaysToHdced: 1,
@@ -42,6 +44,41 @@ describe('GET', () => {
           prisonNumber: 'A1234AB',
           probationPractitioner: 'Jane Huggins',
           isPostponed: false,
+          status: 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS',
+        },
+      ],
+      withProbationCases: [],
+    })
+  })
+
+  it('should render with probation tab cases if status is AWAITING_ADDRESS_AND_RISK_CHECKS and addressChecksComplete is true ', async () => {
+    const cases = [
+      {
+        ...offenderSummaryList[0],
+        status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+        addressChecksComplete: true,
+        isPostponed: false,
+      },
+    ]
+
+    caseAdminCaseloadService.getCaseAdminCaseload.mockResolvedValue(cases)
+
+    await caseloadRoutes.GET(req, res)
+
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
+      toWorkOnByYouCases: [],
+      postponedCases: [],
+      withProbationCases: [
+        {
+          addressChecksComplete: true,
+          createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
+          hdced: parseIsoDate('2022-01-08'),
+          isPostponed: false,
+          name: 'Jim Smith',
+          prisonNumber: 'A1234AB',
+          probationPractitioner: 'Jane Huggins',
+          workingDaysToHdced: 1,
+          status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
         },
       ],
     })

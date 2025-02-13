@@ -196,4 +196,6 @@ export const createOffenderSummary = (prisonNumber: string): _OffenderSummary =>
   isPostponed: false,
   postponementDate: null,
   postponementReason: null,
+  status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+  addressChecksComplete: false,
 })
