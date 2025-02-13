@@ -3,68 +3,12 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+{% from "./postponedTab.njk" import postponedTab %}
+{% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withProbationTab.njk" import withProbationTab %}
 {% from "../../partials/offenderName.njk" import offenderName %}
 
 {% set pageTitle = "Assessing a licence - Caseload - " + applicationName %}
-{% set toWorkOnByYouRows = [] %}
-{% set postponedRows = [] %}
-
-{% for offender in toWorkOnByYouCases %}
-    {% set toWorkOnByYouRows = (toWorkOnByYouRows.push([
-        {
-            attributes: tableAttributes(offender, 'name', loop.index),
-            html: offenderName(offender, loop.index)
-        },
-        {
-            attributes: tableAttributes(offender, 'hdced', loop.index),
-            html: offender.hdced | formatDate('dd MMM yyyy')
-        },
-        {
-            attributes: tableAttributes(offender, 'workingDaysToHdced', loop.index),
-            text: offender.workingDaysToHdced
-        }
-    ]), toWorkOnByYouRows) %}
-{% endfor %}
-
-{% set toWorkOnByYouTab %}
-    <h2 class="govuk-heading-l">To work on by you</h2>
-    {{ caseloadTable("Caseload to work on by you", ["Name", "HDCED", "Working days to HDCED"], toWorkOnByYouRows) }}
-{% endset %}
-
-{% for case in postponedCases %}
-    {% set postponedRows = (postponedRows.push([
-        {
-            attributes: tableAttributes(case, 'name', loop.index),
-            html: offenderName(case, loop.index)
-        },
-        {
-            attributes: tableAttributes(case, 'probationPractitioner', loop.index),
-            text: case.probationPractitioner
-        },
-        {
-            attributes: tableAttributes(case, 'hdced', loop.index),
-            text: case.hdced | formatDate('dd MMM yyyy')
-        },
-        {
-            attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
-            text: case.workingDaysToHdced
-        },
-        {
-            attributes: tableAttributes(case, 'postponed-on', loop.index),
-            text: case.postponementDate | formatDate('dd MMM yyyy')
-        },
-        {
-            attributes: tableAttributes(case, 'postponementReason', loop.index),
-            text: case.postponementReason
-        }
-    ]), postponedRows) %}
-{% endfor %}
-
-{% set postponedTab %}
-    <h2 class="govuk-heading-l">Postponed</h2>
-    {{ caseloadTable("Postponed caseload", ["Name", "Probation practitioner", "HDCED", "Working days to HDCED", "Postponed on", "Postponement reason"], postponedRows) }}
-{% endset %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -79,7 +23,7 @@
                             "data-qa": "to-work-on-by-you"
                         },
                         panel: {
-                            html: toWorkOnByYouTab
+                            html: toWorkOnByYouTab(toWorkOnByYouCases)
                         }
                     },
                     {
@@ -99,7 +43,7 @@
                             "data-qa": "postponed"
                         },
                         panel: {
-                            html: postponedTab
+                            html: postponedTab(postponedCases)
                         }
                     }
                 ]
