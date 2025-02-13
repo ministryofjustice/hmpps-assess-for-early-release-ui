@@ -1,100 +1,35 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "../../partials/offenderName.njk" import offenderName %}
+{% from "partials/offenderName.njk" import offenderName %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
 
 {% macro withProbationTab(params) %}
     {% set withProbationRows = [] %}
-    {% set header = [] %}
-    {% set cases = [] %}
-
-    {% set header = (header.push({
-                        text: "Name",
-                        attributes: {
-                            "aria-sort": "none"
-                        }
-                    },
-                    {
-                        text: "Probation practitioner",
-                        attributes: {
-                            "aria-sort": "none"
-                        }
-                    },
-                    {
-                        text: "HDCED",
-                        attributes: {
-                            "aria-sort": "none"
-                        }
-                    },
-                    {
-                        text: "Working days to HDCED",
-                        attributes: {
-                            "aria-sort":  "none"
-                        }
-                    },
-                    {
-                        text: "Last worked on by",
-                        attributes: {
-                            "aria-sort": "none"
-                        }
-                    },
-                    {
-                        text: "Task",
-                        attributes: {
-                            "aria-sort": "none"
-                        }
-                    }), header)
-        %}
     {% for offender in params.withProbationCases %}
         {% set withProbationRows = (withProbationRows.push([
             {
-                attributes: {
-                    id: 'name-' + loop.index,
-                    "data-sort-value": offender.name
-                },
+                attributes: tableAttributes(offender, 'name', loop.index),
                 html: offenderName(offender, loop.index)
             },
             {
-                attributes: {
-                    id: 'probation-practitioner-' + loop.index,
-                    "data-sort-value": offender.probationPractitioner
-                },
+                attributes: tableAttributes(offender, 'probationPractitioner', loop.index),
                 html: offender.probationPractitioner
             },
             {
-                attributes: {
-                    id: 'hdced-' + loop.index,
-                    "data-sort-value": offender.hdced | toMillis
-                },
+                attributes: tableAttributes(offender, 'hdced', loop.index),
                 html: offender.hdced | formatDate('dd MMM yyyy')
             },
             {
-                attributes: {
-                    id: 'remaining-days-' + loop.index,
-                    "data-sort-value": offender.remainingDays
-                },
+                attributes: tableAttributes(offender, 'remainingDays', loop.index),
                 html: offender.remainingDays
             },
             {
-                attributes: {
-                    id: 'last-worked-on-by-' + loop.index,
-                    "data-sort-value": offender.remainingDays
-                }
+                attributes: tableAttributes(offender, 'remainingDays', loop.index)
             },
             {
-                attributes: {
-                    id: 'task-' + loop.index,
-                    "data-sort-value": offender.remainingDays
-                }
+                attributes: tableAttributes(offender, 'remainingDays', loop.index)
             }
         ]), withProbationRows) %}
-    {% endfor %}
+    {% endfor %}    
     <h2 class="govuk-heading-l">With probation</h2>
-    {{ govukTable({
-            attributes: {
-            'data-module': 'moj-sortable-table'
-        },
-        caption: "With probation",
-        captionClasses: "govuk-visually-hidden",
-        head: header,
-        rows: withProbationRows
-    }) }}
+    {{ caseloadTable("with probation", ["Name", "Probation practitioner", "HDCED", "Working days to HDCED", "Last worked on by", "Task"], withProbationRows) }}
 {% endmacro %}
