@@ -28,6 +28,8 @@ export default class CaseloadRoutes {
     AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
   ]
 
+  static readonly WITH_DECISION_MAKER_STATUSES = [AssessmentStatus.AWAITING_DECISION]
+
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -41,6 +43,7 @@ export default class CaseloadRoutes {
 
     const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES)
     const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES)
+    const withDecisionMakerCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_DECISION_MAKER_STATUSES)
     const withProbationCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PROBATION_STATUSES)
     const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES)
 
@@ -48,6 +51,7 @@ export default class CaseloadRoutes {
       activeApplicationView,
       toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
       postponedCases: postponedCases.map(this.mapToViewModel),
+      withDecisionMakerCases: withDecisionMakerCases.map(this.mapToViewModel),
       withProbationCases: withProbationCases
         .filter(
           aCase =>

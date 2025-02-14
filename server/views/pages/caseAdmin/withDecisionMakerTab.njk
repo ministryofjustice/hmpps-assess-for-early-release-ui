@@ -1,0 +1,37 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "partials/offenderName.njk" import offenderName %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+
+{% macro withDecisionMakerTab(withDecisionMakerCases) %}
+    {% set withDecisionMakerRows = [] %}
+    {% for case in withDecisionMakerCases %}
+        {% set withDecisionMakerRows = (withDecisionMakerRows.push([
+            {
+                attributes: tableAttributes(case, 'name', loop.index),
+                html: offenderName(case, loop.index)
+            },
+            {
+                attributes: tableAttributes(case, 'probationPractitioner', loop.index),
+                text: case.probationPractitioner
+            },
+            {
+                attributes: tableAttributes(case, 'hdced', loop.index),
+                html: case.hdced | formatDate('dd MMM yyyy')
+            },
+            {
+                attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+                text: case.workingDaysToHdced
+            },
+            {
+                attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
+                text: ''
+            },
+            {
+                attributes: tableAttributes(case, 'task', loop.index),
+                text: ''
+            }
+        ]), withDecisionMakerRows) %}
+    {% endfor %}
+    <h2 class="govuk-heading-l">With decision maker</h2>
+    {{ caseloadTable("With decision maker", ["Name", "Probation Practitioner", "HDCED", "Working days to HDCED", "Last worked on by", "Task"], withDecisionMakerRows) }}
+{% endmacro %}
