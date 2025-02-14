@@ -1,10 +1,9 @@
 import { expect, test } from '@playwright/test'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
-import { assessmentSummary, createOffenderSummary } from '../mockApis/assessForEarlyReleaseData'
+import { createOffenderSummary } from '../mockApis/assessForEarlyReleaseData'
 
 import { login, resetStubs } from '../testUtils'
 import paths from '../../server/routes/paths'
-import { _OffenderSummary } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
 import { convertToTitleCase, formatDate, parseIsoDate } from '../../server/utils/utils'
 import playwrightConfig from '../../playwright.config'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
@@ -16,11 +15,11 @@ test.describe('Case admin caseload', () => {
 
   test('Case admin can view caseload', async ({ page }) => {
     const prisonCode = 'MDI'
-    const prisonNumber = 'A1234AE'
 
-    const toWorkOnByYouOffender = createOffenderSummary(prisonNumber)
-    const postponedOffender: _OffenderSummary = {
-      ...createOffenderSummary(prisonNumber),
+    const toWorkOnByYouOffender = createOffenderSummary({
+      prisonNumber: 'A1234AE',
+    })
+    const postponedOffender = createOffenderSummary({
       prisonNumber: 'GU3243TH',
       forename: 'Dave',
       surname: 'Roberts',
@@ -30,9 +29,17 @@ test.describe('Case admin caseload', () => {
       postponementDate: '2025-04-25',
       postponementReason: 'Postponed for some reason',
       status: AssessmentStatus.POSTPONED,
-    }
-    const withProbationOffender: _OffenderSummary = {
-      ...createOffenderSummary(prisonNumber),
+    })
+    const withDecisionMaker = createOffenderSummary({
+      prisonNumber: 'GU8303TB',
+      forename: 'Simon',
+      surname: 'Adamson',
+      hdced: '2027-04-09',
+      workingDaysToHdced: 27,
+      probationPractitioner: 'Russell Dickson',
+      status: AssessmentStatus.AWAITING_DECISION,
+    })
+    const withProbationOffender = createOffenderSummary({
       prisonNumber: 'GU3243TB',
       forename: 'Tim',
       surname: 'Cook',
@@ -40,13 +47,13 @@ test.describe('Case admin caseload', () => {
       workingDaysToHdced: 16,
       probationPractitioner: 'Mark James',
       status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
-    }
+    })
     await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [
       toWorkOnByYouOffender,
       postponedOffender,
+      withDecisionMaker,
       withProbationOffender,
     ])
-    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
     await page.goto(paths.prison.prisonCaseload({}))
@@ -86,10 +93,8 @@ test.describe('Case admin caseload', () => {
 
   test('Case admin inactive applications caseload', async ({ page }) => {
     const prisonCode = 'MDI'
-    const prisonNumber = 'A1234AE'
 
-    const refusedOffender = {
-      ...createOffenderSummary(prisonNumber),
+    const refusedOffender = createOffenderSummary({
       prisonNumber: 'GU3243TH',
       forename: 'Dave',
       surname: 'Roberts',
@@ -97,18 +102,16 @@ test.describe('Case admin caseload', () => {
       workingDaysToHdced: 15,
       probationPractitioner: 'Mark James',
       status: AssessmentStatus.REFUSED,
-    }
-    const timedOutOffender = {
-      ...createOffenderSummary(prisonNumber),
+    })
+    const timedOutOffender = createOffenderSummary({
       prisonNumber: 'GU3243TB',
       forename: 'Tim',
       surname: 'Cook',
       hdced: '2026-12-04',
       workingDaysToHdced: 16,
       status: AssessmentStatus.TIMED_OUT,
-    }
+    })
     await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [refusedOffender, timedOutOffender])
-    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
     await page.goto(`${paths.prison.prisonCaseload({})}?view=inactive-applications`)

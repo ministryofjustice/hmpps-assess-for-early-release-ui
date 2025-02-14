@@ -4,6 +4,7 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "./postponedTab.njk" import postponedTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
+{% from "./withDecisionMakerTab.njk" import withDecisionMakerTab %}
 {% from "./withProbationTab.njk" import withProbationTab %}
 {% from "../../partials/offenderName.njk" import offenderName %}
 {% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
@@ -28,6 +29,16 @@
                     },
                     panel: {
                         html: withProbationTab({ withProbationCases: withProbationCases })
+                    }
+                },
+                {
+                    id: "with-decision-maker",
+                    label: "With decision maker",
+                    attributes: {
+                        "data-qa": "with-decision-maker"
+                },
+                    panel: {
+                        html: withDecisionMakerTab(withDecisionMakerCases)
                     }
                 },
                 {

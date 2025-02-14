@@ -21,7 +21,11 @@ test.describe('Can perform address checks', () => {
     const addressCheckRequestId = 1
 
     await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ code: staffCode }))
-    await assessForEarlyRelease.stubGetComCaseload(staffCode, [createOffenderSummary(prisonNumber)])
+    await assessForEarlyRelease.stubGetComCaseload(staffCode, [
+      createOffenderSummary({
+        prisonNumber,
+      }),
+    ])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, createCheckRequestsForAssessmentSummary)
     await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)

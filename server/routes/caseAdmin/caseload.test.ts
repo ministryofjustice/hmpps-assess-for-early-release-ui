@@ -48,6 +48,7 @@ describe('GET', () => {
           status: 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS',
         },
       ],
+      withDecisionMakerCases: [],
       withProbationCases: [],
       inactiveApplications: [],
     })
@@ -69,6 +70,7 @@ describe('GET', () => {
       activeApplicationView: false,
       postponedCases: [],
       toWorkOnByYouCases: [],
+      withDecisionMakerCases: [],
       withProbationCases: [],
       inactiveApplications: [
         {
@@ -105,6 +107,7 @@ describe('GET', () => {
       activeApplicationView: true,
       toWorkOnByYouCases: [],
       postponedCases: [],
+      withDecisionMakerCases: [],
       withProbationCases: [
         {
           addressChecksComplete: true,
