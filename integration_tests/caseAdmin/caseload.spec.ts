@@ -83,4 +83,43 @@ test.describe('Case admin caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(withProbationOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
   })
+
+  test('Case admin inactive applications caseload', async ({ page }) => {
+    const prisonCode = 'MDI'
+    const prisonNumber = 'A1234AE'
+
+    const refusedOffender = {
+      ...createOffenderSummary(prisonNumber),
+      prisonNumber: 'GU3243TH',
+      forename: 'Dave',
+      surname: 'Roberts',
+      hdced: '2026-09-04',
+      workingDaysToHdced: 15,
+      probationPractitioner: 'Mark James',
+      status: AssessmentStatus.REFUSED,
+    }
+    const timedOutOffender = {
+      ...createOffenderSummary(prisonNumber),
+      prisonNumber: 'GU3243TB',
+      forename: 'Tim',
+      surname: 'Cook',
+      hdced: '2026-12-04',
+      workingDaysToHdced: 16,
+      status: AssessmentStatus.TIMED_OUT,
+    }
+    await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [refusedOffender, timedOutOffender])
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+
+    await login(page, { authorities: ['ROLE_LICENCE_CA'] })
+    await page.goto(`${paths.prison.prisonCaseload({})}?view=inactive-applications`)
+
+    await expect(page.getByTestId('inactive-applications')).toBeVisible()
+    await expect(page.getByText(`${refusedOffender.forename} ${refusedOffender.surname}`.trim())).toBeVisible()
+    await expect(page.getByText(`Prison number: ${refusedOffender.prisonNumber}`)).toBeVisible()
+    await expect(page.getByText('Mark James')).toBeVisible()
+
+    await expect(page.getByText(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())).toBeVisible()
+    await expect(page.getByText(`Prison number: ${timedOutOffender.prisonNumber}`)).toBeVisible()
+    await expect(page.getByText('Mark Coombes	')).toBeVisible()
+  })
 })
