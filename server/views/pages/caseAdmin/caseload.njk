@@ -2,52 +2,69 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
-{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
 {% from "./postponedTab.njk" import postponedTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withProbationTab.njk" import withProbationTab %}
 {% from "../../partials/offenderName.njk" import offenderName %}
+{% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
 
 {% set pageTitle = "Assessing a licence - Caseload - " + applicationName %}
+{% set items = [
+                {
+                    id: "to-work-on-by-you",
+                    label: "To work on by you",
+                    attributes: {
+                        "data-qa": "to-work-on-by-you"
+                    },
+                    panel: {
+                        html: toWorkOnByYouTab(toWorkOnByYouCases)
+                    }
+                },
+                {
+                    id: "with-probation",
+                    label: "With probation",
+                    attributes: {
+                        "data-qa": "with-probation"
+                    },
+                    panel: {
+                        html: withProbationTab({ withProbationCases: withProbationCases })
+                    }
+                },
+                {
+                    id: "postponed",
+                    label: "Postponed",
+                    attributes: {
+                        "data-qa": "postponed"
+                    },
+                    panel: {
+                        html: postponedTab(postponedCases)
+                    }
+                }
+            ] %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">Select someone's HDC application to work on</h1>
-            {{ govukTabs({
-                items: [
-                    {
-                        id: "to-work-on-by-you",
-                        label: "To work on by you",
-                        attributes: {
-                            "data-qa": "to-work-on-by-you"
-                        },
-                        panel: {
-                            html: toWorkOnByYouTab(toWorkOnByYouCases)
-                        }
-                    },
-                    {
-                        id: "with-probation",
-                        label: "With probation",
-                        attributes: {
-                            "data-qa": "with-probation"
-                        },
-                        panel: {
-                            html: withProbationTab({ withProbationCases: withProbationCases })
-                        }
-                    },
-                    {
-                        id: "postponed",
-                        label: "Postponed",
-                        attributes: {
-                            "data-qa": "postponed"
-                        },
-                        panel: {
-                            html: postponedTab(postponedCases)
-                        }
-                    }
-                ]
-            }) }}
+            <nav class="moj-sub-navigation" aria-label="Sub navigation">
+                <ul class="moj-sub-navigation__list">
+                    <li class="moj-sub-navigation__item">
+                        <a class="moj-sub-navigation__link" {% if activeApplicationView %}aria-current="page"{% endif %} href="?view=active-applications">Active applications</a>
+                    </li>
+
+                    <li class="moj-sub-navigation__item">
+                        <a class="moj-sub-navigation__link" {% if not activeApplicationView %}aria-current="page"{% endif %} href="?view=inactive-applications">Inactive applications</a>
+                    </li>
+                </ul>
+            </nav>
+            {% if not activeApplicationView %}
+                <h2 class="govuk-heading-l" data-qa="inactive-applications">Inactive applications</h2>
+                {{ inactiveApplicationsTab({ cases: inactiveApplications }) }}
+            {% else %}
+                {{ govukTabs({
+                    items: items
+                }) }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

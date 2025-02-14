@@ -21,9 +21,19 @@ export default class CaseloadRoutes {
     AssessmentStatus.APPROVED,
   ]
 
+  static readonly INACTIVE_APPLICATIONS_STATUSES = [
+    AssessmentStatus.REFUSED,
+    AssessmentStatus.TIMED_OUT,
+    AssessmentStatus.OPTED_OUT,
+    AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
+  ]
+
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
+    const view = req.query.view || 'active-applications'
+    const activeApplicationView = view === 'active-applications'
+
     const cases = await this.caseAdminCaseloadService.getCaseAdminCaseload(
       req?.middleware?.clientToken,
       res.locals.activeCaseLoadId,
@@ -32,8 +42,10 @@ export default class CaseloadRoutes {
     const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES)
     const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES)
     const withProbationCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PROBATION_STATUSES)
+    const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES)
 
     res.render('pages/caseAdmin/caseload', {
+      activeApplicationView,
       toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
       postponedCases: postponedCases.map(this.mapToViewModel),
       withProbationCases: withProbationCases
@@ -42,6 +54,7 @@ export default class CaseloadRoutes {
             !(aCase.status === AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS && !aCase.addressChecksComplete),
         )
         .map(this.mapToViewModel),
+      inactiveApplications: inactiveApplications.map(this.mapToViewModel),
     })
   }
 

@@ -1,0 +1,35 @@
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+{% from "partials/offenderName.njk" import offenderName %}
+
+{% macro inactiveApplicationsTab(params) %}
+    {% set cases = [] %}
+        {% for case in params.cases %}
+            {% set cases = (cases.push([
+                {
+                    attributes: tableAttributes(case, 'name', loop.index),
+                    html: offenderName(case, loop.index)
+                },
+                {
+                    attributes: tableAttributes(case, 'probationPractitioner', loop.index),
+                    html: case.probationPractitioner
+                },
+                {
+                    attributes: tableAttributes(case, 'hdced', loop.index),
+                    html: case.hdced | formatDate('dd MMM yyyy')
+                },
+                {
+                    attributes: tableAttributes(case, 'crd', loop.index),
+                    text: ''
+                },
+                {
+                    attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
+                    text: ''
+                },
+                {
+                    attributes: tableAttributes(case, 'Outcome', loop.index),
+                    text: ''
+                }
+            ]), cases) %}
+        {% endfor %}
+    {{ caseloadTable("Inactive applications", ["Name", "Probation practitioner", "HDCED", "CRD", "Last worked on by", "Outcome"], cases)}}
+{% endmacro %}

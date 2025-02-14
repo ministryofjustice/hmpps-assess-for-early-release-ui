@@ -33,6 +33,7 @@ describe('GET', () => {
     await caseloadRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
+      activeApplicationView: true,
       postponedCases: [],
       toWorkOnByYouCases: [
         {
@@ -48,10 +49,45 @@ describe('GET', () => {
         },
       ],
       withProbationCases: [],
+      inactiveApplications: [],
+    })
+  })
+
+  it('should render inactive applications caseload', async () => {
+    req.query = { view: 'inactive-applications' }
+    const cases = [
+      {
+        ...offenderSummaryList[0],
+        status: AssessmentStatus.REFUSED,
+      },
+    ]
+
+    caseAdminCaseloadService.getCaseAdminCaseload.mockResolvedValue(cases)
+    await caseloadRoutes.GET(req, res)
+    expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
+      activeApplicationView: false,
+      postponedCases: [],
+      toWorkOnByYouCases: [],
+      withProbationCases: [],
+      inactiveApplications: [
+        {
+          addressChecksComplete: false,
+          createLink: paths.prison.assessment.home({ prisonNumber: offenderSummaryList[0].prisonNumber }),
+          hdced: parseIsoDate('2022-01-08'),
+          workingDaysToHdced: 1,
+          name: 'Jim Smith',
+          prisonNumber: 'A1234AB',
+          probationPractitioner: 'Jane Huggins',
+          isPostponed: false,
+          status: 'REFUSED',
+        },
+      ],
     })
   })
 
   it('should render with probation tab cases if status is AWAITING_ADDRESS_AND_RISK_CHECKS and addressChecksComplete is true ', async () => {
+    req.query = { view: 'active-applications' }
     const cases = [
       {
         ...offenderSummaryList[0],
@@ -66,6 +102,7 @@ describe('GET', () => {
     await caseloadRoutes.GET(req, res)
 
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
+      activeApplicationView: true,
       toWorkOnByYouCases: [],
       postponedCases: [],
       withProbationCases: [
@@ -81,6 +118,7 @@ describe('GET', () => {
           status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
         },
       ],
+      inactiveApplications: [],
     })
   })
 })
