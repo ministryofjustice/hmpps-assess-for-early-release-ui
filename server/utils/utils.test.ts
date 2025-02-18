@@ -105,7 +105,7 @@ describe('getOrdinal', () => {
   })
 })
 
-fdescribe('jsonDtToDateShort', () => {
+describe('jsonDtToDateShort', () => {
   it('should convert JSON date to short date format', () => {
     const jsonDate = '2023-10-15T00:00:00.000Z'
     const result = jsonDtToDateShort(jsonDate)
