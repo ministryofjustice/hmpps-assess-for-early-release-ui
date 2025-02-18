@@ -350,7 +350,7 @@ describe('nunjucksSetup', () => {
     })
   })
 
-  fdescribe('isTaskOverdue', () => {
+  describe('isTaskOverdue', () => {
     it('should return true if taskOverdueOn is less than today', () => {
       const taskOverdueOn = startOfDay(moment().subtract(1, 'days').toISOString()) // Set to yesterday
       const result = renderTemplate('{{- taskOverdueOn | isTaskOverdue -}}', { taskOverdueOn })
