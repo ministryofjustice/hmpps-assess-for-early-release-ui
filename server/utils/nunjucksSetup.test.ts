@@ -1,4 +1,6 @@
 import nunjucks from 'nunjucks'
+import moment from 'moment'
+import { startOfDay } from 'date-fns'
 import { registerNunjucks } from './nunjucksSetup'
 import paths from '../routes/paths'
 
@@ -345,6 +347,31 @@ describe('nunjucksSetup', () => {
         })
         expect(result).toBe('2023')
       })
+    })
+  })
+
+  fdescribe('isTaskOverdue', () => {
+    it('should return true if taskOverdueOn is less than today', () => {
+      const taskOverdueOn = startOfDay(moment().subtract(1, 'days').toISOString()) // Set to yesterday
+      const result = renderTemplate('{{- taskOverdueOn | isTaskOverdue -}}', { taskOverdueOn })
+      expect(result).toStrictEqual('true')
+    })
+
+    it('should return false if taskOverdueOn is today', () => {
+      const taskOverdueOn = moment().toISOString()
+      const result = renderTemplate('{{- taskOverdueOn | isTaskOverdue -}}', { taskOverdueOn })
+      expect(result).toStrictEqual('false')
+    })
+
+    it('should return false if taskOverdueOn is greater than today', () => {
+      const taskOverdueOn = moment().add(1, 'days').toISOString() // Set to tomorrow
+      const result = renderTemplate('{{- taskOverdueOn | isTaskOverdue -}}', { taskOverdueOn })
+      expect(result).toStrictEqual('false')
+    })
+
+    it('should return false if taskOverdueOn is null', () => {
+      const result = renderTemplate('{{- null | isTaskOverdue -}}', {})
+      expect(result).toStrictEqual('false')
     })
   })
 })

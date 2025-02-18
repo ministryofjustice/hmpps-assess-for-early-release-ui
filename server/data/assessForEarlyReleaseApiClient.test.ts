@@ -41,7 +41,12 @@ describe('assessForEarlyReleaseApiClient', () => {
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
       const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
-        return { ...c, hdced: toIsoDate(c.hdced), postponementDate: toIsoDate(c.postponementDate) }
+        return {
+          ...c,
+          hdced: toIsoDate(c.hdced),
+          postponementDate: toIsoDate(c.postponementDate),
+          taskOverdueOn: toIsoDate(c.taskOverdueOn),
+        }
       })
 
       fakeAferApi
@@ -297,7 +302,12 @@ describe('assessForEarlyReleaseApiClient', () => {
     it('should return data from api', async () => {
       const prisonCode = 'MDI'
       const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
-        return { ...c, hdced: toIsoDate(c.hdced), postponementDate: toIsoDate(c.postponementDate) }
+        return {
+          ...c,
+          hdced: toIsoDate(c.hdced),
+          postponementDate: toIsoDate(c.postponementDate),
+          taskOverdueOn: toIsoDate(c.taskOverdueOn),
+        }
       })
 
       fakeAferApi

@@ -5,6 +5,13 @@
 {% macro toWorkOnByYouTab(toWorkOnByYouCases) %}
     {% set toWorkOnByYouRows = [] %}
     {% for case in toWorkOnByYouCases %}
+
+        {% if case.taskOverdueOn | isTaskOverdue %}
+            {% set task = '<span class="urgent-highlight">'+ +'</span><span class="urgent-highlight urgent-highlight-message">Overdue on '+ case.taskOverdueOn | datetimeToDateShort +'</span>' %}
+        {% else %}
+            {% set task = '' %}
+        {% endif %}
+
         {% set toWorkOnByYouRows = (toWorkOnByYouRows.push([
             {
                 attributes: tableAttributes(case, 'name', loop.index),
@@ -28,7 +35,7 @@
             },
             {
                 attributes: tableAttributes(case, 'task', loop.index),
-                text: ''
+                html: task
             }
         ]), toWorkOnByYouRows) %}
     {% endfor %}

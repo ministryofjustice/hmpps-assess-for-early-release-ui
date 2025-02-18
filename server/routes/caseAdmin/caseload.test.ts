@@ -46,6 +46,7 @@ describe('GET', () => {
           probationPractitioner: 'Jane Huggins',
           isPostponed: false,
           status: 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS',
+          taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
         },
       ],
       withDecisionMakerCases: [],
@@ -83,6 +84,7 @@ describe('GET', () => {
           probationPractitioner: 'Jane Huggins',
           isPostponed: false,
           status: 'REFUSED',
+          taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
         },
       ],
     })
@@ -119,6 +121,7 @@ describe('GET', () => {
           probationPractitioner: 'Jane Huggins',
           workingDaysToHdced: 1,
           status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
+          taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
         },
       ],
       inactiveApplications: [],

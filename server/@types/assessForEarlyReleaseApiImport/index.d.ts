@@ -1054,15 +1054,6 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
     }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
-    }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
       /**
@@ -1075,6 +1066,15 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1211,6 +1211,11 @@ export interface components {
        * @example false
        */
       addressChecksComplete: boolean
+      /**
+       * Format: date
+       * @description The date that the current task overdue on
+       */
+      taskOverdueOn?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentSummary: {
@@ -1288,6 +1293,13 @@ export interface components {
       tasks: {
         [key: string]: components['schemas']['TaskProgress'][]
       }
+      /**
+       * @description The opt out reason type
+       * @enum {string}
+       */
+      optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
+      /** @description The opt out reason description if rhe optOutReasonType is OTHER */
+      optOutReasonOther?: string
     }
     /** @description A summary of a community offender manager */
     ComSummary: {
@@ -1520,19 +1532,6 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
-      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1554,17 +1553,17 @@ export interface components {
        */
       dateRequested: string
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
