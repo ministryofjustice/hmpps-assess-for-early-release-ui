@@ -20,7 +20,7 @@ test.describe('Case admin caseload', () => {
       prisonNumber: 'A1234AE',
     })
     const postponedOffender = createOffenderSummary({
-      prisonNumber: 'GU3243TH',
+      prisonNumber: 'G3243TH',
       forename: 'Dave',
       surname: 'Roberts',
       hdced: '2026-09-04',
@@ -31,7 +31,7 @@ test.describe('Case admin caseload', () => {
       status: AssessmentStatus.POSTPONED,
     })
     const withDecisionMaker = createOffenderSummary({
-      prisonNumber: 'GU8303TB',
+      prisonNumber: 'G8303TB',
       forename: 'Simon',
       surname: 'Adamson',
       hdced: '2027-04-09',
@@ -40,7 +40,7 @@ test.describe('Case admin caseload', () => {
       status: AssessmentStatus.AWAITING_DECISION,
     })
     const withProbationOffender = createOffenderSummary({
-      prisonNumber: 'GU3243TB',
+      prisonNumber: 'G3243TB',
       forename: 'Tim',
       surname: 'Cook',
       hdced: '2026-12-04',
@@ -48,11 +48,22 @@ test.describe('Case admin caseload', () => {
       probationPractitioner: 'Mark James',
       status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
     })
+    const readyForReleaseOffender = createOffenderSummary({
+      prisonNumber: 'K8932TE',
+      forename: 'Brian',
+      surname: 'Morrish',
+      hdced: '2026-10-25',
+      workingDaysToHdced: 3,
+      probationPractitioner: 'David Newton',
+      status: AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
+    })
+
     await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [
       toWorkOnByYouOffender,
       postponedOffender,
       withDecisionMaker,
       withProbationOffender,
+      readyForReleaseOffender,
     ])
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -89,6 +100,19 @@ test.describe('Case admin caseload', () => {
       page.getByText(convertToTitleCase(`${withProbationOffender.probationPractitioner}`.trim())),
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(withProbationOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+
+    await page.getByTestId('ready-for-release').click()
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#ready-for-release`)
+    await expect(
+      page.getByText(
+        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+      ),
+    ).toBeVisible()
+    await expect(page.getByText(`Prison number: ${readyForReleaseOffender.prisonNumber}`)).toBeVisible()
+    await expect(
+      page.getByText(convertToTitleCase(`${readyForReleaseOffender.probationPractitioner}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(formatDate(parseIsoDate(readyForReleaseOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
   })
 
   test('Case admin inactive applications caseload', async ({ page }) => {
@@ -111,6 +135,7 @@ test.describe('Case admin caseload', () => {
       workingDaysToHdced: 16,
       status: AssessmentStatus.TIMED_OUT,
     })
+
     await assessForEarlyRelease.stubGetCaseAdminCaseload(prisonCode, [refusedOffender, timedOutOffender])
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
