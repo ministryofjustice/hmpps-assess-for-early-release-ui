@@ -50,6 +50,7 @@ describe('GET', () => {
       ],
       withDecisionMakerCases: [],
       withProbationCases: [],
+      readyForReleaseCases: [],
       inactiveApplications: [],
     })
   })
@@ -85,6 +86,7 @@ describe('GET', () => {
           status: 'REFUSED',
         },
       ],
+      readyForReleaseCases: [],
     })
   })
 
@@ -122,6 +124,7 @@ describe('GET', () => {
         },
       ],
       inactiveApplications: [],
+      readyForReleaseCases: [],
     })
   })
 })

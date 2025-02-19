@@ -6,52 +6,63 @@
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withDecisionMakerTab.njk" import withDecisionMakerTab %}
 {% from "./withProbationTab.njk" import withProbationTab %}
+{% from "./readyForReleaseTab.njk" import readyForReleaseTab %}
 {% from "../../partials/offenderName.njk" import offenderName %}
 {% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
 
 {% set pageTitle = "Assessing a licence - Caseload - " + applicationName %}
 {% set items = [
-                {
-                    id: "to-work-on-by-you",
-                    label: "To work on by you",
-                    attributes: {
-                        "data-qa": "to-work-on-by-you"
-                    },
-                    panel: {
-                        html: toWorkOnByYouTab(toWorkOnByYouCases)
-                    }
-                },
-                {
-                    id: "with-probation",
-                    label: "With probation",
-                    attributes: {
-                        "data-qa": "with-probation"
-                    },
-                    panel: {
-                        html: withProbationTab({ withProbationCases: withProbationCases })
-                    }
-                },
-                {
-                    id: "with-decision-maker",
-                    label: "With decision maker",
-                    attributes: {
-                        "data-qa": "with-decision-maker"
-                },
-                    panel: {
-                        html: withDecisionMakerTab(withDecisionMakerCases)
-                    }
-                },
-                {
-                    id: "postponed",
-                    label: "Postponed",
-                    attributes: {
-                        "data-qa": "postponed"
-                    },
-                    panel: {
-                        html: postponedTab(postponedCases)
-                    }
-                }
-            ] %}
+    {
+        id: "to-work-on-by-you",
+        label: "To work on by you",
+        attributes: {
+            "data-qa": "to-work-on-by-you"
+        },
+        panel: {
+            html: toWorkOnByYouTab(toWorkOnByYouCases)
+        }
+    },
+    {
+        id: "with-probation",
+        label: "With probation",
+        attributes: {
+            "data-qa": "with-probation"
+        },
+        panel: {
+            html: withProbationTab({ withProbationCases: withProbationCases })
+        }
+    },
+    {
+        id: "with-decision-maker",
+        label: "With decision maker",
+        attributes: {
+            "data-qa": "with-decision-maker"
+    },
+        panel: {
+            html: withDecisionMakerTab(withDecisionMakerCases)
+        }
+    },
+    {
+        id: "postponed",
+        label: "Postponed",
+        attributes: {
+            "data-qa": "postponed"
+        },
+        panel: {
+            html: postponedTab(postponedCases)
+        }
+    },
+    {
+        id: "ready-for-release",
+        label: "Ready for release",
+        attributes: {
+            "data-qa": "ready-for-release"
+        },
+        panel: {
+            html: readyForReleaseTab(readyForReleaseCases)
+        }
+    }
+] %}
 
 {% block content %}
     <div class="govuk-grid-row">
