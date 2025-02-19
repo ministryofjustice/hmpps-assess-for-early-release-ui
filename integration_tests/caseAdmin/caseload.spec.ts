@@ -101,18 +101,18 @@ test.describe('Case admin caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(withProbationOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
 
-    // await page.getByTestId('ready-for-release').click()
-    // await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#ready-for-release`)
-    // await expect(
-    //   page.getByText(
-    //     convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
-    //   ),
-    // ).toBeVisible()
-    // await expect(page.getByText(`Prison number: ${readyForReleaseOffender.prisonNumber}`)).toBeVisible()
-    // await expect(
-    //   page.getByText(convertToTitleCase(`${readyForReleaseOffender.probationPractitioner}`.trim())),
-    // ).toBeVisible()
-    // await expect(page.getByText(formatDate(parseIsoDate(readyForReleaseOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+    await page.getByTestId('ready-for-release').click()
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#ready-for-release`)
+    await expect(
+      page.getByText(
+        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+      ),
+    ).toBeVisible()
+    await expect(page.getByText(`Prison number: ${readyForReleaseOffender.prisonNumber}`)).toBeVisible()
+    await expect(
+      page.getByText(convertToTitleCase(`${readyForReleaseOffender.probationPractitioner}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(formatDate(parseIsoDate(readyForReleaseOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
   })
 
   test('Case admin inactive applications caseload', async ({ page }) => {
