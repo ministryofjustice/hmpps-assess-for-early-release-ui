@@ -4,7 +4,8 @@ import nunjucks, { Environment } from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import { Params, Path } from 'static-path'
-import { convertToTitleCase, formatDate, initialiseName, toIsoDate } from './utils'
+import { startOfDay } from 'date-fns'
+import { convertToTitleCase, formatDate, initialiseName, jsonDtToDateShort, toIsoDate } from './utils'
 import config from '../config'
 import logger from '../../logger'
 import { ApplicationInfo } from '../applicationInfo'
@@ -251,6 +252,19 @@ export function registerNunjucks(app?: express.Express): Environment {
       id: `${field}-${index}`,
       'data-sort-value': data[field],
     }
+  })
+
+  njkEnv.addFilter('isTaskOverdue', (taskOverdueOn: string): boolean => {
+    if (!taskOverdueOn) {
+      return false
+    }
+    const today = startOfDay(new Date())
+    const taskDate = new Date(taskOverdueOn)
+    return taskDate < today
+  })
+
+  njkEnv.addFilter('datetimeToDateShort', (dt: string) => {
+    return jsonDtToDateShort(dt)
   })
 
   return njkEnv

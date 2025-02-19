@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { parse, format } from 'date-fns'
 import AuthRole from '../enumeration/authRole'
 
@@ -45,4 +46,19 @@ const getOrdinal = (n: number): string => {
   return n + (s[(v - 20) % 10] || s[v] || s[0])
 }
 
-export { properCase, convertToTitleCase, initialiseName, hasRole, parseIsoDate, toIsoDate, formatDate, getOrdinal }
+const jsonDtToDateShort = (dt: string): string => {
+  const momentDate = moment(dt)
+  return momentDate.isValid() ? momentDate.format('D MMM YYYY') : null
+}
+
+export {
+  properCase,
+  convertToTitleCase,
+  initialiseName,
+  hasRole,
+  parseIsoDate,
+  toIsoDate,
+  formatDate,
+  getOrdinal,
+  jsonDtToDateShort,
+}

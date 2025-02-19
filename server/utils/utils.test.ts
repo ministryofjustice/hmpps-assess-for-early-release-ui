@@ -1,5 +1,5 @@
 import AuthRole from '../enumeration/authRole'
-import { convertToTitleCase, hasRole, initialiseName, formatDate, getOrdinal } from './utils'
+import { convertToTitleCase, hasRole, initialiseName, formatDate, getOrdinal, jsonDtToDateShort } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -102,5 +102,31 @@ describe('getOrdinal', () => {
   it('returns the correct ordinal suffix for 111', () => {
     const result = getOrdinal(111)
     expect(result).toBe('111th')
+  })
+})
+
+describe('jsonDtToDateShort', () => {
+  it('should convert JSON date to short date format', () => {
+    const jsonDate = '2023-10-15T00:00:00.000Z'
+    const result = jsonDtToDateShort(jsonDate)
+    expect(result).toBe('15 Oct 2023')
+  })
+
+  it('should handle different date formats', () => {
+    const jsonDate = '2023-01-05T00:00:00.000Z'
+    const result = jsonDtToDateShort(jsonDate)
+    expect(result).toBe('5 Jan 2023')
+  })
+
+  it('should handle invalid date formats gracefully', () => {
+    const jsonDate = 'invalid-date'
+    const result = jsonDtToDateShort(jsonDate)
+    expect(result).toBeNull()
+  })
+
+  it('should handle empty date string', () => {
+    const jsonDate = ''
+    const result = jsonDtToDateShort(jsonDate)
+    expect(result).toBeNull()
   })
 })

@@ -5,7 +5,7 @@ type ParsingDates<T, Fields> = {
 }
 
 export type _OffenderSummary = components['schemas']['OffenderSummary']
-export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate'>
+export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate' | 'taskOverdueOn'>
 
 export type _AddressSummary = components['schemas']['AddressSummary']
 export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
