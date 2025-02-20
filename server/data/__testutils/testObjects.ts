@@ -37,6 +37,7 @@ const createCase = ({
   isPostponed = false,
   status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
   taskOverdueOn = parseIsoDate('2022-01-08'),
+  currentTask = 'ASSESS_ELIGIBILITY',
 } = {}): Case => ({
   prisonNumber,
   hdced,
@@ -47,6 +48,7 @@ const createCase = ({
   status,
   addressChecksComplete: false,
   taskOverdueOn,
+  currentTask,
 })
 
 const createOffenderSummary = ({
@@ -58,7 +60,7 @@ const createOffenderSummary = ({
   probationPractitioner = 'CVl_COM',
   isPostponed = false,
   postponementDate = null,
-  postponementReason = null,
+  postponementReasons = [],
   workingDaysToHdced = 3,
   status = AssessmentStatus.NOT_STARTED,
   taskOverdueOn = parseIsoDate('2022-01-08'),
@@ -72,7 +74,7 @@ const createOffenderSummary = ({
   probationPractitioner,
   isPostponed,
   postponementDate,
-  postponementReason,
+  postponementReasons,
   status,
   addressChecksComplete: false,
   taskOverdueOn,

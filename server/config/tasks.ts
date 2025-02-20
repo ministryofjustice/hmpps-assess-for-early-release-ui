@@ -9,7 +9,7 @@ export type Task = {
   path?: (assessment: AssessmentSummary) => string
 }
 
-type UsersWithTypes = Exclude<UserRole, 'SUPPORT'>
+export type UsersWithTypes = Exclude<UserRole, 'SUPPORT'>
 
 export const tasks: Record<UsersWithTypes, Task[]> = {
   PRISON_CA: [

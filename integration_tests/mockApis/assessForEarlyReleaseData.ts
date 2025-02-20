@@ -194,7 +194,7 @@ export const createOffenderSummary = ({
   probationPractitioner = 'Mark Coombes',
   isPostponed = false,
   postponementDate = null,
-  postponementReason = null,
+  postponementReasons = [],
   status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
   addressChecksComplete = false,
 } = {}): _OffenderSummary => ({
@@ -207,7 +207,7 @@ export const createOffenderSummary = ({
   probationPractitioner,
   isPostponed,
   postponementDate,
-  postponementReason,
+  postponementReasons,
   status,
   addressChecksComplete,
 })

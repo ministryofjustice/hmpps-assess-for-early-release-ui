@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import CaseAdminCaseloadService, { Case } from '../../services/caseAdminCaseloadService'
 import paths from '../paths'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
+import { tasks, UsersWithTypes } from '../../config/tasks'
 
 export default class CaseloadRoutes {
   static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
@@ -69,9 +70,24 @@ export default class CaseloadRoutes {
     return {
       createLink: paths.prison.assessment.home(aCase),
       ...aCase,
+      currentTask: this.taskDescription(aCase.currentTask),
     }
   }
 
   filterCasesByStatus = (cases: Case[], statuses: AssessmentStatus[]): Case[] =>
     cases.filter(aCase => statuses.includes(aCase.status))
+
+  taskDescription = (taskCode: string): string => {
+    if (!taskCode) {
+      return null
+    }
+
+    for (const tasksForUser of Object.keys(tasks)) {
+      const task = tasks[tasksForUser as UsersWithTypes].find(aTask => aTask.code === taskCode)
+      if (task) {
+        return task.title
+      }
+    }
+    return null
+  }
 }

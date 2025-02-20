@@ -27,7 +27,7 @@ test.describe('Case admin caseload', () => {
       workingDaysToHdced: 15,
       isPostponed: true,
       postponementDate: '2025-04-25',
-      postponementReason: 'Postponed for some reason',
+      postponementReasons: ['Postponed for some reason'],
       status: AssessmentStatus.POSTPONED,
     })
     const withDecisionMaker = createOffenderSummary({
@@ -88,7 +88,7 @@ test.describe('Case admin caseload', () => {
     await expect(
       page.getByText(formatDate(parseIsoDate(postponedOffender.postponementDate), 'dd MMM yyyy')),
     ).toBeVisible()
-    await expect(page.getByText(postponedOffender.postponementReason)).toBeVisible()
+    await expect(page.getByText(postponedOffender.postponementReasons[0])).toBeVisible()
 
     await page.getByTestId('with-probation').click()
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#with-probation`)

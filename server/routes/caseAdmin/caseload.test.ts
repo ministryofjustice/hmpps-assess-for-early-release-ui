@@ -5,6 +5,7 @@ import { createMockCaseAdminCaseloadService } from '../../services/__testutils/m
 import { parseIsoDate } from '../../utils/utils'
 import paths from '../paths'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
+import { Case } from '../../services/caseAdminCaseloadService'
 
 const offenderSummaryList = [createCase({})]
 
@@ -47,6 +48,7 @@ describe('GET', () => {
           isPostponed: false,
           status: 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS',
           taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
+          currentTask: 'Assess eligibility and suitability',
         },
       ],
       withDecisionMakerCases: [],
@@ -58,10 +60,11 @@ describe('GET', () => {
 
   it('should render inactive applications caseload', async () => {
     req.query = { view: 'inactive-applications' }
-    const cases = [
+    const cases: Case[] = [
       {
         ...offenderSummaryList[0],
         status: AssessmentStatus.REFUSED,
+        currentTask: null,
       },
     ]
 
@@ -86,6 +89,7 @@ describe('GET', () => {
           isPostponed: false,
           status: 'REFUSED',
           taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
+          currentTask: null,
         },
       ],
       readyForReleaseCases: [],
@@ -98,6 +102,7 @@ describe('GET', () => {
       {
         ...offenderSummaryList[0],
         status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+        currentTask: 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
         addressChecksComplete: true,
         isPostponed: false,
       },
@@ -124,6 +129,7 @@ describe('GET', () => {
           workingDaysToHdced: 1,
           status: 'AWAITING_ADDRESS_AND_RISK_CHECKS',
           taskOverdueOn: offenderSummaryList[0].taskOverdueOn,
+          currentTask: 'Check addresses or community accommodation',
         },
       ],
       inactiveApplications: [],

@@ -106,6 +106,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/postpone': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Postpone case for early release.
+     * @description Postpone offenders case for early release.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['postponeCase']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/opt-out': {
     parameters: {
       query?: never
@@ -702,7 +725,6 @@ export interface paths {
     trace?: never
   }
 }
-export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -740,6 +762,23 @@ export interface components {
       userMessage?: string
       developerMessage?: string
       moreInfo?: string
+    }
+    /** @description Request by case administrator or decision maker to postpone case */
+    PostponeCaseRequest: {
+      /**
+       * @description The reason or reasons for the case postponement
+       * @example ON_REMAND
+       */
+      reasonTypes: (
+        | 'PLANNING_ACTIONS_CONFIRMATION_NEEDED_BY_PRACTITIONER'
+        | 'ON_REMAND'
+        | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
+        | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
+        | 'COMMITED_OFFENCE_REFERRED_TO_LAW_ENF_AGENCY'
+        | 'CONFISCATION_ORDER_NOT_PAID_AND_ENF_AGENCY_DEEMS_UNSUITABLE'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_LENIENT_SCH'
+      )[]
+      agent: components['schemas']['Agent']
     }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
@@ -942,12 +981,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1040,12 +1073,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -1053,6 +1080,15 @@ export interface components {
       taskCode: string
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
@@ -1066,15 +1102,6 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
-    }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1178,10 +1205,18 @@ export interface components {
        */
       postponementDate?: string
       /**
-       * @description The reason that the offender's current assessment was postponed
-       * @example Have an application pending with the unduly lenient sentence scheme
+       * @description The reasons that the offender's current assessment was postponed
+       * @example ON_REMAND
        */
-      postponementReason?: string
+      postponementReasons: (
+        | 'PLANNING_ACTIONS_CONFIRMATION_NEEDED_BY_PRACTITIONER'
+        | 'ON_REMAND'
+        | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
+        | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
+        | 'COMMITED_OFFENCE_REFERRED_TO_LAW_ENF_AGENCY'
+        | 'CONFISCATION_ORDER_NOT_PAID_AND_ENF_AGENCY_DEEMS_UNSUITABLE'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_LENIENT_SCH'
+      )[]
       /**
        * @description The status of the offender's current assessment
        * @example AWAITING_ADDRESS_AND_RISK_CHECKS
@@ -1211,6 +1246,25 @@ export interface components {
        * @example false
        */
       addressChecksComplete: boolean
+      /**
+       * @description The current task for the offender's current assessment, if there is no next task then null will be returned
+       * @example Assess eligibility and suitability
+       * @enum {string}
+       */
+      currentTask?:
+        | 'ASSESS_ELIGIBILITY'
+        | 'ENTER_CURFEW_ADDRESS'
+        | 'COMPLETE_PRE_RELEASE_CHECKS'
+        | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
+        | 'PREPARE_FOR_RELEASE'
+        | 'PRINT_LICENCE'
+        | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
+        | 'MAKE_A_RISK_MANAGEMENT_DECISION'
+        | 'SEND_CHECKS_TO_PRISON'
+        | 'CREATE_LICENCE'
+        | 'CONFIRM_RELEASE'
+        | 'APPROVE_LICENCE'
+        | 'OPT_IN'
       /**
        * Format: date
        * @description The date that the current task overdue on
@@ -1531,6 +1585,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1552,19 +1619,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       dateRequested: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: string | boolean
@@ -1576,7 +1630,6 @@ export interface components {
   headers: never
   pathItems: never
 }
-export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {
@@ -1739,6 +1792,50 @@ export interface operations {
       }
       /** @description Could not find an offender with the provided prison number */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  postponeCase: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PostponeCaseRequest']
+      }
+    }
+    responses: {
+      /** @description The offenders case has been postponed for early release. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
         headers: {
           [name: string]: unknown
         }
