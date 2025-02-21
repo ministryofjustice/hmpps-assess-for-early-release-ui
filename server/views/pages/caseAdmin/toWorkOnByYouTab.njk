@@ -7,9 +7,9 @@
     {% for case in toWorkOnByYouCases %}
 
         {% if case.taskOverdueOn | isTaskOverdue %}
-            {% set task = '<span class="urgent-highlight">'+ +'</span><span class="urgent-highlight urgent-highlight-message">Overdue on '+ case.taskOverdueOn | datetimeToDateShort +'</span>' %}
+            {% set task = '<span class="urgent-highlight">'+ case.currentTask +'</span><span class="urgent-highlight urgent-highlight-message"> Overdue on '+ case.taskOverdueOn | datetimeToDateShort +'</span>' %}
         {% else %}
-            {% set task = '' %}
+            {% set task = case.currentTask %}
         {% endif %}
 
         {% set toWorkOnByYouRows = (toWorkOnByYouRows.push([
@@ -35,7 +35,7 @@
             },
             {
                 attributes: tableAttributes(case, 'task', loop.index),
-                text: case.currentTask
+                text: task
             }
         ]), toWorkOnByYouRows) %}
     {% endfor %}
