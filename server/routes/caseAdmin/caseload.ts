@@ -55,12 +55,7 @@ export default class CaseloadRoutes {
       toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
       postponedCases: postponedCases.map(this.mapToViewModel),
       withDecisionMakerCases: withDecisionMakerCases.map(this.mapToViewModel),
-      withProbationCases: withProbationCases
-        .filter(
-          aCase =>
-            !(aCase.status === AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS && !aCase.addressChecksComplete),
-        )
-        .map(this.mapToViewModel),
+      withProbationCases: withProbationCases.map(this.mapToViewModel),
       inactiveApplications: inactiveApplications.map(this.mapToViewModel),
       readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
     })
