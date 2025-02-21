@@ -35,10 +35,11 @@ describe('CA Caseload Service', () => {
           workingDaysToHdced: 3,
           probationPractitioner: convertToTitleCase(aCase.probationPractitioner?.trim()),
           isPostponed: aCase.isPostponed,
-          postponementReason: aCase.postponementReason,
+          postponementReasons: aCase.postponementReasons,
           postponementDate: aCase.postponementDate,
           status: 'NOT_STARTED',
           addressChecksComplete: false,
+          currentTask: aCase.currentTask,
           taskOverdueOn: aCase.taskOverdueOn,
         },
       ])

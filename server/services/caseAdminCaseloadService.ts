@@ -16,6 +16,7 @@ export type Case = {
   status: AssessmentStatus
   addressChecksComplete: boolean
   taskOverdueOn?: Date
+  currentTask?: string
 }
 
 export default class CaseAdminCaseloadService {
@@ -33,11 +34,12 @@ export default class CaseAdminCaseloadService {
       workingDaysToHdced: offender.workingDaysToHdced,
       probationPractitioner: convertToTitleCase(offender.probationPractitioner?.trim()),
       isPostponed: offender.isPostponed,
-      postponementReason: offender.postponementReason,
+      postponementReasons: offender.postponementReasons,
       postponementDate: offender.postponementDate,
       status: offender.status as AssessmentStatus,
       addressChecksComplete: offender.addressChecksComplete,
       taskOverdueOn: offender.taskOverdueOn,
+      currentTask: offender.currentTask,
     }))
   }
 

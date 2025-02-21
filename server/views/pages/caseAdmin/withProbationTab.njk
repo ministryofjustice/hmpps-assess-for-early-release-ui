@@ -19,14 +19,17 @@
                 html: offender.hdced | formatDate('dd MMM yyyy')
             },
             {
-                attributes: tableAttributes(offender, 'remainingDays', loop.index),
-                html: offender.remainingDays
+                attributes: tableAttributes(offender, 'workingDaysToHdced', loop.index),
+                text: offender.workingDaysToHdced
+
             },
             {
-                attributes: tableAttributes(offender, 'remainingDays', loop.index)
+                attributes: tableAttributes(offender, 'lastWorkedOnBy', loop.index),
+                text: ''
             },
             {
-                attributes: tableAttributes(offender, 'remainingDays', loop.index)
+                attributes: tableAttributes(offender, 'task', loop.index),
+                text: case.currentTask
             }
         ]), withProbationRows) %}
     {% endfor %}    
