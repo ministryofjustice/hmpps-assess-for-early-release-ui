@@ -4,31 +4,31 @@
 
 {% macro withProbationTab(params) %}
     {% set withProbationRows = [] %}
-    {% for offender in params.withProbationCases %}
+    {% for case in params.withProbationCases %}
         {% set withProbationRows = (withProbationRows.push([
             {
-                attributes: tableAttributes(offender, 'name', loop.index),
-                html: offenderName(offender, loop.index)
+                attributes: tableAttributes(case, 'name', loop.index),
+                html: offenderName(case, loop.index)
             },
             {
-                attributes: tableAttributes(offender, 'probationPractitioner', loop.index),
-                html: offender.probationPractitioner
+                attributes: tableAttributes(case, 'probationPractitioner', loop.index),
+                html: case.probationPractitioner
             },
             {
-                attributes: tableAttributes(offender, 'hdced', loop.index),
-                html: offender.hdced | formatDate('dd MMM yyyy')
+                attributes: tableAttributes(case, 'hdced', loop.index),
+                html: case.hdced | formatDate('dd MMM yyyy')
             },
             {
-                attributes: tableAttributes(offender, 'workingDaysToHdced', loop.index),
-                text: offender.workingDaysToHdced
+                attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+                text: case.workingDaysToHdced
 
             },
             {
-                attributes: tableAttributes(offender, 'lastWorkedOnBy', loop.index),
+                attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
                 text: ''
             },
             {
-                attributes: tableAttributes(offender, 'task', loop.index),
+                attributes: tableAttributes(case, 'task', loop.index),
                 text: case.currentTask
             }
         ]), withProbationRows) %}
