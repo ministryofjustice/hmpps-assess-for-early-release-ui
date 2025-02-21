@@ -46,7 +46,7 @@ test.describe('Case admin caseload', () => {
       hdced: '2026-12-04',
       workingDaysToHdced: 16,
       probationPractitioner: 'Mark James',
-      status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
+      status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     })
     const readyForReleaseOffender = createOffenderSummary({
       prisonNumber: 'K8932TE',
