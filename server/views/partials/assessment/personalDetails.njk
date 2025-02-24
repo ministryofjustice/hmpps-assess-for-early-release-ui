@@ -11,6 +11,10 @@
                 value: { text: params.prisonNumber }
             },
             {
+                key: {  text: "Main Offence" },
+                value: { text: params.mainOffense }
+            },
+            {
                 key: { text: "HDCED" },
                 value: { html: params.hdced | formatDate('dd MMM yyyy') }
             },
@@ -21,6 +25,10 @@
             {
                 key: { text: "Location" },
                 value: { text: params.location }
+            },
+            {
+                key: {  text: "Cell number" },
+                value: { text: params.cellLocation }
             }
     ]
     %}

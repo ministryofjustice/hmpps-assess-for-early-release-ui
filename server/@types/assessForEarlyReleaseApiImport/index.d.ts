@@ -725,6 +725,9 @@ export interface paths {
     trace?: never
   }
 }
+
+export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -981,6 +984,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1073,6 +1082,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -1080,15 +1095,6 @@ export interface components {
       taskCode: string
       answers: components['schemas']['MapStringAny']
       agent: components['schemas']['Agent']
-    }
-    ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
-    } & {
-      [key: string]: string | number | boolean
     }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
@@ -1102,6 +1108,15 @@ export interface components {
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
+    }
+    ProblemDetail: {
+      type?: string
+      title?: string
+      status?: number
+      detail?: string
+      instance?: string
+    } & {
+      [key: string]: string | number | boolean
     }
     Detail: {
       code: string
@@ -1286,6 +1301,7 @@ export interface components {
       /**
        * Format: date
        * @description The offender's date of birth
+       * @example 2011-09-21
        */
       dateOfBirth: string
       /**
@@ -1354,6 +1370,16 @@ export interface components {
       optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
       /** @description The opt out reason description if rhe optOutReasonType is OTHER */
       optOutReasonOther?: string
+      /**
+       * @description Prisoner cell location
+       * @example A-1-002
+       */
+      cellLocation?: string
+      /**
+       * @description The main offense also know as the most serious offence
+       * @example Robbery
+       */
+      mainOffense?: string
     }
     /** @description A summary of a community offender manager */
     ComSummary: {
@@ -1587,17 +1613,17 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1630,6 +1656,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
+export type $defs = Record<string, never>
+
 export interface operations {
   retryDlq: {
     parameters: {
@@ -3028,6 +3057,7 @@ export interface operations {
     }
   }
 }
+
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

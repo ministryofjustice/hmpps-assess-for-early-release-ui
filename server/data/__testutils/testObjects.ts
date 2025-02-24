@@ -89,6 +89,8 @@ const createAssessmentSummary = ({
   crd = parseIsoDate('2022-01-08'),
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
+  mainOffense = 'Robbery',
+  cellLocation = 'S-1-A1',
   policyVersion = '1.0',
   responsibleCom = {
     staffCode: 'N55A023',
@@ -109,6 +111,8 @@ const createAssessmentSummary = ({
   status,
   responsibleCom,
   policyVersion,
+  mainOffense,
+  cellLocation,
   tasks: {
     PRISON_CA: tasks.PRISON_CA.map((task, i) => ({
       name: task.code as TaskCode,
@@ -131,6 +135,8 @@ const createEligibilityAndSuitabilityCaseView = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  mainOffense = 'Robbery',
+  cellLocation = 'S-2-A1',
   eligibility = [] as EligibilityCriterionProgress[],
   suitability = [] as SuitabilityCriterionProgress[],
 } = {}): EligibilityAndSuitabilityCaseView => ({
@@ -144,6 +150,8 @@ const createEligibilityAndSuitabilityCaseView = ({
     location,
     status,
     policyVersion,
+    mainOffense,
+    cellLocation,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -173,6 +181,8 @@ const createEligibilityCriterionView = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  mainOffense = 'Robbery',
+  cellLocation = 'S-2-A1',
   criterion = createEligibilityCriterionProgress({ code: 'code-1' }),
   nextCriterion = createEligibilityCriterionProgress({ code: 'code-2' }),
 } = {}): EligibilityCriterionView => ({
@@ -186,6 +196,8 @@ const createEligibilityCriterionView = ({
     location,
     status,
     policyVersion,
+    mainOffense,
+    cellLocation,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -210,6 +222,8 @@ const createSuitabilityCriterionView = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  mainOffense = 'Robbery',
+  cellLocation = 'S-2-A1',
   criterion = createSuitabilityCriterionProgress({ code: 'code-1' }),
   nextCriterion = createSuitabilityCriterionProgress({ code: 'code-2' }),
 } = {}): SuitabilityCriterionView => ({
@@ -223,6 +237,8 @@ const createSuitabilityCriterionView = ({
     location,
     status,
     policyVersion,
+    mainOffense,
+    cellLocation,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -674,6 +690,8 @@ const createResidentialChecksView = ({
   policyVersion = '1.0',
   overallStatus = 'NOT_STARTED' as ResidentialCheckTaskStatus,
   residentialChecksTasks = createChecksTasks(),
+  mainOffense = 'Robbery',
+  cellLocation = 'S-2-A1',
 } = {}): ResidentialChecksView => ({
   assessmentSummary: {
     forename,
@@ -685,6 +703,8 @@ const createResidentialChecksView = ({
     location,
     status,
     policyVersion,
+    mainOffense,
+    cellLocation,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -709,6 +729,8 @@ const createResidentialChecksTaskView = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  mainOffense = 'Robbery',
+  cellLocation = 'S-2-A1',
 } = {}): ResidentialChecksTaskView => ({
   assessmentSummary: {
     forename,
@@ -720,6 +742,8 @@ const createResidentialChecksTaskView = ({
     location,
     status,
     policyVersion,
+    mainOffense,
+    cellLocation,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
