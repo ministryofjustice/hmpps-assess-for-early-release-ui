@@ -45,6 +45,7 @@ export default class CheckRoutes {
       form: req.body,
       agent: {
         username: user.username,
+        fullName: user.displayName,
         role: 'PRISON_CA',
         onBehalfOf: res.locals.activeCaseLoadId,
       },
