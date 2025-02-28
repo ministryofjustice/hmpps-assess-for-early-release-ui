@@ -193,7 +193,8 @@ describe('assessForEarlyReleaseApiClient', () => {
       await assessForEarlyReleaseApiClient.optOut(prisonNumber, {
         reasonType: 'NOWHERE_TO_STAY',
         agent: {
-          username: 'John Doe',
+          username: 'JohnDoe',
+          fullName: 'John Doe',
           role: 'PRISON_CA',
           onBehalfOf: 'DOH',
         },
@@ -274,7 +275,8 @@ describe('assessForEarlyReleaseApiClient', () => {
           'question-2': 'Yes',
         },
         agent: {
-          username: 'John Doe',
+          username: 'JohnDoe',
+          fullName: 'John Doe',
           role: 'PROBATION_COM',
           onBehalfOf: 'N55LAU',
         },
@@ -348,6 +350,7 @@ describe('assessForEarlyReleaseApiClient', () => {
 
       await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, {
         username: 'afer_com',
+        fullName: 'Afer Com',
         role: 'PROBATION_COM',
         onBehalfOf: 'N55LAU',
       })

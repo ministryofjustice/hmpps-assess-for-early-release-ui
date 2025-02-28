@@ -65,6 +65,7 @@ export default class ReviewInformationRoutes {
 
     const agent: Agent = {
       username: res.locals.user.username,
+      fullName: res.locals.displayName,
       role: 'PROBATION_COM',
       onBehalfOf: assessmentSummary.team,
     }

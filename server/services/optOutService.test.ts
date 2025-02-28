@@ -24,6 +24,7 @@ describe('Opt Out Service', () => {
     it('opts an offender out of HDC', async () => {
       const agent: Agent = {
         username: 'AFER_CA',
+        fullName: 'AFER CA',
         role: 'PRISON_CA',
         onBehalfOf: 'TIS',
       }
