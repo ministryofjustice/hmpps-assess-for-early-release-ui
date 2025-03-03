@@ -118,6 +118,6 @@ export default {
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   dpsUrl: get('DPS_URL', 'http://localhost:3001', requiredInProduction),
-  dpsPrisonerUrl: get('DPS_PRISONER_URL', 'http://localhost:3001', requiredInProduction),
+  dpsPrisonerProfileUrl: get('DPS_PRISONER_PROFILE_URL', 'http://localhost:3001', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }
