@@ -27,8 +27,12 @@ test.describe('Case admin assessment', () => {
     // Then
     await expect(page.getByText(`HDC application for ${fullName}`)).toBeVisible()
 
-    const definitionsTerm = page.getByRole('term')
+    const dpsPrisonerProfileLink = await page.getByRole('link', { name: 'See full DPS profile' }).getAttribute('href')
+    expect(dpsPrisonerProfileLink).toContain(
+      `http://localhost:9091/dps-prisoner-profile/save-backlink?service=assess-for-early-release&returnPath=/omu/application-overview/${prisonNumber}&redirectPath=/prisoner/${prisonNumber}`,
+    )
 
+    const definitionsTerm = page.getByRole('term')
     await expect(definitionsTerm.getByText('Name')).toBeVisible()
     await expect(definitionsTerm.getByText('Prison Number')).toBeVisible()
     await expect(definitionsTerm.getByText('Main Offence')).toBeVisible()

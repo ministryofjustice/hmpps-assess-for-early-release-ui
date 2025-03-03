@@ -14,6 +14,7 @@ generic-service:
     ENVIRONMENT_NAME: DEV
     AUDIT_ENABLED: "false"
     DPS_URL: 'https://dps-dev.prison.service.justice.gov.uk'
+    DPS_PRISONER_PROFILE_URL: 'https://prisoner-dev.digital.prison.service.justice.gov.uk'
     HMPPS_COMPONENT_API_URL: 'https://frontend-components-dev.hmpps.service.justice.gov.uk'
     AFER_API_URL: 'https://assess-for-early-release-api-dev.hmpps.service.justice.gov.uk'
     

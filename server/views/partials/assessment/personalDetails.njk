@@ -36,7 +36,18 @@
     {{ govukSummaryList({
             card: {
                 title: {
-                text: "Personal details"
+                    text: "Personal details"
+                },
+                actions: {
+                    items: [
+                        {
+                            text: "See full DPS profile",
+                            href: dpsPrisonerProfileUrl + "/save-backlink?service=assess-for-early-release&returnPath=/omu/application-overview/" + params.prisonNumber + "&redirectPath=/prisoner/" + params.prisonNumber,
+                            attributes: {
+                                target: '_blank'
+                            }
+                        }
+                    ]
                 }
             },
             rows: personalDetails
