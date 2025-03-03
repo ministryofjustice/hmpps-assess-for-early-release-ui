@@ -29,7 +29,7 @@ test.describe('Case admin assessment', () => {
 
     const dpsPrisonerProfileLink = await page.getByRole('link', { name: 'See full DPS profile' }).getAttribute('href')
     expect(dpsPrisonerProfileLink).toContain(
-      `http://localhost:9091/dps-prisoner-profile-api/save-backlink?service=assess-for-early-release&returnPath=/omu/application-overview/${prisonNumber}&redirectPath=/prisoner/${prisonNumber}`,
+      `http://localhost:9091/dps-prisoner-profile/save-backlink?service=assess-for-early-release&returnPath=/omu/application-overview/${prisonNumber}&redirectPath=/prisoner/${prisonNumber}`,
     )
 
     const definitionsTerm = page.getByRole('term')
