@@ -36,7 +36,18 @@
     {{ govukSummaryList({
             card: {
                 title: {
-                text: "Personal details"
+                    text: "Personal details"
+                },
+                actions: {
+                    items: [
+                        {
+                            text: "See full DPS profile",
+                            href: dpsPrisonerUrl + "/prisoner/" + params.prisonNumber,
+                            attributes: {
+                                target: '_blank'
+                            }
+                        }
+                    ]
                 }
             },
             rows: personalDetails
