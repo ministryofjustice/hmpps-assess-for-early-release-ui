@@ -4,7 +4,7 @@ type ParsingDates<T, Fields> = {
   [K in keyof T]: K extends Fields ? Date : T[K] extends object ? ParsingDates<T[K], Fields> : T[K]
 }
 
-export type _OffenderSummary = components['schemas']['OffenderSummary']
+export type _OffenderSummary = components['schemas']['OffenderSummaryResponse']
 export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate' | 'taskOverdueOn'>
 
 export type _AddressSummary = components['schemas']['AddressSummary']
@@ -35,6 +35,7 @@ export type OptOutRequest = components['schemas']['OptOutRequest']
 export type CriterionCheck = components['schemas']['CriterionCheck']
 
 export type AddStandardAddressCheckRequest = components['schemas']['AddStandardAddressCheckRequest']
+export type AddStandardAddressCheckRequestWrapper = components['schemas']['AddStandardAddressCheckRequestWrapper']
 export type _StandardAddressCheckRequestSummary = components['schemas']['StandardAddressCheckRequestSummary']
 export type StandardAddressCheckRequestSummary = ParsingDates<
   _StandardAddressCheckRequestSummary,
@@ -43,6 +44,7 @@ export type StandardAddressCheckRequestSummary = ParsingDates<
 export type _CheckRequestSummary = components['schemas']['CheckRequestSummary']
 export type CheckRequestSummary = ParsingDates<_CheckRequestSummary, 'dateRequested' | 'addressLastUpdated'>
 export type AddResidentRequest = components['schemas']['AddResidentRequest']
+export type AddResidentsRequestWrapper = components['schemas']['AddResidentsRequestWrapper']
 export type _ResidentSummary = components['schemas']['ResidentSummary']
 export type ResidentSummary = ParsingDates<_ResidentSummary, 'dateOfBirth' | 'dateRequested' | 'addressLastUpdated'>
 
@@ -66,6 +68,8 @@ export type SaveResidentialChecksTaskAnswersRequest = components['schemas']['Sav
 export type ResidentialChecksTaskAnswersSummary = components['schemas']['ResidentialChecksTaskAnswersSummary']
 
 export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCaseAdminAdditionInfoRequest']
+export type UpdateCaseAdminAdditionInfoRequestWrapper =
+  components['schemas']['UpdateCaseAdminAdditionInfoRequestWrapper']
 export type MapStringAny = components['schemas']['MapStringAny']
 export type ProblemDetail = components['schemas']['ProblemDetail']
 export type Agent = components['schemas']['Agent']

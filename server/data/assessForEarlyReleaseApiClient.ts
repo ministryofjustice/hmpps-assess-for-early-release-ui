@@ -9,9 +9,9 @@ import type {
   _ResidentSummary,
   _StandardAddressCheckRequestSummary,
   _SuitabilityCriterionView,
-  AddResidentRequest,
+  AddResidentsRequestWrapper,
   AddressSummary,
-  AddStandardAddressCheckRequest,
+  AddStandardAddressCheckRequestWrapper,
   Agent,
   AssessmentSummary,
   CheckRequestSummary,
@@ -30,6 +30,7 @@ import type {
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
   UpdateCaseAdminAdditionInfoRequest,
+  UpdateCaseAdminAdditionInfoRequestWrapper,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -146,11 +147,11 @@ export default class AssessForEarlyReleaseApiClient {
 
   async addStandardAddressCheckRequest(
     prisonNumber: string,
-    standardAddressCheckRequest: AddStandardAddressCheckRequest,
+    addStandardAddressCheckRequestWrapper: AddStandardAddressCheckRequestWrapper,
   ): Promise<StandardAddressCheckRequestSummary> {
     const requestSummary = (await this.restClient.post<_StandardAddressCheckRequestSummary>({
       path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
-      data: standardAddressCheckRequest,
+      data: addStandardAddressCheckRequestWrapper,
     })) as _StandardAddressCheckRequestSummary
     return {
       ...requestSummary,
@@ -219,11 +220,11 @@ export default class AssessForEarlyReleaseApiClient {
   async addResidents(
     prisonNumber: string,
     addressCheckRequestId: number,
-    addResidentsRequest: AddResidentRequest[],
+    addResidentsRequestWrapper: AddResidentsRequestWrapper,
   ): Promise<ResidentSummary[]> {
     const residentsSummary = (await this.restClient.post<_ResidentSummary[]>({
       path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
-      data: addResidentsRequest,
+      data: addResidentsRequestWrapper,
     })) as _ResidentSummary[]
 
     return residentsSummary.map(r => {
@@ -293,11 +294,11 @@ export default class AssessForEarlyReleaseApiClient {
   async updateCaseAdminAdditionalInformation(
     prisonNumber: string,
     requestId: number,
-    updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
+    updateCaseAdminAdditionInfoRequestWrapper: UpdateCaseAdminAdditionInfoRequestWrapper,
   ): Promise<void> {
     return this.restClient.put({
       path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}/case-admin-additional-information`,
-      data: updateCaseAdminAdditionInfoRequest,
+      data: updateCaseAdminAdditionInfoRequestWrapper,
     })
   }
 

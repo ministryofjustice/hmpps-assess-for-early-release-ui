@@ -53,8 +53,11 @@ export default class MoreInfoRequiredCheckRoutes {
         prisonNumber,
         Number(requestId),
         {
-          additionalInformation: req.body.addMoreInfo,
-        } as UpdateCaseAdminAdditionInfoRequest,
+          updateCaseAdminAdditionInfoRequest: {
+            additionalInformation: req.body.addMoreInfo,
+          } as UpdateCaseAdminAdditionInfoRequest,
+          agent: res.locals.agent,
+        },
       )
     }
 

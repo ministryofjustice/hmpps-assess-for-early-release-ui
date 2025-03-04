@@ -114,7 +114,10 @@ describe('add resident details routes', () => {
         req?.middleware?.clientToken,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
-        [mainResident, otherResident],
+        {
+          addResidentsRequest: [mainResident, otherResident],
+          agent: res.locals.agent,
+        },
       )
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
@@ -143,7 +146,10 @@ describe('add resident details routes', () => {
         req?.middleware?.clientToken,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
-        [mainResident],
+        {
+          addResidentsRequest: [mainResident],
+          agent: res.locals.agent,
+        },
       )
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,

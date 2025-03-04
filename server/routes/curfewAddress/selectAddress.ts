@@ -5,7 +5,7 @@ import { FieldValidationError } from '../../@types/FieldValidationError'
 import paths from '../paths'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 import AddressService from '../../services/addressService'
-import { AddressSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { AddressSummary, Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class SelectAddressRoutes {
   constructor(
@@ -27,8 +27,11 @@ export default class SelectAddressRoutes {
           req?.middleware?.clientToken,
           req.params.prisonNumber,
           {
-            preferencePriority: 'FIRST',
-            addressUprn: addresses[0].uprn,
+            addStandardAddressCheckRequest: {
+              preferencePriority: 'FIRST',
+              addressUprn: addresses[0].uprn,
+            },
+            agent: res.locals.agent,
           },
         )
         return res.redirect(
@@ -71,8 +74,11 @@ export default class SelectAddressRoutes {
       req?.middleware?.clientToken,
       req.params.prisonNumber,
       {
-        preferencePriority: 'FIRST',
-        addressUprn: req.body.selectedAddressUprn,
+        addStandardAddressCheckRequest: {
+          preferencePriority: 'FIRST',
+          addressUprn: req.body.selectedAddressUprn,
+        },
+        agent: res.locals.agent,
       },
     )
 

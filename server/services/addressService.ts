@@ -1,13 +1,13 @@
 import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import type {
-  AddResidentRequest,
+  AddResidentsRequestWrapper,
   AddressSummary,
-  AddStandardAddressCheckRequest,
+  AddStandardAddressCheckRequestWrapper,
   Agent,
   CheckRequestSummary,
   StandardAddressCheckRequestSummary,
-  UpdateCaseAdminAdditionInfoRequest,
+  UpdateCaseAdminAdditionInfoRequestWrapper,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class AddressService {
@@ -28,10 +28,13 @@ export default class AddressService {
   public async addStandardAddressCheckRequest(
     token: string,
     prisonNumber: string,
-    addStandardAddressCheckRequest: AddStandardAddressCheckRequest,
+    addStandardAddressCheckRequestWrapper: AddStandardAddressCheckRequestWrapper,
   ): Promise<StandardAddressCheckRequestSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(prisonNumber, addStandardAddressCheckRequest)
+    return assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(
+      prisonNumber,
+      addStandardAddressCheckRequestWrapper,
+    )
   }
 
   public async getStandardAddressCheckRequest(
@@ -67,23 +70,23 @@ export default class AddressService {
     token: string,
     prisonNumber: string,
     addressCheckRequestId: number,
-    addResidentsRequest: AddResidentRequest[],
+    addResidentsRequestWrapper: AddResidentsRequestWrapper,
   ) {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.addResidents(prisonNumber, addressCheckRequestId, addResidentsRequest)
+    return assessForEarlyReleaseApiClient.addResidents(prisonNumber, addressCheckRequestId, addResidentsRequestWrapper)
   }
 
   public async updateCaseAdminAdditionalInformation(
     token: string,
     prisonNumber: string,
     addressCheckRequestId: number,
-    updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
+    updateCaseAdminAdditionInfoRequestWrapper: UpdateCaseAdminAdditionInfoRequestWrapper,
   ) {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
     return assessForEarlyReleaseApiClient.updateCaseAdminAdditionalInformation(
       prisonNumber,
       addressCheckRequestId,
-      updateCaseAdminAdditionInfoRequest,
+      updateCaseAdminAdditionInfoRequestWrapper,
     )
   }
 }

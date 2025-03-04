@@ -39,6 +39,13 @@ export default function populateCurrentUser(userService: UserService): RequestHa
         const probationUser = await userService.getStaffDetailsByUsername(req?.middleware?.clientToken, res.locals.user)
         res.locals.user.deliusStaffCode = probationUser?.code
       }
+
+      res.locals.agent = {
+        username: res.locals.user.username,
+        fullName: res.locals.user.displayName,
+        role: res.locals.user.userRoles[0],
+        onBehalfOf: res.locals.activeCaseLoadId,
+      }
       next()
     } catch (error) {
       logger.error(error, `Failed to populate user details for: ${res.locals.user?.username}`)

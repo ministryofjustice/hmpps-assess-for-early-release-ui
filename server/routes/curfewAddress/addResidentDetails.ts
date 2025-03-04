@@ -132,10 +132,10 @@ export default class AddResidentDetailsRoutes {
       isOffender,
     } as _ResidentSummary
 
-    await this.addressService.addResidents(req?.middleware?.clientToken, prisonNumber, Number(checkRequestId), [
-      mainResident,
-      ...otherResident.map(this.transformToResidentSummary),
-    ])
+    await this.addressService.addResidents(req?.middleware?.clientToken, prisonNumber, Number(checkRequestId), {
+      addResidentsRequest: [mainResident, ...otherResident.map(this.transformToResidentSummary)],
+      agent: res.locals.agent,
+    })
 
     return res.redirect(
       paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({

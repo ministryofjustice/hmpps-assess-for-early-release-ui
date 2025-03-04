@@ -1,5 +1,6 @@
 import {
   createAddressSummary,
+  createAgent,
   createAssessmentSummary,
   createStandardAddressCheckRequestSummary,
 } from '../../data/__testutils/testObjects'
@@ -16,6 +17,7 @@ const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 describe('select address routes', () => {
   let selectAddressRoutes: SelectAddressRoutes
@@ -97,8 +99,11 @@ describe('select address routes', () => {
         req?.middleware?.clientToken,
         req.params.prisonNumber,
         {
-          preferencePriority: 'FIRST',
-          addressUprn: '310030567',
+          addStandardAddressCheckRequest: {
+            preferencePriority: 'FIRST',
+            addressUprn: '310030567',
+          },
+          agent: res.locals.agent,
         },
       )
 
@@ -126,8 +131,11 @@ describe('select address routes', () => {
         req?.middleware?.clientToken,
         req.params.prisonNumber,
         {
-          preferencePriority: 'FIRST',
-          addressUprn: req.body.selectedAddressUprn,
+          addStandardAddressCheckRequest: {
+            preferencePriority: 'FIRST',
+            addressUprn: '310030567',
+          },
+          agent: res.locals.agent,
         },
       )
 

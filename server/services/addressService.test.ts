@@ -1,17 +1,19 @@
 import AddressService from './addressService'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { AddressSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { AddressSummary, Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
   createAddResidentRequest,
   createAddressSummary,
   createAddStandardAddressCheckRequest,
   createResidentSummary,
   createStandardAddressCheckRequestSummary,
+  createAgent,
 } from '../data/__testutils/testObjects'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent = createAgent() as Agent
 
 describe('Address Service', () => {
   let addressService: AddressService
@@ -79,7 +81,10 @@ describe('Address Service', () => {
     const requestSummary = createStandardAddressCheckRequestSummary()
     assessForEarlyReleaseApiClient.addStandardAddressCheckRequest.mockResolvedValue(requestSummary)
 
-    const result = await addressService.addStandardAddressCheckRequest(token, prisonNumber, standardAddressCheckRequest)
+    const result = await addressService.addStandardAddressCheckRequest(token, prisonNumber, {
+      addStandardAddressCheckRequest: standardAddressCheckRequest,
+      agent,
+    })
 
     expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
     expect(result).toEqual(requestSummary)
@@ -106,7 +111,10 @@ describe('Address Service', () => {
     const residentSummary = createResidentSummary()
     assessForEarlyReleaseApiClient.addResidents.mockResolvedValue([residentSummary])
 
-    const result = await addressService.addResidents(token, prisonNumber, requestId, [addResidentRequest])
+    const result = await addressService.addResidents(token, prisonNumber, requestId, {
+      addResidentsRequest: [addResidentRequest],
+      agent,
+    })
 
     expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
     expect(result).toEqual([residentSummary])
