@@ -29,7 +29,6 @@ import type {
   SaveResidentialChecksTaskAnswersRequest,
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
-  UpdateCaseAdminAdditionInfoRequest,
   UpdateCaseAdminAdditionInfoRequestWrapper,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'

@@ -5,7 +5,7 @@ import { FieldValidationError } from '../../@types/FieldValidationError'
 import paths from '../paths'
 import { validateRequest } from '../../middleware/setUpValidationMiddleware'
 import AddressService from '../../services/addressService'
-import { AddressSummary, Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { AddressSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class SelectAddressRoutes {
   constructor(

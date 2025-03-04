@@ -21,7 +21,6 @@ import {
   SuitabilityCriterionProgress,
   SuitabilityCriterionView,
   TaskCode,
-  UserRole,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 import type { Case } from '../../services/caseAdminCaseloadService'
