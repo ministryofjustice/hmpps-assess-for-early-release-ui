@@ -92,6 +92,7 @@ export default class ResidentialChecksTaskRoutes {
       answers,
       agent: {
         username: user.username,
+        fullName: user.displayName,
         role: 'PROBATION_COM',
         onBehalfOf: task.assessmentSummary.team,
       },

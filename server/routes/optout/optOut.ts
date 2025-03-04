@@ -48,6 +48,7 @@ export default class OptOutRoutes {
 
     const agent: Agent = {
       username: user.username,
+      fullName: user.displayName,
       role: 'PRISON_CA',
       onBehalfOf: res.locals.activeCaseLoadId,
     }

@@ -30,6 +30,7 @@ export default class CheckYourAnswersRoutes {
     const { prisonNumber } = req.params
     const agent: Agent = {
       username: res.locals.user.username,
+      fullName: res.locals.displayName,
       role: 'PRISON_CA',
       onBehalfOf: res.locals.activeCaseLoadId,
     }

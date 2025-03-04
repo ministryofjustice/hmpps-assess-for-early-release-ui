@@ -725,9 +725,7 @@ export interface paths {
     trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -742,9 +740,14 @@ export interface components {
     Agent: {
       /**
        * @description The name of the user requesting the change
-       * @example Bob Smith
+       * @example BobSmith
        */
       username: string
+      /**
+       * @description The full name of the user requesting the change
+       * @example Bob Smith
+       */
+      fullName: string
       /**
        * @description The role of the user requesting the change
        * @example PROBATION_COM
@@ -766,23 +769,6 @@ export interface components {
       developerMessage?: string
       moreInfo?: string
     }
-    /** @description Request by case administrator or decision maker to postpone case */
-    PostponeCaseRequest: {
-      /**
-       * @description The reason or reasons for the case postponement
-       * @example ON_REMAND
-       */
-      reasonTypes: (
-        | 'PLANNING_ACTIONS_CONFIRMATION_NEEDED_BY_PRACTITIONER'
-        | 'ON_REMAND'
-        | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
-        | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
-        | 'COMMITED_OFFENCE_REFERRED_TO_LAW_ENF_AGENCY'
-        | 'CONFISCATION_ORDER_NOT_PAID_AND_ENF_AGENCY_DEEMS_UNSUITABLE'
-        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_LENIENT_SCH'
-      )[]
-      agent: components['schemas']['Agent']
-    }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
       /**
@@ -796,6 +782,7 @@ export interface components {
        * @example Reason for the offending opting out
        */
       otherDescription?: string
+      /** @description Details of the agent who is requesting the opt out */
       agent: components['schemas']['Agent']
     }
     /** @description The answers to the question for a specific criterion */
@@ -815,6 +802,7 @@ export interface components {
       answers: {
         [key: string]: boolean
       }
+      /** @description Details of the agent who is requesting the criterion check */
       agent: components['schemas']['Agent']
     }
     /** @description Request for updating the case admin additional information for an address check request */
@@ -858,7 +846,7 @@ export interface components {
       uprn: string
       /**
        * @description The address's first line
-       * @example 34 Maryport Street
+       * @example 34
        */
       firstLine?: string
       /**
@@ -889,6 +877,7 @@ export interface components {
       /**
        * Format: double
        * @description The address's x-coordinate
+       * @example 401003.0,
        */
       xcoordinate: number
       /**
@@ -904,10 +893,7 @@ export interface components {
        */
       addressLastUpdated: string
     }
-    /**
-     * @description Response object which describes an assessment
-     * @example See ResidentSummary
-     */
+    /** @description Response object which describes an assessment */
     ResidentSummary: {
       /**
        * Format: int64
@@ -972,18 +958,16 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+      /**
+       * @description The address the check request is for
+       * @example See AddressSummary
+       */
       address: components['schemas']['AddressSummary']
       /**
        * @description The residents the check request is for
        * @example See ResidentSummary
        */
       residents: components['schemas']['ResidentSummary'][]
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1075,13 +1059,11 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
-      allocatedAddress?: components['schemas']['AddressSummary']
-    } & {
       /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
+       * @description The address the check request is for
+       * @example See AddressSummary
        */
-      requestType: 'CAS'
+      allocatedAddress?: components['schemas']['AddressSummary']
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1093,7 +1075,9 @@ export interface components {
     SaveResidentialChecksTaskAnswersRequest: {
       /** @description The task code for these answers relate to */
       taskCode: string
+      /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
+      /** @description Details of the agent that is submitting the answers */
       agent: components['schemas']['Agent']
     }
     /** @description The answers to a residential checks task. */
@@ -1105,18 +1089,19 @@ export interface components {
       addressCheckRequestId: number
       /** @description The task code for these answers relate to */
       taskCode: string
+      /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
       /** @description The version of the task these answers relate to */
       taskVersion: string
     }
     ProblemDetail: {
-      type?: string
-      title?: string
-      status?: number
-      detail?: string
-      instance?: string
+      type?: unknown
+      title?: unknown
+      status?: unknown
+      detail?: unknown
+      instance?: unknown
     } & {
-      [key: string]: string | number | boolean
+      [key: string]: unknown | unknown | unknown
     }
     Detail: {
       code: string
@@ -1147,9 +1132,9 @@ export interface components {
       thumbnailId?: number
       activeCaseLoadId?: string
       accountStatus: string
-      /** @example 2021-07-05T10:35:17 */
+      /** Format: date-time */
       lockDate?: string
-      /** @example 2021-07-05T10:35:17 */
+      /** Format: date-time */
       expiryDate?: string
       lockedFlag?: boolean
       expiredFlag?: boolean
@@ -1185,12 +1170,12 @@ export interface components {
        * @description The offender's first name
        * @example Bob
        */
-      forename?: string
+      forename: string
       /**
        * @description The offender's surname
        * @example Smith
        */
-      surname?: string
+      surname: string
       /**
        * Format: date
        * @description The offender's home detention curfew eligibility date
@@ -1210,7 +1195,7 @@ export interface components {
       probationPractitioner?: string
       /**
        * @description Whether the offender's current assessment has been postponed or not
-       * @example true
+       * @example True
        */
       isPostponed: boolean
       /**
@@ -1283,6 +1268,7 @@ export interface components {
       /**
        * Format: date
        * @description The date that the current task overdue on
+       * @example 2028-06-23
        */
       taskOverdueOn?: string
     }
@@ -1301,7 +1287,7 @@ export interface components {
       /**
        * Format: date
        * @description The offender's date of birth
-       * @example 2011-09-21
+       * @example 15/04/2011
        */
       dateOfBirth: string
       /**
@@ -1317,6 +1303,7 @@ export interface components {
       /**
        * Format: date
        * @description The offender's conditional release date
+       * @example 22/11/2026
        */
       crd?: string
       /**
@@ -1348,6 +1335,7 @@ export interface components {
         | 'POSTPONED'
         | 'OPTED_OUT'
         | 'RELEASED_ON_HDC'
+      /** @description The community offender manager assigned to this assessment */
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
@@ -1356,7 +1344,7 @@ export interface components {
       team?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
-       * @example 1.0
+       * @example 1
        */
       policyVersion: string
       /** @description The status of tasks that make up this assessment */
@@ -1480,11 +1468,22 @@ export interface components {
       status: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
       /** @description The questions that are associated with this criterion for this case */
       questions: components['schemas']['Question'][]
+      /** @description Details of the user that submitted the answers for this criterion */
+      agent?: components['schemas']['Agent']
+      /**
+       * Format: date
+       * @description The date when answers were last submitted for this criterion or null if no answers have been submitted yet
+       * @example 16/08/2025
+       */
+      lastUpdated?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
+      /** @description A summary of an offender's current assessment */
       assessmentSummary: components['schemas']['AssessmentSummary']
+      /** @description progress on this criterion */
       criterion: components['schemas']['SuitabilityCriterionProgress']
+      /** @description progress about the next criterion */
       nextCriterion?: components['schemas']['SuitabilityCriterionProgress']
     }
     /** @description The progress on a specific eligibility criterion for a case */
@@ -1507,15 +1506,27 @@ export interface components {
       status: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
       /** @description The questions that are associated with this criterion for this case */
       questions: components['schemas']['Question'][]
+      /** @description Details of the user that submitted the answers for this criterion */
+      agent?: components['schemas']['Agent']
+      /**
+       * Format: date
+       * @description The date when answers were last submitted for this criterion or null if no answers have been submitted yet
+       * @example 16/08/2025
+       */
+      lastUpdated?: string
     }
     /** @description The details of a specific eligibility criterion */
     EligibilityCriterionView: {
+      /** @description A summary of an offender's current assessment */
       assessmentSummary: components['schemas']['AssessmentSummary']
+      /** @description progress on this criterion */
       criterion: components['schemas']['EligibilityCriterionProgress']
+      /** @description progress on the next criterion */
       nextCriterion?: components['schemas']['EligibilityCriterionProgress']
     }
     /** @description A view on the progress of suitability and eligibility criteria for a specific case */
     EligibilityAndSuitabilityCaseView: {
+      /** @description A summary of an offender's current assessment */
       assessmentSummary: components['schemas']['AssessmentSummary']
       /**
        * @description Overall status of eligibility assessment
@@ -1560,6 +1571,7 @@ export interface components {
     }
     /** @description The progress on a specific residential checks task for an assessment */
     ResidentialChecksTaskProgress: {
+      /** @description Details of the task */
       config: components['schemas']['Task']
       /**
        * @description Status of this criterion for a specific case
@@ -1567,10 +1579,12 @@ export interface components {
        * @enum {string}
        */
       status: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
     /** @description A view on the progress of the residential checks for an assessment */
     ResidentialChecksView: {
+      /** @description A summary of an offender's current assessment */
       assessmentSummary: components['schemas']['AssessmentSummary']
       /**
        * @description Overall status of residential checks for the assessment
@@ -1586,7 +1600,6 @@ export interface components {
       hintText?: string
       questions: components['schemas']['TaskQuestion'][]
     }
-    /** @description Details of the task */
     Task: {
       code: string
       name: string
@@ -1600,18 +1613,27 @@ export interface components {
     }
     /** @description A view on the progress of the residential checks for an assessment */
     ResidentialChecksTaskView: {
+      /** @description A summary of an offender's current assessment */
       assessmentSummary: components['schemas']['AssessmentSummary']
+      /** @description Details of the task */
       taskConfig: components['schemas']['Task']
       /**
        * @description The current status of the task
        * @enum {string}
        */
       taskStatus: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
@@ -1619,11 +1641,11 @@ export interface components {
        */
       requestId: number
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
+       * Format: date-time
+       * @description The date / time the check was requested on
+       * @example 22/11/2026 10:43:28
        */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      dateRequested: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1640,14 +1662,9 @@ export interface components {
        * @enum {string}
        */
       preferencePriority: 'FIRST' | 'SECOND'
-      /**
-       * @description The date / time the check was requested on
-       * @example 2021-07-05T10:35:17
-       */
-      dateRequested: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
-      [key: string]: string | boolean
+      [key: string]: unknown | unknown
     }
   }
   responses: never
@@ -1656,9 +1673,7 @@ export interface components {
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
 export interface operations {
   retryDlq: {
     parameters: {
@@ -1841,7 +1856,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['PostponeCaseRequest']
+        'application/json': unknown
       }
     }
     responses: {
@@ -3057,7 +3072,6 @@ export interface operations {
     }
   }
 }
-
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

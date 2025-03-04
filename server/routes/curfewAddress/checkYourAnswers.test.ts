@@ -62,6 +62,7 @@ describe('check your answers summary', () => {
 
       const agent: Agent = {
         username: res.locals.user.username,
+        fullName: res.locals.displayName,
         role: 'PRISON_CA',
         onBehalfOf: res.locals.activeCaseLoadId,
       }

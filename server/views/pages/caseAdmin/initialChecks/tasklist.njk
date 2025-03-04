@@ -21,10 +21,17 @@
             {% include 'partials/initialChecks/outcomeBanner.njk' %}
             {% set eligiblityChecks =  [] %}
             {% for check in criteria.eligibility %}
+                {% set checkRecordedOn = '' %}
+                {% if check.agent.fullName %}
+                    {%  set checkRecordedOn = 'Recorded on ' + check.lastUpdated | formatDate('dd MMM yyyy') + ' by ' + check.agent.fullName %}
+                {% endif %}
             {% set eligiblityChecks = (eligiblityChecks.push(
                 {
                     title: {
-                    text: check.taskName
+                        text: check.taskName
+                    },
+                    hint: {
+                        text: checkRecordedOn
                     },
                     href: paths.prison.assessment.initialChecks.check | toPath({
                         prisonNumber:assessmentSummary.prisonNumber, 
@@ -36,10 +43,13 @@
             ), eligiblityChecks) %}
             {% endfor %}
 
-            <h2>Eligibility checks</h2>         
+            <h2>Eligibility checks</h2>
             {{ govukTaskList({
                 idPrefix: "eligibility-check",
-                items: eligiblityChecks
+                items: eligiblityChecks,
+                attributes: {
+                    "data-qa": "eligibility-checks"
+                }
             }) }}
 
             {% set suitabilityBlocked = criteria.eligibilityStatus !== 'ELIGIBLE' and suitabilityStatus === 'NOT_STARTED' %}   
@@ -62,7 +72,10 @@
             <h2>Suitability checks</h2>         
             {{ govukTaskList({
                 idPrefix: "suitability-check",
-                items: suitabilityChecks
+                items: suitabilityChecks,
+                attributes: {
+                    "data-qa": "suitability-checks"
+                }
             }) }}
 
         </div>

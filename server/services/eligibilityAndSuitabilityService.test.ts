@@ -14,7 +14,8 @@ const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const agent: Agent = {
-  username: 'prison user',
+  username: 'prisonUser',
+  fullName: 'Prison User',
   role: 'PRISON_CA',
   onBehalfOf: 'JWO',
 }

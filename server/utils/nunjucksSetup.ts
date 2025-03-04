@@ -118,6 +118,7 @@ export function registerNunjucks(app?: express.Express): Environment {
 
   njkEnv.addGlobal('paths', paths)
   njkEnv.addGlobal('tasksList', tasks)
+  njkEnv.addGlobal('dpsPrisonerProfileUrl', config.dpsPrisonerProfileUrl)
 
   njkEnv.addGlobal('eligibilityChecks', {
     eligibilityLabel: (status: EligibilityStatus) => {

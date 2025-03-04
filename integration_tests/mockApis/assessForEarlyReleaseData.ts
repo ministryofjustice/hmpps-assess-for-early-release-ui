@@ -24,6 +24,8 @@ export const eligibilityCriterion1: EligibilityCriterionProgress = {
       hint: 'Its simple really',
     },
   ],
+  agent: null,
+  lastUpdated: null,
 }
 
 export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
@@ -38,6 +40,13 @@ export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
       hint: 'Its simple really',
     },
   ],
+  agent: {
+    username: 'rDavidson',
+    fullName: 'Rebecca Davidson',
+    role: 'PRISON_CA',
+    onBehalfOf: 'BMI',
+  },
+  lastUpdated: '2025-07-16',
 }
 
 export const eligibilityCriterion2: EligibilityCriterionProgress = {
@@ -55,7 +64,7 @@ export const eligibilityCriterion2: EligibilityCriterionProgress = {
       name: 'question3',
       text: 'Please answer question 3',
       answer: null,
-      hint: 'its the last eligbility question!',
+      hint: 'its the last eligibility question!',
     },
   ],
 }
@@ -75,9 +84,16 @@ export const eligibilityCriterion2Ineligible: EligibilityCriterionProgress = {
       name: 'question3',
       text: 'Please answer question 3',
       answer: false,
-      hint: 'its the last eligbility question!',
+      hint: 'its the last eligibility question!',
     },
   ],
+  agent: {
+    username: 'rDavidson',
+    fullName: 'Rebecca Davidson',
+    role: 'PRISON_CA',
+    onBehalfOf: 'BMI',
+  },
+  lastUpdated: '2025-07-15',
 }
 
 export const suitabilityCriterion1: SuitabilityCriterionProgress = {

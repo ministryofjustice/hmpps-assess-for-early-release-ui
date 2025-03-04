@@ -50,7 +50,7 @@ test.describe('Eligibility checks', () => {
     await assessForEarlyRelease.stubGetEligibilityCriterionView(anAssessmentSummary, eligibilityCriterion2, undefined)
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    // answer 2 questions for eligibilty criterion 2
+    // answer 2 questions for eligibility criterion 2
     await page.getByRole('group', { name: 'Please answer question 2' }).getByLabel('Yes').click()
     await page.getByRole('group', { name: 'Please answer question 3' }).getByLabel('Yes').click()
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -75,6 +75,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
+          fullName: 'Bobby Brown',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -88,6 +89,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
+          fullName: 'Bobby Brown',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -100,6 +102,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
+          fullName: 'Bobby Brown',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -125,5 +128,12 @@ test.describe('Eligibility checks', () => {
     await expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
     await expect(page.getByTestId('failureType')).toContainText('Ineligible')
     await expect(page.getByTestId('failureReasons')).toContainText('question-1')
+    await expect(page.getByTestId('eligibility-checks')).toContainText(
+      'Answer the first question Recorded on 16 Jul 2025 by Rebecca Davidson',
+    )
+    await expect(page.getByTestId('eligibility-checks')).toContainText(
+      'Answer the second 2 questions Recorded on 15 Jul 2025 by Rebecca Davidson',
+    )
+    await expect(page.getByTestId('suitability-checks')).toContainText('Answer the first suitability question')
   })
 })
