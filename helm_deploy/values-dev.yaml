@@ -6,7 +6,24 @@ generic-service:
 
   ingress:
     host: assess-for-early-release-dev.hmpps.service.justice.gov.uk
-
+    modsecurity_enabled: true
+    modsecurity_snippet: |
+      # WAF configuration DetectionOnly this will not block calls just log them 
+      SecRuleEngine DetectionOnly
+      # WAF configuration RelevantOnly keeps relevant files only
+      SecAuditEngine RelevantOnly
+      SecAuditLog /var/log/nginx/error.log
+      SecAuditLogType Serial
+      SecDefaultAction "phase:2,pass,log,tag:github_team=create-and-vary-a-licence-devs,tag:namespace={{ .Release.Namespace }}"
+      SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=2"
+      SecRuleUpdateActionById 949110 "t:none,deny,status:423,logdata:%{SERVER_NAME}"
+      SecRuleUpdateActionById 959100 "t:none,deny,status:423,logdata:%{SERVER_NAME}"
+      SecRuleUpdateTargetById 942100 "!REQUEST_COOKIES:/hmpps-assess-for-early-release-ui.session/"
+      SecRuleUpdateTargetById 942440 "!REQUEST_COOKIES:/hmpps-assess-for-early-release-ui.session/
+      SecRuleUpdateTargetById 942440 "!REQUEST_COOKIES:/connect.sid/"
+      SecRuleUpdateTargetById 942340 "!REQUEST_COOKIES:/cookie_policy/"
+      SecRuleUpdateTargetById 942100 "!ARGS:_csrf"
+      SecRuleUpdateTargetById 942440 "!ARGS:_csrf"
   env:
     INGRESS_URL: "https://assess-for-early-release-dev.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
