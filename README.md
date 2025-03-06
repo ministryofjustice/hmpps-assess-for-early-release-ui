@@ -11,13 +11,13 @@ A service to allow prisoners to be assessed for suitability for early release.
 Run the following commands :
 * Install dependencies using `npm install`, ensuring you are using `node v20`
 * run `docker compose pull`
+* Run the api project `hmpps-assess-for-early-release-api` by typing `./run-local.sh`
  
 Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
 
 #### Dependencies
 The app requires:
 * hmpps-auth - for authentication
-* redis - session store and token caching
 
 ### Running the application in normal mode
 
@@ -31,6 +31,10 @@ and then run the web application:
 
 `npm run start:dev`
 
+<em>The server should startup normally and you should see something like :</em>
+`14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3000`
+
+
 ### Running the application in development mode
 
 To start the main services excluding the example typescript template app: 
@@ -43,7 +47,7 @@ And then, to build the assets and start the app with esbuild:
 
 <em>The server should startup normally and you should see something like :</em>
 
-`14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3007`
+`14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3000`
 
 
 ## Testing
