@@ -6,7 +6,7 @@ A service to allow prisoners to be assessed for suitability for early release.
 
 ## Starting the application
 
-### Prerequisite
+### Prerequisites
 
 Run the following commands :
 * Install dependencies using `npm install`, ensuring you are using `node v20`
