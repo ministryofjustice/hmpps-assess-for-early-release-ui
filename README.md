@@ -15,27 +15,7 @@ Run the following commands :
  
 Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
 
-#### Dependencies
-The app requires:
-* hmpps-auth - for authentication
-
-### Running the application in normal mode
-
-The easiest way to run the app is to use docker compose to create the service and all dependencies. 
-
-Run docker containers:
-
-`docker compose up`
-
-and then run the web application:
-
-`npm run start:dev`
-
-<em>The server should startup normally and you should see something like :</em>
-`14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3000`
-
-
-### Running the application in development mode
+### Running the application for development
 
 To start the main services excluding the example typescript template app: 
 
@@ -48,7 +28,6 @@ And then, to build the assets and start the app with esbuild:
 <em>The server should startup normally and you should see something like :</em>
 
 `14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3000`
-
 
 ## Testing
 
@@ -88,12 +67,12 @@ Or run tests with the playwright UI:
 
 Or to run a subset of tests,
 
-# by directory
+### by directory
 `npx playwright test integration_tests`
 
-# by filename
+### by filename
 `npx playwright test signIn`
 
-# or by test name (-g)
+### or by test name (-g)
 `npx playwright test -g 'User name visible in header'`
 
