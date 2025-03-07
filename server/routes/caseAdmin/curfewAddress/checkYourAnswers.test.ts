@@ -6,6 +6,7 @@ import {
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import paths from '../../paths'
+import CheckYourAnswersRoutes from './checkYourAnswers'
 
 const assessmentSummary = createAssessmentSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
