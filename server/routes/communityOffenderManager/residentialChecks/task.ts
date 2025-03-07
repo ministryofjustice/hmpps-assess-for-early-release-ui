@@ -26,6 +26,7 @@ export default class ResidentialChecksTaskRoutes {
 
     const task = await this.residentialChecksService.getResidentialChecksTask(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
       taskCode,
@@ -33,6 +34,7 @@ export default class ResidentialChecksTaskRoutes {
 
     const addressCheckRequest = await this.addressService.getStandardAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )
@@ -66,9 +68,9 @@ export default class ResidentialChecksTaskRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber, taskCode } = req.params
-
     const task = await this.residentialChecksService.getResidentialChecksTask(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
       taskCode,
@@ -86,22 +88,17 @@ export default class ResidentialChecksTaskRoutes {
       }
     }
 
-    const { user } = res.locals
     const saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest = {
       taskCode,
       answers,
-      agent: {
-        username: user.username,
-        fullName: user.displayName,
-        role: 'PROBATION_COM',
-        onBehalfOf: task.assessmentSummary.team,
-      },
+      agent: res.locals.agent,
     }
 
     let problemDetail: ProblemDetail
     try {
       await this.residentialChecksService.saveResidentialChecksTaskAnswers(
         req?.middleware?.clientToken,
+        res.locals.agent,
         prisonNumber,
         Number(checkRequestId),
         saveAnswersRequest,

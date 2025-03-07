@@ -1,11 +1,15 @@
-import { createAssessmentSummary, createStandardAddressCheckRequestSummary } from '../../data/__testutils/testObjects'
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
-import { convertToTitleCase } from '../../utils/utils'
-import { ValidationError } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+import {
+  createAgent,
+  createAssessmentSummary,
+  createStandardAddressCheckRequestSummary,
+} from '../../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
+import { convertToTitleCase } from '../../../utils/utils'
+import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 import AddResidentDetailsRoutes, { OtherResident } from './addResidentDetails'
-import { _ResidentSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { _ResidentSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
 
 const assessmentSummary = createAssessmentSummary({})
 const addressCheckRequestSummary = createStandardAddressCheckRequestSummary({})
@@ -14,6 +18,7 @@ const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 describe('add resident details routes', () => {
   let addResidentDetailsRoutes: AddResidentDetailsRoutes
@@ -36,11 +41,13 @@ describe('add resident details routes', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
 
       expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
       )
@@ -112,12 +119,10 @@ describe('add resident details routes', () => {
       await addResidentDetailsRoutes.POST(req, res)
       expect(addressService.addResidents).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
-        {
-          addResidentsRequest: [mainResident, otherResident],
-          agent: res.locals.agent,
-        },
+        [mainResident, otherResident],
       )
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,
@@ -144,12 +149,10 @@ describe('add resident details routes', () => {
       await addResidentDetailsRoutes.POST(req, res)
       expect(addressService.addResidents).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
-        {
-          addResidentsRequest: [mainResident],
-          agent: res.locals.agent,
-        },
+        [mainResident],
       )
       expect(res.redirect).toHaveBeenCalledWith(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({ prisonNumber: req.params.prisonNumber, checkRequestId: req.params.checkRequestId })}`,

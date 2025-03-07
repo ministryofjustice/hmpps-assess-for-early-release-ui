@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { AddressService, CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase, getOrdinal } from '../../utils/utils'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import { FieldValidationError } from '../../@types/FieldValidationError'
-import { _ResidentSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
-import paths from '../paths'
+import { AddressService, CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase, getOrdinal } from '../../../utils/utils'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
+import { _ResidentSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
+import paths from '../../paths'
 
 export interface OtherResident extends _ResidentSummary {
   day: string
@@ -22,11 +22,13 @@ export default class AddResidentDetailsRoutes {
     const { checkRequestId, prisonNumber } = req.params
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 
     const requestSummary = await this.addressService.getStandardAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )
@@ -55,7 +57,6 @@ export default class AddResidentDetailsRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
-
     req.body.otherResident = req.body.otherResident?.filter(
       (resident: OtherResident) => !this.areAllFieldsEmpty(resident),
     )
@@ -132,10 +133,13 @@ export default class AddResidentDetailsRoutes {
       isOffender,
     } as _ResidentSummary
 
-    await this.addressService.addResidents(req?.middleware?.clientToken, prisonNumber, Number(checkRequestId), {
-      addResidentsRequest: [mainResident, ...otherResident.map(this.transformToResidentSummary)],
-      agent: res.locals.agent,
-    })
+    await this.addressService.addResidents(
+      req?.middleware?.clientToken,
+      res.locals.agent,
+      prisonNumber,
+      Number(checkRequestId),
+      [mainResident, ...otherResident.map(this.transformToResidentSummary)],
+    )
 
     return res.redirect(
       paths.prison.assessment.enterCurfewAddressOrCasArea.moreInformationRequiredCheck({

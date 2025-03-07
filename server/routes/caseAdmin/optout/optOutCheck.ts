@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+import { CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 
 export default class OptOutCheckRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -10,6 +10,7 @@ export default class OptOutCheckRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 

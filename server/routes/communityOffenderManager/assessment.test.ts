@@ -27,6 +27,7 @@ describe('GET', () => {
     await assessmentRoutes.GET(req, res)
     expect(caseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      {},
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/assessment', {

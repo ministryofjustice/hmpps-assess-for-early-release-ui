@@ -11,6 +11,7 @@ import AssessmentRoutes from './assessment'
 import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
 import ResidentialChecksTaskRoutes from './residentialChecks/task'
 import ReviewInformationRoutes from './reviewInformation'
+import setAgentRoleMiddleware from '../../middleware/setAgentRoleMiddleware'
 
 export default function Index({
   addressService,
@@ -30,6 +31,7 @@ export default function Index({
   const post = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
     router.post(
       routerPath.pattern,
+      setAgentRoleMiddleware('PROBATION_COM'),
       roleCheckMiddleware([AuthRole.RESPONSIBLE_OFFICER, AuthRole.CASE_ADMIN]),
       asyncMiddleware(handler),
     )

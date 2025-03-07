@@ -1,4 +1,4 @@
-import type { AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { Agent, AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
@@ -24,8 +24,8 @@ export default class CaseAdminCaseloadService {
     private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
   ) {}
 
-  public async getCaseAdminCaseload(token: string, prisonCode: string): Promise<Case[]> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async getCaseAdminCaseload(token: string, agent: Agent, prisonCode: string): Promise<Case[]> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     const result = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
     return result.map(offender => ({
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
@@ -43,8 +43,8 @@ export default class CaseAdminCaseloadService {
     }))
   }
 
-  public async getAssessmentSummary(token: string, prisonNumber: string): Promise<AssessmentSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async getAssessmentSummary(token: string, agent: Agent, prisonNumber: string): Promise<AssessmentSummary> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
   }
 }

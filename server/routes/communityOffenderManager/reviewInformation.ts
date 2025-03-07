@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { AddressService, CaseAdminCaseloadService, ResidentialChecksService } from '../../services'
 import {
-  Agent,
   ResidentialChecksTaskProgress,
   StandardAddressCheckRequestSummary,
 } from '../../@types/assessForEarlyReleaseApiClientTypes'
@@ -20,6 +19,7 @@ export default class ReviewInformationRoutes {
 
     const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 
@@ -32,6 +32,7 @@ export default class ReviewInformationRoutes {
 
     const preferredAddressChecksView = await this.residentialChecksService.getResidentialChecksView(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       preferredAddressCheck.requestId,
     )
@@ -41,6 +42,7 @@ export default class ReviewInformationRoutes {
       secondAddressCheck &&
       (await this.residentialChecksService.getResidentialChecksView(
         req?.middleware?.clientToken,
+        res.locals.agent,
         prisonNumber,
         preferredAddressCheck.requestId,
       ))
@@ -58,19 +60,11 @@ export default class ReviewInformationRoutes {
   POST = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
 
-    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
+    await this.addressService.submitAssessmentForPreDecisionChecks(
       req?.middleware?.clientToken,
-      req.params.prisonNumber,
+      res.locals.agent,
+      prisonNumber,
     )
-
-    const agent: Agent = {
-      username: res.locals.user.username,
-      fullName: res.locals.user.displayName,
-      role: 'PROBATION_COM',
-      onBehalfOf: assessmentSummary.team,
-    }
-
-    await this.addressService.submitAssessmentForPreDecisionChecks(req?.middleware?.clientToken, prisonNumber, agent)
     return res.redirect(paths.probation.assessment.home({ prisonNumber }))
   }
 

@@ -21,10 +21,14 @@ afterEach(() => {
 describe('GET', () => {
   it('should render pdf', async () => {
     await assessmentPdfRoutes.GET(req, res)
-    expect(formService.getForm).toHaveBeenCalledWith(req.middleware.clientToken, {
-      title: 'Title from UI',
-      message: 'Message from UI',
-    })
+    expect(formService.getForm).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      {},
+      {
+        title: 'Title from UI',
+        message: 'Message from UI',
+      },
+    )
     expect(res.renderPDF).toHaveBeenCalledWith({ filename: 'document.pdf' }, pdfBuffer)
   })
 })

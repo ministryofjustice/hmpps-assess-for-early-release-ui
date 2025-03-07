@@ -34,6 +34,7 @@ describe('GET', () => {
     await caseloadRoutes.GET(req, res)
     expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      undefined,
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {

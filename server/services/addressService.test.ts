@@ -58,9 +58,9 @@ describe('Address Service', () => {
     ] as AddressSummary[]
     assessForEarlyReleaseApiClient.findAddressesForPostcode.mockResolvedValue(addressSummaries)
 
-    const result = await addressService.findAddressesForPostcode(token, postcode)
+    const result = await addressService.findAddressesForPostcode(token, agent, postcode)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(addressSummaries)
   })
 
@@ -68,9 +68,9 @@ describe('Address Service', () => {
     const addressSummary = createAddressSummary({})
     assessForEarlyReleaseApiClient.getAddressForUprn.mockResolvedValue(addressSummary)
 
-    const result = await addressService.getAddressForUprn(token, addressSummary.uprn)
+    const result = await addressService.getAddressForUprn(token, agent, addressSummary.uprn)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(addressSummary)
   })
 
@@ -81,12 +81,14 @@ describe('Address Service', () => {
     const requestSummary = createStandardAddressCheckRequestSummary()
     assessForEarlyReleaseApiClient.addStandardAddressCheckRequest.mockResolvedValue(requestSummary)
 
-    const result = await addressService.addStandardAddressCheckRequest(token, prisonNumber, {
-      addStandardAddressCheckRequest: standardAddressCheckRequest,
+    const result = await addressService.addStandardAddressCheckRequest(
+      token,
       agent,
-    })
+      prisonNumber,
+      standardAddressCheckRequest,
+    )
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(requestSummary)
   })
 
@@ -97,9 +99,9 @@ describe('Address Service', () => {
     const requestSummary = createStandardAddressCheckRequestSummary()
     assessForEarlyReleaseApiClient.getStandardAddressCheckRequest.mockResolvedValue(requestSummary)
 
-    const result = await addressService.getStandardAddressCheckRequest(token, prisonNumber, requestId)
+    const result = await addressService.getStandardAddressCheckRequest(token, agent, prisonNumber, requestId)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(requestSummary)
   })
 
@@ -111,12 +113,9 @@ describe('Address Service', () => {
     const residentSummary = createResidentSummary()
     assessForEarlyReleaseApiClient.addResidents.mockResolvedValue([residentSummary])
 
-    const result = await addressService.addResidents(token, prisonNumber, requestId, {
-      addResidentsRequest: [addResidentRequest],
-      agent,
-    })
+    const result = await addressService.addResidents(token, agent, prisonNumber, requestId, [addResidentRequest])
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual([residentSummary])
   })
 })

@@ -10,6 +10,7 @@ export default class CaseloadRoutes {
     const { user } = res.locals
     const offenderSummaryList = await this.communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
       req?.middleware?.clientToken,
+      res.locals.agent,
       user as ProbationUser,
     )
 

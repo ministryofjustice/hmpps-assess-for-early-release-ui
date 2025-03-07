@@ -577,7 +577,7 @@ export interface components {
       messagesFoundCount: number
     }
     /** @description Details of the agent who is requesting a change be made to a resource */
-    Agent: {
+    AgentDto: {
       /**
        * @description The name of the user requesting the change
        * @example BobSmith
@@ -623,7 +623,7 @@ export interface components {
        */
       otherDescription?: string
       /** @description Details of the agent who is requesting the opt out */
-      agent: components['schemas']['Agent']
+      agent: components['schemas']['AgentDto']
     }
     /** @description The answers to the question for a specific criterion */
     CriterionCheck: {
@@ -641,7 +641,7 @@ export interface components {
       /** @description A unique code for the check */
       answers: { [key: string]: boolean }
       /** @description Details of the agent who is requesting the criterion check */
-      agent: components['schemas']['Agent']
+      agent: components['schemas']['AgentDto']
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -650,10 +650,6 @@ export interface components {
        * @example Additional information...
        */
       additionalInformation: string
-    }
-    UpdateCaseAdminAdditionInfoRequestWrapper: {
-      updateCaseAdminAdditionInfoRequest: components['schemas']['UpdateCaseAdminAdditionInfoRequest']
-      agent: components['schemas']['Agent']
     }
     /** @description Request for adding a standard address check request */
     AddStandardAddressCheckRequest: {
@@ -678,10 +674,6 @@ export interface components {
        * @example 200010019924
        */
       addressUprn: string
-    }
-    AddStandardAddressCheckRequestWrapper: {
-      addStandardAddressCheckRequest: components['schemas']['AddStandardAddressCheckRequest']
-      agent: components['schemas']['Agent']
     }
     /** @description Response object which describes an address */
     AddressSummary: {
@@ -878,10 +870,6 @@ export interface components {
        */
       isOffender: boolean
     }
-    AddResidentsRequestWrapper: {
-      addResidentsRequest: components['schemas']['AddResidentRequest'][]
-      agent: components['schemas']['Agent']
-    }
     /** @description Request for adding a CAS check request */
     AddCasCheckRequest: {
       /**
@@ -900,10 +888,6 @@ export interface components {
        * @enum {string}
        */
       preferencePriority: 'FIRST' | 'SECOND'
-    }
-    AddCasCheckRequestWrapper: {
-      addCasCheckRequest: components['schemas']['AddCasCheckRequest']
-      agent: components['schemas']['Agent']
     }
     /** @description Response object which describes a CAS check request */
     CasCheckRequestSummary: Omit<
@@ -944,7 +928,7 @@ export interface components {
       /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
       /** @description Details of the agent that is submitting the answers */
-      agent: components['schemas']['Agent']
+      agent: components['schemas']['AgentDto']
     }
     /** @description The answers to a residential checks task. */
     ResidentialChecksTaskAnswersSummary: {
@@ -1320,7 +1304,7 @@ export interface components {
       /** @description The questions that are associated with this criterion for this case */
       questions: components['schemas']['Question'][]
       /** @description Details of the user that submitted the answers for this criterion */
-      agent?: components['schemas']['Agent']
+      agent?: components['schemas']['AgentDto']
       /**
        * Format: date
        * @description The date time when answers were last submitted for this criterion or null if no answers have been submitted yet
@@ -1358,7 +1342,7 @@ export interface components {
       /** @description The questions that are associated with this criterion for this case */
       questions: components['schemas']['Question'][]
       /** @description Details of the user that submitted the answers for this criterion */
-      agent?: components['schemas']['Agent']
+      agent?: components['schemas']['AgentDto']
       /**
        * Format: date
        * @description The date time when answers were last submitted for this criterion or null if no answers have been submitted yet
@@ -1463,18 +1447,18 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       requestType: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1534,7 +1518,7 @@ export interface operations {
   }
   submitForPreDecisionChecks: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['Agent'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
     responses: {
       /** @description The offender's current assessment has been sent to the prison case admin for checking. */
       204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
@@ -1557,7 +1541,7 @@ export interface operations {
   }
   submitForAddressChecks: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['Agent'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
     responses: {
       /** @description The offender's current assessment has been submitted for address checks. */
       204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
@@ -1616,7 +1600,7 @@ export interface operations {
   }
   optBackIn: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['Agent'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
       204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
@@ -1652,7 +1636,7 @@ export interface operations {
   }
   updateCaseAdminAdditionalInformation: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['UpdateCaseAdminAdditionInfoRequestWrapper'] } }
+    requestBody: { content: { 'application/json': components['schemas']['UpdateCaseAdminAdditionInfoRequest'] } }
     responses: {
       /** @description The case admin additional information has been updated. */
       204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
@@ -1675,7 +1659,7 @@ export interface operations {
   }
   addStandardAddressCheckRequest: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddStandardAddressCheckRequestWrapper'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AddStandardAddressCheckRequest'] } }
     responses: {
       /** @description The standard address check request has been added to the offender's current assessment. */
       201: {
@@ -1696,7 +1680,7 @@ export interface operations {
   }
   addStandardAddressCheckRequestResident: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddResidentsRequestWrapper'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AddResidentRequest'][] } }
     responses: {
       /** @description The resident has been added to the standard address check request. */
       201: {
@@ -1722,7 +1706,7 @@ export interface operations {
   }
   addCasCheckRequest: {
     parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddCasCheckRequestWrapper'] } }
+    requestBody: { content: { 'application/json': components['schemas']['AddCasCheckRequest'] } }
     responses: {
       /** @description The CAS check request has been added to the current assessment for the offender. */
       201: {
