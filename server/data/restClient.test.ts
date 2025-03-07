@@ -14,6 +14,12 @@ const restClient = new RestClient(
     agent: new AgentConfig(1000),
   },
   'token-1',
+  {
+    username: 'user-1',
+    fullName: 'User One',
+    role: 'PRISON_CA',
+    onBehalfOf: '',
+  },
 )
 
 describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', method => {

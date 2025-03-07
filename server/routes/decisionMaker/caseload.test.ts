@@ -26,6 +26,7 @@ describe('GET', () => {
     await caseloadRoutes.GET(req, res)
     expect(decisionMakerCaseloadService.getDecisionMakerCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       'MDI',
     )
     expect(res.render).toHaveBeenCalledWith('pages/decisionMaker/caseload', {

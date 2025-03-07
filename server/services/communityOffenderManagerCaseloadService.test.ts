@@ -1,6 +1,7 @@
 import { CommunityOffenderManagerCaseloadService } from '.'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAgent, createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { ProbationUser } from '../interfaces/hmppsUser'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
@@ -9,6 +10,7 @@ const token = 'TOKEN-1'
 const user = {
   deliusStaffCode: 'STAFF1',
 } as ProbationUser
+const agent = createAgent() as Agent
 
 describe('COM Caseload Service', () => {
   let communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService
@@ -29,9 +31,13 @@ describe('COM Caseload Service', () => {
       const aCase = createOffenderSummary({})
       assessForEarlyReleaseApiClient.getCommunityOffenderManagerCaseload.mockResolvedValue([aCase])
 
-      const result = await communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(token, user)
+      const result = await communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
+        token,
+        agent,
+        user,
+      )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual([
         {
           name: 'Jim Smith',
@@ -51,10 +57,11 @@ describe('COM Caseload Service', () => {
 
       const result = await communityOffenderManagerCaseloadService.getAssessmentSummary(
         token,
+        agent,
         assessmentSummary.prisonNumber,
       )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(assessmentSummary)
     })
   })

@@ -9,13 +9,14 @@ export default class CheckCurfewAddressesRoutes {
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
     const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 

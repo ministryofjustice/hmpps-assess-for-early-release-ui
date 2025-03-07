@@ -14,8 +14,12 @@ export default class EligibilityAndSuitabilityService {
     private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
   ) {}
 
-  public async getCriteria(token: string, prisonNumber: string): Promise<EligibilityAndSuitabilityCaseView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async getCriteria(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<EligibilityAndSuitabilityCaseView> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.getEligibilityCriteriaView(prisonNumber)
   }
 
@@ -24,8 +28,9 @@ export default class EligibilityAndSuitabilityService {
     prisonNumber: string,
     type: 'eligibility-check' | 'suitability-check',
     checkCode: string,
+    agent?: Agent,
   ): Promise<CriterionView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
 
     if (type === 'eligibility-check') {
       return assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, checkCode)
@@ -55,7 +60,7 @@ export default class EligibilityAndSuitabilityService {
   ) {
     const payload = this.sanitiseForm(criterion, form)
     logger.info('save check called', prisonNumber, type, criterion.code)
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.submitAnswer(prisonNumber, {
       type,
       code: criterion.code,

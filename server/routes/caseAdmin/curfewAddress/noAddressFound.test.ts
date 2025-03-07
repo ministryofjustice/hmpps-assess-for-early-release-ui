@@ -1,9 +1,9 @@
-import { convertToTitleCase } from '../../utils/utils'
-import paths from '../paths'
+import { convertToTitleCase } from '../../../utils/utils'
+import paths from '../../paths'
 
-import { createAssessmentSummary } from '../../data/__testutils/testObjects'
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
+import { createAgent, createAssessmentSummary } from '../../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import NoAddressFoundRoutes from './noAddressFound'
 
 const assessmentSummary = createAssessmentSummary({})
@@ -11,6 +11,7 @@ const assessmentSummary = createAssessmentSummary({})
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 let noAddressFoundRoutes: NoAddressFoundRoutes
 
@@ -31,6 +32,7 @@ describe('GET', () => {
 
     expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/noAddressFound', {

@@ -7,6 +7,7 @@ import logger from '../../logger'
 import config from '../config'
 import generateOauthClientToken from '../authentication/clientCredentials'
 import RestClient from './restClient'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const timeoutSpec = config.apis.hmppsAuth.timeout
 const hmppsAuthUrl = config.apis.hmppsAuth.url
@@ -35,8 +36,8 @@ function getSystemClientTokenFromHmppsAuth(username?: string): Promise<superagen
 export default class HmppsAuthClient {
   constructor(private readonly tokenStore: TokenStore) {}
 
-  private static restClient(token: string): RestClient {
-    return new RestClient('HMPPS Auth Client', config.apis.hmppsAuth, token)
+  private static restClient(token: string, agent: Agent): RestClient {
+    return new RestClient('HMPPS Auth Client', config.apis.hmppsAuth, token, agent)
   }
 
   async getSystemClientToken(username?: string): Promise<string> {

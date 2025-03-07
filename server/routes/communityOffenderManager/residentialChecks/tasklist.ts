@@ -9,15 +9,16 @@ export default class ResidentialChecksTasklistRoutes {
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber } = req.params
-
     const addressCheckRequest = await this.addressService.getStandardAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )
 
     const residentialChecksView = await this.residentialChecksService.getResidentialChecksView(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )

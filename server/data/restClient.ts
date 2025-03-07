@@ -34,7 +34,9 @@ export default class RestClient {
     private readonly name: string,
     private readonly config: ApiConfig,
     private readonly token: string,
+    private readonly defaultHeaders: Record<string, string>,
   ) {
+    this.defaultHeaders = defaultHeaders
     this.agent = config.url.startsWith('https') ? new HttpsAgent(config.agent) : new Agent(config.agent)
   }
 
@@ -64,7 +66,7 @@ export default class RestClient {
           return undefined // retry handler only for logging retries, not to influence retry logic
         })
         .auth(this.token, { type: 'bearer' })
-        .set(headers)
+        .set({ ...this.defaultHeaders, ...headers })
         .responseType(responseType)
         .timeout(this.timeoutConfig())
 
@@ -94,7 +96,7 @@ export default class RestClient {
           return undefined // retry handler only for logging retries, not to influence retry logic
         })
         .auth(this.token, { type: 'bearer' })
-        .set(headers)
+        .set({ ...this.defaultHeaders, ...headers })
         .responseType(responseType)
         .timeout(this.timeoutConfig())
 
@@ -136,7 +138,7 @@ export default class RestClient {
           return undefined // retry handler only for logging retries, not to influence retry logic
         })
         .auth(this.token, { type: 'bearer' })
-        .set(headers)
+        .set({ ...this.defaultHeaders, ...headers })
         .responseType(responseType)
         .timeout(this.timeoutConfig())
 
@@ -160,7 +162,7 @@ export default class RestClient {
           return undefined // retry handler only for logging retries, not to influence retry logic
         })
         .timeout(this.timeoutConfig())
-        .set(headers)
+        .set({ ...this.defaultHeaders, ...headers })
         .end((error, response) => {
           if (error) {
             logger.warn(sanitiseError(error), `Error calling ${this.name}`)

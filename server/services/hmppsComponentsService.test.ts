@@ -1,12 +1,15 @@
 import type { AvailableComponent, Component } from '@hmpps-components'
 import HmppsComponentsService from './hmppsComponentsService'
 import { HmppsComponentsClient } from '../data'
+import { createAgent } from '../data/__testutils/testObjects'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 jest.mock('../data/hmppsComponentsClient')
 
 describe('hmppsComponentsService', () => {
   const userToken = 'SOME-USER-TOKEN'
   const components: Array<AvailableComponent> = ['footer', 'header']
+  const agent = createAgent() as Agent
 
   const hmppsComponentsClient = new HmppsComponentsClient(userToken) as jest.Mocked<HmppsComponentsClient>
   const hmppsComponentsClientBuilder = jest.fn()
@@ -36,7 +39,7 @@ describe('hmppsComponentsService', () => {
 
       hmppsComponentsClient.getComponents.mockResolvedValue(response)
 
-      const result = await service.getComponents(components, userToken)
+      const result = await service.getComponents(components, userToken, agent)
 
       expect(result).toEqual(response)
       expect(hmppsComponentsClient.getComponents).toHaveBeenCalledWith(components)

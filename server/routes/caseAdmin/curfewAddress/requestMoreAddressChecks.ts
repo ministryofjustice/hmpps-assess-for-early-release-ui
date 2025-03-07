@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { AddressService, CaseAdminCaseloadService } from '../../services'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+import { AddressService, CaseAdminCaseloadService } from '../../../services'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 
 export default class RequestMoreAddressChecksRoutes {
   constructor(
@@ -13,10 +13,12 @@ export default class RequestMoreAddressChecksRoutes {
     const { prisonNumber } = req.params
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
     const addressSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 
@@ -45,6 +47,7 @@ export default class RequestMoreAddressChecksRoutes {
     const { checkRequestId, prisonNumber } = req.params
     await this.addressService.deleteAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )

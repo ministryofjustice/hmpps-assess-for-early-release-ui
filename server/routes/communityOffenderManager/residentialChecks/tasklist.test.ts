@@ -38,12 +38,14 @@ describe('GET', () => {
 
     expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      {},
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
     )
 
     expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      {},
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
     )

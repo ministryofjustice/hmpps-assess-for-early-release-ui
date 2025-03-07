@@ -1,12 +1,14 @@
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createResidentialChecksView } from '../data/__testutils/testObjects'
+import { createAgent, createResidentialChecksView } from '../data/__testutils/testObjects'
 import ResidentialChecksService from './residentialChecksService'
 import { parseIsoDate } from '../utils/utils'
 import AssessmentStatus from '../enumeration/assessmentStatus'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const assessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent = createAgent() as Agent
 
 describe('ResidentialChecksService', () => {
   let residentialChecksService: ResidentialChecksService
@@ -27,11 +29,12 @@ describe('ResidentialChecksService', () => {
 
       const result = await residentialChecksService.getResidentialChecksView(
         token,
+        agent,
         view.assessmentSummary.prisonNumber,
         1,
       )
 
-      expect(assessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(assessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result.tasks).toHaveLength(6)
       expect(result.tasks).toEqual(expect.arrayContaining([expect.objectContaining({ status: 'NOT_STARTED' })]))
       expect(result.assessmentSummary).toEqual(

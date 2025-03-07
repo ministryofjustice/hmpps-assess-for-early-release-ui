@@ -1,10 +1,10 @@
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockCaseAdminCaseloadService, createMockAddressService } from '../../services/__testutils/mock'
-import { convertToTitleCase } from '../../utils/utils'
-import { ValidationError } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockCaseAdminCaseloadService, createMockAddressService } from '../../../services/__testutils/mock'
+import { convertToTitleCase } from '../../../utils/utils'
+import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
-import { createAssessmentSummary } from '../../data/__testutils/testObjects'
+import { createAgent, createAssessmentSummary } from '../../../data/__testutils/testObjects'
 
 let moreInfoRequiredCheckRoutes: MoreInfoRequiredCheckRoutes
 
@@ -14,6 +14,7 @@ const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const addressService = createMockAddressService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 beforeEach(() => {
   moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressService)
@@ -30,6 +31,7 @@ describe('GET', () => {
     await moreInfoRequiredCheckRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/moreInfoRequiredCheck', {
@@ -68,6 +70,7 @@ describe('POST', () => {
 
     expect(addressService.updateCaseAdminAdditionalInformation).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
       {

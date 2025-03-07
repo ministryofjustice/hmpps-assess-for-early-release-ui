@@ -1,3 +1,4 @@
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import {
   createEligibilityAndSuitabilityCaseView,
@@ -6,19 +7,14 @@ import {
   createEligibilityCriterionView,
   createSuitabilityCriterionView,
   createQuestion,
+  createAgent,
 } from '../data/__testutils/testObjects'
 import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
-import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
-const agent: Agent = {
-  username: 'prisonUser',
-  fullName: 'Prison User',
-  role: 'PRISON_CA',
-  onBehalfOf: 'JWO',
-}
+const agent = createAgent() as Agent
 
 describe('EligibilityAndSuitabilityService', () => {
   let eligibilityAndSuitabilityService: EligibilityAndSuitabilityService
@@ -46,9 +42,13 @@ describe('EligibilityAndSuitabilityService', () => {
 
       assessForEarlyReleaseApiClient.getEligibilityCriteriaView.mockResolvedValue(view)
 
-      const result = await eligibilityAndSuitabilityService.getCriteria(token, view.assessmentSummary.prisonNumber)
+      const result = await eligibilityAndSuitabilityService.getCriteria(
+        token,
+        agent,
+        view.assessmentSummary.prisonNumber,
+      )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(result)
     })
 
@@ -63,9 +63,10 @@ describe('EligibilityAndSuitabilityService', () => {
           criterionView.assessmentSummary.prisonNumber,
           'eligibility-check',
           criterionView.criterion.code,
+          agent,
         )
 
-        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
         expect(assessForEarlyReleaseApiClient.getEligibilityCriterionView).toHaveBeenCalledWith(
           criterionView.assessmentSummary.prisonNumber,
           criterionView.criterion.code,
@@ -84,9 +85,10 @@ describe('EligibilityAndSuitabilityService', () => {
           criterionView.assessmentSummary.prisonNumber,
           'suitability-check',
           criterionView.criterion.code,
+          agent,
         )
 
-        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
         expect(assessForEarlyReleaseApiClient.getSuitabilityCriterionView).toHaveBeenCalledWith(
           criterionView.assessmentSummary.prisonNumber,
           criterionView.criterion.code,
@@ -108,7 +110,7 @@ describe('EligibilityAndSuitabilityService', () => {
           form: { question1: 'true' },
         })
 
-        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
         expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
           answers: {
             question1: true,
@@ -130,7 +132,7 @@ describe('EligibilityAndSuitabilityService', () => {
           form: { question1: 'false' },
         })
 
-        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
         expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
           answers: {
             question1: false,
@@ -158,7 +160,7 @@ describe('EligibilityAndSuitabilityService', () => {
           form: { name1: 'false', name2: 'true', name3: 'true' },
         })
 
-        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+        expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
         expect(assessForEarlyReleaseApiClient.submitAnswer).toHaveBeenCalledWith('A1234AA', {
           answers: {
             name1: false,

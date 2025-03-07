@@ -9,7 +9,6 @@ import type {
   _ResidentSummary,
   _StandardAddressCheckRequestSummary,
   _SuitabilityCriterionView,
-  AddResidentRequest,
   AddressSummary,
   AddStandardAddressCheckRequest,
   Agent,
@@ -29,6 +28,7 @@ import type {
   SaveResidentialChecksTaskAnswersRequest,
   StandardAddressCheckRequestSummary,
   SuitabilityCriterionView,
+  AddResidentRequest,
   UpdateCaseAdminAdditionInfoRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
@@ -38,11 +38,18 @@ import { parseIsoDate } from '../utils/utils'
 export default class AssessForEarlyReleaseApiClient {
   private restClient: RestClient
 
-  constructor(token: string) {
+  constructor(token: string, agent?: Agent) {
+    const defaultHeaders = {
+      username: agent?.username,
+      fullName: agent?.fullName,
+      role: agent?.role,
+      onBehalfOf: agent?.onBehalfOf,
+    }
     this.restClient = new RestClient(
       'assessForEarlyReleaseApi',
       config.apis.assessForEarlyReleaseApi as ApiConfig,
       token,
+      defaultHeaders,
     )
   }
 
@@ -146,11 +153,11 @@ export default class AssessForEarlyReleaseApiClient {
 
   async addStandardAddressCheckRequest(
     prisonNumber: string,
-    standardAddressCheckRequest: AddStandardAddressCheckRequest,
+    addStandardAddressCheckRequest: AddStandardAddressCheckRequest,
   ): Promise<StandardAddressCheckRequestSummary> {
     const requestSummary = (await this.restClient.post<_StandardAddressCheckRequestSummary>({
       path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
-      data: standardAddressCheckRequest,
+      data: addStandardAddressCheckRequest,
     })) as _StandardAddressCheckRequestSummary
     return {
       ...requestSummary,
@@ -219,11 +226,11 @@ export default class AssessForEarlyReleaseApiClient {
   async addResidents(
     prisonNumber: string,
     addressCheckRequestId: number,
-    addResidentsRequest: AddResidentRequest[],
+    addResidentRequest: AddResidentRequest[],
   ): Promise<ResidentSummary[]> {
     const residentsSummary = (await this.restClient.post<_ResidentSummary[]>({
       path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
-      data: addResidentsRequest,
+      data: addResidentRequest,
     })) as _ResidentSummary[]
 
     return residentsSummary.map(r => {

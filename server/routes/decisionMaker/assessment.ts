@@ -7,6 +7,7 @@ export default class AssessmentRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessmentSummary = await this.decisionMakerCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 

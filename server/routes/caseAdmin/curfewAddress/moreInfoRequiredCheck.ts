@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { AddressService, CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
-import { UpdateCaseAdminAdditionInfoRequest } from '../../@types/assessForEarlyReleaseApiClientTypes'
-import { FieldValidationError } from '../../@types/FieldValidationError'
+import { AddressService, CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
+import { UpdateCaseAdminAdditionInfoRequest } from '../../../@types/assessForEarlyReleaseApiClientTypes'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
 
 export default class MoreInfoRequiredCheckRoutes {
   constructor(
@@ -15,6 +15,7 @@ export default class MoreInfoRequiredCheckRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     res.render('pages/curfewAddress/moreInfoRequiredCheck', {
@@ -50,8 +51,10 @@ export default class MoreInfoRequiredCheckRoutes {
     if (req.body.moreInfoRequiredCheck === 'yes') {
       await this.addressService.updateCaseAdminAdditionalInformation(
         req?.middleware?.clientToken,
+        res.locals.agent,
         prisonNumber,
         Number(requestId),
+
         {
           additionalInformation: req.body.addMoreInfo,
         } as UpdateCaseAdminAdditionInfoRequest,

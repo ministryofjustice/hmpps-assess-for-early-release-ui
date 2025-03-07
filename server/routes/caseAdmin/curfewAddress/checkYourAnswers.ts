@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
-import { AddressService, CaseAdminCaseloadService } from '../../services'
-import paths from '../paths'
-import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { AddressService, CaseAdminCaseloadService } from '../../../services'
+import paths from '../../paths'
 
 export default class CheckYourAnswersRoutes {
   constructor(
@@ -13,10 +12,12 @@ export default class CheckYourAnswersRoutes {
     const { prisonNumber } = req.params
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
     const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 
@@ -28,13 +29,12 @@ export default class CheckYourAnswersRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-    const agent: Agent = {
-      username: res.locals.user.username,
-      fullName: res.locals.user.displayName,
-      role: 'PRISON_CA',
-      onBehalfOf: res.locals.activeCaseLoadId,
-    }
-    await this.addressService.submitAssessmentForAddressChecks(req?.middleware?.clientToken, prisonNumber, agent)
+
+    await this.addressService.submitAssessmentForAddressChecks(
+      req?.middleware?.clientToken,
+      res.locals.agent,
+      prisonNumber,
+    )
     return res.redirect(paths.prison.assessment.home({ prisonNumber }))
   }
 
@@ -42,12 +42,14 @@ export default class CheckYourAnswersRoutes {
     const { checkRequestId, prisonNumber } = req.params
     await this.addressService.deleteAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
       Number(checkRequestId),
     )
 
     const checkRequestsForAssessmentSummary = await this.addressService.getCheckRequestsForAssessment(
       req?.middleware?.clientToken,
+      res.locals.agent,
       prisonNumber,
     )
 

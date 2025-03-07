@@ -14,6 +14,7 @@ export default class CheckRoutes {
       prisonNumber,
       type as 'eligibility-check' | 'suitability-check',
       checkCode,
+      res.locals.agent,
     )
 
     res.render('pages/caseAdmin/initialChecks/check', { assessmentSummary, type, criterion })
@@ -27,6 +28,7 @@ export default class CheckRoutes {
       prisonNumber,
       type as 'eligibility-check' | 'suitability-check',
       checkCode,
+      res.locals.agent,
     )
 
     validateRequest(req, body =>
@@ -37,18 +39,12 @@ export default class CheckRoutes {
       }),
     )
 
-    const { user } = res.locals
     await this.eligibilityAndSuitabilityService.saveCriterionAnswers(req?.middleware?.clientToken, {
       prisonNumber,
       type: type.replace('-check', '') as 'eligibility' | 'suitability',
       criterion,
       form: req.body,
-      agent: {
-        username: user.username,
-        fullName: user.displayName,
-        role: 'PRISON_CA',
-        onBehalfOf: res.locals.activeCaseLoadId,
-      },
+      agent: res.locals.agent,
     })
 
     const nextLocation = nextCriterion

@@ -1,8 +1,12 @@
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
-import { ValidationError } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
-import { createAssessmentSummary, createCheckRequestsForAssessmentSummary } from '../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
+import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
+import {
+  createAgent,
+  createAssessmentSummary,
+  createCheckRequestsForAssessmentSummary,
+} from '../../../data/__testutils/testObjects'
 import RequestMoreAddressChecksRoutes from './requestMoreAddressChecks'
 
 let requestMoreAddressChecksRoutes: RequestMoreAddressChecksRoutes
@@ -14,6 +18,7 @@ const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const addressService = createMockAddressService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 beforeEach(() => {
   requestMoreAddressChecksRoutes = new RequestMoreAddressChecksRoutes(addressService, caseAdminCaseloadService)
@@ -31,10 +36,12 @@ describe('GET', () => {
     await requestMoreAddressChecksRoutes.GET(req, res)
     expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(addressService.getCheckRequestsForAssessment).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/requestMoreAddressChecks', {
@@ -82,6 +89,7 @@ describe('DELETE', () => {
 
     expect(addressService.deleteAddressCheckRequest).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
     )

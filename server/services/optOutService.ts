@@ -21,7 +21,7 @@ export default class OptOutService {
       agent: Agent
     },
   ): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
 
     const optOutRequest: OptOutRequest = {
       reasonType: optOutReasonType,

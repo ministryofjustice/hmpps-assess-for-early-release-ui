@@ -7,9 +7,9 @@ export default class HmppsComponentsClient {
 
   userToken: Express.User['token']
 
-  constructor(userToken: Express.User['token']) {
+  constructor(userToken: Express.User['token'], agent?: Record<string, string>) {
     this.userToken = userToken
-    this.restClient = new RestClient('hmppsComponentsClient', config.apis.hmppsComponents, userToken)
+    this.restClient = new RestClient('hmppsComponentsClient', config.apis.hmppsComponents, userToken, agent)
   }
 
   async getComponents<T extends Array<AvailableComponent>>(components: T): Promise<Record<T[number], Component>> {

@@ -64,7 +64,7 @@ const mockRequest = ({
     errors,
   }) as unknown as jest.Mocked<Request>
 
-const mockResponse = ({ locals = { context: {}, user: {} } }: ResponseParams): jest.Mocked<Response> =>
+const mockResponse = ({ locals = { context: {}, user: {}, agent: {} } }: ResponseParams): jest.Mocked<Response> =>
   ({
     locals,
     sendStatus: jest.fn(),

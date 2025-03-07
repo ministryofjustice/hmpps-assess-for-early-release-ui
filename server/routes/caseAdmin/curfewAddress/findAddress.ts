@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import { FieldValidationError } from '../../@types/FieldValidationError'
-import paths from '../paths'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import AddressService from '../../services/addressService'
+import { CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
+import paths from '../../paths'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import AddressService from '../../../services/addressService'
 
 export default class FindAddressRoutes {
   constructor(
@@ -15,6 +15,7 @@ export default class FindAddressRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 
@@ -38,7 +39,11 @@ export default class FindAddressRoutes {
     })
 
     const postcode = (req.body.searchQuery as string).replace(/\s+/g, '')
-    const addresses = await this.addressService.findAddressesForPostcode(req?.middleware?.clientToken, postcode)
+    const addresses = await this.addressService.findAddressesForPostcode(
+      req?.middleware?.clientToken,
+      res.locals.agent,
+      postcode,
+    )
     if (addresses.length === 0) {
       return res.redirect(
         `${paths.prison.assessment.enterCurfewAddressOrCasArea.noAddressFound({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,

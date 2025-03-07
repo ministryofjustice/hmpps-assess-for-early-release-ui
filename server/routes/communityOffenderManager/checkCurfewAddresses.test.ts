@@ -1,4 +1,8 @@
-import { createAssessmentSummary, createCheckRequestsForAssessmentSummary } from '../../data/__testutils/testObjects'
+import {
+  createAgent,
+  createAssessmentSummary,
+  createCheckRequestsForAssessmentSummary,
+} from '../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
@@ -10,6 +14,7 @@ const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 describe('check your answers summary', () => {
   let checkCurfewAddressesRoutes: CheckCurfewAddressesRoutes
@@ -31,11 +36,13 @@ describe('check your answers summary', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
 
       expect(addressService.getCheckRequestsForAssessment).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
 

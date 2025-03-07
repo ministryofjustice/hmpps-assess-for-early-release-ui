@@ -1,9 +1,12 @@
 import { FormService } from '.'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
+import { createAgent } from '../data/__testutils/testObjects'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent = createAgent() as Agent
 
 describe('Pdf Service', () => {
   let formService: FormService
@@ -21,9 +24,9 @@ describe('Pdf Service', () => {
     it('get pdf', async () => {
       assessForEarlyReleaseApiClient.getForm.mockResolvedValue(Buffer.from('pdf'))
 
-      await formService.getForm(token, { title: 'title', message: 'message' })
+      await formService.getForm(token, agent, { title: 'title', message: 'message' })
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith({ title: 'title', message: 'message' })
     })
   })

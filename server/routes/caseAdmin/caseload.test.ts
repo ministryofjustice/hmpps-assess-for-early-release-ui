@@ -1,4 +1,4 @@
-import { createCase } from '../../data/__testutils/testObjects'
+import { createAgent, createCase } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
@@ -14,6 +14,7 @@ const req = mockRequest({})
 const res = mockResponse({
   locals: {
     activeCaseLoadId: 'MDI',
+    agent: createAgent(),
   },
 })
 
@@ -32,7 +33,11 @@ afterEach(() => {
 describe('GET', () => {
   it('should render case admin caseload', async () => {
     await caseloadRoutes.GET(req, res)
-    expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
+    expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      res.locals.agent,
+      'MDI',
+    )
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
       activeApplicationView: true,
       postponedCases: [],
@@ -70,7 +75,11 @@ describe('GET', () => {
 
     caseAdminCaseloadService.getCaseAdminCaseload.mockResolvedValue(cases)
     await caseloadRoutes.GET(req, res)
-    expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(req.middleware.clientToken, 'MDI')
+    expect(caseAdminCaseloadService.getCaseAdminCaseload).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      res.locals.agent,
+      'MDI',
+    )
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/caseload', {
       activeApplicationView: false,
       postponedCases: [],

@@ -1,11 +1,13 @@
 import { CaseAdminCaseloadService } from '.'
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAgent, createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { convertToTitleCase } from '../utils/utils'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent = createAgent() as Agent
 
 describe('CA Caseload Service', () => {
   let caseAdminCaseloadService: CaseAdminCaseloadService
@@ -24,9 +26,9 @@ describe('CA Caseload Service', () => {
       const aCase = createOffenderSummary({})
       assessForEarlyReleaseApiClient.getCaseAdminCaseload.mockResolvedValue([aCase])
 
-      const result = await caseAdminCaseloadService.getCaseAdminCaseload(token, 'MDI')
+      const result = await caseAdminCaseloadService.getCaseAdminCaseload(token, agent, 'MDI')
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual([
         {
           name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
@@ -52,9 +54,9 @@ describe('CA Caseload Service', () => {
     it('get assessment summary', async () => {
       assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
 
-      const result = await caseAdminCaseloadService.getAssessmentSummary(token, assessmentSummary.prisonNumber)
+      const result = await caseAdminCaseloadService.getAssessmentSummary(token, agent, assessmentSummary.prisonNumber)
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(assessmentSummary)
     })
   })

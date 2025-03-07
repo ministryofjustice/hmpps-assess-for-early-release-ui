@@ -45,6 +45,7 @@ describe('GET', () => {
       req.params.prisonNumber,
       req.params.type,
       req.params.checkCode,
+      res.locals.agent,
     )
 
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/check', {
@@ -85,6 +86,7 @@ describe('POST', () => {
       req.params.prisonNumber,
       req.params.type,
       req.params.checkCode,
+      res.locals.agent,
     )
 
     expect(res.redirect).toHaveBeenCalledWith(
@@ -130,6 +132,7 @@ describe('POST', () => {
       req.params.prisonNumber,
       req.params.type,
       req.params.checkCode,
+      {},
     )
 
     expect(res.redirect).toHaveBeenCalledWith(

@@ -1,10 +1,12 @@
+import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAgent, createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
+const agent = createAgent() as Agent
 
 describe('Decision maker Caseload Service', () => {
   let decisionMakerCaseloadService: DecisionMakerCaseloadService
@@ -23,9 +25,9 @@ describe('Decision maker Caseload Service', () => {
       const aCase = createOffenderSummary({})
       assessForEarlyReleaseApiClient.getDecisionMakerCaseload.mockResolvedValue([aCase])
 
-      const result = await decisionMakerCaseloadService.getDecisionMakerCaseload(token, 'MDI')
+      const result = await decisionMakerCaseloadService.getDecisionMakerCaseload(token, agent, 'MDI')
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual([
         {
           name: 'Jim Smith',
@@ -43,9 +45,13 @@ describe('Decision maker Caseload Service', () => {
     it('get assessment summary', async () => {
       assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
 
-      const result = await decisionMakerCaseloadService.getAssessmentSummary(token, assessmentSummary.prisonNumber)
+      const result = await decisionMakerCaseloadService.getAssessmentSummary(
+        token,
+        agent,
+        assessmentSummary.prisonNumber,
+      )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(assessmentSummary)
     })
   })

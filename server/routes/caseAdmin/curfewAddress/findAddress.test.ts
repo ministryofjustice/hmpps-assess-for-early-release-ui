@@ -1,10 +1,10 @@
-import { createAddressSummary, createAssessmentSummary } from '../../data/__testutils/testObjects'
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
+import { createAddressSummary, createAssessmentSummary } from '../../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import FindAddressRoutes from './findAddress'
-import { convertToTitleCase } from '../../utils/utils'
-import { ValidationError } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+import { convertToTitleCase } from '../../../utils/utils'
+import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 
 const assessmentSummary = createAssessmentSummary({})
 
@@ -33,6 +33,7 @@ describe('find address routes', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/findAddress', {
@@ -57,6 +58,7 @@ describe('find address routes', () => {
 
       expect(addressService.findAddressesForPostcode).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.body.searchQuery,
       )
 

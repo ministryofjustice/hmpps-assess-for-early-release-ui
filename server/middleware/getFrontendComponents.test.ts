@@ -47,7 +47,7 @@ describe('getFrontendComponents', () => {
 
     await getFrontendComponents(hmppsComponentsService)(req, res, next)
 
-    expect(hmppsComponentsService.getComponents).toHaveBeenCalledWith(['header', 'footer'], userToken)
+    expect(hmppsComponentsService.getComponents).toHaveBeenCalledWith(['header', 'footer'], userToken, undefined)
     expect(res.locals.feComponents).toEqual({
       cssIncludes: ['header-css', 'footer-css'],
       footer: 'footer-html',

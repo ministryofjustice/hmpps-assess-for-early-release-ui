@@ -7,6 +7,7 @@ export default class TasklistRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const criteria = await this.eligibilityAndSuitabilityService.getCriteria(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     res.render('pages/caseAdmin/initialChecks/tasklist', { criteria })
