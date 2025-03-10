@@ -133,7 +133,7 @@ describe('select address routes', () => {
         req.params.prisonNumber,
         {
           preferencePriority: 'FIRST',
-          addressUprn: '310030567',
+          addressUprn: req.body.selectedAddressUprn,
         },
       )
 

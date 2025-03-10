@@ -14,7 +14,7 @@ const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
-res.locals.agent = createAgent()
+res.locals.agent = createAgent({ role: 'PROBATION_COM' })
 
 describe('check your answers summary', () => {
   let checkCurfewAddressesRoutes: CheckCurfewAddressesRoutes

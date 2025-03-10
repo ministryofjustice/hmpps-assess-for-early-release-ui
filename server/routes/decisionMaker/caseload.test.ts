@@ -9,6 +9,7 @@ const offenderSummaryList = [createCase({})]
 const decisionMakerCaseloadService = createMockDecisionMakerCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = { role: 'PRISON_DM' }
 
 let caseloadRoutes: CaseloadRoutes
 

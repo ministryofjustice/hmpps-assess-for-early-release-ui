@@ -9,7 +9,7 @@ export default function getFrontendComponents(hmppsComponentsService: HmppsCompo
       const { header, footer } = await hmppsComponentsService.getComponents(
         ['header', 'footer'],
         res.locals.user.token,
-        res.locals.header,
+        res.locals.agent,
       )
 
       res.locals.feComponents = {

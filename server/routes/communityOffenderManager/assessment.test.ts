@@ -1,4 +1,4 @@
-import { createAssessmentSummary } from '../../data/__testutils/testObjects'
+import { createAgent, createAssessmentSummary } from '../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCommunityOffenderManagerCaseloadService } from '../../services/__testutils/mock'
 import AssessmentRoutes from './assessment'
@@ -8,6 +8,7 @@ const assessmentSummary = createAssessmentSummary({})
 const caseloadService = createMockCommunityOffenderManagerCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent({ role: 'PROBATION_COM' })
 
 let assessmentRoutes: AssessmentRoutes
 
@@ -27,7 +28,7 @@ describe('GET', () => {
     await assessmentRoutes.GET(req, res)
     expect(caseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
-      {},
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/assessment', {

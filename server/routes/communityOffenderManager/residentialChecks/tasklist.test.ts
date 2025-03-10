@@ -16,6 +16,7 @@ const residentialChecksService = createMockResidentialChecksService()
 
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = { role: 'PROBATION_COM' }
 
 let residentialChecksTaskListRoutes: ResidentialChecksTasklistRoutes
 
@@ -38,14 +39,14 @@ describe('GET', () => {
 
     expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
       req.middleware.clientToken,
-      {},
+      res.locals.agent,
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
     )
 
     expect(addressService.getStandardAddressCheckRequest).toHaveBeenCalledWith(
       req.middleware.clientToken,
-      {},
+      res.locals.agent,
       req.params.prisonNumber,
       Number(req.params.checkRequestId),
     )

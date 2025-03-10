@@ -21,7 +21,7 @@ const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const residentialChecksService = createMockResidentialChecksService()
 const req = mockRequest({})
 const res = mockResponse({})
-res.locals.agent = createAgent()
+res.locals.agent = createAgent({ role: 'PROBATION_COM' })
 
 describe('Review information and send checks to prison', () => {
   let reviewInformationRoutes: ReviewInformationRoutes

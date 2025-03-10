@@ -6,6 +6,7 @@ const formService = createMockFormService()
 const req = mockRequest({})
 const res = mockResponse({})
 const pdfBuffer = Buffer.from('pdf')
+res.locals.agent = { role: 'PRISON_DM' }
 
 let assessmentPdfRoutes: AssessmentPdfRoutes
 
@@ -21,14 +22,10 @@ afterEach(() => {
 describe('GET', () => {
   it('should render pdf', async () => {
     await assessmentPdfRoutes.GET(req, res)
-    expect(formService.getForm).toHaveBeenCalledWith(
-      req.middleware.clientToken,
-      {},
-      {
-        title: 'Title from UI',
-        message: 'Message from UI',
-      },
-    )
+    expect(formService.getForm).toHaveBeenCalledWith(req.middleware.clientToken, res.locals.agent, {
+      title: 'Title from UI',
+      message: 'Message from UI',
+    })
     expect(res.renderPDF).toHaveBeenCalledWith({ filename: 'document.pdf' }, pdfBuffer)
   })
 })
