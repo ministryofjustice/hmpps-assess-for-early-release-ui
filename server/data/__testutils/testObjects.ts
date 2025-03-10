@@ -759,6 +759,18 @@ const createResidentialChecksTaskView = ({
   answers: {},
 })
 
+const createAgent = ({
+  username = 'user1',
+  fullName = 'User One',
+  role = 'PRISON_CA',
+  onBehalfOf = 'N55LAU',
+} = {}) => ({
+  username,
+  fullName,
+  role,
+  onBehalfOf,
+})
+
 export {
   createCase,
   createOffenderSummary,
@@ -780,4 +792,5 @@ export {
   createResidentialChecksView,
   createResidentialChecksTaskView,
   createComCase,
+  createAgent,
 }

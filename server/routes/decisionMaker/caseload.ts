@@ -8,6 +8,7 @@ export default class CaseloadRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const offenderSummaryList = await this.decisionMakerCaseloadService.getDecisionMakerCaseload(
       req?.middleware?.clientToken,
+      res.locals.agent,
       'MDI',
     )
 

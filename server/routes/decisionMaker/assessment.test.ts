@@ -8,6 +8,7 @@ const assessmentSummary = createAssessmentSummary({})
 const caseloadService = createMockDecisionMakerCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = { role: 'PRISON_DM' }
 
 let assessmentRoutes: AssessmentRoutes
 
@@ -27,6 +28,7 @@ describe('GET', () => {
     await assessmentRoutes.GET(req, res)
     expect(caseloadService.getAssessmentSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/decisionMaker/assessment', {

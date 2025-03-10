@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { convertToTitleCase } from '../../utils/utils'
-import paths from '../paths'
-import { CaseAdminCaseloadService } from '../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import paths from '../../paths'
+import { CaseAdminCaseloadService } from '../../../services'
 
 export default class NoAddressFoundRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -9,6 +9,7 @@ export default class NoAddressFoundRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 

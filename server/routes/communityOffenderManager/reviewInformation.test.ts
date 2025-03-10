@@ -1,4 +1,5 @@
 import {
+  createAgent,
   createAssessmentSummary,
   createCheckRequestsForAssessmentSummary,
   createResidentialChecksView,
@@ -20,6 +21,7 @@ const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const residentialChecksService = createMockResidentialChecksService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent({ role: 'PROBATION_COM' })
 
 describe('Review information and send checks to prison', () => {
   let reviewInformationRoutes: ReviewInformationRoutes
@@ -96,10 +98,12 @@ describe('Review information and send checks to prison', () => {
       ]
       expect(addressService.getCheckRequestsForAssessment).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
       expect(residentialChecksService.getResidentialChecksView).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         checkRequestsForAssessmentSummary[0].requestId,
       )

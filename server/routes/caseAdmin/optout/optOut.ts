@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-import { CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import OptOutReasonType from '../../enumeration/optOutReasonType'
-import { FieldValidationError } from '../../@types/FieldValidationError'
-import OptOutService from '../../services/optOutService'
-import paths from '../paths'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import OptOutReasonType from '../../../enumeration/optOutReasonType'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
+import OptOutService from '../../../services/optOutService'
+import paths from '../../paths'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 
 export default class OptOutRoutes {
   constructor(
@@ -17,6 +16,7 @@ export default class OptOutRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 
@@ -44,19 +44,11 @@ export default class OptOutRoutes {
     })
 
     const { optOutReasonType, otherReason } = req.body
-    const { user } = res.locals
-
-    const agent: Agent = {
-      username: user.username,
-      fullName: user.displayName,
-      role: 'PRISON_CA',
-      onBehalfOf: res.locals.activeCaseLoadId,
-    }
 
     await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, {
       optOutReasonType,
       otherReason,
-      agent,
+      agent: res.locals.agent,
     })
     return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
   }

@@ -1,9 +1,12 @@
-import { createAssessmentSummary, createCheckRequestsForAssessmentSummary } from '../../data/__testutils/testObjects'
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
+import {
+  createAgent,
+  createAssessmentSummary,
+  createCheckRequestsForAssessmentSummary,
+} from '../../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
+import paths from '../../paths'
 import CheckYourAnswersRoutes from './checkYourAnswers'
-import paths from '../paths'
-import { Agent } from '../../@types/assessForEarlyReleaseApiClientTypes'
 
 const assessmentSummary = createAssessmentSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
@@ -19,6 +22,7 @@ const res = mockResponse({
     activeCaseLoadId: 'KWV',
   },
 })
+res.locals.agent = createAgent()
 
 describe('check your answers summary', () => {
   let checkYourAnswersRoutes: CheckYourAnswersRoutes
@@ -40,11 +44,13 @@ describe('check your answers summary', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
 
       expect(addressService.getCheckRequestsForAssessment).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/checkYourAnswers', {
@@ -59,17 +65,10 @@ describe('check your answers summary', () => {
 
     it('should redirect to assessment home page', async () => {
       await checkYourAnswersRoutes.POST(req, res)
-
-      const agent: Agent = {
-        username: res.locals.user.username,
-        fullName: res.locals.user.displayName,
-        role: 'PRISON_CA',
-        onBehalfOf: res.locals.activeCaseLoadId,
-      }
       expect(addressService.submitAssessmentForAddressChecks).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
-        agent,
       )
       expect(res.redirect).toHaveBeenCalledWith(
         paths.prison.assessment.home({
@@ -87,6 +86,7 @@ describe('check your answers summary', () => {
 
       expect(addressService.deleteAddressCheckRequest).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         Number(req.params.checkRequestId),
       )

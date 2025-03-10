@@ -5,6 +5,7 @@ import {
   _AssessmentSummary,
   _OffenderSummary,
   _ResidentialChecksTaskView,
+  Agent,
   SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
@@ -17,6 +18,7 @@ import {
   createSuitabilityCriterionProgress,
   createResidentialChecksView,
   createResidentialChecksTaskView,
+  createAgent,
 } from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
 
@@ -24,10 +26,11 @@ describe('assessForEarlyReleaseApiClient', () => {
   let fakeAferApi: nock.Scope
   let assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient
   const token = 'TOKEN-1'
+  const agent = createAgent() as Agent
 
   beforeEach(() => {
     fakeAferApi = nock(config.apis.assessForEarlyReleaseApi.url)
-    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(token)
+    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(token, agent)
   })
 
   afterEach(() => {

@@ -36,7 +36,7 @@ describe('Opt Out Service', () => {
         agent,
       })
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token)
+      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(assessForEarlyReleaseApiClient.optOut).toHaveBeenCalledWith('A1234AB', {
         otherDescription: undefined,
         reasonType: 'DOES_NOT_WANT_TO_BE_TAGGED',

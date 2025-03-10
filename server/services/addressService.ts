@@ -15,71 +15,84 @@ export default class AddressService {
     private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
   ) {}
 
-  public async findAddressesForPostcode(token: string, postcode: string): Promise<AddressSummary[]> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async findAddressesForPostcode(token: string, agent: Agent, postcode: string): Promise<AddressSummary[]> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.findAddressesForPostcode(postcode)
   }
 
-  public async getAddressForUprn(token: string, uprn: string): Promise<AddressSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async getAddressForUprn(token: string, agent: Agent, uprn: string): Promise<AddressSummary> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.getAddressForUprn(uprn)
   }
 
   public async addStandardAddressCheckRequest(
     token: string,
+    agent: Agent,
     prisonNumber: string,
     addStandardAddressCheckRequest: AddStandardAddressCheckRequest,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(prisonNumber, addStandardAddressCheckRequest)
   }
 
   public async getStandardAddressCheckRequest(
     token: string,
+    agent: Agent,
     prisonNumber: string,
     requestId: number,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.getStandardAddressCheckRequest(prisonNumber, requestId)
   }
 
-  public async deleteAddressCheckRequest(token: string, prisonNumber: string, requestId: number): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async deleteAddressCheckRequest(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    requestId: number,
+  ): Promise<void> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.deleteAddressCheckRequest(prisonNumber, requestId)
   }
 
-  public async getCheckRequestsForAssessment(token: string, prisonNumber: string): Promise<CheckRequestSummary[]> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async getCheckRequestsForAssessment(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<CheckRequestSummary[]> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.getCheckRequestsForAssessment(prisonNumber)
   }
 
-  public async submitAssessmentForAddressChecks(token: string, prisonNumber: string, agent: Agent): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async submitAssessmentForAddressChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber, agent)
   }
 
-  public async submitAssessmentForPreDecisionChecks(token: string, prisonNumber: string, agent: Agent): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+  public async submitAssessmentForPreDecisionChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, agent)
   }
 
   public async addResidents(
     token: string,
+    agent: Agent,
     prisonNumber: string,
     addressCheckRequestId: number,
-    addResidentsRequest: AddResidentRequest[],
+    addResidentRequest: AddResidentRequest[],
   ) {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
-    return assessForEarlyReleaseApiClient.addResidents(prisonNumber, addressCheckRequestId, addResidentsRequest)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
+    return assessForEarlyReleaseApiClient.addResidents(prisonNumber, addressCheckRequestId, addResidentRequest)
   }
 
   public async updateCaseAdminAdditionalInformation(
     token: string,
+    agent: Agent,
     prisonNumber: string,
     addressCheckRequestId: number,
     updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
   ) {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token)
+    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
     return assessForEarlyReleaseApiClient.updateCaseAdminAdditionalInformation(
       prisonNumber,
       addressCheckRequestId,

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { CaseAdminCaseloadService } from '../../services'
-import { convertToTitleCase } from '../../utils/utils'
-import { FieldValidationError } from '../../@types/FieldValidationError'
-import paths from '../paths'
-import { validateRequest } from '../../middleware/setUpValidationMiddleware'
-import AddressService from '../../services/addressService'
-import { AddressSummary } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import { CaseAdminCaseloadService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
+import { FieldValidationError } from '../../../@types/FieldValidationError'
+import paths from '../../paths'
+import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
+import AddressService from '../../../services/addressService'
+import { AddressSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class SelectAddressRoutes {
   constructor(
@@ -16,15 +16,21 @@ export default class SelectAddressRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
 
     const postcode = req.query?.postcode as string
     if (postcode) {
-      const addresses = await this.addressService.findAddressesForPostcode(req?.middleware?.clientToken, postcode)
+      const addresses = await this.addressService.findAddressesForPostcode(
+        req?.middleware?.clientToken,
+        res.locals.agent,
+        postcode,
+      )
       if (addresses.length === 1) {
         const checkRequestSummary = await this.addressService.addStandardAddressCheckRequest(
           req?.middleware?.clientToken,
+          res.locals.agent,
           req.params.prisonNumber,
           {
             preferencePriority: 'FIRST',
@@ -69,6 +75,7 @@ export default class SelectAddressRoutes {
 
     const checkRequestSummary = await this.addressService.addStandardAddressCheckRequest(
       req?.middleware?.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
       {
         preferencePriority: 'FIRST',

@@ -27,6 +27,7 @@ describe('GET', () => {
     await tasklistRoutes.GET(req, res)
     expect(eligibilityAndSuitabilityService.getCriteria).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/tasklist', { criteria: view })

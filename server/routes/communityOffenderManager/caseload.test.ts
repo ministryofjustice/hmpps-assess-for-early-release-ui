@@ -1,4 +1,4 @@
-import { createComCase } from '../../data/__testutils/testObjects'
+import { createAgent, createComCase } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCommunityOffenderManagerCaseloadService } from '../../services/__testutils/mock'
@@ -14,6 +14,7 @@ const res = mockResponse({
     user: {
       deliusStaffIdentifier: 1,
     },
+    agent: createAgent({ role: 'PROBATION_COM' }),
   },
 })
 
@@ -34,6 +35,7 @@ describe('GET', () => {
     await caseloadRoutes.GET(req, res)
     expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
+      res.locals.agent,
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {

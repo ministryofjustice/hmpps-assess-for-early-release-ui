@@ -1,13 +1,14 @@
 import {
   createAddressSummary,
+  createAgent,
   createAssessmentSummary,
   createStandardAddressCheckRequestSummary,
-} from '../../data/__testutils/testObjects'
-import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
-import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
-import { convertToTitleCase } from '../../utils/utils'
-import { ValidationError } from '../../middleware/setUpValidationMiddleware'
-import paths from '../paths'
+} from '../../../data/__testutils/testObjects'
+import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
+import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
+import { convertToTitleCase } from '../../../utils/utils'
+import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
+import paths from '../../paths'
 import SelectAddressRoutes from './selectAddress'
 
 const assessmentSummary = createAssessmentSummary({})
@@ -16,6 +17,7 @@ const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
+res.locals.agent = createAgent()
 
 describe('select address routes', () => {
   let selectAddressRoutes: SelectAddressRoutes
@@ -42,6 +44,7 @@ describe('select address routes', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/selectAddress', {
@@ -90,11 +93,13 @@ describe('select address routes', () => {
 
       expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
       )
 
       expect(addressService.addStandardAddressCheckRequest).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         {
           preferencePriority: 'FIRST',
@@ -124,6 +129,7 @@ describe('select address routes', () => {
 
       expect(addressService.addStandardAddressCheckRequest).toHaveBeenCalledWith(
         req?.middleware?.clientToken,
+        res.locals.agent,
         req.params.prisonNumber,
         {
           preferencePriority: 'FIRST',

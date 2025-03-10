@@ -4,7 +4,7 @@ type ParsingDates<T, Fields> = {
   [K in keyof T]: K extends Fields ? Date : T[K] extends object ? ParsingDates<T[K], Fields> : T[K]
 }
 
-export type _OffenderSummary = components['schemas']['OffenderSummary']
+export type _OffenderSummary = components['schemas']['OffenderSummaryResponse']
 export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate' | 'taskOverdueOn'>
 
 export type _AddressSummary = components['schemas']['AddressSummary']
@@ -68,4 +68,4 @@ export type ResidentialChecksTaskAnswersSummary = components['schemas']['Residen
 export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCaseAdminAdditionInfoRequest']
 export type MapStringAny = components['schemas']['MapStringAny']
 export type ProblemDetail = components['schemas']['ProblemDetail']
-export type Agent = components['schemas']['Agent']
+export type Agent = components['schemas']['AgentDto']

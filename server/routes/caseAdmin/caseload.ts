@@ -38,12 +38,11 @@ export default class CaseloadRoutes {
   GET = async (req: Request, res: Response): Promise<void> => {
     const view = req.query.view || 'active-applications'
     const activeApplicationView = view === 'active-applications'
-
     const cases = await this.caseAdminCaseloadService.getCaseAdminCaseload(
       req?.middleware?.clientToken,
+      res.locals.agent,
       res.locals.activeCaseLoadId,
     )
-
     const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES)
     const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES)
     const withDecisionMakerCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_DECISION_MAKER_STATUSES)

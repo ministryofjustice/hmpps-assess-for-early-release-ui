@@ -6,6 +6,7 @@ import type { Request, Response } from 'express'
 import getFrontendComponents from './getFrontendComponents'
 import logger from '../../logger'
 import type { HmppsComponentsService } from '../services'
+import { createAgent } from '../data/__testutils/testObjects'
 
 jest.mock('../../logger')
 
@@ -44,6 +45,8 @@ describe('getFrontendComponents', () => {
     hmppsComponentsService.getComponents.mockResolvedValue({ footer, header })
 
     const req = createMock<Request>({})
+    const agent = createAgent()
+    res.locals.agent = agent
 
     await getFrontendComponents(hmppsComponentsService)(req, res, next)
 
