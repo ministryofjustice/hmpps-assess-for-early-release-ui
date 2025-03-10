@@ -28,7 +28,7 @@ export default function populateCurrentUser(userService: UserService): RequestHa
       res.locals.agent = {
         username: res.locals.user.username,
         fullName: convertToTitleCase(name),
-        role: 'SUPPORT',
+        role: null,
         onBehalfOf: null,
       }
 

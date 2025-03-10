@@ -8,14 +8,14 @@ import HmppsComponentsClient from './hmppsComponentsClient'
 import AssessForEarlyReleaseApiClient from './assessForEarlyReleaseApiClient'
 import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
-type RestClientBuilder<T> = (token: string, agent: Agent) => T
+type RestClientBuilder<T> = (token: string, agent?: Agent) => T
 
 export const dataAccess = {
   hmppsAuthClient: new HmppsAuthClient(
     config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
   ),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
-  assessForEarlyReleaseApiClientBuilder: (token: string, agent: Agent) =>
+  assessForEarlyReleaseApiClientBuilder: (token: string, agent?: Agent) =>
     new AssessForEarlyReleaseApiClient(token, agent),
 }
 
