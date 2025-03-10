@@ -28,6 +28,8 @@ export default function populateCurrentUser(userService: UserService): RequestHa
       res.locals.agent = {
         username: res.locals.user.username,
         fullName: convertToTitleCase(name),
+        role: 'PRISON_CA',
+        onBehalfOf: null,
       }
 
       if (res.locals.user.authSource === 'nomis') {
