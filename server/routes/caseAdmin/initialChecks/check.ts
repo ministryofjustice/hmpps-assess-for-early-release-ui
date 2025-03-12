@@ -17,7 +17,11 @@ export default class CheckRoutes {
       res.locals.agent,
     )
 
-    res.render('pages/caseAdmin/initialChecks/check', { assessmentSummary, type, criterion })
+    res.render('pages/caseAdmin/initialChecks/check', {
+      assessmentSummary,
+      type,
+      criterion,
+    })
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {

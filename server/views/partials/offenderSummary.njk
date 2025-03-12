@@ -1,6 +1,8 @@
 {% macro offenderSummary(prisonNumber, hdced, dateOfBirth, name) %}
-    <br>
-    <span class="govuk-caption-m">Prison nr: {{ prisonNumber }} | HDCED: {{ hdced | formatDate('dd MMM yyyy') }} | Date of birth: {{ dateOfBirth | formatDate('dd MMM yyyyy') }}</span>
-    <h1 class="govuk-heading-m">{{ name }}</h1>
-    <hr class="gov-section-break gov-section-break-visible">
+    <div class="govuk-!-margin-bottom-6">
+        <br>
+        <span class="govuk-caption-m">Prison nr: {{ prisonNumber }} | HDCED: {{ hdced | formatDate('dd MMM yyyy') }} | Date of birth: {{ dateOfBirth | formatDate('dd MMM yyyyy') }}</span>
+        <h1 class="govuk-heading-m">{{ name }}</h1>
+        <hr class="gov-section-break gov-section-break-visible">
+    </div>
 {% endmacro %}

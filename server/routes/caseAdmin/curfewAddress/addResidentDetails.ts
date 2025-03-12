@@ -41,10 +41,7 @@ export default class AddResidentDetailsRoutes {
     )
 
     res.render('pages/curfewAddress/addResidentDetails', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
       address: {
         line1: convertToTitleCase(requestSummary.address.firstLine),
         town: convertToTitleCase(requestSummary.address.town),

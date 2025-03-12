@@ -9,15 +9,18 @@
 {% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
 
 {% block content %}
-    <div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             {{ personalDetails(assessmentSummary) }}
         </div>
-        <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l">Assess eligibility and suitability</h1>
-        </div>
-        <div class="govuk-grid-column-full">
-
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+            <h2 class="govuk-heading-l govuk-!-margin-top-4">Assess eligibility and suitability</h2>
+            <div class="govuk-inset-text">
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Assessment in progress</h2>
+                <p class="govuk-body">You have completed {{ completedChecks }} of {{ totalChecks }} checks</p>
+            </div>
             {% include 'partials/initialChecks/outcomeBanner.njk' %}
             {% set eligiblityChecks =  [] %}
             {% for check in criteria.eligibility %}
@@ -43,7 +46,7 @@
             ), eligiblityChecks) %}
             {% endfor %}
 
-            <h2>Eligibility checks</h2>
+            <h2 class="govuk-!-margin-top-8">Eligibility checks</h2>
             {{ govukTaskList({
                 idPrefix: "eligibility-check",
                 items: eligiblityChecks,
@@ -52,13 +55,13 @@
                 }
             }) }}
 
-            {% set suitabilityBlocked = criteria.eligibilityStatus !== 'ELIGIBLE' and suitabilityStatus === 'NOT_STARTED' %}   
+            {% set suitabilityBlocked = criteria.eligibilityStatus !== 'ELIGIBLE' and criteria.suitabilityStatus === 'NOT_STARTED' %}
             {% set suitabilityChecks =  [] %}
             {% for check in criteria.suitability %}
             {% set suitabilityChecks = (suitabilityChecks.push(
                 {
                     title: {
-                    text: check.taskName
+                        text: check.taskName
                     },
                     href: undefined if suitabilityBlocked else paths.prison.assessment.initialChecks.check | toPath({
                         prisonNumber:assessmentSummary.prisonNumber, 

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../../services'
-import { convertToTitleCase } from '../../../utils/utils'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
 import paths from '../../paths'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
@@ -20,10 +19,7 @@ export default class FindAddressRoutes {
     )
 
     res.render('pages/curfewAddress/findAddress', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
     })
   }
 

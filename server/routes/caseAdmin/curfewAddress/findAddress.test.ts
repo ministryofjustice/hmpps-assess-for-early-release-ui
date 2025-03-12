@@ -2,7 +2,6 @@ import { createAddressSummary, createAssessmentSummary } from '../../../data/__t
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import FindAddressRoutes from './findAddress'
-import { convertToTitleCase } from '../../../utils/utils'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 
@@ -37,10 +36,7 @@ describe('find address routes', () => {
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/findAddress', {
-        assessmentSummary: {
-          ...assessmentSummary,
-          name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-        },
+        assessmentSummary,
       })
     })
   })

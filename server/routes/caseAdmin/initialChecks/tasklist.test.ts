@@ -30,6 +30,10 @@ describe('GET', () => {
       res.locals.agent,
       req.params.prisonNumber,
     )
-    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/tasklist', { criteria: view })
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/tasklist', {
+      criteria: view,
+      totalChecks: 0,
+      completedChecks: 0,
+    })
   })
 })

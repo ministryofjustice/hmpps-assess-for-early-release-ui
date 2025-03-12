@@ -1,6 +1,5 @@
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService, createMockAddressService } from '../../../services/__testutils/mock'
-import { convertToTitleCase } from '../../../utils/utils'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
@@ -35,10 +34,7 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/moreInfoRequiredCheck', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
     })
   })
 })

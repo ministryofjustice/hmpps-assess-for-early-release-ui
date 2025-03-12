@@ -15,9 +15,9 @@
     <div class="govuk-grid-column-two-thirds">
         <form id="addOtherResidentForm" method="POST">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-            <input type="hidden" name="prisonerName" value="{{ assessmentSummary.name }}">
+            <input type="hidden" name="prisonerName" value="{{ assessmentSummary | toFullName }}">
             {% include 'partials/errorSummary.njk' %}
-            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary.name) }}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
             <h1 class="govuk-heading-l govuk-!-margin-top-6">
                 Add details of residents
             </h1>
@@ -60,7 +60,7 @@
                     items: [
                             {
                                 value: "true",
-                                text: assessmentSummary.name + " is the main occupier",
+                                text: assessmentSummary | toFullName + " is the main occupier",
                                 checked: submittedForm.isOffender | default(mainResident.isOffender)
                             }
                     ]
@@ -157,6 +157,7 @@
                     }
                 }) }}
             </div>
+        </form>
     </div>
 </div>
 {% endblock %}

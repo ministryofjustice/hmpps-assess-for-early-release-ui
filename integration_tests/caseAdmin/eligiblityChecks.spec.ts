@@ -16,7 +16,8 @@ test.describe('Eligibility checks', () => {
   test.beforeEach(async () => {
     await resetStubs()
   })
-  test('Offender can complete initial checks', async ({ page }) => {
+  test('Case admin can complete initial checks', async ({ page }) => {
+    const nextQuestionLinkText = 'Save and go to next question'
     const prisonNumber = 'A1234AE'
 
     const anAssessmentSummary = assessmentSummary(prisonNumber)
@@ -38,22 +39,40 @@ test.describe('Eligibility checks', () => {
       eligibilityCriterion1,
       eligibilityCriterion2,
     )
+    await expect(page.locator('id=suitability-check-1-status')).toHaveText('Cannot start yet')
     await page.getByRole('link', { name: 'Answer the first question' }).click()
 
-    // answer question 1 for eligibilty criterion 1 and check validation
+    // answer question 1 for eligibility criterion 1 and check validation
     await expect(page.getByRole('heading', { name: 'Please answer question 1' })).toBeVisible()
-    await page.getByRole('button', { name: 'Continue' }).click()
+    await page.getByText(nextQuestionLinkText).click()
     await expect(page.getByRole('heading', { name: 'There is a problem' })).toBeVisible()
     await page.getByRole('link', { name: 'Please answer question 1' }).click()
     await expect(page.locator('*:focus')).toHaveValue('true')
     await page.getByLabel('Yes').click()
     await assessForEarlyRelease.stubGetEligibilityCriterionView(anAssessmentSummary, eligibilityCriterion2, undefined)
-    await page.getByRole('button', { name: 'Continue' }).click()
+
+    await assessForEarlyRelease.stubGetEligibilityAndSuitability(
+      anAssessmentSummary,
+      [
+        {
+          ...eligibilityCriterion1,
+          status: 'ELIGIBLE',
+        },
+        {
+          ...eligibilityCriterion2,
+          status: 'ELIGIBLE',
+        },
+      ],
+      [suitabilityCriterion1],
+      'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS',
+      'ELIGIBLE',
+    )
+    await page.getByText(nextQuestionLinkText).click()
 
     // answer 2 questions for eligibility criterion 2
     await page.getByRole('group', { name: 'Please answer question 2' }).getByLabel('Yes').click()
     await page.getByRole('group', { name: 'Please answer question 3' }).getByLabel('Yes').click()
-    await page.getByRole('button', { name: 'Continue' }).click()
+    await page.getByText(nextQuestionLinkText).click()
 
     await expect(page.getByRole('heading', { name: 'Assess eligibility and suitability' })).toBeVisible()
 
@@ -63,7 +82,7 @@ test.describe('Eligibility checks', () => {
     // answer 1 question for suitability criterion 1
     await expect(page.getByRole('heading', { name: 'Please answer question 4' })).toBeVisible()
     await page.getByRole('group', { name: 'Please answer question 4' }).getByLabel('Yes').click()
-    await page.getByRole('button', { name: 'Continue' }).click()
+    await page.getByText(nextQuestionLinkText).click()
 
     await expect(page.getByRole('heading', { name: 'Assess eligibility and suitability' })).toBeVisible()
 
@@ -117,6 +136,7 @@ test.describe('Eligibility checks', () => {
       [suitabilityCriterion1],
       'INELIGIBLE',
       'INELIGIBLE',
+      'INELIGIBLE',
       ['question-1'],
     )
 
@@ -125,7 +145,7 @@ test.describe('Eligibility checks', () => {
     await expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
     await expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
     await expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
-    await expect(page.locator('#suitability-check-1-status')).toContainText('Incomplete')
+    await expect(page.locator('#suitability-check-1-status')).toContainText('Cannot start yet')
     await expect(page.getByTestId('failureType')).toContainText('Ineligible')
     await expect(page.getByTestId('failureReasons')).toContainText('question-1')
     await expect(page.getByTestId('eligibility-checks')).toContainText(

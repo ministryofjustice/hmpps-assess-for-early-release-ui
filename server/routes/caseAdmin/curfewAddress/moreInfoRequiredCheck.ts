@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { AddressService, CaseAdminCaseloadService } from '../../../services'
-import { convertToTitleCase } from '../../../utils/utils'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import { UpdateCaseAdminAdditionInfoRequest } from '../../../@types/assessForEarlyReleaseApiClientTypes'
@@ -19,10 +18,7 @@ export default class MoreInfoRequiredCheckRoutes {
       req.params.prisonNumber,
     )
     res.render('pages/curfewAddress/moreInfoRequiredCheck', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
     })
   }
 

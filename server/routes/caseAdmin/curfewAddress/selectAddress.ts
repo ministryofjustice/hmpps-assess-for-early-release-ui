@@ -45,10 +45,7 @@ export default class SelectAddressRoutes {
         )
       }
       return res.render('pages/curfewAddress/selectAddress', {
-        assessmentSummary: {
-          ...assessmentSummary,
-          name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-        },
+        assessmentSummary,
         foundAddresses: this.toAddressView(addresses),
         findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
           prisonNumber: req.params.prisonNumber,

@@ -12,7 +12,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             {% include 'partials/errorSummary.njk' %}
-            {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment.name) }}
+            {{ offenderSummary(assessment.prisonNumber, assessment.hdced, assessment.dateOfBirth, assessment | toFullName) }}
             <h1 class="govuk-heading-l govuk-!-margin-top-6">
                 Enter curfew address or CAS area
             </h1>

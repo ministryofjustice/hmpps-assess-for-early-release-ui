@@ -90,7 +90,8 @@ const stubGetEligibilityAndSuitability = (
   eligibility: EligibilityCriterionProgress[],
   suitability: SuitabilityCriterionProgress[],
   overallStatus = 'NOT_STARTED',
-  failureType = null,
+  eligibilityStatus = 'NOT_STARTED',
+  failureType: 'INELIGIBLE' | 'UNSUITABLE' = null,
   failedCheckReasons = [],
 ) =>
   stubFor({
@@ -108,7 +109,7 @@ const stubGetEligibilityAndSuitability = (
         checksPassed: false,
         complete: false,
         overallStatus,
-        eligibilityStatus: 'NOT_STARTED',
+        eligibilityStatus,
         suitabilityStatus: 'NOT_STARTED',
         eligibility,
         suitability,

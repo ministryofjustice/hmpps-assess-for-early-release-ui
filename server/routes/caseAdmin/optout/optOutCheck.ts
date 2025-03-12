@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../../services'
-import { convertToTitleCase } from '../../../utils/utils'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 
@@ -15,10 +14,7 @@ export default class OptOutCheckRoutes {
     )
 
     res.render('pages/optOut/optOutCheck', {
-      assessment: {
-        ...assessment,
-        name: convertToTitleCase(`${assessment.forename} ${assessment.surname}`.trim()),
-      },
+      assessment,
     })
   }
 
