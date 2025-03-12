@@ -5,7 +5,6 @@ import {
 } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
-import { convertToTitleCase } from '../../../utils/utils'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import AddResidentDetailsRoutes, { OtherResident } from './addResidentDetails'
@@ -52,10 +51,7 @@ describe('add resident details routes', () => {
         Number(req.params.checkRequestId),
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/addResidentDetails', {
-        assessmentSummary: {
-          ...assessmentSummary,
-          name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-        },
+        assessmentSummary,
         address: {
           line1: '99, Hartland Road',
           postcode: 'RG2 8AF',

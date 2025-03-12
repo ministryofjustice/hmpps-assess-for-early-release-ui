@@ -6,7 +6,6 @@ import {
 } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
-import { convertToTitleCase } from '../../../utils/utils'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import SelectAddressRoutes from './selectAddress'
@@ -48,10 +47,7 @@ describe('select address routes', () => {
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/selectAddress', {
-        assessmentSummary: {
-          ...assessmentSummary,
-          name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-        },
+        assessmentSummary,
         foundAddresses: [
           {
             uprn: '310030567',

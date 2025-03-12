@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { convertToTitleCase } from '../../../utils/utils'
 import paths from '../../paths'
 import { CaseAdminCaseloadService } from '../../../services'
 
@@ -14,10 +13,7 @@ export default class NoAddressFoundRoutes {
     )
 
     res.render('pages/curfewAddress/noAddressFound', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
       postcode: req.params.postcode,
       findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
         prisonNumber: req.params.prisonNumber,

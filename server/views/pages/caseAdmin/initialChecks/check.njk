@@ -1,36 +1,40 @@
 {% extends "layout.njk" %}
-{% from "partials/assessment/personalDetails.njk" import personalDetails %}
-{% from "partials/initialChecks/question.njk" import question %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/initialChecks/question.njk" import question %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
 
 {% set pageTitle = criterion.questions[0].text + " - " + applicationName %}
-{% set prisonerName = [assessmentSummary.forename, assessmentSummary.surname] | join(' ') %}
 
 {% block content %}
-    <div class="govuk-grid-row govuk-body">
-        {% include 'partials/errorSummary.njk' %}
-        <div class="govuk-grid-column-full">
-            {{ personalDetails(assessmentSummary) }}
-        </div>
+    {% include 'partials/errorSummary.njk' %}
+    <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form method="POST">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-                {% for criterionQuestion in criterion.questions %}
-                    {{ question(criterionQuestion, validationErrors, submittedForm) }}
-                {% endfor %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
+            <form method="POST" id="task-form">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    {% for criterionQuestion in criterion.questions %}
+                        {{ question(criterionQuestion, validationErrors, submittedForm) }}
+                    {% endfor %}
 
-                {{ govukButton({
-                    text: "Continue",
-                    preventDoubleClick: true,
-                    classes: 'govuk-!-margin-right-5'
-                }) }}
-                {{ govukButton({
-                    text: "Cancel",
-                    href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
-                    classes: "govuk-button--secondary"
-                }) }}
-            </form>
+                    <div class="govuk-button-group">
+                        {{ govukButton({
+                            text: "Save",
+                            href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
+                            classes: 'govuk-!-margin-right-5'
+                        }) }}
+                        {{ govukButton({
+                            text: "Cancel",
+                            href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
+                            classes: "govuk-button--secondary"
+                        }) }}
+                        <a id="next-question-link" class="govuk-link govuk-link--no-visited-state" href="#">Save and go to next question</a>
+                    </div>
+                </form>
         </div>
     </div>
+{% endblock %}
+
+{% block pageScripts %}
+    <script src="/assets/js/task.js"></script>
 {% endblock %}

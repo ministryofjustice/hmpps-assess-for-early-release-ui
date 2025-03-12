@@ -1,4 +1,3 @@
-import { convertToTitleCase } from '../../../utils/utils'
 import paths from '../../paths'
 
 import { createAgent, createAssessmentSummary } from '../../../data/__testutils/testObjects'
@@ -36,10 +35,7 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/noAddressFound', {
-      assessmentSummary: {
-        ...assessmentSummary,
-        name: convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
-      },
+      assessmentSummary,
       postcode: req.params.postcode,
       findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
         prisonNumber: req.params.prisonNumber,

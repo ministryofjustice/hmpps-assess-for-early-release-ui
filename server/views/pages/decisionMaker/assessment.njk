@@ -21,7 +21,7 @@
                     }
                 }) }}
             {% endif %}
-            <h1 class="govuk-heading-l">HDC application for {{ assessmentSummary.name }}</h1>
+            <h1 class="govuk-heading-l">HDC application for {{ assessmentSummary | toFullName }}</h1>
         </div>
         <div class="govuk-grid-column-one-half">
             {{ personalDetails(assessmentSummary) }}

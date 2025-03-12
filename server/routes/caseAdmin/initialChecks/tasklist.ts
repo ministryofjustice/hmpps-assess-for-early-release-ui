@@ -10,6 +10,19 @@ export default class TasklistRoutes {
       res.locals.agent,
       req.params.prisonNumber,
     )
-    res.render('pages/caseAdmin/initialChecks/tasklist', { criteria })
+
+    const totalChecks = criteria.eligibility.length + criteria.suitability.length
+    const completedEligibilityChecks = criteria.eligibility.filter(
+      criterion => criterion.status !== 'NOT_STARTED' && criterion.status !== 'IN_PROGRESS',
+    ).length
+    const completedSuitabilityChecks = criteria.suitability.filter(
+      criterion => criterion.status !== 'NOT_STARTED' && criterion.status !== 'IN_PROGRESS',
+    ).length
+
+    res.render('pages/caseAdmin/initialChecks/tasklist', {
+      criteria,
+      totalChecks,
+      completedChecks: completedEligibilityChecks + completedSuitabilityChecks,
+    })
   }
 }

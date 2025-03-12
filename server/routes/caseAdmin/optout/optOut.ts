@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../../services'
-import { convertToTitleCase } from '../../../utils/utils'
 import OptOutReasonType from '../../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
 import OptOutService from '../../../services/optOutService'
@@ -21,10 +20,7 @@ export default class OptOutRoutes {
     )
 
     res.render('pages/optOut/optOut', {
-      assessment: {
-        ...assessment,
-        name: convertToTitleCase(`${assessment.forename} ${assessment.surname}`.trim()),
-      },
+      assessment,
     })
   }
 
