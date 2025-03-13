@@ -24,10 +24,10 @@ describe('Pdf Service', () => {
     it('get pdf', async () => {
       assessForEarlyReleaseApiClient.getForm.mockResolvedValue(Buffer.from('pdf'))
 
-      await formService.getForm(token, agent, { title: 'title', message: 'message' })
+      await formService.getForm(token, agent, 'PN12345', 'OFFENDER_ELIGIBLE_FORM')
 
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
-      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith({ title: 'title', message: 'message' })
+      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith('PN12345', 'OFFENDER_ELIGIBLE_FORM')
     })
   })
 })

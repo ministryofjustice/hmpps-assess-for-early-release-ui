@@ -3,8 +3,8 @@ import { path } from 'static-path'
 const supportHome = path('/support')
 
 const showPaths = supportHome.path('/paths')
-const forms = path('/forms')
-const pdf = forms.path('pdf')
+const offender = path('/offender/:prisonNumber')
+const document = offender.path('document/:documentSubjectType')
 
 const prison = path('/omu')
 const prisonCaseload = prison.path('case-list')
@@ -84,8 +84,8 @@ const paths = {
       home: decisionMakerAssessmentHome,
     },
   },
-  forms: {
-    pdf,
+  offender: {
+    document,
   },
 }
 

@@ -11,10 +11,10 @@ export default function Index({ formService }: Services): Router {
   const router = Router()
 
   const get = <T extends string>(routerPath: Path<T>, handler: RequestHandler) =>
-    router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.DECISION_MAKER]), asyncMiddleware(handler))
+    router.get(routerPath.pattern, roleCheckMiddleware([AuthRole.CASE_ADMIN]), asyncMiddleware(handler))
 
   const assessmentFormRoutes = new AssessmentFormRoutes(formService)
-  get(paths.forms.pdf, assessmentFormRoutes.GET)
+  get(paths.offender.document, assessmentFormRoutes.GET)
 
   return router
 }

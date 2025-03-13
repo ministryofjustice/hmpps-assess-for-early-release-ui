@@ -96,3 +96,15 @@ Or to run a subset of tests,
   npx playwright test -g 'User name visible in header'
 ```
 
+## To generate latest API/Swagger objects
+
+### From local hmpps-assess-for-early-release-api
+```zsh
+  ./generate-api-types.sh --local
+```
+
+### From dev hmpps-assess-for-early-release-api
+```zsh
+  ./generate-api-types.sh
+```
+
