@@ -13,15 +13,17 @@
             {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
             <form method="POST" id="task-form">
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                    <input id="saveType" type="hidden" name="saveType" value="save">
                     {% for criterionQuestion in criterion.questions %}
                         {{ question(criterionQuestion, validationErrors, submittedForm) }}
                     {% endfor %}
 
                     <div class="govuk-button-group">
                         {{ govukButton({
+                            name: "save",
+                            value: "save",
                             text: "Save",
-                            href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
-                            classes: 'govuk-!-margin-right-5'
+                            classes: "govuk-!-margin-right-5"
                         }) }}
                         {{ govukButton({
                             text: "Cancel",

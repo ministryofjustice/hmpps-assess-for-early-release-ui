@@ -64,10 +64,10 @@ describe('POST', () => {
     questions: [{ name: 'question1', text: 'answer the question?', answer: null, hint: null }],
   })
   const eligibilityCheck2 = createEligibilityCriterionProgress({ code: 'code-2' })
-  const validPayload = { [question.name]: 'true' }
+  const validPayload = { [question.name]: 'true', saveType: 'nextQuestion' }
   const invalidPayload = { [question.name]: '' }
 
-  it('should submit valid answer', async () => {
+  it('should submit valid answer and continue to next question', async () => {
     eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
       assessmentSummary,
       criterion: eligibilityCheck1,
@@ -95,6 +95,36 @@ describe('POST', () => {
         type: 'eligibility-check',
         checkCode: 'code-2',
       }),
+    )
+  })
+
+  it('should submit valid answer and redirect to task list when user selects save', async () => {
+    eligibilityAndSuitabilityService.getCriterion.mockResolvedValue({
+      assessmentSummary,
+      criterion: eligibilityCheck1,
+      nextCriterion: eligibilityCheck2,
+    })
+
+    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.type = 'eligibility-check'
+    req.params.checkCode = eligibilityCheck1.code
+    req.body = {
+      ...validPayload,
+      saveType: 'save',
+    }
+
+    await checkRoutes.POST(req, res)
+
+    expect(eligibilityAndSuitabilityService.getCriterion).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      req.params.prisonNumber,
+      req.params.type,
+      req.params.checkCode,
+      res.locals.agent,
+    )
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      paths.prison.assessment.initialChecks.tasklist({ prisonNumber: req.params.prisonNumber }),
     )
   })
 

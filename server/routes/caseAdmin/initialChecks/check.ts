@@ -51,9 +51,12 @@ export default class CheckRoutes {
       agent: res.locals.agent,
     })
 
-    const nextLocation = nextCriterion
-      ? paths.prison.assessment.initialChecks.check({ prisonNumber, type, checkCode: nextCriterion?.code })
-      : paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
+    let nextLocation = paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
+    if (req.body.saveType === 'nextQuestion') {
+      nextLocation = nextCriterion
+        ? paths.prison.assessment.initialChecks.check({ prisonNumber, type, checkCode: nextCriterion?.code })
+        : paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
+    }
 
     res.redirect(nextLocation)
   }
