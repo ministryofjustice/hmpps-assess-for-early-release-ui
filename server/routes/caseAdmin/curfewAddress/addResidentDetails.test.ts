@@ -1,6 +1,6 @@
 import {
   createAgent,
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createStandardAddressCheckRequestSummary,
 } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
@@ -10,7 +10,7 @@ import paths from '../../paths'
 import AddResidentDetailsRoutes, { OtherResident } from './addResidentDetails'
 import { _ResidentSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const addressCheckRequestSummary = createStandardAddressCheckRequestSummary({})
 
 const addressService = createMockAddressService()
@@ -25,7 +25,7 @@ describe('add resident details routes', () => {
   beforeEach(() => {
     addResidentDetailsRoutes = new AddResidentDetailsRoutes(addressService, caseAdminCaseloadService)
     addressService.getStandardAddressCheckRequest.mockResolvedValue(addressCheckRequestSummary)
-    caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+    caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   })
 
   afterEach(() => {
@@ -34,11 +34,11 @@ describe('add resident details routes', () => {
 
   describe('GET', () => {
     it('should render add resident details ', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.params.checkRequestId = '693'
       await addResidentDetailsRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
@@ -51,7 +51,7 @@ describe('add resident details routes', () => {
         Number(req.params.checkRequestId),
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/addResidentDetails', {
-        assessmentSummary,
+        assessmentSummary: assessmentOverviewSummary,
         address: {
           line1: '99, Hartland Road',
           postcode: 'RG2 8AF',
@@ -65,13 +65,13 @@ describe('add resident details routes', () => {
 
   describe('POST', () => {
     it('validates POST request contains resident details', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.params.checkRequestId = '693'
       req.body.isOffender = false
       await expect(addResidentDetailsRoutes.POST(req, res)).rejects.toThrow(ValidationError)
     })
     it('add a resident for a valid POST request', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.params.checkRequestId = '693'
       req.body.forename = 'Corina'
       req.body.surname = 'Ridgeway'
@@ -126,7 +126,7 @@ describe('add resident details routes', () => {
     })
 
     it('add a main resident as offender for a valid POST request', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.params.checkRequestId = '693'
       req.body.residentId = 1
       req.body.isOffender = true

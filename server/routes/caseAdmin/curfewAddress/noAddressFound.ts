@@ -6,7 +6,7 @@ export default class NoAddressFoundRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
+    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentOverviewSummary(
       req?.middleware?.clientToken,
       res.locals.agent,
       req.params.prisonNumber,

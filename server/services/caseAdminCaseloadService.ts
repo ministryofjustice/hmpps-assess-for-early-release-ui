@@ -1,4 +1,4 @@
-import type { Agent, AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import type { Agent, AssessmentOverviewSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
@@ -43,8 +43,12 @@ export default class CaseAdminCaseloadService {
     }))
   }
 
-  public async getAssessmentSummary(token: string, agent: Agent, prisonNumber: string): Promise<AssessmentSummary> {
+  public async getAssessmentOverviewSummary(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<AssessmentOverviewSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
+    return assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
   }
 }

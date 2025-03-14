@@ -2,14 +2,14 @@ import nock from 'nock'
 import config from '../config'
 import { AssessForEarlyReleaseApiClient } from '.'
 import {
-  _AssessmentSummary,
+  _AssessmentOverviewSummary,
   _OffenderSummary,
   _ResidentialChecksTaskView,
   Agent,
   SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createOffenderSummary,
   createEligibilityAndSuitabilityCaseView,
   createEligibilityCriterionView,
@@ -63,15 +63,16 @@ describe('assessForEarlyReleaseApiClient', () => {
   })
 
   describe('getAssessmentSummary', () => {
-    const assessmentSummary = createAssessmentSummary({})
+    const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
     it('should return data from api', async () => {
-      const { prisonNumber } = assessmentSummary
-      const apiResponse: _AssessmentSummary = {
-        ...assessmentSummary,
-        dateOfBirth: toIsoDate(assessmentSummary.dateOfBirth),
-        hdced: toIsoDate(assessmentSummary.hdced),
-        crd: toIsoDate(assessmentSummary.crd),
+      const { prisonNumber } = assessmentOverviewSummary
+      const apiResponse: _AssessmentOverviewSummary = {
+        ...assessmentOverviewSummary,
+        dateOfBirth: toIsoDate(assessmentOverviewSummary.dateOfBirth),
+        hdced: toIsoDate(assessmentOverviewSummary.hdced),
+        crd: toIsoDate(assessmentOverviewSummary.crd),
+        toDoEligibilityAndSuitabilityBy: toIsoDate(assessmentOverviewSummary.toDoEligibilityAndSuitabilityBy),
       }
 
       fakeAferApi
@@ -79,17 +80,18 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
-      expect(output).toEqual(assessmentSummary)
+      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
+      expect(output).toEqual(assessmentOverviewSummary)
     })
 
     it('should return crd as not found if crd is empty', async () => {
-      const { prisonNumber } = assessmentSummary
-      const apiResponse: _AssessmentSummary = {
-        ...assessmentSummary,
-        dateOfBirth: toIsoDate(assessmentSummary.dateOfBirth),
-        hdced: toIsoDate(assessmentSummary.hdced),
+      const { prisonNumber } = assessmentOverviewSummary
+      const apiResponse: _AssessmentOverviewSummary = {
+        ...assessmentOverviewSummary,
+        dateOfBirth: toIsoDate(assessmentOverviewSummary.dateOfBirth),
+        hdced: toIsoDate(assessmentOverviewSummary.hdced),
         crd: null,
+        toDoEligibilityAndSuitabilityBy: toIsoDate(assessmentOverviewSummary.toDoEligibilityAndSuitabilityBy),
       }
 
       fakeAferApi
@@ -97,8 +99,8 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
-      expect(output).toEqual({ ...assessmentSummary, crd: null })
+      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
+      expect(output).toEqual({ ...assessmentOverviewSummary, crd: null })
     })
   })
 
@@ -342,7 +344,7 @@ describe('assessForEarlyReleaseApiClient', () => {
   })
 
   describe('Submit assessment', () => {
-    const { prisonNumber } = createAssessmentSummary({})
+    const { prisonNumber } = createAssessmentOverviewSummary({})
 
     it('submit assessment for pre-decision checks', async () => {
       fakeAferApi

@@ -4,14 +4,14 @@ import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import {
   createAgent,
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createCheckRequestsForAssessmentSummary,
 } from '../../../data/__testutils/testObjects'
 import RequestMoreAddressChecksRoutes from './requestMoreAddressChecks'
 
 let requestMoreAddressChecksRoutes: RequestMoreAddressChecksRoutes
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
@@ -22,7 +22,7 @@ res.locals.agent = createAgent()
 
 beforeEach(() => {
   requestMoreAddressChecksRoutes = new RequestMoreAddressChecksRoutes(addressService, caseAdminCaseloadService)
-  caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+  caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   addressService.getCheckRequestsForAssessment.mockResolvedValue(addressSummary)
 })
 
@@ -32,9 +32,9 @@ afterEach(() => {
 
 describe('GET', () => {
   it('should render more address checks page', async () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
     await requestMoreAddressChecksRoutes.GET(req, res)
-    expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+    expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
@@ -45,14 +45,14 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/requestMoreAddressChecks', {
-      assessmentSummary,
+      assessmentSummary: assessmentOverviewSummary,
       addressSummary,
     })
   })
 })
 
 describe('POST', () => {
-  req.params.prisonNumber = assessmentSummary.prisonNumber
+  req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
   req.params.checkRequestId = '6'
   it('validates POST request contains moreInfoRequiredCheck', async () => {
     await expect(requestMoreAddressChecksRoutes.POST(req, res)).rejects.toThrow(ValidationError)
@@ -82,7 +82,7 @@ describe('POST', () => {
 })
 
 describe('DELETE', () => {
-  req.params.prisonNumber = assessmentSummary.prisonNumber
+  req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
   req.params.checkRequestId = '6'
   it('should call address service to delete selected assessment address', async () => {
     await requestMoreAddressChecksRoutes.DELETE(req, res)

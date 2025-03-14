@@ -7,7 +7,7 @@ export default class OptOutCheckRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const assessment = await this.caseAdminCaseloadService.getAssessmentSummary(
+    const assessment = await this.caseAdminCaseloadService.getAssessmentOverviewSummary(
       req?.middleware?.clientToken,
       res.locals.agent,
       req.params.prisonNumber,

@@ -1,6 +1,6 @@
 import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
-import { createAgent, createAssessmentSummary, createOffenderSummary } from '../data/__testutils/testObjects'
+import { createAgent, createAssessmentOverviewSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 
 const AssessForEarlyReleaseApiClientBuilder = jest.fn()
@@ -40,19 +40,19 @@ describe('Decision maker Caseload Service', () => {
   })
 
   describe('Assessment Summary', () => {
-    const assessmentSummary = createAssessmentSummary({})
+    const assessmentOveriewSummary = createAssessmentOverviewSummary({})
 
     it('get assessment summary', async () => {
-      assessForEarlyReleaseApiClient.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+      assessForEarlyReleaseApiClient.getAssessmentOverviewSummary.mockResolvedValue(assessmentOveriewSummary)
 
-      const result = await decisionMakerCaseloadService.getAssessmentSummary(
+      const result = await decisionMakerCaseloadService.getAssessmentOverviewSummary(
         token,
         agent,
-        assessmentSummary.prisonNumber,
+        assessmentOveriewSummary.prisonNumber,
       )
 
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
-      expect(result).toEqual(assessmentSummary)
+      expect(result).toEqual(assessmentOveriewSummary)
     })
   })
 })

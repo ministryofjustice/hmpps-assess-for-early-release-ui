@@ -26,8 +26,12 @@ export default class DecisionMakerCaseloadService {
     }))
   }
 
-  public async getAssessmentSummary(token: string, agent: Agent, prisonNumber: string): Promise<AssessmentSummary> {
+  public async getAssessmentOverviewSummary(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<AssessmentSummary> {
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getAssessmentSummary(prisonNumber)
+    return assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
   }
 }

@@ -1,13 +1,13 @@
 import {
   createAgent,
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createCheckRequestsForAssessmentSummary,
 } from '../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
 
 const addressService = createMockAddressService()
@@ -21,7 +21,7 @@ describe('check your answers summary', () => {
 
   beforeEach(() => {
     checkCurfewAddressesRoutes = new CheckCurfewAddressesRoutes(addressService, caseAdminCaseloadService)
-    caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+    caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
     addressService.getCheckRequestsForAssessment.mockResolvedValue([addressSummary])
   })
 
@@ -31,10 +31,10 @@ describe('check your answers summary', () => {
 
   describe('GET', () => {
     it('should render the check curfew addresses page', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       await checkCurfewAddressesRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
@@ -47,7 +47,7 @@ describe('check your answers summary', () => {
       )
 
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/checkCurfewAddresses', {
-        assessmentSummary,
+        assessmentSummary: assessmentOverviewSummary,
         prisonNumber: req.params.prisonNumber,
         checkRequestsForAssessmentSummary: [addressSummary],
       })

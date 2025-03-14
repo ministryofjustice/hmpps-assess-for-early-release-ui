@@ -1,7 +1,7 @@
 import {
   createAddressSummary,
   createAgent,
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createStandardAddressCheckRequestSummary,
 } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
@@ -10,7 +10,7 @@ import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import SelectAddressRoutes from './selectAddress'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
 const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
@@ -28,7 +28,7 @@ describe('select address routes', () => {
       createAddressSummary({ uprn: '310030568' }),
     ])
     addressService.addStandardAddressCheckRequest.mockResolvedValue(createStandardAddressCheckRequestSummary({}))
-    caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+    caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   })
 
   afterEach(() => {
@@ -37,17 +37,17 @@ describe('select address routes', () => {
 
   describe('GET', () => {
     it('should render select address page', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.query.postcode = 'SO128UF'
       await selectAddressRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/selectAddress', {
-        assessmentSummary,
+        assessmentSummary: assessmentOverviewSummary,
         foundAddresses: [
           {
             uprn: '310030567',
@@ -83,11 +83,11 @@ describe('select address routes', () => {
 
     it('should render add resident details page', async () => {
       addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.query.postcode = 'SO128UF'
       await selectAddressRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
@@ -114,12 +114,12 @@ describe('select address routes', () => {
 
   describe('POST', () => {
     it('validates POST request contains a search query', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       await expect(selectAddressRoutes.POST(req, res)).rejects.toThrow(ValidationError)
     })
 
     it('add a standard address check request for a valid POST request', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.body.selectedAddressUprn = '310030567'
       await selectAddressRoutes.POST(req, res)
 

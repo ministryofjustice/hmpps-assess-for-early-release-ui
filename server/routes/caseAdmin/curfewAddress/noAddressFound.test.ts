@@ -1,11 +1,11 @@
 import paths from '../../paths'
 
-import { createAgent, createAssessmentSummary } from '../../../data/__testutils/testObjects'
+import { createAgent, createAssessmentOverviewSummary } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import NoAddressFoundRoutes from './noAddressFound'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
@@ -16,7 +16,7 @@ let noAddressFoundRoutes: NoAddressFoundRoutes
 
 beforeEach(() => {
   noAddressFoundRoutes = new NoAddressFoundRoutes(caseAdminCaseloadService)
-  caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+  caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
 })
 
 afterEach(() => {
@@ -25,17 +25,17 @@ afterEach(() => {
 
 describe('GET', () => {
   it('should render find address page', async () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
     req.params.postcode = 'BA129FU'
     await noAddressFoundRoutes.GET(req, res)
 
-    expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+    expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/noAddressFound', {
-      assessmentSummary,
+      assessmentSummary: assessmentOverviewSummary,
       postcode: req.params.postcode,
       findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
         prisonNumber: req.params.prisonNumber,

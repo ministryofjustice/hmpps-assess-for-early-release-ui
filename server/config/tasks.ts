@@ -1,12 +1,12 @@
-import { AssessmentSummary, UserRole } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { _AssessmentOverviewSummary, UserRole } from '../@types/assessForEarlyReleaseApiClientTypes'
 import paths from '../routes/paths'
-import { properCase } from '../utils/utils'
+import { jsonDtToDateShort, properCase } from '../utils/utils'
 
 export type Task = {
   code: string
   title: string
-  lockedDescription?: (assessment: AssessmentSummary) => string
-  path?: (assessment: AssessmentSummary) => string
+  lockedDescription?: (assessment: _AssessmentOverviewSummary) => string
+  path?: (assessment: _AssessmentOverviewSummary) => string
 }
 
 export type UsersWithTypes = Exclude<UserRole, 'SUPPORT'>
@@ -16,6 +16,7 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
     {
       code: 'ASSESS_ELIGIBILITY',
       title: 'Assess eligibility and suitability',
+      lockedDescription: assessment => `To do by ${jsonDtToDateShort(assessment?.toDoEligibilityAndSuitabilityBy)}.`,
       path: paths.prison.assessment.initialChecks.tasklist,
     },
     {
@@ -32,9 +33,15 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
         `You can complete this task if a probation practitioner finds a suitable address and agrees ${properCase(assessment.forename)} can be released on HDC.`,
     },
     {
-      code: 'PREPARE_FOR_RELEASE',
-      title: 'Prepare for release',
-      lockedDescription: () => 'You can complete this task once a decision maker has approved the HDC application.',
+      code: 'COMPLETE_14_DAY_CHECKS',
+      title: 'Complete 14-day check',
+      lockedDescription: () =>
+        'Check eligibility, suitability and reasons to postpone from 14 days before release after a decision maker approves the application.',
+    },
+    {
+      code: 'COMPLETE_2_DAY_CHECKS',
+      title: 'Complete 2-day check',
+      lockedDescription: () => 'Check eligibility, suitability and reasons to postpone from 2 days before release.',
     },
     {
       code: 'PRINT_LICENCE',
