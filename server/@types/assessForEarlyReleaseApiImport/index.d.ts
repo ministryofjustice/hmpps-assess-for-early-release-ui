@@ -1258,7 +1258,8 @@ export interface components {
         | 'ENTER_CURFEW_ADDRESS'
         | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
-        | 'PREPARE_FOR_RELEASE'
+        | 'COMPLETE_14_DAY_CHECKS'
+        | 'COMPLETE_2_DAY_CHECKS'
         | 'PRINT_LICENCE'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
@@ -1280,7 +1281,7 @@ export interface components {
       crn?: string
     }
     /** @description Response object which describes an assessment */
-    AssessmentSummary: {
+    AssessmentOverviewSummary: {
       /**
        * @description The offender's first name
        * @example Bob
@@ -1294,7 +1295,7 @@ export interface components {
       /**
        * Format: date
        * @description The offender's date of birth
-       * @example 15/04/2011
+       * @example 2002-02-20
        */
       dateOfBirth: string
       /**
@@ -1305,12 +1306,13 @@ export interface components {
       /**
        * Format: date
        * @description The offender's home detention curfew eligibility date
+       * @example 2002-02-20
        */
       hdced: string
       /**
        * Format: date
        * @description The offender's conditional release date
-       * @example 22/11/2026
+       * @example 2002-02-20
        */
       crd?: string
       /**
@@ -1375,6 +1377,17 @@ export interface components {
        * @example Robbery
        */
       mainOffense?: string
+      /**
+       * Format: date
+       * @description The assessment created date plus five days
+       * @example 2002-02-20
+       */
+      toDoEligibilityAndSuitabilityBy?: string
+      /**
+       * @description The assessment's assess eligibility and suitability task result
+       * @example Ineligible
+       */
+      result?: string
     }
     /** @description A summary of a community offender manager */
     ComSummary: {
@@ -1416,7 +1429,8 @@ export interface components {
         | 'ENTER_CURFEW_ADDRESS'
         | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
-        | 'PREPARE_FOR_RELEASE'
+        | 'COMPLETE_14_DAY_CHECKS'
+        | 'COMPLETE_2_DAY_CHECKS'
         | 'PRINT_LICENCE'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
@@ -1431,6 +1445,104 @@ export interface components {
        * @enum {string}
        */
       progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
+    }
+    /** @description Response object which describes an assessment */
+    AssessmentSummary: {
+      /**
+       * @description The offender's first name
+       * @example Bob
+       */
+      forename?: string
+      /**
+       * @description The offender's surname
+       * @example Smith
+       */
+      surname?: string
+      /**
+       * Format: date
+       * @description The offender's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth: string
+      /**
+       * @description The offender's prison number
+       * @example A1234AA
+       */
+      prisonNumber: string
+      /**
+       * Format: date
+       * @description The offender's home detention curfew eligibility date
+       * @example 2002-02-20
+       */
+      hdced: string
+      /**
+       * Format: date
+       * @description The offender's conditional release date
+       * @example 2002-02-20
+       */
+      crd?: string
+      /**
+       * @description The name of the prison the offender is in
+       * @example Foston Hall (HMP)
+       */
+      location: string
+      /**
+       * @description The assessment status
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status:
+        | 'NOT_STARTED'
+        | 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS'
+        | 'ELIGIBLE_AND_SUITABLE'
+        | 'AWAITING_ADDRESS_AND_RISK_CHECKS'
+        | 'ADDRESS_AND_RISK_CHECKS_IN_PROGRESS'
+        | 'AWAITING_PRE_DECISION_CHECKS'
+        | 'AWAITING_DECISION'
+        | 'APPROVED'
+        | 'AWAITING_PRE_RELEASE_CHECKS'
+        | 'PASSED_PRE_RELEASE_CHECKS'
+        | 'ADDRESS_UNSUITABLE'
+        | 'AWAITING_REFUSAL'
+        | 'INELIGIBLE_OR_UNSUITABLE'
+        | 'REFUSED'
+        | 'TIMED_OUT'
+        | 'POSTPONED'
+        | 'OPTED_OUT'
+        | 'RELEASED_ON_HDC'
+      /** @description The community offender manager assigned to this assessment */
+      responsibleCom?: components['schemas']['ComSummary']
+      /**
+       * @description The team that the COM responsible for this assessment is assigned to
+       * @example N55LAU
+       */
+      team?: string
+      /**
+       * @description The version of the policy that this assessment has been carried out under
+       * @example 1
+       */
+      policyVersion: string
+      /** @description The status of tasks that make up this assessment */
+      tasks: {
+        [key: string]: components['schemas']['TaskProgress'][]
+      }
+      /**
+       * @description The opt out reason type
+       * @enum {string}
+       */
+      optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
+      /** @description The opt out reason description if rhe optOutReasonType is OTHER */
+      optOutReasonOther?: string
+      /**
+       * @description Prisoner cell location
+       * @example A-1-002
+       */
+      cellLocation?: string
+      /**
+       * @description The main offense also know as the most serious offence
+       * @example Robbery
+       */
+      mainOffense?: string
     }
     /** @description A question that is asked by the user */
     Question: {
@@ -3094,7 +3206,6 @@ export interface operations {
     }
   }
 }
-
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

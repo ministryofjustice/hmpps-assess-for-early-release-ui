@@ -1,6 +1,6 @@
 import {
   createAgent,
-  createAssessmentSummary,
+  createAssessmentOverviewSummary,
   createCheckRequestsForAssessmentSummary,
 } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
@@ -8,7 +8,7 @@ import { createMockAddressService, createMockCaseAdminCaseloadService } from '..
 import paths from '../../paths'
 import CheckYourAnswersRoutes from './checkYourAnswers'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const addressSummary = createCheckRequestsForAssessmentSummary({})
 
 const addressService = createMockAddressService()
@@ -29,7 +29,7 @@ describe('check your answers summary', () => {
 
   beforeEach(() => {
     checkYourAnswersRoutes = new CheckYourAnswersRoutes(addressService, caseAdminCaseloadService)
-    caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+    caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
     addressService.getCheckRequestsForAssessment.mockResolvedValue([addressSummary])
   })
 
@@ -39,10 +39,10 @@ describe('check your answers summary', () => {
 
   describe('GET', () => {
     it('should render check your answers summary', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       await checkYourAnswersRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
@@ -54,14 +54,14 @@ describe('check your answers summary', () => {
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/checkYourAnswers', {
-        assessmentSummary,
+        assessmentSummary: assessmentOverviewSummary,
         checkRequestsForAssessmentSummary: [addressSummary],
       })
     })
   })
 
   describe('POST', () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
 
     it('should redirect to assessment home page', async () => {
       await checkYourAnswersRoutes.POST(req, res)
@@ -79,7 +79,7 @@ describe('check your answers summary', () => {
   })
 
   describe('DELETE', () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
     req.params.checkRequestId = '6'
     it('should call address service to delete selected assessment address', async () => {
       await checkYourAnswersRoutes.DELETE(req, res)

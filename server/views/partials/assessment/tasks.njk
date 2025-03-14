@@ -3,7 +3,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {%  macro readyToStart(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
+  <h2 class="govuk-heading-m {% if params.task.code == 'ASSESS_ELIGIBILITY' %} govuk-!-margin-bottom-2 {% else %} govuk-!-margin-bottom-6 {% endif %}">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
+  <p>{{params.task.lockedDescription(params.assessment) if params.task.lockedDescription and params.task.code == 'ASSESS_ELIGIBILITY'}}</p>
   {{ govukButton({
     text: 'Start',
     href: params.task.path(params.assessment) if params.task.path,
@@ -12,7 +13,8 @@
 {% endmacro %}
 
 {%  macro inProgress(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
+  <h2 class="govuk-heading-m {% if params.task.code == 'ASSESS_ELIGIBILITY' %} govuk-!-margin-bottom-2 {% else %} govuk-!-margin-bottom-6 {% endif %}">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">In Progress</span></h2>
+  <p>{{params.task.lockedDescription(params.assessment) if params.task.lockedDescription and params.task.code == 'ASSESS_ELIGIBILITY'}}</p>
   {{ govukButton({
     text: 'Continue',
     href: params.task.path(params.assessment) if params.task.path,
@@ -26,7 +28,8 @@
 {% endmacro %}
 
 {%  macro complete(params) %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--green">Completed</span></h2>
+  <h2 class="govuk-heading-m {% if params.task.code == 'ASSESS_ELIGIBILITY' %} govuk-!-margin-bottom-2 {% else %} govuk-!-margin-bottom-6 {% endif %}">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--green">Completed</span></h2>
+  <p class="govuk-!-margin-bottom-2">{{'Result: '+ params.assessment.result if params.task.code == 'ASSESS_ELIGIBILITY'}}</p>
   <a class="govuk-link govuk-link--no-visited-state" href="{{params.task.path(params.assessment)}}">View or change</a>
 {% endmacro %}
 
@@ -61,13 +64,13 @@
 {%- endmacro -%}
 
 {%  macro tasks(userType, params) %}
-  {% set tasksCards = [] %} 
+  {% set tasksCards = [] %}
   {% for taskProgress in params.tasks %}
       {% set task = tasksList[userType] | find('code', taskProgress.name) %}
 
       {% set tasksCards = (tasksCards.push(
         { 
-            html: taskContent({ 
+            html: taskContent({
                 task: task,
                 assessment: params,
                 state: taskProgress.progress

@@ -1,11 +1,12 @@
-import { createAddressSummary, createAssessmentSummary } from '../../../data/__testutils/testObjects'
+import { createAddressSummary, createAssessmentOverviewSummary } from '../../../data/__testutils/testObjects'
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockAddressService, createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import FindAddressRoutes from './findAddress'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
+import { convertToTitleCase } from '../../../utils/utils'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
 const addressService = createMockAddressService()
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
@@ -18,7 +19,7 @@ describe('find address routes', () => {
   beforeEach(() => {
     findAddressRoutes = new FindAddressRoutes(addressService, caseAdminCaseloadService)
     addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
-    caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+    caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   })
 
   afterEach(() => {
@@ -27,28 +28,31 @@ describe('find address routes', () => {
 
   describe('GET', () => {
     it('should render find address page', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       await findAddressRoutes.GET(req, res)
 
-      expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+      expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/findAddress', {
-        assessmentSummary,
+        assessmentSummary: {
+          ...assessmentOverviewSummary,
+          name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
+        },
       })
     })
   })
 
   describe('POST', () => {
     it('validates POST request contains a search query', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       await expect(findAddressRoutes.POST(req, res)).rejects.toThrow(ValidationError)
     })
 
     it('finds addresses for a valid POST request', async () => {
-      req.params.prisonNumber = assessmentSummary.prisonNumber
+      req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.body.searchQuery = 'SO128UF'
       await findAddressRoutes.POST(req, res)
 

@@ -5,7 +5,7 @@ export default class AssessmentRoutes {
   constructor(private readonly decisionMakerCaseloadService: DecisionMakerCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const assessmentSummary = await this.decisionMakerCaseloadService.getAssessmentSummary(
+    const assessmentSummary = await this.decisionMakerCaseloadService.getAssessmentOverviewSummary(
       req?.middleware?.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
