@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { parse, format } from 'date-fns'
 import AuthRole from '../enumeration/authRole'
+import { DocumentSubjectType } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
@@ -51,6 +52,27 @@ const jsonDtToDateShort = (dt: string): string => {
   return momentDate.isValid() ? momentDate.format('D MMM YYYY') : null
 }
 
+const getValidDocumentSubjectType = (documentSubjectType: string): DocumentSubjectType => {
+  switch (documentSubjectType) {
+    case 'OFFENDER_ELIGIBLE_FORM':
+    case 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM':
+    case 'OFFENDER_ADDRESS_CHECKS_FORM':
+    case 'OFFENDER_OPT_OUT_FORM':
+    case 'OFFENDER_NOT_ELIGIBLE_FORM':
+    case 'OFFENDER_NOT_SUITABLE_FORM':
+    case 'OFFENDER_ADDRESS_UNSUITABLE_FORM':
+    case 'OFFENDER_POSTPONED_FORM':
+    case 'OFFENDER_NOT_ENOUGH_TIME_FORM':
+    case 'OFFENDER_APPROVED_FORM':
+    case 'OFFENDER_AGENCY_NOTIFICATION_FORM':
+    case 'OFFENDER_CANCEL_AGENCY_NOTIFICATION_FORM':
+    case 'OFFENDER_REFUSED_FORM':
+      return documentSubjectType as DocumentSubjectType
+    default:
+      throw new Error(`Unknown document type : ${documentSubjectType}`)
+  }
+}
+
 export {
   properCase,
   convertToTitleCase,
@@ -61,4 +83,5 @@ export {
   formatDate,
   getOrdinal,
   jsonDtToDateShort,
+  getValidDocumentSubjectType,
 }

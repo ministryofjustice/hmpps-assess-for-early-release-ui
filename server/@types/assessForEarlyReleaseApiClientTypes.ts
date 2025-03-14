@@ -1,4 +1,4 @@
-import { components } from './assessForEarlyReleaseApiImport'
+import { components, operations } from './assessForEarlyReleaseApiImport'
 
 type ParsingDates<T, Fields> = {
   [K in keyof T]: K extends Fields ? Date : T[K] extends object ? ParsingDates<T[K], Fields> : T[K]
@@ -12,6 +12,8 @@ export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
 
 export type _AssessmentSummary = components['schemas']['AssessmentSummary']
 export type AssessmentSummary = ParsingDates<_AssessmentSummary, 'dateOfBirth' | 'hdced' | 'crd'>
+
+export type DocumentSubjectType = operations['getOffenderPdf']['parameters']['path']['documentSubjectType']
 
 export type _EligibilityAndSuitabilityCaseView = components['schemas']['EligibilityAndSuitabilityCaseView']
 export type EligibilityAndSuitabilityCaseView = ParsingDates<

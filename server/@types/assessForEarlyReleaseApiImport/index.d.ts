@@ -5,7 +5,12 @@
 
 export interface paths {
   '/queue-admin/retry-dlq/{dlqName}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /** @description
      *
@@ -20,7 +25,12 @@ export interface paths {
     trace?: never
   }
   '/queue-admin/retry-all-dlqs': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put: operations['retryAllDlqs']
     post?: never
@@ -31,7 +41,12 @@ export interface paths {
     trace?: never
   }
   '/queue-admin/purge-queue/{queueName}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /** @description
      *
@@ -46,7 +61,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/submit-for-pre-decision-checks': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Submits an offender's current assessment to the prison case admin for pre-decision checks
@@ -64,7 +84,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/submit-for-address-checks': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Submits an offender's current assessment for address checks.
@@ -82,7 +107,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/postpone': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Postpone case for early release.
@@ -100,7 +130,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/opt-out': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Opts an offender out of being assessed for early release.
@@ -118,7 +153,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/opt-in': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Allows an offender to opt back in to being assessed for early release.
@@ -136,7 +176,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/eligibility-and-suitability-check': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Sets the state of a current eligbility/suitability check
@@ -154,7 +199,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/case-admin-additional-information': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     /**
      * Adds case admin additional information to an address.
@@ -172,7 +222,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/standard-address-check-request': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put?: never
     /**
@@ -190,7 +245,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/standard-address-check-request/{requestId}/resident': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put?: never
     /**
@@ -208,7 +268,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/cas-check-request': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put?: never
     /**
@@ -226,7 +291,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks/answers': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put?: never
     /**
@@ -244,7 +314,12 @@ export interface paths {
     trace?: never
   }
   '/staff': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns staff details that match the name parameter
      * @description Returns staff details that match the name parameter
@@ -262,7 +337,12 @@ export interface paths {
     trace?: never
   }
   '/staff/prison/{username}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns staff details for the current prison user
      * @description Returns staff details for the current prison user
@@ -280,7 +360,12 @@ export interface paths {
     trace?: never
   }
   '/queue-admin/get-dlq-messages/{dlqName}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /** @description
      *
      *     Requires one of the following roles:
@@ -295,7 +380,12 @@ export interface paths {
     trace?: never
   }
   '/probation/community-offender-manager/staff-code/{staffCode}/caseload': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the caseload for a community offender manager.
      * @description Returns a list of offenders that require residential checks to be performed by a community offender manager.
@@ -313,7 +403,12 @@ export interface paths {
     trace?: never
   }
   '/prison/{prisonCode}/decision-maker/caseload': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the caseload for a decision maker within a prison
      * @description Returns a list of offenders that requires approval
@@ -331,7 +426,12 @@ export interface paths {
     trace?: never
   }
   '/prison/{prisonCode}/case-admin/caseload': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the caseload for a case admin within a prison
      * @description Returns a list of offenders that require eligibility and suitability checks to be performed
@@ -348,16 +448,21 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/pdf': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+  '/offender/{prisonNumber}/document/{documentSubjectType}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
-     * Returns pdf
-     * @description Returns pdf
+     * Returns pdf document
+     * @description Returns pdf document
      *
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getPdf']
+    get: operations['getOffenderPdf']
     put?: never
     post?: never
     delete?: never
@@ -367,7 +472,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the current assessment for a prisoner
      * @description Returns details of the current assessment for a prisoner
@@ -385,7 +495,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/suitability/{code}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns a specific suitability check for a prisoner's current assessment
      * @description Returns details of a specific suitability for a prisoner's initial checks
@@ -403,7 +518,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/standard-address-check-request/{requestId}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets a standard address check request by it's request id.
      * @description Gets a standard address check request by it's request id.
@@ -421,7 +541,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/eligibility/{code}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns a specific eligibility check for a prisoner's current assessment
      * @description Returns details of a specific eligibility for a prisoner's initial checks
@@ -439,7 +564,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/eligibility-and-suitability': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the initial checks for a prisoner's current assessment
      * @description Returns details of the current state of a prisoner's initial checks
@@ -457,7 +587,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns the residential checks for an offender's current assessment
      * @description Returns details of the current status of the residential checks for an offender's current assessment
@@ -475,7 +610,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks/tasks/{taskCode}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns details of a residential checks task for an address check request
      * @description Returns details of a residential checks task for an address check request
@@ -493,7 +633,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-check-requests': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns check requests that are linked to an offender's current assessment.
      * @description Returns standard and CAS check requests that are linked to an offender's current assessment.
@@ -511,7 +656,12 @@ export interface paths {
     trace?: never
   }
   '/addresses': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Returns addresses that match the postcode parameter
      * @description Returns addresses that match the postcode parameter
@@ -529,7 +679,12 @@ export interface paths {
     trace?: never
   }
   '/address/uprn/{uprn}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets an address by it's UPRN
      * @description Gets an address by it's UPRN
@@ -547,7 +702,12 @@ export interface paths {
     trace?: never
   }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}': {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get?: never
     put?: never
     post?: never
@@ -565,7 +725,9 @@ export interface paths {
     trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -639,7 +801,9 @@ export interface components {
        */
       code: string
       /** @description A unique code for the check */
-      answers: { [key: string]: boolean }
+      answers: {
+        [key: string]: boolean
+      }
       /** @description Details of the agent who is requesting the criterion check */
       agent: components['schemas']['AgentDto']
     }
@@ -812,12 +976,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -914,12 +1072,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -944,11 +1096,24 @@ export interface components {
       /** @description The version of the task these answers relate to */
       taskVersion: string
     }
-    ProblemDetail: { type?: unknown; title?: unknown; status?: unknown; detail?: unknown; instance?: unknown } & {
+    ProblemDetail: {
+      type?: unknown
+      title?: unknown
+      status?: unknown
+      detail?: unknown
+      instance?: unknown
+    } & {
       [key: string]: unknown | unknown | unknown
     }
-    Detail: { code: string; description?: string }
-    Name: { forename: string; middleName?: string; surname: string }
+    Detail: {
+      code: string
+      description?: string
+    }
+    Name: {
+      forename: string
+      middleName?: string
+      surname: string
+    }
     User: {
       /** Format: int64 */
       id?: number
@@ -977,7 +1142,12 @@ export interface components {
       expiredFlag?: boolean
       active: boolean
     }
-    DlqMessage: { body: { [key: string]: Record<string, never> }; messageId: string }
+    DlqMessage: {
+      body: {
+        [key: string]: Record<string, never>
+      }
+      messageId: string
+    }
     GetDlqResult: {
       /** Format: int32 */
       messagesFoundCount: number
@@ -1185,7 +1355,9 @@ export interface components {
        */
       policyVersion: string
       /** @description The status of tasks that make up this assessment */
-      tasks: { [key: string]: components['schemas']['TaskProgress'][] }
+      tasks: {
+        [key: string]: components['schemas']['TaskProgress'][]
+      }
       /**
        * @description The opt out reason type
        * @enum {string}
@@ -1400,7 +1572,10 @@ export interface components {
       type: 'TEXT' | 'RADIO' | 'DATE' | 'ADDRESS' | 'CHECKBOX'
       options?: components['schemas']['Option'][]
     }
-    Option: { text: string; value: string }
+    Option: {
+      text: string
+      value: string
+    }
     /** @description The progress on a specific residential checks task for an assessment */
     ResidentialChecksTaskProgress: {
       /** @description Details of the task */
@@ -1427,9 +1602,22 @@ export interface components {
       /** @description Details of current residential checks */
       tasks: components['schemas']['ResidentialChecksTaskProgress'][]
     }
-    Section: { header?: string; hintText?: string; questions: components['schemas']['TaskQuestion'][] }
-    Task: { code: string; name: string; sections: components['schemas']['Section'][] }
-    TaskQuestion: { code: string; text: string; hintText?: string; input: components['schemas']['Input'] }
+    Section: {
+      header?: string
+      hintText?: string
+      questions: components['schemas']['TaskQuestion'][]
+    }
+    Task: {
+      code: string
+      name: string
+      sections: components['schemas']['Section'][]
+    }
+    TaskQuestion: {
+      code: string
+      text: string
+      hintText?: string
+      input: components['schemas']['Input']
+    }
     /** @description A view on the progress of the residential checks for an assessment */
     ResidentialChecksTaskView: {
       /** @description A summary of an offender's current assessment */
@@ -1446,19 +1634,6 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -1481,8 +1656,23 @@ export interface components {
        * @example 22/11/2026 10:43:28
        */
       dateRequested: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
-    MapStringAny: { [key: string]: unknown | unknown }
+    MapStringAny: {
+      [key: string]: unknown | unknown
+    }
   }
   responses: never
   parameters: never
@@ -1490,553 +1680,1186 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
 export interface operations {
   retryDlq: {
-    parameters: { query?: never; header?: never; path: { dlqName: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        dlqName: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description OK */
-      200: { headers: { [name: string]: unknown }; content: { '*/*': components['schemas']['RetryDlqResult'] } }
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['RetryDlqResult']
+        }
+      }
     }
   }
   retryAllDlqs: {
-    parameters: { query?: never; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description OK */
-      200: { headers: { [name: string]: unknown }; content: { '*/*': components['schemas']['RetryDlqResult'][] } }
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['RetryDlqResult'][]
+        }
+      }
     }
   }
   purgeQueue: {
-    parameters: { query?: never; header?: never; path: { queueName: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        queueName: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description OK */
-      200: { headers: { [name: string]: unknown }; content: { '*/*': components['schemas']['PurgeQueueResult'] } }
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['PurgeQueueResult']
+        }
+      }
     }
   }
   submitForPreDecisionChecks: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AgentDto']
+      }
+    }
     responses: {
       /** @description The offender's current assessment has been sent to the prison case admin for checking. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Could not find an offender with the provided prison number */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   submitForAddressChecks: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AgentDto']
+      }
+    }
     responses: {
       /** @description The offender's current assessment has been submitted for address checks. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Could not find an offender with the provided prison number */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   postponeCase: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': unknown } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': unknown
+      }
+    }
     responses: {
       /** @description The offenders case has been postponed for early release. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   optOut: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['OptOutRequest'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OptOutRequest']
+      }
+    }
     responses: {
       /** @description The offender has been opted out of assess for early release. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   optBackIn: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AgentDto'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AgentDto']
+      }
+    }
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   answerCheck: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['CriterionCheck'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CriterionCheck']
+      }
+    }
     responses: {
       /** @description Returns no content if check has been recorded correctly */
-      204: { headers: { [name: string]: unknown }; content?: never }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   updateCaseAdminAdditionalInformation: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['UpdateCaseAdminAdditionInfoRequest'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCaseAdminAdditionInfoRequest']
+      }
+    }
     responses: {
       /** @description The case admin additional information has been updated. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description An address check request with the specified id does not exist for the offender */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   addStandardAddressCheckRequest: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddStandardAddressCheckRequest'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddStandardAddressCheckRequest']
+      }
+    }
     responses: {
       /** @description The standard address check request has been added to the offender's current assessment. */
       201: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['StandardAddressCheckRequestSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['StandardAddressCheckRequestSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   addStandardAddressCheckRequestResident: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddResidentRequest'][] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddResidentRequest'][]
+      }
+    }
     responses: {
       /** @description The resident has been added to the standard address check request. */
       201: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ResidentSummary'][] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentSummary'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description A standard address check request with the specified request id does not exist for the offender */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   addCasCheckRequest: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['AddCasCheckRequest'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddCasCheckRequest']
+      }
+    }
     responses: {
       /** @description The CAS check request has been added to the current assessment for the offender. */
       201: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['CasCheckRequestSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CasCheckRequestSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   saveResidentialChecksTaskAnswers: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
-    requestBody: { content: { 'application/json': components['schemas']['SaveResidentialChecksTaskAnswersRequest'] } }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SaveResidentialChecksTaskAnswersRequest']
+      }
+    }
     responses: {
       /** @description The task answers have been saved. */
       201: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ResidentialChecksTaskAnswersSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksTaskAnswersSummary']
+        }
       }
       /** @description The request is invalid, e.g. the answers are not valid for the task */
       400: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ProblemDetail'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ProblemDetail']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description An address check request with the specified request id does not exist for the provided offender */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getStaffDetailsByUsername: {
-    parameters: { query: { username: string }; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query: {
+        username: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns staff details matching the supplied name */
-      200: { headers: { [name: string]: unknown }; content: { 'application/json': components['schemas']['User'] } }
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['User']
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Could not find staff with username */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getPrisonUserDetails: {
-    parameters: { query?: never; header?: never; path: { username: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        username: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns staff details for the current prison user */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['PrisonApiUserDetail'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonApiUserDetail']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Could not find the current user */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getDlqMessages: {
-    parameters: { query?: { maxMessages?: number }; header?: never; path: { dlqName: string }; cookie?: never }
+    parameters: {
+      query?: {
+        maxMessages?: number
+      }
+      header?: never
+      path: {
+        dlqName: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description OK */
-      200: { headers: { [name: string]: unknown }; content: { '*/*': components['schemas']['GetDlqResult'] } }
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['GetDlqResult']
+        }
+      }
     }
   }
   getComCaseload: {
-    parameters: { query?: never; header?: never; path: { staffCode: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffCode: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns a list of offenders that require residential checks to be performed */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['OffenderSummaryResponse'][] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummaryResponse'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getDecisionMakerCaseload: {
-    parameters: { query?: never; header?: never; path: { prisonCode: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonCode: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns a list of offenders that requires approval */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['OffenderSummaryResponse'][] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummaryResponse'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getCaseAdminCaseload: {
-    parameters: { query?: never; header?: never; path: { prisonCode: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonCode: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns a list of offenders that require eligibility and suitability checks to be performed */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['OffenderSummaryResponse'][] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummaryResponse'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
-  getPdf: {
-    parameters: { query: { title: string; message: string }; header?: never; path?: never; cookie?: never }
+  getOffenderPdf: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        documentSubjectType:
+          | 'OFFENDER_ELIGIBLE_FORM'
+          | 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM'
+          | 'OFFENDER_ADDRESS_CHECKS_FORM'
+          | 'OFFENDER_OPT_OUT_FORM'
+          | 'OFFENDER_NOT_ELIGIBLE_FORM'
+          | 'OFFENDER_NOT_SUITABLE_FORM'
+          | 'OFFENDER_ADDRESS_UNSUITABLE_FORM'
+          | 'OFFENDER_POSTPONED_FORM'
+          | 'OFFENDER_NOT_ENOUGH_TIME_FORM'
+          | 'OFFENDER_APPROVED_FORM'
+          | 'OFFENDER_AGENCY_NOTIFICATION_FORM'
+          | 'OFFENDER_CANCEL_AGENCY_NOTIFICATION_FORM'
+          | 'OFFENDER_REFUSED_FORM'
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
-      /** @description Returns pdf */
-      200: { headers: { [name: string]: unknown }; content: { 'application/pdf': string } }
+      /** @description Returns pdf document */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/pdf': string
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Could not find */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
-      /** @description Unexpected error occurred while converting HTML to PDF */
+      /** @description Unexpected error occurred while generating your pdf document */
       500: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getCurrentAssessment: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns the current assessment for the prisoner */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['AssessmentSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getSuitabilityCheck: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; code: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        code: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns details of a specific suitability criteria in the current assessment for the prisoner */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['SuitabilityCriterionView'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SuitabilityCriterionView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getStandardAddressCheckRequest: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns the standard address check request with the specified request id */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['StandardAddressCheckRequestSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['StandardAddressCheckRequestSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description A standard address check request with the specified request id does not exist for the offender */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getEligibilityCriterion: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; code: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        code: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns details of a specific eligibility criteria in the current assessment for the prisoner */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['EligibilityCriterionView'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['EligibilityCriterionView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getCaseView: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns the current assessment for the prisoner */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['EligibilityAndSuitabilityCaseView'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['EligibilityAndSuitabilityCaseView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getResidentialChecksView: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns the residential checks for the offender's current assessment */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ResidentialChecksView'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description An offender with the provided prison number does not exist */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
@@ -2044,123 +2867,234 @@ export interface operations {
     parameters: {
       query?: never
       header?: never
-      path: { prisonNumber: string; requestId: number; taskCode: string }
+      path: {
+        prisonNumber: string
+        requestId: number
+        taskCode: string
+      }
       cookie?: never
     }
     requestBody?: never
     responses: {
       /** @description Returns details of the residential check task with the specified code for the specified address check request */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ResidentialChecksTaskView'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ResidentialChecksTaskView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description An address check request with provided id and prison number does not exist */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getAddressCheckRequestsForAssessment: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Address check requests linked to the offender's current assessment are returned */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['CheckRequestSummary'][] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CheckRequestSummary'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Not found, an offender with provider number cannot be found */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getAddressesForPostcode: {
-    parameters: { query: { postcode: string }; header?: never; path?: never; cookie?: never }
+    parameters: {
+      query: {
+        postcode: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns addresses matching the supplied postcode */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['AddressSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AddressSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   getAddressForUprn: {
-    parameters: { query?: never; header?: never; path: { uprn: string }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        uprn: string
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description Returns the address with the provided UPRN */
       200: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['AddressSummary'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AddressSummary']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
   deleteAddressCheckRequest: {
-    parameters: { query?: never; header?: never; path: { prisonNumber: string; requestId: number }; cookie?: never }
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
     requestBody?: never
     responses: {
       /** @description The address check request has been deleted. */
-      204: { headers: { [name: string]: unknown }; content: { 'application/json': unknown } }
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
       /** @description An address check request with the specified id does not exist for the offender */
       404: {
-        headers: { [name: string]: unknown }
-        content: { 'application/json': components['schemas']['ErrorResponse'] }
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
 }
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+
+type WithRequired<T, K extends keyof T> = T & {
+  [P in K]-?: T[P]
+}

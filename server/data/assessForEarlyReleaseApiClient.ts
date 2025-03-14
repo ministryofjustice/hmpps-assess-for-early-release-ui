@@ -30,6 +30,7 @@ import type {
   SuitabilityCriterionView,
   AddResidentRequest,
   UpdateCaseAdminAdditionInfoRequest,
+  DocumentSubjectType,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -322,10 +323,9 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getForm({ title, message }: { title: string; message: string }): Promise<Buffer> {
+  async getForm(prisonNumber: string, documentSubjectType: DocumentSubjectType): Promise<Buffer> {
     return this.restClient.get<Buffer>({
-      path: `/pdf`,
-      query: { title, message },
+      path: `/offender/${prisonNumber}/document/${documentSubjectType}`,
       responseType: 'arraybuffer',
     })
   }

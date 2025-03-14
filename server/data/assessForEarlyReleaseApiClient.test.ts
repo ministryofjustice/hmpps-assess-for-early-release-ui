@@ -325,19 +325,18 @@ describe('assessForEarlyReleaseApiClient', () => {
     })
   })
 
-  describe('getPdf', () => {
+  describe('getOffenderForm', () => {
     it('should return pdf', async () => {
-      const title = 'Title from UI'
-      const message = 'Message from UI'
+      const prisonNumber = 'PN12345'
+      const documentSubjectType = 'OFFENDER_ELIGIBLE_FORM'
       const pdfBuffer = Buffer.from('pdf')
 
       fakeAferApi
-        .get('/pdf')
-        .query({ title, message })
+        .get(`/offender/${prisonNumber}/document/${documentSubjectType}`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, pdfBuffer)
 
-      const output = await assessForEarlyReleaseApiClient.getForm({ title, message })
+      const output = await assessForEarlyReleaseApiClient.getForm(prisonNumber, documentSubjectType)
       expect(output).toEqual(pdfBuffer)
     })
   })
