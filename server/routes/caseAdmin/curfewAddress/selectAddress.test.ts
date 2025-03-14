@@ -48,10 +48,7 @@ describe('select address routes', () => {
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/selectAddress', {
-        assessmentSummary: {
-          ...assessmentOverviewSummary,
-          name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
-        },
+        assessmentSummary: assessmentOverviewSummary,
         foundAddresses: [
           {
             uprn: '310030567',

@@ -52,10 +52,7 @@ describe('add resident details routes', () => {
         Number(req.params.checkRequestId),
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/addResidentDetails', {
-        assessmentSummary: {
-          ...assessmentOverviewSummary,
-          name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
-        },
+        assessmentSummary: assessmentOverviewSummary,
         address: {
           line1: '99, Hartland Road',
           postcode: 'RG2 8AF',

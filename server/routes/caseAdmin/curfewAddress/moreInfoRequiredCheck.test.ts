@@ -35,10 +35,7 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/moreInfoRequiredCheck', {
-      assessmentSummary: {
-        ...assessmentOverviewSummary,
-        name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
-      },
+      assessmentSummary: assessmentOverviewSummary,
     })
   })
 })

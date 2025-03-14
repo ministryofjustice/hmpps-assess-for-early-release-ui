@@ -37,10 +37,7 @@ describe('find address routes', () => {
         req.params.prisonNumber,
       )
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/findAddress', {
-        assessmentSummary: {
-          ...assessmentOverviewSummary,
-          name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
-        },
+        assessmentSummary: assessmentOverviewSummary,
       })
     })
   })

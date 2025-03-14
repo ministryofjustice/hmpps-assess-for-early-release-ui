@@ -36,10 +36,7 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/noAddressFound', {
-      assessmentSummary: {
-        ...assessmentOverviewSummary,
-        name: convertToTitleCase(`${assessmentOverviewSummary.forename} ${assessmentOverviewSummary.surname}`.trim()),
-      },
+      assessmentSummary: assessmentOverviewSummary,
       postcode: req.params.postcode,
       findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
         prisonNumber: req.params.prisonNumber,
