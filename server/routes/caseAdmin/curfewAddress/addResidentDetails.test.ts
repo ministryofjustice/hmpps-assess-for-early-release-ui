@@ -9,7 +9,6 @@ import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import AddResidentDetailsRoutes, { OtherResident } from './addResidentDetails'
 import { _ResidentSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
-import { convertToTitleCase } from '../../../utils/utils'
 
 const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const addressCheckRequestSummary = createStandardAddressCheckRequestSummary({})

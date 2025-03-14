@@ -4,7 +4,6 @@ import { createAgent, createAssessmentOverviewSummary } from '../../../data/__te
 import { mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService } from '../../../services/__testutils/mock'
 import NoAddressFoundRoutes from './noAddressFound'
-import { convertToTitleCase } from '../../../utils/utils'
 
 const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 

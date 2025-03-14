@@ -9,7 +9,6 @@ import { createMockAddressService, createMockCaseAdminCaseloadService } from '..
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import SelectAddressRoutes from './selectAddress'
-import { convertToTitleCase } from '../../../utils/utils'
 
 const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 

@@ -4,7 +4,6 @@ import { createMockAddressService, createMockCaseAdminCaseloadService } from '..
 import FindAddressRoutes from './findAddress'
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
-import { convertToTitleCase } from '../../../utils/utils'
 
 const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 

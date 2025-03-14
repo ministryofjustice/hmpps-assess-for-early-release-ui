@@ -4,7 +4,6 @@ import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
 import { createAgent, createAssessmentOverviewSummary } from '../../../data/__testutils/testObjects'
-import { convertToTitleCase } from '../../../utils/utils'
 
 let moreInfoRequiredCheckRoutes: MoreInfoRequiredCheckRoutes
 
