@@ -23,7 +23,7 @@ afterEach(() => {
 describe('GET', () => {
   it('should render pdf', async () => {
     // Given
-    const prisonNumber = 'PR123456D'
+    const prisonNumber = 'A1234AA'
     const documentSubjectType = 'OFFENDER_ELIGIBLE_FORM'
     const today = moment().format('DD-MM-YY')
     const fileName = `${prisonNumber}_${documentSubjectType}_${today}.pdf`
@@ -48,7 +48,7 @@ describe('GET', () => {
 describe('GET error when incorrect document sub type', () => {
   it('should render error', async () => {
     // Given
-    const prisonNumber = 'PR123456D'
+    const prisonNumber = 'A1234AA'
     const documentSubjectType = 'I_DONT_EXIST'
 
     req.params.prisonNumber = prisonNumber

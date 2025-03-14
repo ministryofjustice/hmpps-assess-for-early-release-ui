@@ -22,12 +22,18 @@ describe('Pdf Service', () => {
 
   describe('pdf', () => {
     it('get pdf', async () => {
+      // Given
+      const prisonNumber = 'A1234AA'
+      const documentSubjectType = 'OFFENDER_ELIGIBLE_FORM'
+
       assessForEarlyReleaseApiClient.getForm.mockResolvedValue(Buffer.from('pdf'))
 
-      await formService.getForm(token, agent, 'PN12345', 'OFFENDER_ELIGIBLE_FORM')
+      // When
+      await formService.getForm(token, agent, prisonNumber, documentSubjectType)
 
+      // Then
       expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
-      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith('PN12345', 'OFFENDER_ELIGIBLE_FORM')
+      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith(prisonNumber, documentSubjectType)
     })
   })
 })
