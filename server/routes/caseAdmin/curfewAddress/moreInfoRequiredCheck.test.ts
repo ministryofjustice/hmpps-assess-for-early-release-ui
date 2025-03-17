@@ -3,11 +3,11 @@ import { createMockCaseAdminCaseloadService, createMockAddressService } from '..
 import { ValidationError } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import MoreInfoRequiredCheckRoutes from './moreInfoRequiredCheck'
-import { createAgent, createAssessmentSummary } from '../../../data/__testutils/testObjects'
+import { createAgent, createAssessmentOverviewSummary } from '../../../data/__testutils/testObjects'
 
 let moreInfoRequiredCheckRoutes: MoreInfoRequiredCheckRoutes
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const addressService = createMockAddressService()
@@ -17,7 +17,7 @@ res.locals.agent = createAgent()
 
 beforeEach(() => {
   moreInfoRequiredCheckRoutes = new MoreInfoRequiredCheckRoutes(caseAdminCaseloadService, addressService)
-  caseAdminCaseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+  caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
 })
 
 afterEach(() => {
@@ -26,21 +26,21 @@ afterEach(() => {
 
 describe('GET', () => {
   it('should render more info required page', async () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
     await moreInfoRequiredCheckRoutes.GET(req, res)
-    expect(caseAdminCaseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+    expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/moreInfoRequiredCheck', {
-      assessmentSummary,
+      assessmentSummary: assessmentOverviewSummary,
     })
   })
 })
 
 describe('POST', () => {
-  req.params.prisonNumber = assessmentSummary.prisonNumber
+  req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
   req.params.checkRequestId = '6'
   it('validates POST request contains moreInfoRequiredCheck', async () => {
     await expect(moreInfoRequiredCheckRoutes.POST(req, res)).rejects.toThrow(ValidationError)

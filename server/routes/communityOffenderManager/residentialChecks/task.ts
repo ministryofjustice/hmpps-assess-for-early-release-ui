@@ -68,6 +68,7 @@ export default class ResidentialChecksTaskRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { checkRequestId, prisonNumber, taskCode } = req.params
+
     const task = await this.residentialChecksService.getResidentialChecksTask(
       req?.middleware?.clientToken,
       res.locals.agent,

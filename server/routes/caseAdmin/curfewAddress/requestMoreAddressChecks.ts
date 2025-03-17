@@ -11,7 +11,7 @@ export default class RequestMoreAddressChecksRoutes {
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentSummary(
+    const assessmentSummary = await this.caseAdminCaseloadService.getAssessmentOverviewSummary(
       req?.middleware?.clientToken,
       res.locals.agent,
       prisonNumber,

@@ -130,7 +130,7 @@ export const assessmentSummary = (
       { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
       { name: 'ENTER_CURFEW_ADDRESS', progress: 'LOCKED' },
       { name: 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION', progress: 'LOCKED' },
-      { name: 'PREPARE_FOR_RELEASE', progress: 'LOCKED' },
+      { name: 'COMPLETE_14_DAY_CHECKS', progress: 'LOCKED' },
       { name: 'PRINT_LICENCE', progress: 'LOCKED' },
     ],
     PROBATION_COM: tasks.PROBATION_COM.map((task, i) => ({

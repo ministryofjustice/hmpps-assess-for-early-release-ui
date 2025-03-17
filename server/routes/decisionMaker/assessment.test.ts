@@ -1,9 +1,9 @@
-import { createAssessmentSummary } from '../../data/__testutils/testObjects'
+import { createAssessmentOverviewSummary } from '../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockDecisionMakerCaseloadService } from '../../services/__testutils/mock'
 import AssessmentRoutes from './assessment'
 
-const assessmentSummary = createAssessmentSummary({})
+const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 
 const caseloadService = createMockDecisionMakerCaseloadService()
 const req = mockRequest({})
@@ -14,7 +14,7 @@ let assessmentRoutes: AssessmentRoutes
 
 beforeEach(() => {
   assessmentRoutes = new AssessmentRoutes(caseloadService)
-  caseloadService.getAssessmentSummary.mockResolvedValue(assessmentSummary)
+  caseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   mockedDate(new Date(2022, 6, 1))
 })
 
@@ -24,15 +24,15 @@ afterEach(() => {
 
 describe('GET', () => {
   it('should render list of licences for approval', async () => {
-    req.params.prisonNumber = assessmentSummary.prisonNumber
+    req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
     await assessmentRoutes.GET(req, res)
-    expect(caseloadService.getAssessmentSummary).toHaveBeenCalledWith(
+    expect(caseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/decisionMaker/assessment', {
-      assessmentSummary: { ...assessmentSummary, tasks: assessmentSummary.tasks.PRISON_DM },
+      assessmentSummary: { ...assessmentOverviewSummary, tasks: assessmentOverviewSummary.tasks.PRISON_DM },
     })
   })
 })

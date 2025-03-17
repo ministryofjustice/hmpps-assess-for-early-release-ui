@@ -1,6 +1,5 @@
 import type {
   _AddressSummary,
-  _AssessmentSummary,
   _CheckRequestSummary,
   _EligibilityAndSuitabilityCaseView,
   _EligibilityCriterionView,
@@ -12,7 +11,6 @@ import type {
   AddressSummary,
   AddStandardAddressCheckRequest,
   Agent,
-  AssessmentSummary,
   CheckRequestSummary,
   CriterionCheck,
   DeliusStaff,
@@ -31,6 +29,8 @@ import type {
   AddResidentRequest,
   UpdateCaseAdminAdditionInfoRequest,
   DocumentSubjectType,
+  _AssessmentOverviewSummary,
+  AssessmentOverviewSummary,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import RestClient from './restClient'
@@ -68,15 +68,16 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getAssessmentSummary(prisonNumber: string): Promise<AssessmentSummary> {
-    const assessmentSummary = await this.restClient.get<_AssessmentSummary>({
+  async getAssessmentOverviewSummary(prisonNumber: string): Promise<AssessmentOverviewSummary> {
+    const assessmentOverviewSummary = await this.restClient.get<_AssessmentOverviewSummary>({
       path: `/offender/${prisonNumber}/current-assessment`,
     })
     return {
-      ...assessmentSummary,
-      dateOfBirth: parseIsoDate(assessmentSummary.dateOfBirth),
-      hdced: parseIsoDate(assessmentSummary.hdced),
-      crd: parseIsoDate(assessmentSummary.crd),
+      ...assessmentOverviewSummary,
+      dateOfBirth: parseIsoDate(assessmentOverviewSummary.dateOfBirth),
+      hdced: parseIsoDate(assessmentOverviewSummary.hdced),
+      crd: parseIsoDate(assessmentOverviewSummary.crd),
+      toDoEligibilityAndSuitabilityBy: parseIsoDate(assessmentOverviewSummary.toDoEligibilityAndSuitabilityBy),
     }
   }
 
