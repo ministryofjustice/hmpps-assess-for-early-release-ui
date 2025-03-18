@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "partials/documentIcon.njk" import documentIcon %}
 
 {% set pageTitle = 'Eligibility and suitability checks complete' + applicationName %}
 
@@ -26,10 +27,7 @@
                 <p class="govuk-body">
                     <a class="govuk-link govuk-link--no-visited-state"
                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ELIGIBLE_FORM' })}}">
-                       <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
-                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
-                       </svg>
-                       Home detention curfew: eligible
+                       {{ documentIcon() }}Home detention curfew: eligible
                     </a>
                 </p>
                 <p class="govuk-body">
@@ -39,18 +37,13 @@
                 <p class="govuk-body">
                     <a class="govuk-link govuk-link--no-visited-state"
                         href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM' })}}">
-                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
-                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
-                        </svg>
-                        Home detention curfew: information about address checks
+                        {{ documentIcon() }}Home detention curfew: information about address checks
                     </a>
                 </p>
                 <p class="govuk-body">
                     <a class="govuk-link govuk-link--no-visited-state"
                         href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_FORM' })}}">
-                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
-                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
-                        </svg>
+                        {{ documentIcon() }}
                         Home detention curfew: address form
                     </a>
                 </p>
@@ -78,9 +71,7 @@
                 <p class="govuk-body">
                     <a class="govuk-link govuk-link--no-visited-state"
                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_NOT_ELIGIBLE_FORM' })}}">
-                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
-                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
-                        </svg>
+                        {{ documentIcon() }}
                         Home detention curfew: not eligible
                     </a>
                 </p>
