@@ -19,6 +19,7 @@ import RequestMoreAddressChecksRoutes from './curfewAddress/requestMoreAddressCh
 import CheckYourAnswersRoutes from './curfewAddress/checkYourAnswers'
 import OptOutCheckRoutes from './optout/optOutCheck'
 import OptOutRoutes from './optout/optOut'
+import ChecksCompleteRoutes from './initialChecks/checksComplete'
 
 export default function Index({
   caseAdminCaseloadService,
@@ -55,6 +56,9 @@ export default function Index({
   const checkRoutes = new CheckRoutes(eligibilityAndSuitabilityService)
   get(paths.prison.assessment.initialChecks.check, checkRoutes.GET)
   post(paths.prison.assessment.initialChecks.check, checkRoutes.POST)
+
+  const checksCompleteRoutes = new ChecksCompleteRoutes(eligibilityAndSuitabilityService)
+  get(paths.prison.assessment.initialChecks.checksComplete, checksCompleteRoutes.GET)
 
   const findAddressHandler = new FindAddressRoutes(addressService, caseAdminCaseloadService)
   get(paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress, findAddressHandler.GET)

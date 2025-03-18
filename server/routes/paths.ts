@@ -12,6 +12,7 @@ const prisonAssessmentHome = prison.path('application-overview/:prisonNumber')
 const currentAssessment = prison.path('assessment/:prisonNumber')
 const tasklist = currentAssessment.path('assess-eligibility-and-suitability')
 const check = tasklist.path(':type/:checkCode')
+const checksComplete = tasklist.path('checks-complete')
 const enterCurfewAddressOrCasArea = currentAssessment.path('enter-curfew-address-or-cas-area')
 const optOutCheck = enterCurfewAddressOrCasArea.path('opt-in-opt-out')
 const optOut = enterCurfewAddressOrCasArea.path('opt-out-reason')
@@ -50,6 +51,7 @@ const paths = {
       initialChecks: {
         tasklist,
         check,
+        checksComplete,
       },
       enterCurfewAddressOrCasArea: {
         optOutCheck,

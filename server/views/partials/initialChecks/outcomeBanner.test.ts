@@ -15,7 +15,7 @@ describe('outcome banner', () => {
       },
     })
 
-    expect($('[data-qa="bannerHeading"]').text()).toContain('Bob Smith is eligible for HDC')
+    expect($('[data-qa="bannerHeading"]').text()).toContain('Bob Smith is eligible and suitable for HDC')
   })
 
   it('should render banner when ineligible', () => {

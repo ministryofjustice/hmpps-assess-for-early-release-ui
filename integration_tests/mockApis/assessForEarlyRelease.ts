@@ -119,6 +119,40 @@ const stubGetEligibilityAndSuitability = (
     },
   })
 
+const stubSaveCriterionAnswers = (
+  assessmentSummary: _AssessmentSummary,
+  eligibility: EligibilityCriterionProgress[],
+  suitability: SuitabilityCriterionProgress[],
+  overallStatus = 'NOT_STARTED',
+  eligibilityStatus = 'NOT_STARTED',
+  failureType: 'INELIGIBLE' | 'UNSUITABLE' = null,
+  failedCheckReasons = [],
+) =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/afer-api/offender/${assessmentSummary.prisonNumber}/current-assessment/eligibility-and-suitability-check`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        assessmentSummary,
+        checksPassed: false,
+        complete: false,
+        overallStatus,
+        eligibilityStatus,
+        suitabilityStatus: 'NOT_STARTED',
+        eligibility,
+        suitability,
+        failureType,
+        failedCheckReasons,
+      },
+    },
+  })
+
 const stubSubmitCheckRequest = (prisonNumber: string) =>
   stubFor({
     request: {
@@ -983,6 +1017,7 @@ export default {
   stubGetEligibilityAndSuitability,
   stubGetEligibilityCriterionView,
   stubGetSuitabilityCriterionView,
+  stubSaveCriterionAnswers,
   stubSubmitCheckRequest,
   stubOptOut,
   getSubmittedEligibilityChecks,
