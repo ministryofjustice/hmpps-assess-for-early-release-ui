@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import type { EligibilityAndSuitabilityService } from '../../../services'
+import { convertToTitleCase } from '../../../utils/utils'
 
 export default class TasklistRoutes {
   constructor(private readonly eligibilityAndSuitabilityService: EligibilityAndSuitabilityService) {}
@@ -19,10 +20,22 @@ export default class TasklistRoutes {
       criterion => criterion.status !== 'NOT_STARTED' && criterion.status !== 'IN_PROGRESS',
     ).length
 
+    const allChecks = [...criteria.eligibility, ...criteria.suitability]
+
+    let lastCompletedEligibilityCheck = null
+    if (allChecks.length > 0) {
+      lastCompletedEligibilityCheck = allChecks.reduce((prev, current) => {
+        return prev.lastUpdated > current.lastUpdated ? prev : current
+      })
+    }
+
     res.render('pages/caseAdmin/initialChecks/tasklist', {
       criteria,
       totalChecks,
       completedChecks: completedEligibilityChecks + completedSuitabilityChecks,
+      completedBy: convertToTitleCase(lastCompletedEligibilityCheck?.agent?.fullName),
+      completedAt: lastCompletedEligibilityCheck?.agent?.onBehalfOf,
+      completedOn: lastCompletedEligibilityCheck?.lastUpdated,
     })
   }
 }

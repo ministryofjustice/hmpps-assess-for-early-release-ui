@@ -34,6 +34,9 @@ describe('GET', () => {
       criteria: view,
       totalChecks: 0,
       completedChecks: 0,
+      completedAt: undefined,
+      completedBy: '',
+      completedOn: undefined,
     })
   })
 })

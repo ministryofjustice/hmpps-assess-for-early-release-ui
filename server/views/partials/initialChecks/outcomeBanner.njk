@@ -6,7 +6,7 @@
         {{ assessmentSummary | toFullName }} is eligible and suitable for HDC
         </p>
         <p>
-            Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
+            Assessment completed by {{ completedBy }} at HMP {{ completedAt }} on {{ completedOn | formatDate('dd MMM yyyy') }}
         </p>
     {% endset %}
     {{ govukNotificationBanner({ html: html }) }}
@@ -18,7 +18,7 @@
         {{ assessmentSummary | toFullName }} is ineligible for HDC
         </p>
         <p>
-            Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
+            Assessment completed by {{ completedBy }} at HMP {{ completedAt }} on {{ completedOn | formatDate('dd MMM yyyy') }}
         </p>
         <p>
             Result: <span data-qa="failureType">{{ criteria.failureType | title }}</span><br/>
