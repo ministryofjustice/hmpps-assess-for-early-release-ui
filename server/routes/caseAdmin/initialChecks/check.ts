@@ -2,6 +2,11 @@ import type { Request, Response } from 'express'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import paths from '../../paths'
 import type { EligibilityAndSuitabilityService } from '../../../services'
+import {
+  EligibilityCriterionProgress,
+  EligibilityStatus,
+  SuitabilityCriterionProgress,
+} from '../../../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class CheckRoutes {
   constructor(private readonly eligibilityAndSuitabilityService: EligibilityAndSuitabilityService) {}
@@ -43,21 +48,37 @@ export default class CheckRoutes {
       }),
     )
 
-    await this.eligibilityAndSuitabilityService.saveCriterionAnswers(req?.middleware?.clientToken, {
-      prisonNumber,
-      type: type.replace('-check', '') as 'eligibility' | 'suitability',
-      criterion,
-      form: req.body,
-      agent: res.locals.agent,
-    })
+    const eligibilityAndSuitabilityCaseView = await this.eligibilityAndSuitabilityService.saveCriterionAnswers(
+      req?.middleware?.clientToken,
+      {
+        prisonNumber,
+        type: type.replace('-check', '') as 'eligibility' | 'suitability',
+        criterion,
+        form: req.body,
+        agent: res.locals.agent,
+      },
+    )
 
+    res.redirect(
+      this.getNextPage(prisonNumber, type, req, nextCriterion, eligibilityAndSuitabilityCaseView.overallStatus),
+    )
+  }
+
+  getNextPage = (
+    prisonNumber: string,
+    type: string,
+    req: Request,
+    nextCriterion: EligibilityCriterionProgress | SuitabilityCriterionProgress,
+    eligibilityStatus: EligibilityStatus,
+  ): string => {
     let nextLocation = paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
-    if (req.body.saveType === 'nextQuestion') {
+    if (eligibilityStatus === 'INELIGIBLE' || eligibilityStatus === 'ELIGIBLE') {
+      nextLocation = paths.prison.assessment.initialChecks.checksComplete({ prisonNumber })
+    } else if (req.body.saveType === 'nextQuestion') {
       nextLocation = nextCriterion
         ? paths.prison.assessment.initialChecks.check({ prisonNumber, type, checkCode: nextCriterion?.code })
         : paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
     }
-
-    res.redirect(nextLocation)
+    return nextLocation
   }
 }

@@ -57,7 +57,7 @@ export default class EligibilityAndSuitabilityService {
       criterion: CriterionProgress
       form: Record<string, unknown>
     },
-  ) {
+  ): Promise<EligibilityAndSuitabilityCaseView> {
     const payload = this.sanitiseForm(criterion, form)
     logger.info('save check called', prisonNumber, type, criterion.code)
     const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)

@@ -1,5 +1,6 @@
 import {
   createAssessmentSummary,
+  createEligibilityAndSuitabilityCaseView,
   createEligibilityCriterionProgress,
   createQuestion,
 } from '../../../data/__testutils/testObjects'
@@ -73,6 +74,7 @@ describe('POST', () => {
       criterion: eligibilityCheck1,
       nextCriterion: eligibilityCheck2,
     })
+    eligibilityAndSuitabilityService.saveCriterionAnswers.mockResolvedValue(createEligibilityAndSuitabilityCaseView({}))
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
     req.params.type = 'eligibility-check'
@@ -104,6 +106,7 @@ describe('POST', () => {
       criterion: eligibilityCheck1,
       nextCriterion: eligibilityCheck2,
     })
+    eligibilityAndSuitabilityService.saveCriterionAnswers.mockResolvedValue(createEligibilityAndSuitabilityCaseView({}))
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
     req.params.type = 'eligibility-check'
@@ -149,6 +152,7 @@ describe('POST', () => {
       criterion: eligibilityCheck1,
       nextCriterion: undefined,
     })
+    eligibilityAndSuitabilityService.saveCriterionAnswers.mockResolvedValue(createEligibilityAndSuitabilityCaseView({}))
 
     req.params.prisonNumber = assessmentSummary.prisonNumber
     req.params.type = 'eligibility'

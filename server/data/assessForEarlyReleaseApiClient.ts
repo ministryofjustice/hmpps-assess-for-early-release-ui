@@ -130,7 +130,7 @@ export default class AssessForEarlyReleaseApiClient {
     return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
   }
 
-  async submitAnswer(prisonNumber: string, answer: CriterionCheck): Promise<void> {
+  async submitAnswer(prisonNumber: string, answer: CriterionCheck): Promise<EligibilityAndSuitabilityCaseView> {
     return this.restClient.put({
       path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
       data: answer,

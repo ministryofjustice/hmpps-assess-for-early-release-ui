@@ -3,7 +3,7 @@
 {% if criteria.overallStatus == 'ELIGIBLE' %}
     {% set html %}
         <p data-qa="bannerHeading" class="govuk-notification-banner__heading">
-        {{ assessmentSummary | toFullName }} is eligible for HDC
+        {{ assessmentSummary | toFullName }} is eligible and suitable for HDC
         </p>
         <p>
             Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
@@ -21,7 +21,7 @@
             Assessment completed by XXXXX at HMP XXXXX on XX XXX XXXX
         </p>
         <p>
-            Result: <span data-qa="failureType">{{ criteria.failureType | title }}</span></br>
+            Result: <span data-qa="failureType">{{ criteria.failureType | title }}</span><br/>
             Reason: <span data-qa="failureReasons">{{ criteria.failedCheckReasons }}</span>
         </p>
     {% endset %}

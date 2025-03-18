@@ -1,0 +1,107 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set pageTitle = 'Eligibility and suitability checks complete' + applicationName %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {%  if criteria.overallStatus == 'ELIGIBLE' %}
+                {{ govukPanel({
+                    titleText: "Eligibility and suitability checks complete",
+                    html: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' height='30' width='30'>
+                               <path d='M11.2869 24.6726L2.00415 15.3899L4.62189 12.7722L11.2869 19.4186L25.3781 5.32739L27.9958 7.96369L11.2869 24.6726Z' fill='currentColor'/>
+                           </svg> Eligible and suitable for HDC"
+                }) }}
+                <h2 class="govuk-heading-m govuk-!-margin-top-8">Eligibility and suitability decision</h2>
+                <p class="govuk-body">
+                    {{ criteria.assessmentSummary | toFullName }} is eligible and suitable for HDC.
+                </p>
+                <h2 class="govuk-heading-m">Next steps</h2>
+                <p class="govuk-body">
+                    Download the following letters to tell {{ criteria.assessmentSummary.forename | title }} the outcome of the assessment.
+                </p>
+                <p class="govuk-body">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                       href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ELIGIBLE_FORM' })}}">
+                       <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
+                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
+                       </svg>
+                       Home detention curfew: eligible
+                    </a>
+                </p>
+                <p class="govuk-body">
+                    Download the following letters to ask {{ criteria.assessmentSummary.forename | title }} to provide details
+                    of where they could live if released.
+                </p>
+                <p class="govuk-body">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM' })}}">
+                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
+                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
+                        </svg>
+                        Home detention curfew: information about address checks
+                    </a>
+                </p>
+                <p class="govuk-body">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_FORM' })}}">
+                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
+                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
+                        </svg>
+                        Home detention curfew: address form
+                    </a>
+                </p>
+            {% else %}
+                {{ govukPanel({
+                    classes: "ineligible-outcome-panel",
+                    titleText: "Eligibility and suitability checks complete",
+                    html: "&#x2715; Ineligible for HDC"
+                }) }}
+                <h2 class="govuk-heading-m govuk-!-margin-top-8">Eligibility and suitability decision</h2>
+                <p class="govuk-body">
+                    {{ criteria.assessmentSummary | toFullName }} is ineligible for HDC because:
+                </p>
+                {% set failedCheckReasons = '' %}
+                {% for reason in criteria.failedCheckReasons %}
+                    {% set failedCheckReasons = failedCheckReasons + "<p>" + reason + "</p>" %}
+                {% endfor %}
+                {{ govukInsetText({
+                    html: failedCheckReasons
+                }) }}
+                <h2 class="govuk-heading-m">Next steps</h2>
+                <p class="govuk-body">
+                    Download the following letter to tell {{ criteria.assessmentSummary.forename | title }} that they are ineligible for HDC.
+                </p>
+                <p class="govuk-body">
+                    <a class="govuk-link govuk-link--no-visited-state"
+                       href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_NOT_ELIGIBLE_FORM' })}}">
+                        <svg class="moj-timeline__document-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 20" width="20" height="16">
+                            <path d="M9 7V1.5L14.5 7H9zM2 0C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6l-6-6H2z"></path>
+                        </svg>
+                        Home detention curfew: not eligible
+                    </a>
+                </p>
+            {% endif %}
+            <div class="govuk-button-group govuk-!-margin-top-7">
+                {{ govukButton({
+                    text: "Return to case list",
+                    href: paths.prison.prisonCaseload | toPath()
+                }) }}
+                {{ govukButton({
+                    text: "Return to application overview",
+                    href: paths.prison.assessment.home | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber })
+                }) }}
+            </div>
+            <p class="govuk-body govuk-!-margin-top-8">
+                <a href="#" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageScripts %}
+    <script src="/assets/js/task.js"></script>
+{% endblock %}

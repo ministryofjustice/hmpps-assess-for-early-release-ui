@@ -82,9 +82,52 @@ test.describe('Eligibility checks', () => {
     // answer 1 question for suitability criterion 1
     await expect(page.getByRole('heading', { name: 'Please answer question 4' })).toBeVisible()
     await page.getByRole('group', { name: 'Please answer question 4' }).getByLabel('Yes').click()
+    await assessForEarlyRelease.stubSaveCriterionAnswers(
+      anAssessmentSummary,
+      [
+        {
+          ...eligibilityCriterion1,
+          status: 'ELIGIBLE',
+        },
+        {
+          ...eligibilityCriterion2,
+          status: 'ELIGIBLE',
+        },
+      ],
+      [
+        {
+          ...suitabilityCriterion1,
+          status: 'SUITABLE',
+        },
+      ],
+      'ELIGIBLE',
+      'ELIGIBLE',
+    )
+    await assessForEarlyRelease.stubGetEligibilityAndSuitability(
+      anAssessmentSummary,
+      [
+        {
+          ...eligibilityCriterion1,
+          status: 'ELIGIBLE',
+        },
+        {
+          ...eligibilityCriterion2,
+          status: 'ELIGIBLE',
+        },
+      ],
+      [
+        {
+          ...suitabilityCriterion1,
+          status: 'SUITABLE',
+        },
+      ],
+      'ELIGIBLE',
+      'ELIGIBLE',
+    )
     await page.getByText(nextQuestionLinkText).click()
 
-    await expect(page.getByRole('heading', { name: 'Assess eligibility and suitability' })).toBeVisible()
+    await expect(page.getByText('Eligibility and suitability checks complete')).toBeVisible()
+    await expect(page.getByText('Jimmy Quelch is eligible and suitable for HDC')).toBeVisible()
 
     const submittedChecks = await assessForEarlyRelease.getSubmittedEligibilityChecks(anAssessmentSummary)
     expect(submittedChecks).toStrictEqual([
