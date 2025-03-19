@@ -5,13 +5,10 @@ import type {
   ResidentialChecksView,
   SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
-import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
 export default class ResidentialChecksService {
-  constructor(
-    private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
-  ) {}
+  constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
   public async getResidentialChecksView(
     token: string,
@@ -19,8 +16,12 @@ export default class ResidentialChecksService {
     prisonNumber: string,
     addressCheckRequestId: number,
   ): Promise<ResidentialChecksView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getResidentialChecksView(prisonNumber, addressCheckRequestId)
+    return this.assessForEarlyReleaseApiClient.getResidentialChecksView(
+      token,
+      agent,
+      prisonNumber,
+      addressCheckRequestId,
+    )
   }
 
   public async getResidentialChecksTask(
@@ -30,8 +31,13 @@ export default class ResidentialChecksService {
     addressCheckRequestId: number,
     taskCode: string,
   ): Promise<ResidentialChecksTaskView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getResidentialChecksTask(prisonNumber, addressCheckRequestId, taskCode)
+    return this.assessForEarlyReleaseApiClient.getResidentialChecksTask(
+      token,
+      agent,
+      prisonNumber,
+      addressCheckRequestId,
+      taskCode,
+    )
   }
 
   public async saveResidentialChecksTaskAnswers(
@@ -41,8 +47,9 @@ export default class ResidentialChecksService {
     addressCheckRequestId: number,
     saveAnswersRequest: SaveResidentialChecksTaskAnswersRequest,
   ): Promise<ResidentialChecksTaskAnswersSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+    return this.assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+      token,
+      agent,
       prisonNumber,
       addressCheckRequestId,
       saveAnswersRequest,

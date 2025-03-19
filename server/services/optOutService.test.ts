@@ -4,7 +4,6 @@ import { createAssessmentSummary } from '../data/__testutils/testObjects'
 import OptOutReasonType from '../enumeration/optOutReasonType'
 import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 
@@ -12,8 +11,7 @@ describe('Opt Out Service', () => {
   let optOutService: OptOutService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    optOutService = new OptOutService(AssessForEarlyReleaseApiClientBuilder)
+    optOutService = new OptOutService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -36,8 +34,7 @@ describe('Opt Out Service', () => {
         agent,
       })
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
-      expect(assessForEarlyReleaseApiClient.optOut).toHaveBeenCalledWith('A1234AB', {
+      expect(assessForEarlyReleaseApiClient.optOut).toHaveBeenCalledWith(token, agent, 'A1234AB', {
         otherDescription: undefined,
         reasonType: 'DOES_NOT_WANT_TO_BE_TAGGED',
         agent,

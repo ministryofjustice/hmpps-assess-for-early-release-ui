@@ -47,8 +47,8 @@ export default function createApp(services: Services, applicationInfo: Applicati
   app.use(authorisationMiddleware())
   app.use(pdfRenderer())
   app.use(setUpCsrf())
-  app.use(populateClientToken(services.hmppsAuthClient))
-  app.use(setUpCurrentUser(services.userService))
+  app.use(populateClientToken(services.dataAccess.authClient))
+  app.use(setUpCurrentUser(services.userService, services.dataAccess.verificationClient))
   app.get('*', getFrontendComponents(services.hmppsComponentsService))
 
   app.use(setUpValidationMiddleware())

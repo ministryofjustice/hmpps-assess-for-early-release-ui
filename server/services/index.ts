@@ -1,4 +1,4 @@
-import { dataAccess, hmppsComponentsClientBuilder } from '../data'
+import { dataAccess } from '../data'
 import AuditService from './auditService'
 import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
@@ -12,28 +12,28 @@ import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 import FormService from './formService'
 
 export const services = () => {
-  const { hmppsAuditClient, assessForEarlyReleaseApiClientBuilder, hmppsAuthClient } = dataAccess
-  const addressService = new AddressService(assessForEarlyReleaseApiClientBuilder)
+  const { hmppsAuditClient, assessForEarlyReleaseApiClient, hmppsComponentsClient } = dataAccess
+  const addressService = new AddressService(assessForEarlyReleaseApiClient)
   const auditService = new AuditService(hmppsAuditClient)
-  const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClientBuilder)
-  const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClientBuilder)
-  const eligibilityAndSuitabilityService = new EligibilityAndSuitabilityService(assessForEarlyReleaseApiClientBuilder)
-  const optOutService = new OptOutService(assessForEarlyReleaseApiClientBuilder)
+  const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClient)
+  const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
+  const eligibilityAndSuitabilityService = new EligibilityAndSuitabilityService(assessForEarlyReleaseApiClient)
+  const optOutService = new OptOutService(assessForEarlyReleaseApiClient)
   const communityOffenderManagerCaseloadService = new CommunityOffenderManagerCaseloadService(
-    assessForEarlyReleaseApiClientBuilder,
+    assessForEarlyReleaseApiClient,
   )
-  const residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClientBuilder)
-  const userService = new UserService(assessForEarlyReleaseApiClientBuilder)
-  const decisionMakerCaseloadService = new DecisionMakerCaseloadService(assessForEarlyReleaseApiClientBuilder)
-  const formService = new FormService(assessForEarlyReleaseApiClientBuilder)
+  const residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClient)
+  const userService = new UserService(assessForEarlyReleaseApiClient)
+  const decisionMakerCaseloadService = new DecisionMakerCaseloadService(assessForEarlyReleaseApiClient)
+  const formService = new FormService(assessForEarlyReleaseApiClient)
 
   return {
+    dataAccess,
     addressService,
     auditService,
     caseAdminCaseloadService,
     communityOffenderManagerCaseloadService,
     eligibilityAndSuitabilityService,
-    hmppsAuthClient,
     hmppsComponentsService,
     optOutService,
     residentialChecksService,

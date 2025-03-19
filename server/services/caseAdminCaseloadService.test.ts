@@ -4,7 +4,6 @@ import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAgent, createAssessmentOverviewSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { convertToTitleCase } from '../utils/utils'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const agent = createAgent() as Agent
@@ -13,8 +12,7 @@ describe('CA Caseload Service', () => {
   let caseAdminCaseloadService: CaseAdminCaseloadService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    caseAdminCaseloadService = new CaseAdminCaseloadService(AssessForEarlyReleaseApiClientBuilder)
+    caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -28,7 +26,6 @@ describe('CA Caseload Service', () => {
 
       const result = await caseAdminCaseloadService.getCaseAdminCaseload(token, agent, 'MDI')
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual([
         {
           name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
@@ -60,7 +57,6 @@ describe('CA Caseload Service', () => {
         assessmentOverviewSummary.prisonNumber,
       )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(assessmentOverviewSummary)
     })
   })
