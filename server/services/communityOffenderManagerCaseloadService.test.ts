@@ -4,7 +4,6 @@ import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAgent, createAssessmentOverviewSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { ProbationUser } from '../interfaces/hmppsUser'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const user = {
@@ -16,9 +15,8 @@ describe('COM Caseload Service', () => {
   let communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
     communityOffenderManagerCaseloadService = new CommunityOffenderManagerCaseloadService(
-      AssessForEarlyReleaseApiClientBuilder,
+      assessForEarlyReleaseApiClient,
     )
   })
 
@@ -37,7 +35,6 @@ describe('COM Caseload Service', () => {
         user,
       )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual([
         {
           name: 'Jim Smith',
@@ -61,7 +58,6 @@ describe('COM Caseload Service', () => {
         assessmentOverviewSummary.prisonNumber,
       )
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result).toEqual(assessmentOverviewSummary)
     })
   })

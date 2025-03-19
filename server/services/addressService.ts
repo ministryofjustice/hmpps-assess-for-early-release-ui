@@ -1,4 +1,3 @@
-import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import type {
   AddResidentRequest,
@@ -11,18 +10,14 @@ import type {
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export default class AddressService {
-  constructor(
-    private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
-  ) {}
+  constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
   public async findAddressesForPostcode(token: string, agent: Agent, postcode: string): Promise<AddressSummary[]> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.findAddressesForPostcode(postcode)
+    return this.assessForEarlyReleaseApiClient.findAddressesForPostcode(token, agent, postcode)
   }
 
   public async getAddressForUprn(token: string, agent: Agent, uprn: string): Promise<AddressSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getAddressForUprn(uprn)
+    return this.assessForEarlyReleaseApiClient.getAddressForUprn(token, agent, uprn)
   }
 
   public async addStandardAddressCheckRequest(
@@ -31,8 +26,12 @@ export default class AddressService {
     prisonNumber: string,
     addStandardAddressCheckRequest: AddStandardAddressCheckRequest,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(prisonNumber, addStandardAddressCheckRequest)
+    return this.assessForEarlyReleaseApiClient.addStandardAddressCheckRequest(
+      token,
+      agent,
+      prisonNumber,
+      addStandardAddressCheckRequest,
+    )
   }
 
   public async getStandardAddressCheckRequest(
@@ -41,8 +40,7 @@ export default class AddressService {
     prisonNumber: string,
     requestId: number,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getStandardAddressCheckRequest(prisonNumber, requestId)
+    return this.assessForEarlyReleaseApiClient.getStandardAddressCheckRequest(token, agent, prisonNumber, requestId)
   }
 
   public async deleteAddressCheckRequest(
@@ -51,8 +49,7 @@ export default class AddressService {
     prisonNumber: string,
     requestId: number,
   ): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.deleteAddressCheckRequest(prisonNumber, requestId)
+    return this.assessForEarlyReleaseApiClient.deleteAddressCheckRequest(token, agent, prisonNumber, requestId)
   }
 
   public async getCheckRequestsForAssessment(
@@ -60,18 +57,15 @@ export default class AddressService {
     agent: Agent,
     prisonNumber: string,
   ): Promise<CheckRequestSummary[]> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getCheckRequestsForAssessment(prisonNumber)
+    return this.assessForEarlyReleaseApiClient.getCheckRequestsForAssessment(token, agent, prisonNumber)
   }
 
   public async submitAssessmentForAddressChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(prisonNumber, agent)
+    return this.assessForEarlyReleaseApiClient.submitAssessmentForAddressChecks(token, agent, prisonNumber)
   }
 
   public async submitAssessmentForPreDecisionChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, agent)
+    return this.assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(token, agent, prisonNumber)
   }
 
   public async addResidents(
@@ -81,8 +75,13 @@ export default class AddressService {
     addressCheckRequestId: number,
     addResidentRequest: AddResidentRequest[],
   ) {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.addResidents(prisonNumber, addressCheckRequestId, addResidentRequest)
+    return this.assessForEarlyReleaseApiClient.addResidents(
+      token,
+      agent,
+      prisonNumber,
+      addressCheckRequestId,
+      addResidentRequest,
+    )
   }
 
   public async updateCaseAdminAdditionalInformation(
@@ -92,8 +91,9 @@ export default class AddressService {
     addressCheckRequestId: number,
     updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
   ) {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.updateCaseAdminAdditionalInformation(
+    return this.assessForEarlyReleaseApiClient.updateCaseAdminAdditionalInformation(
+      token,
+      agent,
       prisonNumber,
       addressCheckRequestId,
       updateCaseAdminAdditionInfoRequest,

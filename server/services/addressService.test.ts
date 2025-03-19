@@ -10,7 +10,6 @@ import {
   createAgent,
 } from '../data/__testutils/testObjects'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const agent = createAgent() as Agent
@@ -19,8 +18,7 @@ describe('Address Service', () => {
   let addressService: AddressService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    addressService = new AddressService(AssessForEarlyReleaseApiClientBuilder)
+    addressService = new AddressService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -60,7 +58,6 @@ describe('Address Service', () => {
 
     const result = await addressService.findAddressesForPostcode(token, agent, postcode)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(addressSummaries)
   })
 
@@ -70,7 +67,6 @@ describe('Address Service', () => {
 
     const result = await addressService.getAddressForUprn(token, agent, addressSummary.uprn)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(addressSummary)
   })
 
@@ -88,7 +84,6 @@ describe('Address Service', () => {
       standardAddressCheckRequest,
     )
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(requestSummary)
   })
 
@@ -101,7 +96,6 @@ describe('Address Service', () => {
 
     const result = await addressService.getStandardAddressCheckRequest(token, agent, prisonNumber, requestId)
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual(requestSummary)
   })
 
@@ -115,7 +109,6 @@ describe('Address Service', () => {
 
     const result = await addressService.addResidents(token, agent, prisonNumber, requestId, [addResidentRequest])
 
-    expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
     expect(result).toEqual([residentSummary])
   })
 })

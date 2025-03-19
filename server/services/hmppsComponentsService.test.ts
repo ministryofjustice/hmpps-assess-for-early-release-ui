@@ -8,15 +8,12 @@ describe('hmppsComponentsService', () => {
   const userToken = 'SOME-USER-TOKEN'
   const components: Array<AvailableComponent> = ['footer', 'header']
 
-  const hmppsComponentsClient = new HmppsComponentsClient(userToken) as jest.Mocked<HmppsComponentsClient>
-  const hmppsComponentsClientBuilder = jest.fn()
+  const hmppsComponentsClient = new HmppsComponentsClient(null) as jest.Mocked<HmppsComponentsClient>
 
-  const service = new HmppsComponentsService(hmppsComponentsClientBuilder)
+  const service = new HmppsComponentsService(hmppsComponentsClient)
 
   beforeEach(() => {
     jest.resetAllMocks()
-
-    hmppsComponentsClientBuilder.mockReturnValue(hmppsComponentsClient)
   })
 
   describe('getComponents', () => {
@@ -39,7 +36,7 @@ describe('hmppsComponentsService', () => {
       const result = await service.getComponents(components, userToken)
 
       expect(result).toEqual(response)
-      expect(hmppsComponentsClient.getComponents).toHaveBeenCalledWith(components)
+      expect(hmppsComponentsClient.getComponents).toHaveBeenCalledWith(userToken, components)
     })
   })
 })

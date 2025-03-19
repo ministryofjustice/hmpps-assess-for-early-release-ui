@@ -4,23 +4,19 @@ import type {
   CriterionView,
   EligibilityAndSuitabilityCaseView,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
-import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
 import logger from '../../logger'
 
 export default class EligibilityAndSuitabilityService {
-  constructor(
-    private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
-  ) {}
+  constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
   public async getCriteria(
     token: string,
     agent: Agent,
     prisonNumber: string,
   ): Promise<EligibilityAndSuitabilityCaseView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getEligibilityCriteriaView(prisonNumber)
+    return this.assessForEarlyReleaseApiClient.getEligibilityCriteriaView(token, agent, prisonNumber)
   }
 
   public async getCriterion(
@@ -30,14 +26,12 @@ export default class EligibilityAndSuitabilityService {
     checkCode: string,
     agent?: Agent,
   ): Promise<CriterionView> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-
     if (type === 'eligibility-check') {
-      return assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, checkCode)
+      return this.assessForEarlyReleaseApiClient.getEligibilityCriterionView(token, agent, prisonNumber, checkCode)
     }
 
     if (type === 'suitability-check') {
-      return assessForEarlyReleaseApiClient.getSuitabilityCriterionView(prisonNumber, checkCode)
+      return this.assessForEarlyReleaseApiClient.getSuitabilityCriterionView(token, agent, prisonNumber, checkCode)
     }
     throw new Error(`Unknown type: ${type}`)
   }
@@ -60,8 +54,7 @@ export default class EligibilityAndSuitabilityService {
   ): Promise<EligibilityAndSuitabilityCaseView> {
     const payload = this.sanitiseForm(criterion, form)
     logger.info('save check called', prisonNumber, type, criterion.code)
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.submitAnswer(prisonNumber, {
+    return this.assessForEarlyReleaseApiClient.submitAnswer(token, agent, prisonNumber, {
       type,
       code: criterion.code,
       answers: payload,
