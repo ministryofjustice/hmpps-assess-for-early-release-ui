@@ -3,7 +3,6 @@ import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAgent } from '../data/__testutils/testObjects'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const agent = createAgent() as Agent
@@ -12,8 +11,7 @@ describe('Pdf Service', () => {
   let formService: FormService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    formService = new FormService(AssessForEarlyReleaseApiClientBuilder)
+    formService = new FormService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -32,8 +30,12 @@ describe('Pdf Service', () => {
       await formService.getForm(token, agent, prisonNumber, documentSubjectType)
 
       // Then
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
-      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith(prisonNumber, documentSubjectType)
+      expect(assessForEarlyReleaseApiClient.getForm).toHaveBeenCalledWith(
+        token,
+        agent,
+        prisonNumber,
+        documentSubjectType,
+      )
     })
   })
 })

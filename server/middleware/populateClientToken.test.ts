@@ -1,6 +1,6 @@
 import populateClientToken from './populateClientToken'
 import { mockNext, mockRequest, mockResponse } from '../routes/__testutils/requestTestUtils'
-import { createMockHmppsAuthClient } from '../data/__testutils/mocks'
+import { createMockAuthenticationClient } from '../data/__testutils/mocks'
 import logger from '../../logger'
 
 jest.mock('../../logger')
@@ -15,11 +15,11 @@ const res = mockResponse({
   },
 })
 const next = mockNext()
-const hmppsAuthClient = createMockHmppsAuthClient()
+const hmppsAuthClient = createMockAuthenticationClient()
 
 describe('authorisationMiddleware', () => {
   beforeEach(() => {
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    hmppsAuthClient.getToken.mockResolvedValue(token)
   })
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('authorisationMiddleware', () => {
   })
 
   it('should return next and log info', async () => {
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(null)
+    hmppsAuthClient.getToken.mockResolvedValue(null)
     await populateClientToken(hmppsAuthClient)(req, res, next)
     expect(logger.info).toHaveBeenCalledWith('No client token available')
     expect(next).toHaveBeenCalled()
@@ -41,7 +41,7 @@ describe('authorisationMiddleware', () => {
 
   it('should return next with an error', async () => {
     const error = new Error('SOME-ERROR')
-    hmppsAuthClient.getSystemClientToken.mockRejectedValue(error)
+    hmppsAuthClient.getToken.mockRejectedValue(error)
     await populateClientToken(hmppsAuthClient)(req, res, next)
     expect(logger.error).toHaveBeenCalledWith(error, 'Failed to retrieve client token for: LocalName')
     expect(next).toHaveBeenCalled()

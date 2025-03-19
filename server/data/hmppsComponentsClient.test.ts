@@ -11,7 +11,7 @@ describe('hmppsComponentsClient', () => {
 
   beforeEach(() => {
     fakeComponentsApi = nock(config.apis.hmppsComponents.url)
-    hmppsComponentsClient = new HmppsComponentsClient(token)
+    hmppsComponentsClient = new HmppsComponentsClient(null)
   })
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('hmppsComponentsClient', () => {
         .matchHeader('x-user-token', token)
         .reply(200, response)
 
-      const output = await hmppsComponentsClient.getComponents(['header', 'footer'])
+      const output = await hmppsComponentsClient.getComponents(token, ['header', 'footer'])
       expect(output).toEqual(response)
     })
   })

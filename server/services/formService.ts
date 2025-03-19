@@ -1,11 +1,8 @@
 import { Agent, DocumentSubjectType } from '../@types/assessForEarlyReleaseApiClientTypes'
-import type { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 
 export default class FormService {
-  constructor(
-    private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
-  ) {}
+  constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
   public async getForm(
     token: string,
@@ -13,7 +10,6 @@ export default class FormService {
     prisonNumber: string,
     documentSubjectType: DocumentSubjectType,
   ): Promise<Buffer> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-    return assessForEarlyReleaseApiClient.getForm(prisonNumber, documentSubjectType)
+    return this.assessForEarlyReleaseApiClient.getForm(token, agent, prisonNumber, documentSubjectType)
   }
 }
