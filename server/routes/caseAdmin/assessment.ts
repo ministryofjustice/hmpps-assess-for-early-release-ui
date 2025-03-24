@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../services'
+import { getStatusFormsMap } from '../../config/forms'
 
 export default class AssessmentRoutes {
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
@@ -10,9 +11,14 @@ export default class AssessmentRoutes {
       res.locals.agent,
       req.params.prisonNumber,
     )
+    const { status } = assessmentSummary
 
     res.render('pages/caseAdmin/assessment', {
-      assessmentSummary: { ...assessmentSummary, tasks: assessmentSummary.tasks.PRISON_CA },
+      assessmentSummary: {
+        ...assessmentSummary,
+        tasks: assessmentSummary.tasks.PRISON_CA,
+        formsToShow: getStatusFormsMap[status],
+      },
     })
   }
 }

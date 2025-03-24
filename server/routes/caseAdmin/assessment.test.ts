@@ -32,7 +32,11 @@ describe('GET', () => {
       req.params.prisonNumber,
     )
     expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/assessment', {
-      assessmentSummary: { ...assessmentOverviewSummary, tasks: assessmentOverviewSummary.tasks.PRISON_CA },
+      assessmentSummary: {
+        ...assessmentOverviewSummary,
+        tasks: assessmentOverviewSummary.tasks.PRISON_CA,
+        formsToShow: [],
+      },
     })
   })
 })

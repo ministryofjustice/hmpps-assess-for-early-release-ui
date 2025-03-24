@@ -2,7 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-{% from "partials/documentIcon.njk" import documentIcon %}
 
 {% set pageTitle = 'Eligibility and suitability checks complete' + applicationName %}
 
@@ -25,9 +24,10 @@
                     Download the following letters to tell {{ criteria.assessmentSummary.forename | title }} the outcome of the assessment.
                 </p>
                 <p class="govuk-body">
+                    <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
                     <a class="govuk-link govuk-link--no-visited-state"
                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ELIGIBLE_FORM' })}}">
-                       {{ documentIcon() }}Home detention curfew: eligible
+                       Home detention curfew: eligible
                     </a>
                 </p>
                 <p class="govuk-body">
@@ -35,15 +35,16 @@
                     of where they could live if released.
                 </p>
                 <p class="govuk-body">
+                    <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
                     <a class="govuk-link govuk-link--no-visited-state"
                         href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM' })}}">
-                        {{ documentIcon() }}Home detention curfew: information about address checks
+                        Home detention curfew: information about address checks
                     </a>
                 </p>
                 <p class="govuk-body">
+                    <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
                     <a class="govuk-link govuk-link--no-visited-state"
                         href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_ADDRESS_CHECKS_FORM' })}}">
-                        {{ documentIcon() }}
                         Home detention curfew: address form
                     </a>
                 </p>
@@ -69,9 +70,9 @@
                     Download the following letter to tell {{ criteria.assessmentSummary.forename | title }} that they are ineligible for HDC.
                 </p>
                 <p class="govuk-body">
+                    <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
                     <a class="govuk-link govuk-link--no-visited-state"
                        href="{{ paths.offender.document | toPath({ prisonNumber: criteria.assessmentSummary.prisonNumber, documentSubjectType: 'OFFENDER_NOT_ELIGIBLE_FORM' })}}">
-                        {{ documentIcon() }}
                         Home detention curfew: not eligible
                     </a>
                 </p>

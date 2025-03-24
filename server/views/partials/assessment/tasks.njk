@@ -86,7 +86,7 @@
  
     
     {% set tasksHtml %}
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row" id="tasks">
       <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-l">Tasks</h1>
         {{ mojTicketPanel({
@@ -99,6 +99,23 @@
     </div>
     {% endset -%}
 
+    {% set formsHtml %}
+      <div class="govuk-grid-row" id="forms">
+        <div class="govuk-grid-column-two-thirds">
+          <h2 class="govuk-heading-l">Forms</h2>
+          <p class="govuk-body">These forms will open in a new tab for printing.</p>
+            {% if params.formsToShow %}
+              {% for form in params.formsToShow %}
+                  <p class="govuk-body">
+                    <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
+                    <a class="govuk-link govuk-link--no-visited-state" href={{ form.link(params.prisonNumber) }} target="_blank"> {{ form.text }} </a>
+                  </p>
+              {% endfor %}
+            {% endif %}
+        </div>
+      </div>
+    {% endset -%}
+
     {{ govukTabs({
             items: [
                 {
@@ -106,6 +123,13 @@
                     id: "tasks",
                     panel: {
                             html: tasksHtml
+                        }
+                },
+                {
+                    label: "Forms",
+                    id: "forms",
+                    panel: {
+                            html: formsHtml
                         }
                 }
             ]
