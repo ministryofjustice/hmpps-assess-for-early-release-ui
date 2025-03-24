@@ -108,7 +108,7 @@
               {% for form in params.formsToShow %}
                   <p class="govuk-body">
                     <img src="/assets/images/document-icon.svg" alt="Document icon" class="moj-timeline__document-icon">
-                    <a class="govuk-link govuk-link--no-visited-state" href={{ form.link }} target="_blank"> {{ form.text }} </a>
+                    <a class="govuk-link govuk-link--no-visited-state" href={{ form.link(params.prisonNumber) }} target="_blank"> {{ form.text }} </a>
                   </p>
               {% endfor %}
             {% endif %}

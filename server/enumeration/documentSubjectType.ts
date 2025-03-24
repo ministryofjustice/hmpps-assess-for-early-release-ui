@@ -1,4 +1,4 @@
-enum documentSubjectType {
+enum DocumentSubjectType {
   OFFENDER_ELIGIBLE_FORM = 'OFFENDER_ELIGIBLE_FORM',
   OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM = 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM',
   OFFENDER_ADDRESS_CHECKS_FORM = 'OFFENDER_ADDRESS_CHECKS_FORM',
@@ -14,4 +14,4 @@ enum documentSubjectType {
   OFFENDER_REFUSED_FORM = 'OFFENDER_REFUSED_FORM',
 }
 
-export default documentSubjectType
+export default DocumentSubjectType
