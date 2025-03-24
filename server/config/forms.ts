@@ -76,5 +76,5 @@ export const getStatusFormsMap: { [key in AssessmentStatus]?: Form[] } = {
   ],
 }
 
-export const getLink = (prisonNumber: string, documentSubjectType: DocumentSubjectType): string =>
+const getLink = (prisonNumber: string, documentSubjectType: DocumentSubjectType): string =>
   paths.offender.document({ prisonNumber, documentSubjectType })
