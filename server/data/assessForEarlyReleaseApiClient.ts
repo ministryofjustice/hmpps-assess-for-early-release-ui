@@ -1,3 +1,4 @@
+import { AuthenticationClient, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type {
   _AddressSummary,
   _CheckRequestSummary,
@@ -33,31 +34,21 @@ import type {
   AssessmentOverviewSummary,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
-import RestClient from './restClient'
 import { parseIsoDate } from '../utils/utils'
+import logger from '../../logger'
 
-export default class AssessForEarlyReleaseApiClient {
-  private restClient: RestClient
-
-  constructor(token: string, agent?: Agent) {
-    const defaultHeaders = {
-      username: agent?.username,
-      fullName: agent?.fullName,
-      role: agent?.role,
-      onBehalfOf: agent?.onBehalfOf,
-    }
-    this.restClient = new RestClient(
-      'assessForEarlyReleaseApi',
-      config.apis.assessForEarlyReleaseApi as ApiConfig,
-      token,
-      defaultHeaders,
-    )
+export default class AssessForEarlyReleaseApiClient extends RestClient {
+  constructor(authenticationClient: AuthenticationClient) {
+    super('assessForEarlyReleaseApi', config.apis.assessForEarlyReleaseApi as ApiConfig, logger, authenticationClient)
   }
 
-  async getCaseAdminCaseload(prisonCode: string): Promise<OffenderSummary[]> {
-    const caseAdminCaseload = await this.restClient.get<_OffenderSummary[]>({
-      path: `/prison/${prisonCode}/case-admin/caseload`,
-    })
+  async getCaseAdminCaseload(token: string, agent: Agent, prisonCode: string): Promise<OffenderSummary[]> {
+    const caseAdminCaseload = await this.getWithToken<_OffenderSummary[]>(
+      `/prison/${prisonCode}/case-admin/caseload`,
+      token,
+      agent,
+    )
+
     return caseAdminCaseload.map(c => {
       return {
         ...c,
@@ -68,10 +59,17 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getAssessmentOverviewSummary(prisonNumber: string): Promise<AssessmentOverviewSummary> {
-    const assessmentOverviewSummary = await this.restClient.get<_AssessmentOverviewSummary>({
-      path: `/offender/${prisonNumber}/current-assessment`,
-    })
+  async getAssessmentOverviewSummary(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<AssessmentOverviewSummary> {
+    const assessmentOverviewSummary = await this.getWithToken<_AssessmentOverviewSummary>(
+      `/offender/${prisonNumber}/current-assessment`,
+      token,
+      agent,
+    )
+
     return {
       ...assessmentOverviewSummary,
       dateOfBirth: parseIsoDate(assessmentOverviewSummary.dateOfBirth),
@@ -81,10 +79,17 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async getEligibilityCriteriaView(prisonNumber: string): Promise<EligibilityAndSuitabilityCaseView> {
-    const initialChecks = await this.restClient.get<_EligibilityAndSuitabilityCaseView>({
-      path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability`,
-    })
+  async getEligibilityCriteriaView(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<EligibilityAndSuitabilityCaseView> {
+    const initialChecks = await this.getWithToken<_EligibilityAndSuitabilityCaseView>(
+      `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability`,
+      token,
+      agent,
+    )
+
     return {
       ...initialChecks,
       assessmentSummary: {
@@ -96,10 +101,18 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async getEligibilityCriterionView(prisonNumber: string, code: string): Promise<EligibilityCriterionView> {
-    const check = await this.restClient.get<_EligibilityCriterionView>({
-      path: `/offender/${prisonNumber}/current-assessment/eligibility/${code}`,
-    })
+  async getEligibilityCriterionView(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    code: string,
+  ): Promise<EligibilityCriterionView> {
+    const check = await this.getWithToken<_EligibilityCriterionView>(
+      `/offender/${prisonNumber}/current-assessment/eligibility/${code}`,
+      token,
+      agent,
+    )
+
     return {
       ...check,
       assessmentSummary: {
@@ -111,10 +124,17 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async getSuitabilityCriterionView(prisonNumber: string, code: string): Promise<SuitabilityCriterionView> {
-    const check = await this.restClient.get<_SuitabilityCriterionView>({
-      path: `/offender/${prisonNumber}/current-assessment/suitability/${code}`,
-    })
+  async getSuitabilityCriterionView(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    code: string,
+  ): Promise<SuitabilityCriterionView> {
+    const check = await this.getWithToken<_SuitabilityCriterionView>(
+      `/offender/${prisonNumber}/current-assessment/suitability/${code}`,
+      token,
+      agent,
+    )
     return {
       ...check,
       assessmentSummary: {
@@ -126,41 +146,48 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async optOut(prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
-    return this.restClient.put({ path: `/offender/${prisonNumber}/current-assessment/opt-out`, data: optOutRequest })
+  async optOut(token: string, agent: Agent, prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
+    return this.putWithToken(`/offender/${prisonNumber}/current-assessment/opt-out`, token, agent, optOutRequest)
   }
 
-  async submitAnswer(prisonNumber: string, answer: CriterionCheck): Promise<EligibilityAndSuitabilityCaseView> {
-    return this.restClient.put({
-      path: `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
-      data: answer,
-    })
+  async submitAnswer(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    answer: CriterionCheck,
+  ): Promise<EligibilityAndSuitabilityCaseView> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/eligibility-and-suitability-check`,
+      token,
+      agent,
+      answer,
+    )
   }
 
-  async findAddressesForPostcode(postcode: string): Promise<AddressSummary[]> {
-    const addressSummaries = await this.restClient.get<_AddressSummary[]>({
-      path: `/addresses?postcode=${postcode}`,
-    })
+  async findAddressesForPostcode(token: string, agent: Agent, postcode: string): Promise<AddressSummary[]> {
+    const addressSummaries = await this.getWithToken<_AddressSummary[]>(`/addresses?postcode=${postcode}`, token, agent)
     return addressSummaries.map(addressSummary => {
       return { ...addressSummary, addressLastUpdated: parseIsoDate(addressSummary.addressLastUpdated) }
     })
   }
 
-  async getAddressForUprn(uprn: string): Promise<AddressSummary> {
-    const addressSummary = await this.restClient.get<_AddressSummary>({
-      path: `/address/uprn/${uprn}`,
-    })
+  async getAddressForUprn(token: string, agent: Agent, uprn: string): Promise<AddressSummary> {
+    const addressSummary = await this.getWithToken<_AddressSummary>(`/address/uprn/${uprn}`, token, agent)
     return { ...addressSummary, addressLastUpdated: parseIsoDate(addressSummary.addressLastUpdated) }
   }
 
   async addStandardAddressCheckRequest(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     addStandardAddressCheckRequest: AddStandardAddressCheckRequest,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const requestSummary = (await this.restClient.post<_StandardAddressCheckRequestSummary>({
-      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
-      data: addStandardAddressCheckRequest,
-    })) as _StandardAddressCheckRequestSummary
+    const requestSummary = await this.postWithToken<_StandardAddressCheckRequestSummary>(
+      `/offender/${prisonNumber}/current-assessment/standard-address-check-request`,
+      token,
+      agent,
+      addStandardAddressCheckRequest,
+    )
     return {
       ...requestSummary,
       dateRequested: parseIsoDate(requestSummary.dateRequested),
@@ -172,12 +199,16 @@ export default class AssessForEarlyReleaseApiClient {
   }
 
   async getStandardAddressCheckRequest(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     requestId: number,
   ): Promise<StandardAddressCheckRequestSummary> {
-    const requestSummary = await this.restClient.get<_StandardAddressCheckRequestSummary>({
-      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}`,
-    })
+    const requestSummary = await this.getWithToken<_StandardAddressCheckRequestSummary>(
+      `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${requestId}`,
+      token,
+      agent,
+    )
     return {
       ...requestSummary,
       dateRequested: parseIsoDate(requestSummary.dateRequested),
@@ -188,16 +219,24 @@ export default class AssessForEarlyReleaseApiClient {
     }
   }
 
-  async deleteAddressCheckRequest(prisonNumber: string, requestId: number): Promise<void> {
-    return this.restClient.delete({
-      path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
-    })
+  async deleteAddressCheckRequest(token: string, agent: Agent, prisonNumber: string, requestId: number): Promise<void> {
+    return this.deleteWithToken(
+      `/offender/${prisonNumber}/current-assessment/address-request/${requestId}`,
+      token,
+      agent,
+    )
   }
 
-  async getCheckRequestsForAssessment(prisonNumber: string): Promise<CheckRequestSummary[]> {
-    const requestSummary = await this.restClient.get<_CheckRequestSummary[]>({
-      path: `/offender/${prisonNumber}/current-assessment/address-check-requests`,
-    })
+  async getCheckRequestsForAssessment(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<CheckRequestSummary[]> {
+    const requestSummary = await this.getWithToken<_CheckRequestSummary[]>(
+      `/offender/${prisonNumber}/current-assessment/address-check-requests`,
+      token,
+      agent,
+    )
 
     return requestSummary.map(c => {
       return {
@@ -211,47 +250,61 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async submitAssessmentForAddressChecks(prisonNumber: string, agent: Agent): Promise<void> {
-    return this.restClient.put({
-      path: `/offender/${prisonNumber}/current-assessment/submit-for-address-checks`,
-      data: agent,
-    })
+  async submitAssessmentForAddressChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/submit-for-address-checks`,
+      token,
+      agent,
+      agent,
+    )
   }
 
-  async submitAssessmentForPreDecisionChecks(prisonNumber: string, agent: Agent): Promise<void> {
-    return this.restClient.put({
-      path: `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`,
-      data: agent,
-    })
+  async submitAssessmentForPreDecisionChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`,
+      token,
+      agent,
+      agent,
+    )
   }
 
   async addResidents(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     addressCheckRequestId: number,
     addResidentRequest: AddResidentRequest[],
   ): Promise<ResidentSummary[]> {
-    const residentsSummary = (await this.restClient.post<_ResidentSummary[]>({
-      path: `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
-      data: addResidentRequest,
-    })) as _ResidentSummary[]
+    const residentsSummary = await this.postWithToken<_ResidentSummary[]>(
+      `/offender/${prisonNumber}/current-assessment/standard-address-check-request/${addressCheckRequestId}/resident`,
+      token,
+      agent,
+      addResidentRequest,
+    )
 
     return residentsSummary.map(r => {
       return { ...r, dateOfBirth: parseIsoDate(r.dateOfBirth) }
     })
   }
 
-  async getStaffDetailsByUsername(username: string) {
-    return this.restClient.get<DeliusStaff>({ path: `/staff?username=${username}` })
+  async getStaffDetailsByUsername(token: string, agent: Agent, username: string) {
+    return this.getWithToken<DeliusStaff>(`/staff?username=${username}`, token, agent)
   }
 
-  async getPrisonUserDetails(username: string): Promise<PrisonUserDetails> {
-    return this.restClient.get<PrisonUserDetails>({ path: `/staff/prison/${username}` })
+  async getPrisonUserDetails(token: string, agent: Agent, username: string): Promise<PrisonUserDetails> {
+    return this.getWithToken<PrisonUserDetails>(`/staff/prison/${username}`, token, agent)
   }
 
-  async getCommunityOffenderManagerCaseload(staffCode: string): Promise<OffenderSummary[]> {
-    const caseAdminCaseload = await this.restClient.get<_OffenderSummary[]>({
-      path: `/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
-    })
+  async getCommunityOffenderManagerCaseload(
+    token: string,
+    agent: Agent,
+    staffCode: string,
+  ): Promise<OffenderSummary[]> {
+    const caseAdminCaseload = await this.getWithToken<_OffenderSummary[]>(
+      `/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
+      token,
+      agent,
+    )
     return caseAdminCaseload.map(c => {
       return {
         ...c,
@@ -262,20 +315,31 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getResidentialChecksView(prisonNumber: string, addressCheckRequestId: number): Promise<ResidentialChecksView> {
-    return this.restClient.get<ResidentialChecksView>({
-      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
-    })
+  async getResidentialChecksView(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    addressCheckRequestId: number,
+  ): Promise<ResidentialChecksView> {
+    return this.getWithToken<ResidentialChecksView>(
+      `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks`,
+      token,
+      agent,
+    )
   }
 
   async getResidentialChecksTask(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     addressCheckRequestId: number,
     taskCode: string,
   ): Promise<ResidentialChecksTaskView> {
-    const task = await this.restClient.get<_ResidentialChecksTaskView>({
-      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
-    })
+    const task = await this.getWithToken<_ResidentialChecksTaskView>(
+      `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/tasks/${taskCode}`,
+      token,
+      agent,
+    )
 
     return {
       ...task,
@@ -289,31 +353,41 @@ export default class AssessForEarlyReleaseApiClient {
   }
 
   async saveResidentialChecksTaskAnswers(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     addressCheckRequestId: number,
     answersRequest: SaveResidentialChecksTaskAnswersRequest,
   ): Promise<ResidentialChecksTaskAnswersSummary> {
-    return this.restClient.post<ResidentialChecksTaskAnswersSummary>({
-      path: `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/answers`,
-      data: answersRequest,
-    })
+    return this.postWithToken<ResidentialChecksTaskAnswersSummary>(
+      `/offender/${prisonNumber}/current-assessment/address-request/${addressCheckRequestId}/residential-checks/answers`,
+      token,
+      agent,
+      answersRequest,
+    )
   }
 
   async updateCaseAdminAdditionalInformation(
+    token: string,
+    agent: Agent,
     prisonNumber: string,
     requestId: number,
     updateCaseAdminAdditionInfoRequest: UpdateCaseAdminAdditionInfoRequest,
   ): Promise<void> {
-    return this.restClient.put({
-      path: `/offender/${prisonNumber}/current-assessment/address-request/${requestId}/case-admin-additional-information`,
-      data: updateCaseAdminAdditionInfoRequest,
-    })
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/address-request/${requestId}/case-admin-additional-information`,
+      token,
+      agent,
+      updateCaseAdminAdditionInfoRequest,
+    )
   }
 
-  async getDecisionMakerCaseload(prisonCode: string): Promise<OffenderSummary[]> {
-    const decisionMakerCaseload = await this.restClient.get<_OffenderSummary[]>({
-      path: `/prison/${prisonCode}/decision-maker/caseload`,
-    })
+  async getDecisionMakerCaseload(token: string, agent: Agent, prisonCode: string): Promise<OffenderSummary[]> {
+    const decisionMakerCaseload = await this.getWithToken<_OffenderSummary[]>(
+      `/prison/${prisonCode}/decision-maker/caseload`,
+      token,
+      agent,
+    )
     return decisionMakerCaseload.map(c => {
       return {
         ...c,
@@ -324,10 +398,80 @@ export default class AssessForEarlyReleaseApiClient {
     })
   }
 
-  async getForm(prisonNumber: string, documentSubjectType: DocumentSubjectType): Promise<Buffer> {
-    return this.restClient.get<Buffer>({
-      path: `/offender/${prisonNumber}/document/${documentSubjectType}`,
-      responseType: 'arraybuffer',
-    })
+  async getForm(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    documentSubjectType: DocumentSubjectType,
+  ): Promise<Buffer> {
+    return this.getWithToken<Buffer>(
+      `/offender/${prisonNumber}/document/${documentSubjectType}`,
+      token,
+      agent,
+      'arraybuffer',
+    )
+  }
+
+  private getDefaultHeaders(agent: Agent) {
+    return {
+      username: agent?.username,
+      fullName: agent?.fullName,
+      role: agent?.role,
+      onBehalfOf: agent?.onBehalfOf,
+    }
+  }
+
+  private getWithToken<T>(path: string, token: string, agent: Agent, responseType = ''): Promise<T> {
+    return this.get<T>(
+      {
+        path,
+        headers: this.getDefaultHeaders(agent),
+        responseType,
+      },
+      token,
+    )
+  }
+
+  private putWithToken<T>(
+    path: string,
+    token: string,
+    agent: Agent,
+    payload: Record<string, unknown> | string,
+  ): Promise<T> {
+    return this.put<T>(
+      {
+        path,
+        headers: this.getDefaultHeaders(agent),
+        data: payload,
+      },
+      token,
+    )
+  }
+
+  private postWithToken<T>(
+    path: string,
+    token: string,
+    agent: Agent,
+    payload: Record<string, unknown> | string | unknown[],
+  ): Promise<T> {
+    return this.post<T>(
+      {
+        path,
+        headers: this.getDefaultHeaders(agent),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: payload as any,
+      },
+      token,
+    )
+  }
+
+  private deleteWithToken<T>(path: string, token: string, agent: Agent): Promise<T> {
+    return this.delete<T>(
+      {
+        path,
+        headers: this.getDefaultHeaders(agent),
+      },
+      token,
+    )
   }
 }

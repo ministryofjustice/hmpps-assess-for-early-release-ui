@@ -5,7 +5,6 @@ import { parseIsoDate } from '../utils/utils'
 import AssessmentStatus from '../enumeration/assessmentStatus'
 import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 
-const assessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const agent = createAgent() as Agent
@@ -14,8 +13,7 @@ describe('ResidentialChecksService', () => {
   let residentialChecksService: ResidentialChecksService
 
   beforeEach(() => {
-    assessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClientBuilder)
+    residentialChecksService = new ResidentialChecksService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -34,7 +32,6 @@ describe('ResidentialChecksService', () => {
         1,
       )
 
-      expect(assessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
       expect(result.tasks).toHaveLength(6)
       expect(result.tasks).toEqual(expect.arrayContaining([expect.objectContaining({ status: 'NOT_STARTED' })]))
       expect(result.assessmentSummary).toEqual(

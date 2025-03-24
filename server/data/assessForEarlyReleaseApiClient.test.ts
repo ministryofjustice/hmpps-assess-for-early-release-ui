@@ -30,7 +30,7 @@ describe('assessForEarlyReleaseApiClient', () => {
 
   beforeEach(() => {
     fakeAferApi = nock(config.apis.assessForEarlyReleaseApi.url)
-    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(token, agent)
+    assessForEarlyReleaseApiClient = new AssessForEarlyReleaseApiClient(null)
   })
 
   afterEach(() => {
@@ -57,7 +57,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(prisonCode)
+      const output = await assessForEarlyReleaseApiClient.getCaseAdminCaseload(token, agent, prisonCode)
       expect(output).toEqual(offenderSummaryList)
     })
   })
@@ -80,7 +80,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
+      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(token, agent, prisonNumber)
       expect(output).toEqual(assessmentOverviewSummary)
     })
 
@@ -99,7 +99,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(prisonNumber)
+      const output = await assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(token, agent, prisonNumber)
       expect(output).toEqual({ ...assessmentOverviewSummary, crd: null })
     })
   })
@@ -124,7 +124,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getEligibilityCriteriaView(prisonNumber)
+      const output = await assessForEarlyReleaseApiClient.getEligibilityCriteriaView(token, agent, prisonNumber)
       expect(output).toEqual(view)
     })
   })
@@ -152,7 +152,12 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getEligibilityCriterionView(prisonNumber, 'code-1')
+      const output = await assessForEarlyReleaseApiClient.getEligibilityCriterionView(
+        token,
+        agent,
+        prisonNumber,
+        'code-1',
+      )
       expect(output).toEqual(criterionView)
     })
   })
@@ -180,7 +185,12 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getSuitabilityCriterionView(prisonNumber, 'code-1')
+      const output = await assessForEarlyReleaseApiClient.getSuitabilityCriterionView(
+        token,
+        agent,
+        prisonNumber,
+        'code-1',
+      )
       expect(output).toEqual(criterionView)
     })
   })
@@ -195,7 +205,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
-      await assessForEarlyReleaseApiClient.optOut(prisonNumber, {
+      await assessForEarlyReleaseApiClient.optOut(token, agent, prisonNumber, {
         reasonType: 'NOWHERE_TO_STAY',
         agent: {
           username: 'JohnDoe',
@@ -231,6 +241,8 @@ describe('assessForEarlyReleaseApiClient', () => {
         .reply(200, apiResponse)
 
       const response = await assessForEarlyReleaseApiClient.getResidentialChecksView(
+        token,
+        agent,
         residentialChecksView.assessmentSummary.prisonNumber,
         addressCheckRequestId,
       )
@@ -261,6 +273,8 @@ describe('assessForEarlyReleaseApiClient', () => {
         .reply(200, apiResponse)
 
       const response = await assessForEarlyReleaseApiClient.getResidentialChecksTask(
+        token,
+        agent,
         prisonNumber,
         addressCheckRequestId,
         taskCode,
@@ -295,6 +309,8 @@ describe('assessForEarlyReleaseApiClient', () => {
         .reply(201)
 
       await assessForEarlyReleaseApiClient.saveResidentialChecksTaskAnswers(
+        token,
+        agent,
         prisonNumber,
         addressCheckRequestId,
         saveAnswersRequest,
@@ -322,7 +338,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, apiResponse)
 
-      const output = await assessForEarlyReleaseApiClient.getDecisionMakerCaseload(prisonCode)
+      const output = await assessForEarlyReleaseApiClient.getDecisionMakerCaseload(token, agent, prisonCode)
       expect(output).toEqual(offenderSummaryList)
     })
   })
@@ -338,7 +354,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, pdfBuffer)
 
-      const output = await assessForEarlyReleaseApiClient.getForm(prisonNumber, documentSubjectType)
+      const output = await assessForEarlyReleaseApiClient.getForm(token, agent, prisonNumber, documentSubjectType)
       expect(output).toEqual(pdfBuffer)
     })
   })
@@ -352,12 +368,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
-      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(prisonNumber, {
-        username: 'afer_com',
-        fullName: 'Afer Com',
-        role: 'PROBATION_COM',
-        onBehalfOf: 'N55LAU',
-      })
+      await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(token, agent, prisonNumber)
       expect(fakeAferApi.isDone()).toBe(true)
     })
   })

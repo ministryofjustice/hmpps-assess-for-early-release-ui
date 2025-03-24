@@ -4,7 +4,6 @@ import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAgent, createStaffDetails } from '../data/__testutils/testObjects'
 import { HmppsUser } from '../interfaces/hmppsUser'
 
-const AssessForEarlyReleaseApiClientBuilder = jest.fn()
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
 const user = {
@@ -16,8 +15,7 @@ describe('User Service', () => {
   let userService: UserService
 
   beforeEach(() => {
-    AssessForEarlyReleaseApiClientBuilder.mockReturnValue(assessForEarlyReleaseApiClient)
-    userService = new UserService(AssessForEarlyReleaseApiClientBuilder)
+    userService = new UserService(assessForEarlyReleaseApiClient)
   })
 
   afterEach(() => {
@@ -31,7 +29,7 @@ describe('User Service', () => {
 
       const result = await userService.getStaffDetailsByUsername(token, agent, user)
 
-      expect(AssessForEarlyReleaseApiClientBuilder).toHaveBeenCalledWith(token, agent)
+      expect(assessForEarlyReleaseApiClient.getStaffDetailsByUsername).toHaveBeenCalledWith(token, agent, user.username)
       expect(result).toEqual(staffDetails)
     })
   })

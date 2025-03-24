@@ -1,12 +1,9 @@
-import { RestClientBuilder } from '../data'
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import type { Agent, OptOutRequest } from '../@types/assessForEarlyReleaseApiClientTypes'
 import OptOutReasonType from '../enumeration/optOutReasonType'
 
 export default class OptOutService {
-  constructor(
-    private readonly assessForEarlyReleaseApiClientBuilder: RestClientBuilder<AssessForEarlyReleaseApiClient>,
-  ) {}
+  constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
   public async optOut(
     token: string,
@@ -21,13 +18,11 @@ export default class OptOutService {
       agent: Agent
     },
   ): Promise<void> {
-    const assessForEarlyReleaseApiClient = this.assessForEarlyReleaseApiClientBuilder(token, agent)
-
     const optOutRequest: OptOutRequest = {
       reasonType: optOutReasonType,
       otherDescription: otherReason,
       agent,
     }
-    return assessForEarlyReleaseApiClient.optOut(prisonNumber, optOutRequest)
+    return this.assessForEarlyReleaseApiClient.optOut(token, agent, prisonNumber, optOutRequest)
   }
 }
