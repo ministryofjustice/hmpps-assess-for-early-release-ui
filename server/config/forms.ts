@@ -7,7 +7,7 @@ export type Form = {
   text: string
 }
 
-export const getBaseForms: Form[] = [
+const commonForms: Form[] = [
   {
     link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_ELIGIBLE_FORM),
     text: 'Eligible',
@@ -26,8 +26,8 @@ export const getBaseForms: Form[] = [
   },
 ]
 
-export const getStatusFormsMap: { [key in AssessmentStatus]?: Form[] } = {
-  [AssessmentStatus.ELIGIBLE_AND_SUITABLE]: [],
+export const getStatusFormsMap: { [key in AssessmentStatus]: Form[] } = {
+  [AssessmentStatus.ELIGIBLE_AND_SUITABLE]: commonForms,
   [AssessmentStatus.INELIGIBLE_OR_UNSUITABLE]: [
     {
       link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_NOT_ELIGIBLE_FORM),
@@ -39,12 +39,14 @@ export const getStatusFormsMap: { [key in AssessmentStatus]?: Form[] } = {
     },
   ],
   [AssessmentStatus.ADDRESS_UNSUITABLE]: [
+    ...commonForms,
     {
       link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_ADDRESS_UNSUITABLE_FORM),
       text: 'Address unsuitable',
     },
   ],
   [AssessmentStatus.POSTPONED]: [
+    ...commonForms,
     {
       link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_ADDRESS_UNSUITABLE_FORM),
       text: 'Address unsuitable',
@@ -55,6 +57,7 @@ export const getStatusFormsMap: { [key in AssessmentStatus]?: Form[] } = {
     },
   ],
   [AssessmentStatus.APPROVED]: [
+    ...commonForms,
     {
       link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_APPROVED_FORM),
       text: 'Approved',
@@ -69,11 +72,24 @@ export const getStatusFormsMap: { [key in AssessmentStatus]?: Form[] } = {
     },
   ],
   [AssessmentStatus.REFUSED]: [
+    ...commonForms,
     {
       link: prisonNumber => getLink(prisonNumber, DocumentSubjectType.OFFENDER_REFUSED_FORM),
       text: 'Refused',
     },
   ],
+  [AssessmentStatus.NOT_STARTED]: [],
+  [AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS]: [],
+  [AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS]: [],
+  [AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS]: [],
+  [AssessmentStatus.AWAITING_PRE_DECISION_CHECKS]: [],
+  [AssessmentStatus.AWAITING_DECISION]: [],
+  [AssessmentStatus.AWAITING_PRE_RELEASE_CHECKS]: [],
+  [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]: [],
+  [AssessmentStatus.AWAITING_REFUSAL]: [],
+  [AssessmentStatus.TIMED_OUT]: [],
+  [AssessmentStatus.OPTED_OUT]: [],
+  [AssessmentStatus.RELEASED_ON_HDC]: [],
 }
 
 const getLink = (prisonNumber: string, documentSubjectType: DocumentSubjectType): string =>
