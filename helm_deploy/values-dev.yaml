@@ -24,6 +24,8 @@ generic-service:
       SecRuleUpdateTargetById 942100 "!ARGS:_csrf"
       SecRuleUpdateTargetById 942440 "!ARGS:_csrf"
       SecRuleUpdateTargetById 949110 "!ARGS:code"  
+      SecRuleUpdateTargetById 942100 "!ARGS:code"
+      SecRuleUpdateTargetById 942440 "!ARGS:code"    
       SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=2"
 
   env:
