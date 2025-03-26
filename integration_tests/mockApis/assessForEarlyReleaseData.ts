@@ -114,6 +114,7 @@ export const assessmentSummary = (
   prisonNumber: string,
   status: AssessmentStatus = AssessmentStatus.NOT_STARTED,
 ): _AssessmentSummary => ({
+  bookingId: 23987,
   forename: 'Jimmy',
   surname: 'Quelch',
   dateOfBirth: '1974-07-18',

@@ -3,6 +3,7 @@ import { Agent } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { createAssessForEarlyReleaseApiClient } from '../data/__testutils/mocks'
 import { createAgent, createAssessmentOverviewSummary, createOffenderSummary } from '../data/__testutils/testObjects'
 import { ProbationUser } from '../interfaces/hmppsUser'
+import { convertToTitleCase } from '../utils/utils'
 
 const assessForEarlyReleaseApiClient = createAssessForEarlyReleaseApiClient()
 const token = 'TOKEN-1'
@@ -37,11 +38,15 @@ describe('COM Caseload Service', () => {
 
       expect(result).toEqual([
         {
-          name: 'Jim Smith',
-          prisonNumber: 'A1234AB',
-          probationPractitioner: 'CVl_COM',
+          name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
+          crn: aCase.crn,
+          prisonNumber: aCase.prisonNumber,
+          probationPractitioner: aCase.probationPractitioner,
+          crd: aCase.crd,
           hdced: aCase.hdced,
           workingDaysToHdced: 3,
+          status: aCase.status,
+          currentTask: aCase.currentTask,
         },
       ])
     })

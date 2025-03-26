@@ -27,6 +27,7 @@ export default class CaseAdminCaseloadService {
       name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
       prisonNumber: offender.prisonNumber,
       hdced: offender.hdced,
+      crd: offender.crd,
       workingDaysToHdced: offender.workingDaysToHdced,
       probationPractitioner: convertToTitleCase(offender.probationPractitioner?.trim()),
       isPostponed: offender.isPostponed,

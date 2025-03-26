@@ -1,29 +1,63 @@
 import { Request, Response } from 'express'
-import CommunityOffenderManagerCaseloadService from '../../services/communityOffenderManagerCaseloadService'
+import CommunityOffenderManagerCaseloadService, { Case } from '../../services/communityOffenderManagerCaseloadService'
 import { ProbationUser } from '../../interfaces/hmppsUser'
 import paths from '../paths'
+import AssessmentStatus from '../../enumeration/assessmentStatus'
+import { tasks, UsersWithTypes } from '../../config/tasks'
 
 export default class CaseloadRoutes {
+  static readonly INACTIVE_APPLICATIONS_STATUSES = [
+    AssessmentStatus.REFUSED,
+    AssessmentStatus.TIMED_OUT,
+    AssessmentStatus.OPTED_OUT,
+    AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
+  ]
+
   constructor(private readonly communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { user } = res.locals
-    const offenderSummaryList = await this.communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
+    const view = req.query.view || 'active-applications'
+    const activeApplicationView = view === 'active-applications'
+
+    const cases = await this.communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
       req?.middleware?.clientToken,
       res.locals.agent,
       user as ProbationUser,
     )
 
-    const caseload = offenderSummaryList.map(offender => {
-      return {
-        createLink: paths.probation.assessment.home(offender),
-        name: offender.name,
-        prisonNumber: offender.prisonNumber,
-        probationPractitioner: offender.probationPractitioner,
-        hdced: offender.hdced,
-        workingDaysToHdced: offender.workingDaysToHdced,
-      }
+    const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
+    const activeApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, true)
+
+    res.render('pages/communityOffenderManager/caseload', {
+      activeApplicationView,
+      caseload: activeApplications.map(this.mapToViewModel),
+      inactiveApplications: inactiveApplications.map(this.mapToViewModel),
     })
-    res.render('pages/communityOffenderManager/caseload', { caseload })
+  }
+
+  filterCasesByStatus = (cases: Case[], statuses: AssessmentStatus[], excludeStatuses: boolean): Case[] =>
+    cases.filter(aCase => (excludeStatuses ? !statuses.includes(aCase.status) : statuses.includes(aCase.status)))
+
+  mapToViewModel = (aCase: Case) => {
+    return {
+      ...aCase,
+      createLink: paths.probation.assessment.home(aCase),
+      currentTask: this.taskDescription(aCase.currentTask),
+    }
+  }
+
+  taskDescription = (taskCode: string): string => {
+    if (!taskCode) {
+      return null
+    }
+
+    for (const tasksForUser of Object.keys(tasks)) {
+      const task = tasks[tasksForUser as UsersWithTypes].find(aTask => aTask.code === taskCode)
+      if (task) {
+        return task.title
+      }
+    }
+    return null
   }
 }

@@ -10,10 +10,6 @@
                     html: offenderName(case, loop.index)
                 },
                 {
-                    attributes: tableAttributes(case, 'probationPractitioner', loop.index),
-                    html: case.probationPractitioner
-                },
-                {
                     attributes: tableAttributes(case, 'hdced', loop.index),
                     html: case.hdced | formatDate('dd MMM yyyy')
                 },
@@ -31,5 +27,5 @@
                 }
             ]), cases) %}
         {% endfor %}
-    {{ caseloadTable("Inactive applications", ["Name", "Probation practitioner", "HDCED", "CRD", "Last worked on by", "Outcome"], cases)}}
+    {{ caseloadTable("Inactive applications", ["Name", "HDCED", "CRD", "Last worked on by", "Outcome"], cases)}}
 {% endmacro %}
