@@ -488,7 +488,14 @@ export interface paths {
     get: operations['getCurrentAssessment']
     put?: never
     post?: never
-    delete?: never
+    /**
+     * Deletes the current assessment for a prisoner
+     * @description Deletes details of the current assessment for a prisoner
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    delete: operations['deleteCurrentAssessment']
     options?: never
     head?: never
     patch?: never
@@ -803,6 +810,283 @@ export interface components {
       }
       /** @description Details of the agent who is requesting the criterion check */
       agent: components['schemas']['AgentDto']
+    }
+    /** @description Response object which describes an assessment */
+    AssessmentSummary: {
+      /**
+       * Format: int64
+       * @description The offender's booking id
+       * @example 773722
+       */
+      bookingId: number
+      /**
+       * @description The offender's first name
+       * @example Bob
+       */
+      forename?: string
+      /**
+       * @description The offender's surname
+       * @example Smith
+       */
+      surname?: string
+      /**
+       * Format: date
+       * @description The offender's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth: string
+      /**
+       * @description The offender's prison number
+       * @example A1234AA
+       */
+      prisonNumber: string
+      /**
+       * Format: date
+       * @description The offender's home detention curfew eligibility date
+       * @example 2002-02-20
+       */
+      hdced: string
+      /**
+       * Format: date
+       * @description The offender's conditional release date
+       * @example 2002-02-20
+       */
+      crd?: string
+      /**
+       * @description The name of the prison the offender is in
+       * @example Foston Hall (HMP)
+       */
+      location: string
+      /**
+       * @description The assessment status
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status:
+        | 'NOT_STARTED'
+        | 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS'
+        | 'ELIGIBLE_AND_SUITABLE'
+        | 'AWAITING_ADDRESS_AND_RISK_CHECKS'
+        | 'ADDRESS_AND_RISK_CHECKS_IN_PROGRESS'
+        | 'AWAITING_PRE_DECISION_CHECKS'
+        | 'AWAITING_DECISION'
+        | 'APPROVED'
+        | 'AWAITING_PRE_RELEASE_CHECKS'
+        | 'PASSED_PRE_RELEASE_CHECKS'
+        | 'ADDRESS_UNSUITABLE'
+        | 'AWAITING_REFUSAL'
+        | 'INELIGIBLE_OR_UNSUITABLE'
+        | 'REFUSED'
+        | 'TIMED_OUT'
+        | 'POSTPONED'
+        | 'OPTED_OUT'
+        | 'RELEASED_ON_HDC'
+      /** @description The community offender manager assigned to this assessment */
+      responsibleCom?: components['schemas']['ComSummary']
+      /**
+       * @description The team that the COM responsible for this assessment is assigned to
+       * @example N55LAU
+       */
+      team?: string
+      /**
+       * @description The version of the policy that this assessment has been carried out under
+       * @example 1
+       */
+      policyVersion: string
+      /** @description The status of tasks that make up this assessment */
+      tasks: {
+        [key: string]: components['schemas']['TaskProgress'][]
+      }
+      /**
+       * @description The opt out reason type
+       * @enum {string}
+       */
+      optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
+      /** @description The opt out reason description if rhe optOutReasonType is OTHER */
+      optOutReasonOther?: string
+      /**
+       * @description Prisoner cell location
+       * @example A-1-002
+       */
+      cellLocation?: string
+      /**
+       * @description The main offense also know as the most serious offence
+       * @example Robbery
+       */
+      mainOffense?: string
+    }
+    /** @description A summary of a community offender manager */
+    ComSummary: {
+      /**
+       * @description The staff code
+       * @example A01B02C
+       */
+      staffCode: string
+      /**
+       * @description The username
+       * @example X33221
+       */
+      username?: string
+      /**
+       * @description The offender managers email address
+       * @example bob.jones@justice.gov.uk
+       */
+      email?: string
+      /**
+       * @description The offender managers first name
+       * @example Bob
+       */
+      forename?: string
+      /**
+       * @description The offender managers surname
+       * @example Jones
+       */
+      surname?: string
+    }
+    /** @description A view on the progress of suitability and eligibility criteria for a specific case */
+    EligibilityAndSuitabilityCaseView: {
+      /** @description A summary of an offender's current assessment */
+      assessmentSummary: components['schemas']['AssessmentSummary']
+      /**
+       * @description Overall status of eligibility assessment
+       * @example IN_PROGRESS
+       * @enum {string}
+       */
+      overallStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /**
+       * @description state of current eligibility checks
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description details of current eligibility checks */
+      eligibility: components['schemas']['EligibilityCriterionProgress'][]
+      /**
+       * @description state of current suitability checks
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description details of current suitability checks */
+      suitability: components['schemas']['SuitabilityCriterionProgress'][]
+      /**
+       * @description The type of the failure
+       * @example INELIGIBLE
+       * @enum {string}
+       */
+      failureType?: 'INELIGIBLE' | 'UNSUITABLE'
+      /** @description Reasons why someone is ineligible */
+      failedCheckReasons: string[]
+    }
+    /** @description The progress on a specific eligibility criterion for a case */
+    EligibilityCriterionProgress: {
+      /**
+       * @description the unique code to identify this criterion
+       * @example rotl-failure-to-return
+       */
+      code: string
+      /**
+       * @description The name of the criterion that would appear in a task list
+       * @example ROTL failure to return
+       */
+      taskName: string
+      /**
+       * @description Status of this criterion for a specific case
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description The questions that are associated with this criterion for this case */
+      questions: components['schemas']['Question'][]
+      /** @description Details of the user that submitted the answers for this criterion */
+      agent?: components['schemas']['AgentDto']
+      /**
+       * Format: date
+       * @description The date when answers were last submitted for this criterion or null if no answers have been submitted yet
+       * @example 16/08/2025
+       */
+      lastUpdated?: string
+    }
+    /** @description A question that is asked by the user */
+    Question: {
+      /**
+       * @description The question that is posed to the user
+       * @example a question...
+       */
+      text: string
+      /**
+       * @description The hint html associated with this question
+       * @example <p>Some hint text</p>
+       */
+      hint?: string
+      /**
+       * @description The name that the data will be stored under for this check
+       * @example question1
+       */
+      name?: string
+      /**
+       * @description The answer provided by the user for this question
+       * @example true
+       */
+      answer?: boolean
+    }
+    /** @description The progress on a specific suitability criteria for a case */
+    SuitabilityCriterionProgress: {
+      /**
+       * @description the unique code to identify this criterion
+       * @example rosh-and-mappa
+       */
+      code: string
+      /**
+       * @description The name of the criterion that would appear in a task list
+       * @example RoSH and MAPPA
+       */
+      taskName: string
+      /**
+       * @description Status of this criterion for a specific case
+       * @example NOT_STARTED
+       * @enum {string}
+       */
+      status: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
+      /** @description The questions that are associated with this criterion for this case */
+      questions: components['schemas']['Question'][]
+      /** @description Details of the user that submitted the answers for this criterion */
+      agent?: components['schemas']['AgentDto']
+      /**
+       * Format: date
+       * @description The date when answers were last submitted for this criterion or null if no answers have been submitted yet
+       * @example 16/08/2025
+       */
+      lastUpdated?: string
+    }
+    /** @description The progress on a task */
+    TaskProgress: {
+      /**
+       * @description The name of an outstanding task
+       * @example ASSESS_ELIGIBILITY
+       * @enum {string}
+       */
+      name:
+        | 'ASSESS_ELIGIBILITY'
+        | 'ENTER_CURFEW_ADDRESS'
+        | 'COMPLETE_PRE_RELEASE_CHECKS'
+        | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
+        | 'COMPLETE_14_DAY_CHECKS'
+        | 'COMPLETE_2_DAY_CHECKS'
+        | 'PRINT_LICENCE'
+        | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
+        | 'MAKE_A_RISK_MANAGEMENT_DECISION'
+        | 'SEND_CHECKS_TO_PRISON'
+        | 'CREATE_LICENCE'
+        | 'CONFIRM_RELEASE'
+        | 'APPROVE_LICENCE'
+        | 'OPT_IN'
+      /**
+       * @description The state of this task for a specific assessment
+       * @example Smith
+       * @enum {string}
+       */
+      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -1177,6 +1461,12 @@ export interface components {
       surname: string
       /**
        * Format: date
+       * @description The offender's conditional release date date
+       * @example 2026-08-23
+       */
+      crd?: string
+      /**
+       * Format: date
        * @description The offender's home detention curfew eligibility date
        * @example 2026-08-23
        */
@@ -1279,6 +1569,12 @@ export interface components {
     }
     /** @description Response object which describes an assessment */
     AssessmentOverviewSummary: {
+      /**
+       * Format: int64
+       * @description The offender's booking id
+       * @example 773722
+       */
+      bookingId: number
       /**
        * @description The offender's first name
        * @example Bob
@@ -1386,213 +1682,6 @@ export interface components {
        */
       result?: string
     }
-    /** @description A summary of a community offender manager */
-    ComSummary: {
-      /**
-       * @description The staff code
-       * @example A01B02C
-       */
-      staffCode: string
-      /**
-       * @description The username
-       * @example X33221
-       */
-      username?: string
-      /**
-       * @description The offender managers email address
-       * @example bob.jones@justice.gov.uk
-       */
-      email?: string
-      /**
-       * @description The offender managers first name
-       * @example Bob
-       */
-      forename?: string
-      /**
-       * @description The offender managers surname
-       * @example Jones
-       */
-      surname?: string
-    }
-    /** @description The progress on a task */
-    TaskProgress: {
-      /**
-       * @description The name of an outstanding task
-       * @example ASSESS_ELIGIBILITY
-       * @enum {string}
-       */
-      name:
-        | 'ASSESS_ELIGIBILITY'
-        | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
-        | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
-        | 'COMPLETE_14_DAY_CHECKS'
-        | 'COMPLETE_2_DAY_CHECKS'
-        | 'PRINT_LICENCE'
-        | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
-        | 'MAKE_A_RISK_MANAGEMENT_DECISION'
-        | 'SEND_CHECKS_TO_PRISON'
-        | 'CREATE_LICENCE'
-        | 'CONFIRM_RELEASE'
-        | 'APPROVE_LICENCE'
-        | 'OPT_IN'
-      /**
-       * @description The state of this task for a specific assessment
-       * @example Smith
-       * @enum {string}
-       */
-      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
-    }
-    /** @description Response object which describes an assessment */
-    AssessmentSummary: {
-      /**
-       * @description The offender's first name
-       * @example Bob
-       */
-      forename?: string
-      /**
-       * @description The offender's surname
-       * @example Smith
-       */
-      surname?: string
-      /**
-       * Format: date
-       * @description The offender's date of birth
-       * @example 2002-02-20
-       */
-      dateOfBirth: string
-      /**
-       * @description The offender's prison number
-       * @example A1234AA
-       */
-      prisonNumber: string
-      /**
-       * Format: date
-       * @description The offender's home detention curfew eligibility date
-       * @example 2002-02-20
-       */
-      hdced: string
-      /**
-       * Format: date
-       * @description The offender's conditional release date
-       * @example 2002-02-20
-       */
-      crd?: string
-      /**
-       * @description The name of the prison the offender is in
-       * @example Foston Hall (HMP)
-       */
-      location: string
-      /**
-       * @description The assessment status
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      status:
-        | 'NOT_STARTED'
-        | 'ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS'
-        | 'ELIGIBLE_AND_SUITABLE'
-        | 'AWAITING_ADDRESS_AND_RISK_CHECKS'
-        | 'ADDRESS_AND_RISK_CHECKS_IN_PROGRESS'
-        | 'AWAITING_PRE_DECISION_CHECKS'
-        | 'AWAITING_DECISION'
-        | 'APPROVED'
-        | 'AWAITING_PRE_RELEASE_CHECKS'
-        | 'PASSED_PRE_RELEASE_CHECKS'
-        | 'ADDRESS_UNSUITABLE'
-        | 'AWAITING_REFUSAL'
-        | 'INELIGIBLE_OR_UNSUITABLE'
-        | 'REFUSED'
-        | 'TIMED_OUT'
-        | 'POSTPONED'
-        | 'OPTED_OUT'
-        | 'RELEASED_ON_HDC'
-      /** @description The community offender manager assigned to this assessment */
-      responsibleCom?: components['schemas']['ComSummary']
-      /**
-       * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
-       */
-      team?: string
-      /**
-       * @description The version of the policy that this assessment has been carried out under
-       * @example 1
-       */
-      policyVersion: string
-      /** @description The status of tasks that make up this assessment */
-      tasks: {
-        [key: string]: components['schemas']['TaskProgress'][]
-      }
-      /**
-       * @description The opt out reason type
-       * @enum {string}
-       */
-      optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
-      /** @description The opt out reason description if rhe optOutReasonType is OTHER */
-      optOutReasonOther?: string
-      /**
-       * @description Prisoner cell location
-       * @example A-1-002
-       */
-      cellLocation?: string
-      /**
-       * @description The main offense also know as the most serious offence
-       * @example Robbery
-       */
-      mainOffense?: string
-    }
-    /** @description A question that is asked by the user */
-    Question: {
-      /**
-       * @description The question that is posed to the user
-       * @example a question...
-       */
-      text: string
-      /**
-       * @description The hint html associated with this question
-       * @example <p>Some hint text</p>
-       */
-      hint?: string
-      /**
-       * @description The name that the data will be stored under for this check
-       * @example question1
-       */
-      name?: string
-      /**
-       * @description The answer provided by the user for this question
-       * @example true
-       */
-      answer?: boolean
-    }
-    /** @description The progress on a specific suitability criteria for a case */
-    SuitabilityCriterionProgress: {
-      /**
-       * @description the unique code to identify this criterion
-       * @example rosh-and-mappa
-       */
-      code: string
-      /**
-       * @description The name of the criterion that would appear in a task list
-       * @example RoSH and MAPPA
-       */
-      taskName: string
-      /**
-       * @description Status of this criterion for a specific case
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      status: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
-      /** @description The questions that are associated with this criterion for this case */
-      questions: components['schemas']['Question'][]
-      /** @description Details of the user that submitted the answers for this criterion */
-      agent?: components['schemas']['AgentDto']
-      /**
-       * Format: date
-       * @description The date time when answers were last submitted for this criterion or null if no answers have been submitted yet
-       * @example 16/08/2025
-       */
-      lastUpdated?: string
-    }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
       /** @description A summary of an offender's current assessment */
@@ -1602,35 +1691,6 @@ export interface components {
       /** @description progress about the next criterion */
       nextCriterion?: components['schemas']['SuitabilityCriterionProgress']
     }
-    /** @description The progress on a specific eligibility criterion for a case */
-    EligibilityCriterionProgress: {
-      /**
-       * @description the unique code to identify this criterion
-       * @example rotl-failure-to-return
-       */
-      code: string
-      /**
-       * @description The name of the criterion that would appear in a task list
-       * @example ROTL failure to return
-       */
-      taskName: string
-      /**
-       * @description Status of this criterion for a specific case
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      status: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
-      /** @description The questions that are associated with this criterion for this case */
-      questions: components['schemas']['Question'][]
-      /** @description Details of the user that submitted the answers for this criterion */
-      agent?: components['schemas']['AgentDto']
-      /**
-       * Format: date
-       * @description The date time when answers were last submitted for this criterion or null if no answers have been submitted yet
-       * @example 16/08/2025
-       */
-      lastUpdated?: string
-    }
     /** @description The details of a specific eligibility criterion */
     EligibilityCriterionView: {
       /** @description A summary of an offender's current assessment */
@@ -1639,41 +1699,6 @@ export interface components {
       criterion: components['schemas']['EligibilityCriterionProgress']
       /** @description progress on the next criterion */
       nextCriterion?: components['schemas']['EligibilityCriterionProgress']
-    }
-    /** @description A view on the progress of suitability and eligibility criteria for a specific case */
-    EligibilityAndSuitabilityCaseView: {
-      /** @description A summary of an offender's current assessment */
-      assessmentSummary: components['schemas']['AssessmentSummary']
-      /**
-       * @description Overall status of eligibility assessment
-       * @example IN_PROGRESS
-       * @enum {string}
-       */
-      overallStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
-      /**
-       * @description state of current eligibility checks
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      eligibilityStatus: 'ELIGIBLE' | 'INELIGIBLE' | 'IN_PROGRESS' | 'NOT_STARTED'
-      /** @description details of current eligibility checks */
-      eligibility: components['schemas']['EligibilityCriterionProgress'][]
-      /**
-       * @description state of current suitability checks
-       * @example NOT_STARTED
-       * @enum {string}
-       */
-      suitabilityStatus: 'SUITABLE' | 'UNSUITABLE' | 'IN_PROGRESS' | 'NOT_STARTED'
-      /** @description details of current suitability checks */
-      suitability: components['schemas']['SuitabilityCriterionProgress'][]
-      /**
-       * @description The type of the failure
-       * @example INELIGIBLE
-       * @enum {string}
-       */
-      failureType?: 'INELIGIBLE' | 'UNSUITABLE'
-      /** @description Reasons why someone is ineligible */
-      failedCheckReasons: string[]
     }
     Input: {
       name: string
@@ -1743,19 +1768,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      requestType: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2107,12 +2132,14 @@ export interface operations {
       }
     }
     responses: {
-      /** @description Returns no content if check has been recorded correctly */
-      204: {
+      /** @description Returns the current eligibility and suitability status for an assessment */
+      200: {
         headers: {
           [name: string]: unknown
         }
-        content?: never
+        content: {
+          'application/json': components['schemas']['EligibilityAndSuitabilityCaseView']
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
@@ -2720,6 +2747,46 @@ export interface operations {
     responses: {
       /** @description Returns the current assessment for the prisoner */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentOverviewSummary']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCurrentAssessment: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns No Content status code */
+      204: {
         headers: {
           [name: string]: unknown
         }

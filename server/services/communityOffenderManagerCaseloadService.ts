@@ -2,13 +2,17 @@ import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClie
 import { convertToTitleCase } from '../utils/utils'
 import { ProbationUser } from '../interfaces/hmppsUser'
 import { Agent, AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import AssessmentStatus from '../enumeration/assessmentStatus'
 
 export type Case = {
   name: string
+  crn?: string
   prisonNumber: string
   probationPractitioner: string
   hdced: Date
   workingDaysToHdced: number
+  status: AssessmentStatus
+  currentTask?: string
 }
 
 export default class CommunityOffenderManagerCaseloadService {
@@ -20,12 +24,16 @@ export default class CommunityOffenderManagerCaseloadService {
       agent,
       user.deliusStaffCode,
     )
-    return result.map(offender => ({
-      name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
-      prisonNumber: offender.prisonNumber,
-      probationPractitioner: offender.probationPractitioner,
-      hdced: offender.hdced,
-      workingDaysToHdced: offender.workingDaysToHdced,
+    return result.map(aCase => ({
+      name: convertToTitleCase(`${aCase.forename} ${aCase.surname}`.trim()),
+      crn: aCase.crn,
+      prisonNumber: aCase.prisonNumber,
+      probationPractitioner: aCase.probationPractitioner,
+      crd: aCase.crd,
+      hdced: aCase.hdced,
+      workingDaysToHdced: aCase.workingDaysToHdced,
+      status: aCase.status as AssessmentStatus,
+      currentTask: aCase.currentTask,
     }))
   }
 

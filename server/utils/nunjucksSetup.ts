@@ -19,6 +19,7 @@ import {
   SuitabilityStatus,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import { tasks } from '../config/tasks'
+import AssessmentStatus from '../enumeration/assessmentStatus'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -266,6 +267,21 @@ export function registerNunjucks(app?: express.Express): Environment {
 
   njkEnv.addFilter('datetimeToDateShort', (dt: string) => {
     return jsonDtToDateShort(dt)
+  })
+
+  njkEnv.addFilter('assessmentStatusToOutcome', (status: AssessmentStatus) => {
+    switch (status) {
+      case 'REFUSED':
+        return 'Refused'
+      case 'OPTED_OUT':
+        return 'Opted out'
+      case 'INELIGIBLE_OR_UNSUITABLE':
+        return 'Presumed unsuitable/ineligible'
+      case 'TIMED_OUT':
+        return 'Timed out'
+      default:
+        return ''
+    }
   })
 
   return njkEnv

@@ -4,8 +4,7 @@ import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTes
 import { createMockCommunityOffenderManagerCaseloadService } from '../../services/__testutils/mock'
 import { parseIsoDate } from '../../utils/utils'
 import { ProbationUser } from '../../interfaces/hmppsUser'
-
-const offenderSummaryList = [createComCase({})]
+import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 const communityOffenderManagerCaseloadService = createMockCommunityOffenderManagerCaseloadService()
 const req = mockRequest({})
@@ -22,7 +21,6 @@ let caseloadRoutes: CaseloadRoutes
 
 beforeEach(() => {
   caseloadRoutes = new CaseloadRoutes(communityOffenderManagerCaseloadService)
-  communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue(offenderSummaryList)
   mockedDate(new Date(2022, 6, 1))
 })
 
@@ -31,15 +29,23 @@ afterEach(() => {
 })
 
 describe('GET', () => {
-  it('should render list of licences for approval', async () => {
+  it('should render inactive cases', async () => {
+    const activeApplicationView = false
+    req.query = { view: 'inactive-applications' }
+    const offenderSummaryList = [createComCase({ status: AssessmentStatus.REFUSED })]
+    communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue(offenderSummaryList)
+
     await caseloadRoutes.GET(req, res)
+
     expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      caseload: [
+      activeApplicationView,
+      caseload: [],
+      inactiveApplications: [
         {
           createLink: '/probation/assessment/A1234AB',
           hdced: parseIsoDate('2022-01-08'),
@@ -47,6 +53,8 @@ describe('GET', () => {
           probationPractitioner: 'CVl_COM',
           prisonNumber: 'A1234AB',
           workingDaysToHdced: 1,
+          status: 'REFUSED',
+          currentTask: null,
         },
       ],
     })
