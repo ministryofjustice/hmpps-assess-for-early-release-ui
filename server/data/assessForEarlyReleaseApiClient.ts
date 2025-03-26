@@ -458,8 +458,7 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
       {
         path,
         headers: this.getDefaultHeaders(agent),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: payload as any,
+        data: payload,
       },
       token,
     )
