@@ -8,7 +8,7 @@ generic-service:
     host: assess-for-early-release-dev.hmpps.service.justice.gov.uk
     modsecurity_enabled: true
     modsecurity_snippet: |
-      SecRuleEngine On
+      SecRuleEngine DetectionOnly
       SecAuditEngine RelevantOnly
       SecAuditLog /var/log/nginx/error.log
       SecAuditLogType Serial
@@ -23,6 +23,9 @@ generic-service:
       SecRuleUpdateTargetById 942340 "!REQUEST_COOKIES:/cookie_policy/"
       SecRuleUpdateTargetById 942100 "!ARGS:_csrf"
       SecRuleUpdateTargetById 942440 "!ARGS:_csrf"
+      SecRuleUpdateTargetById 949110 "!ARGS:code"  
+      SecRuleUpdateTargetById 942100 "!ARGS:code"
+      SecRuleUpdateTargetById 942440 "!ARGS:code"   
       SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=2"
 
   env:
