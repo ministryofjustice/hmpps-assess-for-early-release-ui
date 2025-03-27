@@ -7,6 +7,7 @@ import paths from '../../server/routes/paths'
 import { convertToTitleCase, formatDate, parseIsoDate } from '../../server/utils/utils'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 import { createStaffDetails } from '../../server/data/__testutils/testObjects'
+import playwrightConfig from '../../playwright.config'
 
 const staffCode = 'STAFF1'
 
@@ -23,6 +24,16 @@ test.describe('COM caseload', () => {
     const activeOffender = createOffenderSummary({
       prisonNumber: 'A1234AE',
     })
+    const readyForReleaseOffender = createOffenderSummary({
+      prisonNumber: 'K8932TE',
+      crn: 'Z456712',
+      forename: 'Brian',
+      surname: 'Morrish',
+      hdced: '2026-10-25',
+      workingDaysToHdced: 3,
+      probationPractitioner: 'David Newton',
+      status: AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
+    })
     const timedOutOffender = createOffenderSummary({
       prisonNumber: 'G3243TH',
       forename: 'Dave',
@@ -32,7 +43,11 @@ test.describe('COM caseload', () => {
       status: AssessmentStatus.TIMED_OUT,
     })
 
-    await assessForEarlyRelease.stubGetComCaseload(staffCode, [activeOffender, timedOutOffender])
+    await assessForEarlyRelease.stubGetComCaseload(staffCode, [
+      activeOffender,
+      readyForReleaseOffender,
+      timedOutOffender,
+    ])
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
     await page.goto(paths.probation.probationCaseload({}))
 
@@ -40,6 +55,17 @@ test.describe('COM caseload', () => {
       page.getByText(convertToTitleCase(`${activeOffender.forename} ${activeOffender.surname}`.trim())),
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(activeOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+
+    await page.getByTestId('ready-for-release').click()
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#ready-for-release`,
+    )
+    await expect(
+      page.getByText(
+        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+      ),
+    ).toBeVisible()
+    await expect(page.getByText(`CRN: ${readyForReleaseOffender.crn}`)).toBeVisible()
 
     await expect(
       page.getByText(convertToTitleCase(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())),

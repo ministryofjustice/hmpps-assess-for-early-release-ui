@@ -529,6 +529,7 @@ const createComCase = ({
   hdced = parseIsoDate('2022-01-08'),
   workingDaysToHdced = 1,
   status = AssessmentStatus.NOT_STARTED,
+  currentTask = null,
 } = {}): ComCase => ({
   hdced,
   probationPractitioner,
@@ -536,6 +537,7 @@ const createComCase = ({
   name,
   workingDaysToHdced,
   status,
+  currentTask,
 })
 
 const createChecksTasks = (): ResidentialChecksTaskProgress[] => {

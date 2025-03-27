@@ -206,6 +206,7 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
 
 export const createOffenderSummary = ({
   prisonNumber = '',
+  crn = 'X123456',
   forename = 'Jim',
   surname = 'Smith',
   hdced = '2022-01-08',
@@ -218,6 +219,7 @@ export const createOffenderSummary = ({
   addressChecksComplete = false,
 } = {}): _OffenderSummary => ({
   prisonNumber,
+  crn,
   bookingId: 1,
   forename,
   surname,
