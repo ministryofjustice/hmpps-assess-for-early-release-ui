@@ -2,7 +2,6 @@ import { createAgent, createComCase } from '../../data/__testutils/testObjects'
 import CaseloadRoutes from './caseload'
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCommunityOffenderManagerCaseloadService } from '../../services/__testutils/mock'
-import { parseIsoDate } from '../../utils/utils'
 import { ProbationUser } from '../../interfaces/hmppsUser'
 import AssessmentStatus from '../../enumeration/assessmentStatus'
 
@@ -29,10 +28,41 @@ afterEach(() => {
 })
 
 describe('GET', () => {
+  it('should render active cases', async () => {
+    const activeCase = createComCase({})
+    communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue([activeCase])
+
+    await caseloadRoutes.GET(req, res)
+
+    expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
+      req.middleware.clientToken,
+      res.locals.agent,
+      res.locals.user as ProbationUser,
+    )
+    expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
+      activeApplicationView: true,
+      otherCases: [
+        {
+          createLink: `/probation/assessment/${activeCase.prisonNumber}`,
+          hdced: activeCase.hdced,
+          name: activeCase.name,
+          probationPractitioner: activeCase.probationPractitioner,
+          prisonNumber: activeCase.prisonNumber,
+          workingDaysToHdced: activeCase.workingDaysToHdced,
+          status: activeCase.status,
+          currentTask: activeCase.currentTask,
+        },
+      ],
+      readyForReleaseCases: [],
+      inactiveApplications: [],
+    })
+  })
+
   it('should render inactive cases', async () => {
     const activeApplicationView = false
     req.query = { view: 'inactive-applications' }
-    const offenderSummaryList = [createComCase({ status: AssessmentStatus.REFUSED })]
+    const inactiveCase = createComCase({ status: AssessmentStatus.REFUSED })
+    const offenderSummaryList = [inactiveCase]
     communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue(offenderSummaryList)
 
     await caseloadRoutes.GET(req, res)
@@ -44,17 +74,18 @@ describe('GET', () => {
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
       activeApplicationView,
-      caseload: [],
+      otherCases: [],
+      readyForReleaseCases: [],
       inactiveApplications: [
         {
-          createLink: '/probation/assessment/A1234AB',
-          hdced: parseIsoDate('2022-01-08'),
-          name: 'Jim Smith',
-          probationPractitioner: 'CVl_COM',
-          prisonNumber: 'A1234AB',
-          workingDaysToHdced: 1,
-          status: 'REFUSED',
-          currentTask: null,
+          createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,
+          hdced: inactiveCase.hdced,
+          name: inactiveCase.name,
+          probationPractitioner: inactiveCase.probationPractitioner,
+          prisonNumber: inactiveCase.prisonNumber,
+          workingDaysToHdced: inactiveCase.workingDaysToHdced,
+          status: inactiveCase.status,
+          currentTask: inactiveCase.currentTask,
         },
       ],
     })
