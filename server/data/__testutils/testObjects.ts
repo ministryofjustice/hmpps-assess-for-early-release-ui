@@ -82,6 +82,7 @@ const createOffenderSummary = ({
 })
 
 const createAssessmentSummary = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -102,6 +103,7 @@ const createAssessmentSummary = ({
     team: 'N55LAU',
   },
 } = {}): AssessmentSummary => ({
+  bookingId,
   forename,
   surname,
   dateOfBirth,
@@ -127,6 +129,7 @@ const createAssessmentSummary = ({
 })
 
 const createAssessmentOverviewSummary = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -149,6 +152,7 @@ const createAssessmentOverviewSummary = ({
   toDoEligibilityAndSuitabilityBy = parseIsoDate('2022-01-08'),
   result = null,
 } = {}): AssessmentOverviewSummary => ({
+  bookingId,
   forename,
   surname,
   dateOfBirth,
@@ -176,6 +180,7 @@ const createAssessmentOverviewSummary = ({
 })
 
 const createEligibilityAndSuitabilityCaseView = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -191,6 +196,7 @@ const createEligibilityAndSuitabilityCaseView = ({
   suitability = [] as SuitabilityCriterionProgress[],
 } = {}): EligibilityAndSuitabilityCaseView => ({
   assessmentSummary: {
+    bookingId,
     forename,
     surname,
     dateOfBirth,
@@ -223,6 +229,7 @@ const createEligibilityAndSuitabilityCaseView = ({
 })
 
 const createEligibilityCriterionView = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -238,6 +245,7 @@ const createEligibilityCriterionView = ({
   nextCriterion = createEligibilityCriterionProgress({ code: 'code-2' }),
 } = {}): EligibilityCriterionView => ({
   assessmentSummary: {
+    bookingId,
     forename,
     surname,
     dateOfBirth,
@@ -265,6 +273,7 @@ const createEligibilityCriterionView = ({
 })
 
 const createSuitabilityCriterionView = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -280,6 +289,7 @@ const createSuitabilityCriterionView = ({
   nextCriterion = createSuitabilityCriterionProgress({ code: 'code-2' }),
 } = {}): SuitabilityCriterionView => ({
   assessmentSummary: {
+    bookingId,
     forename,
     surname,
     dateOfBirth,
@@ -732,6 +742,7 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
 }
 
 const createResidentialChecksView = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -747,6 +758,7 @@ const createResidentialChecksView = ({
   cellLocation = 'S-2-A1',
 } = {}): ResidentialChecksView => ({
   assessmentSummary: {
+    bookingId,
     forename,
     surname,
     dateOfBirth,
@@ -774,6 +786,7 @@ const createResidentialChecksView = ({
 })
 
 const createResidentialChecksTaskView = ({
+  bookingId = 1,
   forename = 'Jim',
   surname = 'Smith',
   dateOfBirth = parseIsoDate('1976-04-14'),
@@ -787,6 +800,7 @@ const createResidentialChecksTaskView = ({
   cellLocation = 'S-2-A1',
 } = {}): ResidentialChecksTaskView => ({
   assessmentSummary: {
+    bookingId,
     forename,
     surname,
     dateOfBirth,
