@@ -24,6 +24,18 @@ test.describe('COM caseload', () => {
     const activeOffender = createOffenderSummary({
       prisonNumber: 'A1234AE',
     })
+    const postponedOffender = createOffenderSummary({
+      prisonNumber: 'G3243TH',
+      crn: 'W493087',
+      forename: 'Dave',
+      surname: 'Roberts',
+      hdced: '2026-09-04',
+      workingDaysToHdced: 15,
+      isPostponed: true,
+      postponementDate: '2025-04-25',
+      postponementReasons: ['Postponed for some reason'],
+      status: AssessmentStatus.POSTPONED,
+    })
     const readyForReleaseOffender = createOffenderSummary({
       prisonNumber: 'K8932TE',
       crn: 'Z456712',
@@ -45,6 +57,7 @@ test.describe('COM caseload', () => {
 
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
       activeOffender,
+      postponedOffender,
       readyForReleaseOffender,
       timedOutOffender,
     ])
@@ -55,6 +68,14 @@ test.describe('COM caseload', () => {
       page.getByText(convertToTitleCase(`${activeOffender.forename} ${activeOffender.surname}`.trim())),
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(activeOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+
+    await page.getByTestId('postponed').click()
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#postponed`)
+    await expect(
+      page.getByText(convertToTitleCase(`${postponedOffender.forename} ${postponedOffender.surname}`.trim())),
+    ).toBeVisible()
+
+    await expect(page.getByText(`CRN: ${postponedOffender.crn}`)).toBeVisible()
 
     await page.getByTestId('ready-for-release').click()
     await expect(page).toHaveURL(

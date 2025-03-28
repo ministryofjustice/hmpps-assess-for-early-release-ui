@@ -1,0 +1,32 @@
+{% from "./offenderDetails.njk" import offenderDetails %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+
+{% macro postponedTab(postponedCases) %}
+    {% set postponedRows = [] %}
+    {% for case in postponedCases %}
+        {% set postponedRows = (postponedRows.push([
+            {
+                attributes: tableAttributes(case, 'name', loop.index),
+                html: offenderDetails(case, loop.index)
+            },
+            {
+                attributes: tableAttributes(case, 'hdced', loop.index),
+                text: case.hdced | formatDate('dd MMM yyyy')
+            },
+            {
+                attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+                text: case.workingDaysToHdced
+            },
+            {
+                attributes: tableAttributes(case, 'postponed-on', loop.index),
+                text: case.postponementDate | formatDate('dd MMM yyyy')
+            },
+            {
+                attributes: tableAttributes(case, 'postponementReason', loop.index),
+                text: case.postponementReasons[0]
+            }
+        ]), postponedRows) %}
+    {% endfor %}
+    <h2 class="govuk-heading-l">Postponed</h2>
+    {{ caseloadTable("Postponed caseload", ["Name", "HDCED", "Working days to HDCED", "Postponed on", "Postponement reason"], postponedRows) }}
+{% endmacro %}
