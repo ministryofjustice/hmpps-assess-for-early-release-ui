@@ -34,6 +34,8 @@ export default class CommunityOffenderManagerCaseloadService {
       workingDaysToHdced: aCase.workingDaysToHdced,
       status: aCase.status as AssessmentStatus,
       currentTask: aCase.currentTask,
+      postponementReasons: aCase.postponementReasons,
+      postponementDate: aCase.postponementDate,
     }))
   }
 

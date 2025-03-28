@@ -47,6 +47,8 @@ describe('COM Caseload Service', () => {
           workingDaysToHdced: 3,
           status: aCase.status,
           currentTask: aCase.currentTask,
+          postponementDate: null,
+          postponementReasons: [],
         },
       ])
     })
