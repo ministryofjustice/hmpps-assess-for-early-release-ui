@@ -41,7 +41,9 @@ describe('GET', () => {
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
       activeApplicationView: true,
-      otherCases: [
+      postponedCases: [],
+      readyForReleaseCases: [],
+      toWorkOnByYouCases: [
         {
           createLink: `/probation/assessment/${activeCase.prisonNumber}`,
           hdced: activeCase.hdced,
@@ -53,7 +55,6 @@ describe('GET', () => {
           currentTask: activeCase.currentTask,
         },
       ],
-      readyForReleaseCases: [],
       inactiveApplications: [],
     })
   })
@@ -74,8 +75,9 @@ describe('GET', () => {
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
       activeApplicationView,
-      otherCases: [],
+      postponedCases: [],
       readyForReleaseCases: [],
+      toWorkOnByYouCases: [],
       inactiveApplications: [
         {
           createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,
