@@ -126,6 +126,7 @@ export const assessmentSummary = (
   policyVersion: '1.0',
   mainOffense: 'Robbery',
   cellLocation: 'S-1-A1',
+  postponementReasons: [],
   tasks: {
     PRISON_CA: [
       { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
