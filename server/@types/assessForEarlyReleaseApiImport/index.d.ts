@@ -732,6 +732,7 @@ export interface paths {
     trace?: never
   }
 }
+export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -904,6 +905,20 @@ export interface components {
       optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
       /** @description The opt out reason description if rhe optOutReasonType is OTHER */
       optOutReasonOther?: string
+      /**
+       * @description The reasons that the offender's current assessment was postponed
+       * @example ON_REMAND
+       */
+      postponementReasons: (
+        | 'PLANNING_ACTIONS_CONFIRMATION_NEEDED_BY_PRACTITIONER'
+        | 'ON_REMAND'
+        | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
+        | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_SENTENCE_SCH'
+        | 'WAITING_FOR_CAS2_ACCOMMODATION_OR_APPROVED_PREMISES_PLACEMENT'
+        | 'WOULD_NOT_FOLLOW_REQUIREMENTS_OF_CONFISCATION_ORDER'
+        | 'BEING_INVESTIGATED_FOR_OFFENCE_COMMITTED_IN_PRISON'
+      )[]
       /**
        * @description Prisoner cell location
        * @example A-1-002
@@ -1257,6 +1272,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1347,6 +1368,12 @@ export interface components {
        * @example See AddressSummary
        */
       allocatedAddress?: components['schemas']['AddressSummary']
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1502,9 +1529,10 @@ export interface components {
         | 'ON_REMAND'
         | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
         | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
-        | 'COMMITED_OFFENCE_REFERRED_TO_LAW_ENF_AGENCY'
-        | 'CONFISCATION_ORDER_NOT_PAID_AND_ENF_AGENCY_DEEMS_UNSUITABLE'
-        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_LENIENT_SCH'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_SENTENCE_SCH'
+        | 'WAITING_FOR_CAS2_ACCOMMODATION_OR_APPROVED_PREMISES_PLACEMENT'
+        | 'WOULD_NOT_FOLLOW_REQUIREMENTS_OF_CONFISCATION_ORDER'
+        | 'BEING_INVESTIGATED_FOR_OFFENCE_COMMITTED_IN_PRISON'
       )[]
       /**
        * @description The status of the offender's current assessment
@@ -1769,19 +1797,6 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
-      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -1803,6 +1818,19 @@ export interface components {
        * @example 22/11/2026 10:43:28
        */
       dateRequested: string
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -1814,6 +1842,7 @@ export interface components {
   headers: never
   pathItems: never
 }
+export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {
