@@ -20,15 +20,11 @@ export type AuthenticationMiddleware = (tokenVerifier: VerificationClient) => Re
 
 const authenticationMiddleware: AuthenticationMiddleware = tokenVerifier => {
   return async (req, res, next) => {
-    try {
-      if (req.isAuthenticated() && (await tokenVerifier.verifyToken(req))) {
-        return next()
-      }
-      req.session.returnTo = req.originalUrl
-      return res.redirect('/sign-in')
-    } catch (error) {
-      return next(error)
+    if (req.isAuthenticated() && (await tokenVerifier.verifyToken(req))) {
+      return next()
     }
+    req.session.returnTo = req.originalUrl
+    return res.redirect('/sign-in')
   }
 }
 
