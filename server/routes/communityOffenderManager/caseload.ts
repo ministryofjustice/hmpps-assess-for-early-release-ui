@@ -13,6 +13,8 @@ export default class CaseloadRoutes {
     AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
   ]
 
+  static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
+
   static readonly READY_FOR_RELEASE_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
 
   constructor(private readonly communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService) {}
@@ -29,16 +31,20 @@ export default class CaseloadRoutes {
     )
 
     const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
+    const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
     const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
-    const otherCases = this.filterCasesByStatus(
+    const toWorkOnByYouCases = this.filterCasesByStatus(
       cases,
-      CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(CaseloadRoutes.READY_FOR_RELEASE_STATUSES),
+      CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(CaseloadRoutes.READY_FOR_RELEASE_STATUSES).concat(
+        CaseloadRoutes.POSTPONED_STATUSES,
+      ),
       true,
     )
 
     res.render('pages/communityOffenderManager/caseload', {
       activeApplicationView,
-      otherCases: otherCases.map(this.mapToViewModel),
+      toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
+      postponedCases: postponedCases.map(this.mapToViewModel),
       readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
       inactiveApplications: inactiveApplications.map(this.mapToViewModel),
     })

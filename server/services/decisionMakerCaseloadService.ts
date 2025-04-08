@@ -1,6 +1,6 @@
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
-import { Agent, AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { Agent, AssessmentOverviewSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 
 export type Case = {
   name: string
@@ -26,7 +26,7 @@ export default class DecisionMakerCaseloadService {
     token: string,
     agent: Agent,
     prisonNumber: string,
-  ): Promise<AssessmentSummary> {
+  ): Promise<AssessmentOverviewSummary> {
     return this.assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(token, agent, prisonNumber)
   }
 }

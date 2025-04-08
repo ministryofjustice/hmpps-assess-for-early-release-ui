@@ -29,7 +29,7 @@ test.describe('Offender search page', () => {
     await page.goto(paths.support.offender.supportOffenderSearch({}))
 
     // Then
-    expect(await page.getByRole('link', { name: 'Back', exact: true }).getAttribute('href')).toEqual('/support')
+    expect(await page.getByRole('link', { name: 'Back', exact: true }).getAttribute('href')).toEqual('#')
     await expect(page.getByText(`Search for Offenders`)).toBeVisible()
     await expect(page.getByText(`Type an prison number or crn number`)).toBeVisible()
     await expect(page.getByTestId('searchOffender')).toBeVisible()
@@ -59,7 +59,7 @@ test.describe('Offender search page', () => {
     await page.getByTestId('searchOffender').click()
 
     // Then
-    expect(await page.getByRole('link', { name: 'Back', exact: true }).getAttribute('href')).toEqual('/support')
+    expect(await page.getByRole('link', { name: 'Back', exact: true }).getAttribute('href')).toEqual('#')
     await expect(page.getByText(`Search for Offenders`)).toBeVisible()
     await expect(page.getByText(`Type an prison number or crn number`)).toBeVisible()
 

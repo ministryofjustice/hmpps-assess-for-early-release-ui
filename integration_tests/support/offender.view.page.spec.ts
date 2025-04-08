@@ -68,7 +68,8 @@ test.describe('Offender assessment overview page', () => {
           exact: true,
         })
         .getAttribute('href'),
-    ).toEqual('/support/offender/search')
+    ).toEqual('#')
+
     await expect(page.getByText(`HDC application for Bob Smith`)).toBeVisible()
 
     // Offender checks

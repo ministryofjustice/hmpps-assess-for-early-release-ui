@@ -92,6 +92,7 @@ const createAssessmentSummary = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   mainOffense = 'Robbery',
+  postponementReasons = [],
   cellLocation = 'S-1-A1',
   policyVersion = '1.0',
   responsibleCom = {
@@ -116,6 +117,7 @@ const createAssessmentSummary = ({
   policyVersion,
   mainOffense,
   cellLocation,
+  postponementReasons,
   tasks: {
     PRISON_CA: tasks.PRISON_CA.map((task, i) => ({
       name: task.code as TaskCode,
@@ -189,6 +191,7 @@ const createEligibilityAndSuitabilityCaseView = ({
   crd = parseIsoDate('2022-08-10'),
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
+  postponementReasons = [],
   policyVersion = '1.0',
   mainOffense = 'Robbery',
   cellLocation = 'S-2-A1',
@@ -205,6 +208,7 @@ const createEligibilityAndSuitabilityCaseView = ({
     crd,
     location,
     status,
+    postponementReasons,
     policyVersion,
     mainOffense,
     cellLocation,
@@ -241,6 +245,7 @@ const createEligibilityCriterionView = ({
   policyVersion = '1.0',
   mainOffense = 'Robbery',
   cellLocation = 'S-2-A1',
+  postponementReasons = [],
   criterion = createEligibilityCriterionProgress({ code: 'code-1' }),
   nextCriterion = createEligibilityCriterionProgress({ code: 'code-2' }),
 } = {}): EligibilityCriterionView => ({
@@ -257,6 +262,7 @@ const createEligibilityCriterionView = ({
     policyVersion,
     mainOffense,
     cellLocation,
+    postponementReasons,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -283,6 +289,7 @@ const createSuitabilityCriterionView = ({
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
+  postponementReasons = [],
   mainOffense = 'Robbery',
   cellLocation = 'S-2-A1',
   criterion = createSuitabilityCriterionProgress({ code: 'code-1' }),
@@ -301,6 +308,7 @@ const createSuitabilityCriterionView = ({
     policyVersion,
     mainOffense,
     cellLocation,
+    postponementReasons,
     tasks: {
       PRISON_CA: [
         { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -755,6 +763,7 @@ const createResidentialChecksView = ({
   crd = parseIsoDate('2022-08-10'),
   location = 'Prison',
   status = AssessmentStatus.NOT_STARTED,
+  postponementReasons = [],
   policyVersion = '1.0',
   overallStatus = 'NOT_STARTED' as ResidentialCheckTaskStatus,
   residentialChecksTasks = createChecksTasks(),
@@ -772,6 +781,7 @@ const createResidentialChecksView = ({
     location,
     status,
     policyVersion,
+    postponementReasons,
     mainOffense,
     cellLocation,
     tasks: {
@@ -798,6 +808,7 @@ const createResidentialChecksTaskView = ({
   hdced = parseIsoDate('2022-08-01'),
   crd = parseIsoDate('2022-08-10'),
   location = 'Prison',
+  postponementReasons = [],
   status = AssessmentStatus.NOT_STARTED,
   policyVersion = '1.0',
   mainOffense = 'Robbery',
@@ -813,6 +824,7 @@ const createResidentialChecksTaskView = ({
     crd,
     location,
     status,
+    postponementReasons,
     policyVersion,
     mainOffense,
     cellLocation,

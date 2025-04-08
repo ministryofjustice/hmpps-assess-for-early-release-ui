@@ -8,3 +8,6 @@ if [[ $1 == "--local" ]]; then
 else
   npx openapi-typescript "https://assess-for-early-release-api-dev.hmpps.service.justice.gov.uk$SWAGGER_ENDPOINT" > "$OUTPUT_FILE"
 fi
+
+# Format the generated files
+npx prettier --write "$OUTPUT_FILE"

@@ -1,7 +1,7 @@
 import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import { convertToTitleCase } from '../utils/utils'
 import { ProbationUser } from '../interfaces/hmppsUser'
-import { Agent, AssessmentSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { Agent, AssessmentOverviewSummary } from '../@types/assessForEarlyReleaseApiClientTypes'
 import AssessmentStatus from '../enumeration/assessmentStatus'
 
 export type Case = {
@@ -34,6 +34,8 @@ export default class CommunityOffenderManagerCaseloadService {
       workingDaysToHdced: aCase.workingDaysToHdced,
       status: aCase.status as AssessmentStatus,
       currentTask: aCase.currentTask,
+      postponementReasons: aCase.postponementReasons,
+      postponementDate: aCase.postponementDate,
     }))
   }
 
@@ -41,7 +43,7 @@ export default class CommunityOffenderManagerCaseloadService {
     token: string,
     agent: Agent,
     prisonNumber: string,
-  ): Promise<AssessmentSummary> {
+  ): Promise<AssessmentOverviewSummary> {
     return this.assessForEarlyReleaseApiClient.getAssessmentOverviewSummary(token, agent, prisonNumber)
   }
 }

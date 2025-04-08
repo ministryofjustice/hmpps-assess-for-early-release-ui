@@ -313,6 +313,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/support/offender/{prisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the offender for the give prison number
+     * @description Returns the offender for the give prison number)
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getOffender']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/support/offender/{prisonNumber}/assessments': {
     parameters: {
       query?: never
@@ -351,29 +374,6 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     get: operations['searchForOffender']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/support/offender/search/{prisonNumber}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Returns the offenders for the give prison number
-     * @description Returns the offenders for the give prison number)
-     *
-     *     Requires one of the following roles:
-     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
-     */
-    get: operations['getOffender']
     put?: never
     post?: never
     delete?: never
@@ -1023,6 +1023,20 @@ export interface components {
       /** @description The opt out reason description if rhe optOutReasonType is OTHER */
       optOutReasonOther?: string
       /**
+       * @description The reasons that the offender's current assessment was postponed
+       * @example ON_REMAND
+       */
+      postponementReasons: (
+        | 'PLANNING_ACTIONS_CONFIRMATION_NEEDED_BY_PRACTITIONER'
+        | 'ON_REMAND'
+        | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
+        | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_SENTENCE_SCH'
+        | 'WAITING_FOR_CAS2_ACCOMMODATION_OR_APPROVED_PREMISES_PLACEMENT'
+        | 'WOULD_NOT_FOLLOW_REQUIREMENTS_OF_CONFISCATION_ORDER'
+        | 'BEING_INVESTIGATED_FOR_OFFENCE_COMMITTED_IN_PRISON'
+      )[]
+      /**
        * @description Prisoner cell location
        * @example A-1-002
        */
@@ -1504,6 +1518,70 @@ export interface components {
     } & {
       [key: string]: unknown | unknown | unknown
     }
+    /** @description Response object which describes an offender */
+    OffenderResponse: {
+      /**
+       * @description The offender's prisoner number
+       * @example A1234AA
+       */
+      prisonNumber: string
+      /**
+       * @description The prison code
+       * @example BRS
+       */
+      prisonId: string
+      /**
+       * @description The offender's first name
+       * @example Bob
+       */
+      forename: string
+      /**
+       * @description The offender's surname
+       * @example Smith
+       */
+      surname: string
+      /**
+       * Format: date
+       * @description The offender's date of birth
+       * @example 2002-02-20
+       */
+      dateOfBirth: string
+      /**
+       * Format: date
+       * @description The offender's home detention curfew eligibility date
+       * @example 2026-08-23
+       */
+      hdced: string
+      /**
+       * Format: date
+       * @description The offender's conditional release date date
+       * @example 2026-08-23
+       */
+      crd?: string
+      /**
+       * @description The case reference number assigned to a person on probation in NDelius
+       * @example DX12340A
+       */
+      crn?: string
+      /**
+       * Format: date
+       * @description The sentence start date
+       * @example 2028-06-23
+       */
+      sentenceStartDate?: string
+      /**
+       * Format: date-time
+       * @description The create timestamp for the afer offender
+       * @example 2020-01-11 12:13:00
+       */
+      createdTimestamp: string
+      /**
+       * Format: date-time
+       * @description The offender's conditional release date date
+       * @example 2020-01-11 12:13:00
+       */
+      lastUpdatedTimestamp?: string
+    }
     /** @description Response object which describes an assessment */
     AssessmentSearchResponse: {
       /**
@@ -1618,70 +1696,6 @@ export interface components {
        * @example DX12340A
        */
       crn?: string
-    }
-    /** @description Response object which describes an offender */
-    OffenderResponse: {
-      /**
-       * @description The offender's prisoner number
-       * @example A1234AA
-       */
-      prisonNumber: string
-      /**
-       * @description The prison code
-       * @example BRS
-       */
-      prisonId: string
-      /**
-       * @description The offender's first name
-       * @example Bob
-       */
-      forename: string
-      /**
-       * @description The offender's surname
-       * @example Smith
-       */
-      surname: string
-      /**
-       * Format: date
-       * @description The offender's date of birth
-       * @example 2002-02-20
-       */
-      dateOfBirth: string
-      /**
-       * Format: date
-       * @description The offender's home detention curfew eligibility date
-       * @example 2026-08-23
-       */
-      hdced: string
-      /**
-       * Format: date
-       * @description The offender's conditional release date date
-       * @example 2026-08-23
-       */
-      crd?: string
-      /**
-       * @description The case reference number assigned to a person on probation in NDelius
-       * @example DX12340A
-       */
-      crn?: string
-      /**
-       * Format: date
-       * @description The sentence start date
-       * @example 2028-06-23
-       */
-      sentenceStartDate?: string
-      /**
-       * Format: date-time
-       * @description The create timestamp for the afer offender
-       * @example 2020-01-11 12:13:00
-       */
-      createdTimestamp: string
-      /**
-       * Format: date-time
-       * @description The offender's conditional release date date
-       * @example 2020-01-11 12:13:00
-       */
-      lastUpdatedTimestamp?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentResponse: {
@@ -1907,9 +1921,10 @@ export interface components {
         | 'ON_REMAND'
         | 'SEGREGATED_AND_GOVERNOR_NEEDS_TO_APPROVE_RELEASE'
         | 'NEEDS_TO_SPEND_7_DAYS_IN_NORMAL_LOCATION_AFTER_SEGREGATION'
-        | 'COMMITED_OFFENCE_REFERRED_TO_LAW_ENF_AGENCY'
-        | 'CONFISCATION_ORDER_NOT_PAID_AND_ENF_AGENCY_DEEMS_UNSUITABLE'
-        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_LENIENT_SCH'
+        | 'PENDING_APPLICATION_WITH_UNDULY_LENIENT_SENTENCE_SCH'
+        | 'WAITING_FOR_CAS2_ACCOMMODATION_OR_APPROVED_PREMISES_PLACEMENT'
+        | 'WOULD_NOT_FOLLOW_REQUIREMENTS_OF_CONFISCATION_ORDER'
+        | 'BEING_INVESTIGATED_FOR_OFFENCE_COMMITTED_IN_PRISON'
       )[]
       /**
        * @description The status of the offender's current assessment
@@ -2175,17 +2190,17 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2828,6 +2843,46 @@ export interface operations {
       }
     }
   }
+  getOffender: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returned the offender for the given prison number */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getAssessments: {
     parameters: {
       query?: never
@@ -2886,46 +2941,6 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['OffenderSearchResponse'][]
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  getOffender: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        prisonNumber: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returned the offender for the given prison number */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['OffenderResponse']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
@@ -3013,9 +3028,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['AssessmentOverviewSummary']
-        }
+        content?: never
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
@@ -3286,19 +3299,19 @@ export interface operations {
       path: {
         prisonNumber: string
         documentSubjectType:
+          | 'OFFENDER_NOT_ELIGIBLE_FORM'
+          | 'OFFENDER_POSTPONED_FORM'
+          | 'OFFENDER_REFUSED_FORM'
           | 'OFFENDER_ELIGIBLE_FORM'
           | 'OFFENDER_ADDRESS_CHECKS_INFORMATION_FORM'
           | 'OFFENDER_ADDRESS_CHECKS_FORM'
           | 'OFFENDER_OPT_OUT_FORM'
-          | 'OFFENDER_NOT_ELIGIBLE_FORM'
-          | 'OFFENDER_NOT_SUITABLE_FORM'
           | 'OFFENDER_ADDRESS_UNSUITABLE_FORM'
-          | 'OFFENDER_POSTPONED_FORM'
           | 'OFFENDER_NOT_ENOUGH_TIME_FORM'
           | 'OFFENDER_APPROVED_FORM'
           | 'OFFENDER_AGENCY_NOTIFICATION_FORM'
           | 'OFFENDER_CANCEL_AGENCY_NOTIFICATION_FORM'
-          | 'OFFENDER_REFUSED_FORM'
+          | 'OFFENDER_NOT_SUITABLE_FORM'
       }
       cookie?: never
     }
@@ -3809,9 +3822,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['AssessmentOverviewSummary']
-        }
+        content?: never
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
