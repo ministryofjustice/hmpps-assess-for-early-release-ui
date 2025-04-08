@@ -36,10 +36,10 @@ export default function Index({ supportService }: Services): Router {
   get(paths.support.offender.supportAssessments, assessmentsHandler.GET)
 
   const viewAssessmentHandler = new ViewAssessmentHandler(supportService)
-  get(paths.support.offender.supportViewAssessments, viewAssessmentHandler.GET)
+  get(paths.support.offender.supportAssessmentView, viewAssessmentHandler.GET)
 
   const deleteAssessmentHandler = new DeleteAssessmentHandler(supportService)
-  get(paths.support.offender.supportDeleteAssessment, deleteAssessmentHandler.GET)
+  get(paths.support.offender.supportAssessmentDelete, deleteAssessmentHandler.GET)
 
   const offenderSearchHandler = new OffenderSearchHandler(supportService)
   get(paths.support.offender.supportOffenderSearch, offenderSearchHandler.GET)

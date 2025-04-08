@@ -7,8 +7,8 @@ const supportOffenderSearchView = supportOffenderSearch.path('/:searchOffenderQu
 
 const supportOffenderView = supportOffender.path(':prisonNumber/view')
 const supportAssessments = supportOffender.path(':prisonNumber/assessments')
-const supportViewAssessments = supportOffender.path(':prisonNumber/assessment/:id')
-const supportDeleteAssessment = supportOffender.path(':prisonNumber/assessment/:id/delete')
+const supportAssessmentView = supportOffender.path(':prisonNumber/assessment/:id')
+const supportAssessmentDelete = supportOffender.path(':prisonNumber/assessment/:id/delete')
 
 const showPaths = supportHome.path('/paths')
 const offender = path('/offender/:prisonNumber')
@@ -56,8 +56,8 @@ const paths = {
       supportOffenderSearchView,
       supportOffenderView,
       supportAssessments,
-      supportViewAssessments,
-      supportDeleteAssessment,
+      supportAssessmentView,
+      supportAssessmentDelete,
     },
   },
   prison: {
