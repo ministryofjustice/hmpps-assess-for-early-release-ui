@@ -60,7 +60,7 @@ test.describe('COM caseload', () => {
       surname: 'Cook',
       hdced: '2026-12-06',
       workingDaysToHdced: 10,
-      status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+      status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     })
 
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
@@ -76,10 +76,7 @@ test.describe('COM caseload', () => {
     await expect(
       page.getByText(convertToTitleCase(`${toWorkOnByYouCases.forename} ${toWorkOnByYouCases.surname}`.trim())),
     ).toBeVisible()
-    await expect(
-      page.getByText(convertToTitleCase(`${activeOffender.forename} ${activeOffender.surname}`.trim())),
-    ).toBeVisible()
-    await expect(page.getByText(formatDate(parseIsoDate(activeOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+    await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByYouCases.hdced), 'dd MMM yyyy'))).toBeVisible()
 
     await page.getByTestId('postponed').click()
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#postponed`)

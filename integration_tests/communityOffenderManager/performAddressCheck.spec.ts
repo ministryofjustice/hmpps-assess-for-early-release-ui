@@ -9,6 +9,7 @@ import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import { login, resetStubs } from '../testUtils'
 import paths from '../../server/routes/paths'
 import { createStaffDetails } from '../../server/data/__testutils/testObjects'
+import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
 test.describe('Can perform address checks', () => {
   test.afterEach(async () => {
@@ -24,6 +25,7 @@ test.describe('Can perform address checks', () => {
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
       createOffenderSummary({
         prisonNumber,
+        status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
       }),
     ])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))

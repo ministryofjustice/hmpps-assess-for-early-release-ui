@@ -16,9 +16,6 @@ export default class CaseloadRoutes {
   static readonly TO_WORK_ON_BY_YOU_STATUSES = [
     AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
-    AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
-    AssessmentStatus.ELIGIBLE_AND_SUITABLE,
-    AssessmentStatus.APPROVED,
   ]
 
   static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
