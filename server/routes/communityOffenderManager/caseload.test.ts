@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe('GET', () => {
   it('should render active cases', async () => {
-    const activeCase = createComCase({})
+    const activeCase = createComCase({ status: AssessmentStatus.APPROVED })
     communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue([activeCase])
 
     await caseloadRoutes.GET(req, res)

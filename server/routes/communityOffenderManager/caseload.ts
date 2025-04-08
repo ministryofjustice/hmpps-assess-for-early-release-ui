@@ -13,6 +13,14 @@ export default class CaseloadRoutes {
     AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
   ]
 
+  static readonly TO_WORK_ON_BY_YOU_STATUSES = [
+    AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+    AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
+    AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+    AssessmentStatus.ELIGIBLE_AND_SUITABLE,
+    AssessmentStatus.APPROVED,
+  ]
+
   static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
 
   static readonly READY_FOR_RELEASE_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
@@ -33,13 +41,7 @@ export default class CaseloadRoutes {
     const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
     const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
     const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
-    const toWorkOnByYouCases = this.filterCasesByStatus(
-      cases,
-      CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(CaseloadRoutes.READY_FOR_RELEASE_STATUSES).concat(
-        CaseloadRoutes.POSTPONED_STATUSES,
-      ),
-      true,
-    )
+    const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES, false)
 
     res.render('pages/communityOffenderManager/caseload', {
       activeApplicationView,

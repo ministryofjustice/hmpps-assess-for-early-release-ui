@@ -54,16 +54,28 @@ test.describe('COM caseload', () => {
       workingDaysToHdced: 15,
       status: AssessmentStatus.TIMED_OUT,
     })
+    const toWorkOnByYouCases = createOffenderSummary({
+      prisonNumber: 'G3243TB',
+      forename: 'Tim',
+      surname: 'Cook',
+      hdced: '2026-12-06',
+      workingDaysToHdced: 10,
+      status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+    })
 
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
       activeOffender,
       postponedOffender,
       readyForReleaseOffender,
       timedOutOffender,
+      toWorkOnByYouCases,
     ])
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
     await page.goto(paths.probation.probationCaseload({}))
 
+    await expect(
+      page.getByText(convertToTitleCase(`${toWorkOnByYouCases.forename} ${toWorkOnByYouCases.surname}`.trim())),
+    ).toBeVisible()
     await expect(
       page.getByText(convertToTitleCase(`${activeOffender.forename} ${activeOffender.surname}`.trim())),
     ).toBeVisible()
