@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+{% from "partials/assessment/actions.njk" import actions %}
+{% from "./macro/personalDetails.njk" import personalDetails %}
+{% from "./macro/auditDetails.njk" import auditDetails %}
+{% from "./macro/staffDetails.njk" import staffDetails %}
+
+{% from "./macro/assessmentDetails.njk" import assessmentDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "moj/components/banner/macro.njk" import mojBanner %}
+{% from "./macro/assessmentsList.njk" import assessmentsList %}
+
+{% set pageTitle = "Assesment view - " + applicationName %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">Assessment for Prison Number: {{ prisonNumber  }}</h1>
+        </div>
+        <div class="govuk-grid-column-full">
+            {{ assessmentDetails(assessment) }}
+        </div>
+        {%- if assessment.responsibleCom %}
+            <div class="govuk-grid-column-one-half">
+                {{ staffDetails(assessment.responsibleCom) }}
+            </div>
+        {%- endif %}
+        <div class="govuk-grid-column-one-half">
+                {{ auditDetails(assessment) }}
+        </div>
+    </div>
+{% endblock %}

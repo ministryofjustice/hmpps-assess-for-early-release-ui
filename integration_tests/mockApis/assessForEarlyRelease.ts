@@ -1,6 +1,10 @@
 import { getMatchingRequests, stubFor } from './wiremock'
 import {
+  _AssessmentResponse,
+  _AssessmentSearchResponse,
   _AssessmentSummary,
+  _OffenderResponse,
+  _OffenderSearchResponse,
   _OffenderSummary,
   AddressSummary,
   CheckRequestSummary,
@@ -67,6 +71,77 @@ const stubGetComCaseload = (staffCode: string, list: _OffenderSummary[]) =>
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: list,
+    },
+  })
+
+const stubGetOffenderSearch = (searchString: string, list: _OffenderSearchResponse[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/support/offender/search/${searchString}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: list,
+    },
+  })
+
+const stubGetOffenderResponse = (prisonNumber: string, body: _OffenderResponse) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/support/offender/${prisonNumber}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: body,
+    },
+  })
+
+const stubGetAssessmentSearchResponse = (prisonNumber: string, list: _AssessmentSearchResponse[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/support/offender/${prisonNumber}/assessments`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: list,
+    },
+  })
+
+const stubGetAssessmentResponse = (assessmentId: string, assessmentResponse: _AssessmentResponse) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/support/offender/assessment/${assessmentId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: assessmentResponse,
+    },
+  })
+
+const stubDeleteAssessment = (assessmentId: string) =>
+  stubFor({
+    request: {
+      method: 'DELETE',
+      urlPattern: `/afer-api/support/offender/assessment/${assessmentId}`,
+    },
+    response: {
+      status: 204,
     },
   })
 
@@ -1030,4 +1105,9 @@ export default {
   stubGetResidentialChecksView,
   stubGetResidentialChecksTask,
   stubGetUpdateCaseAdminAdditionalInformation,
+  stubGetOffenderSearch,
+  stubGetOffenderResponse,
+  stubGetAssessmentSearchResponse,
+  stubDeleteAssessment,
+  stubGetAssessmentResponse,
 }

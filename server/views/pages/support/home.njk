@@ -18,6 +18,15 @@
                     "description": "Show currently implemented paths in the application."
                 }) }}
             </div>
+            <div class="govuk-grid-column-one-third card-group__item">
+                {{ card({
+                    "id": "supportOffemderSearch",
+                    "href": paths.support.offender.supportOffenderSearch | toPath(),
+                    "clickable": "true",
+                    "heading": "Offender search",
+                    "description": "Search for offender"
+                }) }}
+            </div>
         </div>
     </div>
 {% endblock %}

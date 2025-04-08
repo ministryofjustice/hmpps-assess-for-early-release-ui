@@ -10,9 +10,10 @@ import UserService from './userService'
 import ResidentialChecksService from './residentialChecksService'
 import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 import FormService from './formService'
+import SupportService from './supportService'
 
 export const services = () => {
-  const { hmppsAuditClient, assessForEarlyReleaseApiClient, hmppsComponentsClient } = dataAccess
+  const { hmppsAuditClient, assessForEarlyReleaseApiClient, hmppsComponentsClient, aferSupportApiClient } = dataAccess
   const addressService = new AddressService(assessForEarlyReleaseApiClient)
   const auditService = new AuditService(hmppsAuditClient)
   const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClient)
@@ -26,6 +27,7 @@ export const services = () => {
   const userService = new UserService(assessForEarlyReleaseApiClient)
   const decisionMakerCaseloadService = new DecisionMakerCaseloadService(assessForEarlyReleaseApiClient)
   const formService = new FormService(assessForEarlyReleaseApiClient)
+  const supportService = new SupportService(aferSupportApiClient, assessForEarlyReleaseApiClient)
 
   return {
     dataAccess,
@@ -40,6 +42,7 @@ export const services = () => {
     userService,
     decisionMakerCaseloadService,
     formService,
+    supportService,
   }
 }
 

@@ -10,6 +10,7 @@ import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 import HmppsComponentsClient from './hmppsComponentsClient'
 import AssessForEarlyReleaseApiClient from './assessForEarlyReleaseApiClient'
+import AferSupportApiClient from './aferSupportApiClient'
 import logger from '../../logger'
 
 const tokenStore = config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore()
@@ -19,6 +20,7 @@ export const dataAccess = {
   authClient,
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
   assessForEarlyReleaseApiClient: new AssessForEarlyReleaseApiClient(authClient),
+  aferSupportApiClient: new AferSupportApiClient(authClient),
   hmppsComponentsClient: new HmppsComponentsClient(authClient),
   verificationClient: new VerificationClient(config.apis.tokenVerification, logger),
 }
@@ -30,5 +32,6 @@ export {
   AuthenticationClient,
   HmppsComponentsClient,
   AssessForEarlyReleaseApiClient,
+  AferSupportApiClient,
   VerificationClient,
 }

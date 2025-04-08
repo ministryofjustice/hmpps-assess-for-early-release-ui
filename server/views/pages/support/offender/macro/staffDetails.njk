@@ -1,0 +1,38 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro staffDetails(params) %}
+    {% set staffDetails = [
+        {
+            key: { text: "Name" },
+            value: { html: params | toFullName }
+        },
+        {
+            key: { text: "Staff Code" },
+            value: { html: params.staffCode}
+        },
+        {
+            key: { text: "User Name" },
+            value: { html: params.username}
+        },
+        {
+            key: { text: "Email" },
+            value: { html: params.email}
+        }
+    ] %}
+
+    {% set staffDetailsNoNulls = [] %}
+    {% for staffDetail in staffDetails %}
+        {% if staffDetail.value.html %}
+            {% set staffDetailsNoNulls = (staffDetailsNoNulls.push(staffDetail), staffDetailsNoNulls) %}
+        {% endif %}
+    {% endfor %}
+
+    {{ govukSummaryList({
+        card: {
+            title: {
+                text: "Staff Details"
+            }
+        },
+        rows: staffDetailsNoNulls
+    }) }}
+{% endmacro %}

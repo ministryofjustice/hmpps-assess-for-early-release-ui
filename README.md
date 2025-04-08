@@ -10,18 +10,18 @@ A service to allow prisoners to be assessed for suitability for early release.
 
 Run the following commands :
 * Install dependencies using `npm install`, ensuring you are using `node v20`
-* run 
+* run
 ```zsh
   docker compose pull
 * ```
-* Run the api project `hmpps-assess-for-early-release-api` by typing the command in that 
-project folder `./run-local.sh`
- 
+* Run the api project `hmpps-assess-for-early-release-api` by typing the command in that
+  project folder `./run-local.sh`
+
 Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
 
 ### Running the application for development
 
-To start the main services excluding the example typescript template app: 
+To start the main services excluding the example typescript template app:
 
 ```zsh
    docker compose up
@@ -46,6 +46,11 @@ And then, to build the assets and start the app with esbuild:
 `npm run test`
 
 ### Running integration tests
+
+First time you must install playwright
+```zsh
+  npx playwright install
+```
 
 For local running, start a test db and wiremock instance by:
 
@@ -72,7 +77,7 @@ And to run all the tests:
 ```zsh
   npx playwright test
 ```
- 
+
 Or run tests with the playwright UI:
 
 ```zsh

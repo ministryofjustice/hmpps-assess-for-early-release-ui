@@ -7,6 +7,15 @@ type ParsingDates<T, Fields> = {
 export type _OffenderSummary = components['schemas']['OffenderSummaryResponse']
 export type OffenderSummary = ParsingDates<_OffenderSummary, 'hdced' | 'postponementDate' | 'taskOverdueOn'>
 
+export type _OffenderSearchResponse = components['schemas']['OffenderSearchResponse']
+export type OffenderSearchResponse = ParsingDates<_OffenderSearchResponse, 'dateOfBirth'>
+
+export type _OffenderResponse = components['schemas']['OffenderResponse']
+export type OffenderResponse = ParsingDates<
+  _OffenderResponse,
+  'dateOfBirth' | 'hdced' | 'crd' | 'sentenceStartDate' | 'createdTimestamp' | 'lastUpdatedTimestamp'
+>
+
 export type _AddressSummary = components['schemas']['AddressSummary']
 export type AddressSummary = ParsingDates<_AddressSummary, 'addressLastUpdated'>
 
@@ -75,4 +84,15 @@ export type _AssessmentOverviewSummary = components['schemas']['AssessmentOvervi
 export type AssessmentOverviewSummary = ParsingDates<
   _AssessmentOverviewSummary,
   'dateOfBirth' | 'hdced' | 'crd' | 'toDoEligibilityAndSuitabilityBy'
+>
+export type _AssessmentResponse = components['schemas']['AssessmentResponse']
+export type AssessmentResponse = ParsingDates<
+  _AssessmentResponse,
+  'createdTimestamp' | 'lastUpdatedTimestamp' | 'deletedTimestamp' | 'postponementDate'
+>
+export type ComSummary = components['schemas']['ComSummary']
+export type _AssessmentSearchResponse = components['schemas']['AssessmentSearchResponse']
+export type AssessmentSearchResponse = ParsingDates<
+  _AssessmentSearchResponse,
+  'createdTimestamp' | 'lastUpdatedTimestamp' | 'deletedTimestamp'
 >

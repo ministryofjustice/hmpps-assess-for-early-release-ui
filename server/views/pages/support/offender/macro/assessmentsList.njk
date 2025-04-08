@@ -1,0 +1,42 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "partials/offender/offenderTable.njk" import offenderTable %}
+{% from "partials/offenderName.njk" import offenderName %}
+{% from "./assessmentDelete.njk" import assessmentDelete %}
+{% from "./assessmentOptions.njk" import assessmentOptions %}
+
+{% macro assessmentsList(assessments, prisonNumber) %}
+    {% set assessmentRows = [] %}
+    {% for assessment in assessments %}
+        {% set assessmentRows = (assessmentRows.push([
+            {
+                attributes: tableAttributes(assessment, 'bookingId', loop.index),
+                text: assessment.bookingId
+            },
+            {
+                attributes: tableAttributes(assessment, 'status', loop.index),
+                text: assessment.status
+            },
+            {
+                attributes: tableAttributes(assessment, 'previousStatus', loop.index),
+                text: assessment.previousStatus
+            },
+            {
+                attributes: tableAttributes(assessment, 'createdTimestamp', loop.index),
+                text: assessment.createdTimestamp | formatDate('dd/MM/yy hh:mm')
+            },
+            {
+                attributes: tableAttributes(assessment, 'lastUpdatedTimestamp', loop.index),
+                text: assessment.lastUpdatedTimestamp | formatDate('dd/MM/yy hh:mm')
+            },
+            {
+                attributes: tableAttributes(assessment, 'deletedDetails', loop.index),
+                html: assessmentDelete(assessment, loop.index)
+            },
+            {
+                attributes: tableAttributes(assessment, 'options', loop.index),
+                html: assessmentOptions(assessment, prisonNumber, loop.index)
+            }
+        ]), assessmentRows) %}
+    {% endfor %}
+    {{ offenderTable("Assessments", ["Booking Id","Status","Previous State","Created","Updated","Deleted","Options"], assessmentRows) }}
+{% endmacro %}

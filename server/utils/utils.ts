@@ -33,6 +33,10 @@ const parseIsoDate = (date: string) => {
   return date ? parse(date, 'yyyy-MM-dd', new Date()) : null
 }
 
+const parseIsoDateTime = (date: string) => {
+  return date ? parse(date, 'yyyy-MM-dd HH:mm:ss', new Date()) : null
+}
+
 const toIsoDate = (date: Date) => {
   return date ? format(date, 'yyyy-MM-dd') : null
 }
@@ -79,6 +83,7 @@ export {
   initialiseName,
   hasRole,
   parseIsoDate,
+  parseIsoDateTime,
   toIsoDate,
   formatDate,
   getOrdinal,

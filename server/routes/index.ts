@@ -11,7 +11,7 @@ import assessmentPdfRoutes from './form'
 export default function routes(services: Services): Router {
   const router = Router()
   router.use(homeRoutes())
-  router.use(supportRoutes())
+  router.use(supportRoutes(services))
   router.use(caseAdminRoutes(services))
   router.use(communityOffenderManager(services))
   router.use(decisionMakerRoutes(services))

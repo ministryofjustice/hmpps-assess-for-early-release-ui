@@ -1,8 +1,13 @@
 import { add } from 'date-fns'
-import type {
+import {
+  _AssessmentResponse,
+  _AssessmentSearchResponse,
   _AssessmentSummary,
+  _OffenderResponse,
+  _OffenderSearchResponse,
   _OffenderSummary,
   CheckRequestSummary,
+  ComSummary,
   EligibilityCriterionProgress,
   ResidentSummary,
   SuitabilityCriterionProgress,
@@ -11,6 +16,7 @@ import type {
 import { tasks } from '../../server/config/tasks'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 import { toIsoDate } from '../../server/utils/utils'
+import OptOutReasonType from '../../server/enumeration/optOutReasonType'
 
 export const eligibilityCriterion1: EligibilityCriterionProgress = {
   code: 'code-1',
@@ -231,4 +237,110 @@ export const createOffenderSummary = ({
   postponementReasons,
   status,
   addressChecksComplete,
+})
+
+export const createOffenderSearchResponse = ({
+  prisonNumber = 'A1234AE',
+  prisonId = 'BRI',
+  forename = 'Jim',
+  surname = 'Smith',
+  dateOfBirth = '2001-01-08',
+  crn = 'X123456',
+} = {}): _OffenderSearchResponse => ({
+  prisonNumber,
+  prisonId,
+  forename,
+  surname,
+  dateOfBirth,
+  crn,
+})
+
+export const createOffenderResponse = ({
+  prisonNumber = 'A1234AA',
+  prisonId = 'BRS',
+  forename = 'Bob',
+  surname = 'Smith',
+  dateOfBirth = '2002-02-20',
+  hdced = '2026-08-23',
+  crd = '2026-09-23',
+  crn = 'DX12340A',
+  sentenceStartDate = '2028-06-23',
+  createdTimestamp = '2020-01-11 12:13:00',
+  lastUpdatedTimestamp = '2020-02-12 12:13:00',
+} = {}): _OffenderResponse => ({
+  prisonNumber,
+  prisonId,
+  forename,
+  surname,
+  dateOfBirth,
+  hdced,
+  crd,
+  crn,
+  sentenceStartDate,
+  createdTimestamp,
+  lastUpdatedTimestamp,
+})
+
+export const createAssessmentSearchResponse = ({
+  id = 722,
+  bookingId = 773722,
+  status = AssessmentStatus.ELIGIBLE_AND_SUITABLE,
+  previousStatus = AssessmentStatus.NOT_STARTED,
+  createdTimestamp = '2020-01-11 12:13:00',
+  lastUpdatedTimestamp = '2020-01-12 12:13:00',
+  deletedTimestamp = null,
+} = {}): _AssessmentSearchResponse => ({
+  id,
+  bookingId,
+  status,
+  previousStatus,
+  createdTimestamp,
+  lastUpdatedTimestamp,
+  deletedTimestamp,
+})
+
+export const createResponsibleCom = ({
+  staffCode = 'STAFF1',
+  username = 'testName',
+  email = 'test.com@moj.com',
+  forename = 'testForename',
+  surname = 'testSurname',
+} = {}): ComSummary => ({
+  staffCode,
+  username,
+  email,
+  forename,
+  surname,
+})
+
+export const createAssessmentResponse = ({
+  id = 722,
+  bookingId = 773722,
+  status = AssessmentStatus.NOT_STARTED,
+  previousStatus = null,
+  createdTimestamp = '2020-01-10 12:13:00',
+  lastUpdatedTimestamp = '2020-01-11 12:13:00',
+  deletedTimestamp = '2020-01-12 12:13:00',
+  policyVersion = '1',
+  addressChecksComplete = true,
+  team = 'MyTeam',
+  responsibleCom = createResponsibleCom(),
+  postponementDate = '2026-08-23',
+  optOutReasonType = OptOutReasonType.NOWHERE_TO_STAY,
+  optOutReasonOther = 'another reason',
+} = {}): _AssessmentResponse => ({
+  id,
+  bookingId,
+  status,
+  previousStatus,
+  createdTimestamp,
+  lastUpdatedTimestamp,
+  deletedTimestamp,
+  policyVersion,
+  addressChecksComplete,
+  team,
+  postponementDate,
+  optOutReasonType,
+  optOutReasonOther,
+  responsibleCom,
 })
