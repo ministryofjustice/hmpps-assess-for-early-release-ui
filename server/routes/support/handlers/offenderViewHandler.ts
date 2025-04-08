@@ -5,7 +5,7 @@ export default class OffenderViewHandler {
   constructor(private readonly supportService: SupportService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
-    const { prisonNumber } = req.params
+    const prisonNumber = req.params.prisonNumber as string
 
     const offender = await this.supportService.getOffender(req?.middleware?.clientToken, res.locals.agent, prisonNumber)
 
