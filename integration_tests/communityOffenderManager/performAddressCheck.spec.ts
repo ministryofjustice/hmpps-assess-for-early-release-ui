@@ -25,7 +25,7 @@ test.describe('Can perform address checks', () => {
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
       createOffenderSummary({
         prisonNumber,
-        status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+        status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
       }),
     ])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))

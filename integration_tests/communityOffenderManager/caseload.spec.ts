@@ -55,6 +55,16 @@ test.describe('COM caseload', () => {
       workingDaysToHdced: 15,
       status: AssessmentStatus.TIMED_OUT,
     })
+
+    const toWorkOnByYouCases = createOffenderSummary({
+      prisonNumber: 'G3243TB',
+      forename: 'Tim',
+      surname: 'Cook',
+      hdced: '2026-12-06',
+      workingDaysToHdced: 10,
+      status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+    })
+
     const withPrisonOffender = createOffenderSummary({
       prisonNumber: 'G7543KR',
       crn: 'X921514',
@@ -70,15 +80,16 @@ test.describe('COM caseload', () => {
       postponedOffender,
       readyForReleaseOffender,
       timedOutOffender,
+      toWorkOnByYouCases,
       withPrisonOffender,
     ])
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
     await page.goto(paths.probation.probationCaseload({}))
 
     await expect(
-      page.getByText(convertToTitleCase(`${activeOffender.forename} ${activeOffender.surname}`.trim())),
+      page.getByText(convertToTitleCase(`${toWorkOnByYouCases.forename} ${toWorkOnByYouCases.surname}`.trim())),
     ).toBeVisible()
-    await expect(page.getByText(formatDate(parseIsoDate(activeOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+    await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByYouCases.hdced), 'dd MMM yyyy'))).toBeVisible()
 
     await page.getByTestId('postponed').click()
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#postponed`)
