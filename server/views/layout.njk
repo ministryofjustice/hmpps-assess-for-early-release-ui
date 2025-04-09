@@ -44,11 +44,19 @@
     }) }}
   {% if not hideBackLink %}
     <nav>
+      {% if backLinkHref %}
       {{ govukBackLink({
         text: "Back",
-        href: "#",
+        href: backLinkHref,
         classes: 'js-backlink'
       }) }}
+      {% else %}
+        {{ govukBackLink({
+          text: "Back",
+          href: "#",
+          classes: 'js-backlink'
+        }) }}
+      {% endif %}
     </nav>
   {% endif %}
 {% endblock %}

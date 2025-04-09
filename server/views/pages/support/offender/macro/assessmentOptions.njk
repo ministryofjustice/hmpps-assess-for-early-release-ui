@@ -1,0 +1,6 @@
+{% macro assessmentOptions(assessment, prisonNumber, index) %}
+    <a id="view-button-{{ index }}" href="/support/offender/{{ prisonNumber }}/assessment/{{ assessment.id }}" class="govuk-link govuk-link--no-visited-state">View</a>
+    {%if assessment.deleted === false %}
+        | <a id="delete-button-{{ index }}" href="/support/offender/{{ prisonNumber }}/assessment/{{ assessment.id }}/delete" class="govuk-link govuk-link--no-visited-state">Delete</a>
+    {% endif %}
+{% endmacro %}

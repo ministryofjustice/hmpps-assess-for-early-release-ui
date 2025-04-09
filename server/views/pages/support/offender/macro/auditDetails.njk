@@ -1,0 +1,35 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{%  macro auditDetails(params) %}
+    {% set auditDetails = [
+        {
+            key: { text: "Created" },
+            value: { html: params.createdTimestamp | formatDate('dd/MM/yy hh:mm') }
+        },
+        {
+            key: { text: "Last Updated" },
+            value: { html: params.lastUpdatedTimestamp | formatDate('dd/MM/yy hh:mm') }
+        },
+        {
+            key: { text: "Deleted" },
+            value: { html: params.deletedTimestamp | formatDate('dd/MM/yy hh:mm') }
+        }
+    ]
+    %}
+
+    {% set auditDetailsNoNulls = [] %}
+    {% for auditDetail in auditDetails %}
+        {% if auditDetail.value.html %}
+            {% set auditDetailsNoNulls = (auditDetailsNoNulls.push(auditDetail), auditDetailsNoNulls) %}
+        {% endif %}
+    {% endfor %}
+
+    {{ govukSummaryList({
+            card: {
+                title: {
+                    text: "Audit details"
+                }
+            },
+            rows: auditDetailsNoNulls
+    }) }}
+{% endmacro %}

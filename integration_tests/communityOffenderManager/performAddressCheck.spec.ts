@@ -26,6 +26,7 @@ test.describe('Can perform address checks', () => {
       createOffenderSummary({
         prisonNumber,
         status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
+        status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
       }),
     ])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))

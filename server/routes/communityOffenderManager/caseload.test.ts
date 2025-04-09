@@ -40,7 +40,7 @@ describe('GET', () => {
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      activeApplicationView: true,
+      myCasesView: true,
       postponedCases: [],
       readyForReleaseCases: [],
       toWorkOnByYouCases: [
@@ -55,12 +55,12 @@ describe('GET', () => {
           currentTask: activeCase.currentTask,
         },
       ],
-      inactiveApplications: [],
+      withPrisonAdminCases: [],
     })
   })
 
   it('should render inactive cases', async () => {
-    const activeApplicationView = false
+    const myCases = false
     req.query = { view: 'inactive-applications' }
     const inactiveCase = createComCase({ status: AssessmentStatus.REFUSED })
     const offenderSummaryList = [inactiveCase]
@@ -74,10 +74,7 @@ describe('GET', () => {
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      activeApplicationView,
-      postponedCases: [],
-      readyForReleaseCases: [],
-      toWorkOnByYouCases: [],
+      myCasesView: myCases,
       inactiveApplications: [
         {
           createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,

@@ -1,6 +1,14 @@
 import { path } from 'static-path'
 
 const supportHome = path('/support')
+const supportOffender = supportHome.path('offender')
+const supportOffenderSearch = supportOffender.path('/search')
+const supportOffenderSearchView = supportOffenderSearch.path('/:searchOffenderQuery')
+
+const supportOffenderView = supportOffender.path(':prisonNumber/view')
+const supportAssessments = supportOffender.path(':prisonNumber/assessments')
+const supportAssessmentView = supportOffender.path(':prisonNumber/assessment/:id')
+const supportAssessmentDelete = supportOffender.path(':prisonNumber/assessment/:id/delete')
 
 const showPaths = supportHome.path('/paths')
 const offender = path('/offender/:prisonNumber')
@@ -43,6 +51,14 @@ const paths = {
   support: {
     home: supportHome,
     showPaths,
+    offender: {
+      supportOffenderSearch,
+      supportOffenderSearchView,
+      supportOffenderView,
+      supportAssessments,
+      supportAssessmentView,
+      supportAssessmentDelete,
+    },
   },
   prison: {
     prisonCaseload,

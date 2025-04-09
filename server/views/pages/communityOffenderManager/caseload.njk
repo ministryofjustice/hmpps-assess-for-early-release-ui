@@ -4,6 +4,7 @@
 {% from "./postponedTab.njk" import postponedTab %}
 {% from "./readyForReleaseTab.njk" import readyForReleaseTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
+{% from "./withPrisonAdminTab.njk" import withPrisonAdminTab %}
 
 {% set pageTitle = applicationName + " - Assessing a licence - Caseload" %}
 {% set offenders = [] %}
@@ -13,31 +14,41 @@
         id: "to-work-on-by-you",
         label: "To work on by you",
         attributes: {
-            "data-qa": "to-work-on-by-you"
-        },
+        "data-qa": "to-work-on-by-you"
+    },
         panel: {
-            html: toWorkOnByYouTab(toWorkOnByYouCases)
-        }
+        html: toWorkOnByYouTab(toWorkOnByYouCases)
+    }
+    },
+    {
+        id: "with-prison-admin",
+        label: "With prison admin",
+        attributes: {
+        "data-qa": "with-prison-admin"
+    },
+        panel: {
+        html: withPrisonAdminTab(withPrisonAdminCases)
+    }
     },
     {
         id: "postponed",
         label: "Postponed",
         attributes: {
-            "data-qa": "postponed"
-        },
+        "data-qa": "postponed"
+    },
         panel: {
-            html: postponedTab(postponedCases)
-        }
+        html: postponedTab(postponedCases)
+    }
     },
     {
         id: "ready-for-release",
         label: "Ready for release",
         attributes: {
-            "data-qa": "ready-for-release"
-        },
+        "data-qa": "ready-for-release"
+    },
         panel: {
-            html: readyForReleaseTab(readyForReleaseCases)
-        }
+        html: readyForReleaseTab(readyForReleaseCases)
+    }
     }
 ] %}
 
@@ -48,14 +59,14 @@
             <nav class="moj-sub-navigation" aria-label="Sub navigation">
                 <ul class="moj-sub-navigation__list">
                     <li class="moj-sub-navigation__item">
-                        <a class="moj-sub-navigation__link" {% if activeApplicationView %}aria-current="page"{% endif %} href="?view=active-applications">Active applications</a>
+                        <a class="moj-sub-navigation__link" {% if myCasesView %}aria-current="page"{% endif %} href="?view=my-cases">My cases</a>
                     </li>
                     <li class="moj-sub-navigation__item">
-                        <a class="moj-sub-navigation__link" {% if not activeApplicationView %}aria-current="page"{% endif %} href="?view=inactive-applications">Inactive applications</a>
+                        <a class="moj-sub-navigation__link" {% if not myCasesView %}aria-current="page"{% endif %} href="?view=inactive-applications">Inactive applications</a>
                     </li>
                 </ul>
             </nav>
-            {% if not activeApplicationView %}
+            {% if not myCasesView %}
                 <h2 class="govuk-heading-l" data-qa="inactive-applications">Inactive applications</h2>
                 {{ inactiveApplicationsTab({ cases: inactiveApplications }) }}
             {% else %}

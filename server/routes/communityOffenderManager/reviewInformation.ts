@@ -59,7 +59,6 @@ export default class ReviewInformationRoutes {
 
   POST = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
-
     await this.addressService.submitAssessmentForPreDecisionChecks(
       req?.middleware?.clientToken,
       res.locals.agent,

@@ -1,0 +1,32 @@
+{% from "./offenderDetails.njk" import offenderDetails %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+
+{% macro withPrisonAdminTab(withPrisonAdminCases) %}
+    {% set withPrisonAdminRows = [] %}
+    {% for case in withPrisonAdminCases %}
+        {% set withPrisonAdminRows = (withPrisonAdminRows.push([
+            {
+                attributes: tableAttributes(case, 'name', loop.index),
+                html: offenderDetails(case, loop.index)
+            },
+            {
+                attributes: tableAttributes(case, 'hdced', loop.index),
+                html: case.hdced | formatDate('dd MMM yyyy')
+            },
+            {
+                attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+                text: case.workingDaysToHdced
+            },
+            {
+                attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
+                text: ''
+            },
+            {
+                attributes: tableAttributes(case, 'task', loop.index),
+                text: case.currentTask
+            }
+        ]), withPrisonAdminRows) %}
+    {% endfor %}
+    <h2 class="govuk-heading-l">With prison admin</h2>
+    {{ caseloadTable("Caseload with prison admin", ["Name", "HDCED", "Working days to HDCED", "Last worked on by", "Task"], withPrisonAdminRows) }}
+{% endmacro %}
