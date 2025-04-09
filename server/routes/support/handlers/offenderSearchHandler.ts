@@ -56,6 +56,6 @@ export default class OffenderSearchHandler {
     const searchOffenderQuery = (req.body.searchOffenderQuery as string).replace(/\s+/g, '')
     logger.info('Post to get offender:', searchOffenderQuery)
 
-    return res.redirect(`${paths.support.offender.supportOffenderSearchView({ searchOffenderQuery })}`)
+    return res.redirect(paths.support.offender.supportOffenderSearchView({ searchOffenderQuery }))
   }
 }

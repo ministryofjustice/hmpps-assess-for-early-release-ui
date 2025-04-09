@@ -22,7 +22,7 @@ export default class ViewAssessmentHandler {
         assessment,
       })
     } else {
-      res.redirect(`${paths.support.offender.supportOffenderView({ prisonNumber })}`)
+      res.redirect(paths.support.offender.supportOffenderView({ prisonNumber }))
     }
   }
 }

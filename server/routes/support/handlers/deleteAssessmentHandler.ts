@@ -11,6 +11,6 @@ export default class DeleteAssessmentHandler {
 
     await this.supportService.deleteAssessment(req?.middleware?.clientToken, res.locals.agent, assessmentId)
 
-    return res.redirect(`${paths.support.offender.supportOffenderView({ prisonNumber })}`)
+    return res.redirect(paths.support.offender.supportOffenderView({ prisonNumber }))
   }
 }
