@@ -28,7 +28,7 @@ afterEach(() => {
 })
 
 describe('GET', () => {
-  it('should render active cases', async () => {
+  it('should render my cases', async () => {
     const activeCase = createComCase({})
     communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue([activeCase])
 
@@ -40,7 +40,7 @@ describe('GET', () => {
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      activeApplicationView: true,
+      myCasesView: true,
       postponedCases: [],
       readyForReleaseCases: [],
       toWorkOnByYouCases: [
@@ -56,12 +56,11 @@ describe('GET', () => {
         },
       ],
       withPrisonAdminCases: [],
-      inactiveApplications: [],
     })
   })
 
   it('should render inactive cases', async () => {
-    const activeApplicationView = false
+    const myCases = false
     req.query = { view: 'inactive-applications' }
     const inactiveCase = createComCase({ status: AssessmentStatus.REFUSED })
     const offenderSummaryList = [inactiveCase]
@@ -75,11 +74,7 @@ describe('GET', () => {
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      activeApplicationView,
-      postponedCases: [],
-      readyForReleaseCases: [],
-      toWorkOnByYouCases: [],
-      withPrisonAdminCases: [],
+      myCasesView: myCases,
       inactiveApplications: [
         {
           createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,

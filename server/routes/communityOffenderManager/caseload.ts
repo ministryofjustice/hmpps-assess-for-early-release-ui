@@ -26,12 +26,17 @@ export default class CaseloadRoutes {
     AssessmentStatus.AWAITING_PRE_RELEASE_CHECKS,
   ]
 
+  static readonly NOT_TO_BE_WORKED_ON_STATUSES = CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(
+    CaseloadRoutes.READY_FOR_RELEASE_STATUSES,
+  )
+    .concat(CaseloadRoutes.POSTPONED_STATUSES)
+    .concat(CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES)
+
   constructor(private readonly communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { user } = res.locals
-    const view = req.query.view || 'active-applications'
-    const activeApplicationView = view === 'active-applications'
+    const view = req.query.view || 'my-cases'
 
     const cases = await this.communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
       req?.middleware?.clientToken,
@@ -39,26 +44,27 @@ export default class CaseloadRoutes {
       user as ProbationUser,
     )
 
-    const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
-    const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
-    const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
-    const withPrisonAdminCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES, false)
-    const toWorkOnByYouCases = this.filterCasesByStatus(
-      cases,
-      CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(CaseloadRoutes.READY_FOR_RELEASE_STATUSES)
-        .concat(CaseloadRoutes.POSTPONED_STATUSES)
-        .concat(CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES),
-      true,
-    )
+    if (view === 'my-cases') {
+      const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
+      const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
+      const withPrisonAdminCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES, false)
+      const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.NOT_TO_BE_WORKED_ON_STATUSES, true)
 
-    res.render('pages/communityOffenderManager/caseload', {
-      activeApplicationView,
-      toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
-      postponedCases: postponedCases.map(this.mapToViewModel),
-      readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
-      inactiveApplications: inactiveApplications.map(this.mapToViewModel),
-      withPrisonAdminCases: withPrisonAdminCases.map(this.mapToViewModel),
-    })
+      res.render('pages/communityOffenderManager/caseload', {
+        myCasesView: true,
+        toWorkOnByYouCases: toWorkOnByYouCases.map(this.mapToViewModel),
+        postponedCases: postponedCases.map(this.mapToViewModel),
+        readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
+        withPrisonAdminCases: withPrisonAdminCases.map(this.mapToViewModel),
+      })
+    } else {
+      const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
+
+      res.render('pages/communityOffenderManager/caseload', {
+        myCasesView: false,
+        inactiveApplications: inactiveApplications.map(this.mapToViewModel),
+      })
+    }
   }
 
   filterCasesByStatus = (cases: Case[], statuses: AssessmentStatus[], excludeStatuses: boolean): Case[] =>
