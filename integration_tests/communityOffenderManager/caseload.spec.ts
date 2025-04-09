@@ -23,6 +23,7 @@ test.describe('COM caseload', () => {
   test('Can view active applications', async ({ page }) => {
     const activeOffender = createOffenderSummary({
       prisonNumber: 'A1234AE',
+      status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     })
     const postponedOffender = createOffenderSummary({
       prisonNumber: 'G3243TH',
@@ -54,12 +55,22 @@ test.describe('COM caseload', () => {
       workingDaysToHdced: 15,
       status: AssessmentStatus.TIMED_OUT,
     })
+    const withPrisonOffender = createOffenderSummary({
+      prisonNumber: 'G7543KR',
+      crn: 'X921514',
+      forename: 'Carl',
+      surname: 'Bennett',
+      hdced: '2026-02-25',
+      workingDaysToHdced: 39,
+      status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+    })
 
     await assessForEarlyRelease.stubGetComCaseload(staffCode, [
       activeOffender,
       postponedOffender,
       readyForReleaseOffender,
       timedOutOffender,
+      withPrisonOffender,
     ])
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
     await page.goto(paths.probation.probationCaseload({}))
@@ -91,6 +102,15 @@ test.describe('COM caseload', () => {
     await expect(
       page.getByText(convertToTitleCase(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())),
     ).not.toBeVisible()
+
+    await page.getByTestId('with-prison-admin').click()
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-prison-admin`,
+    )
+    await expect(
+      page.getByText(convertToTitleCase(`${withPrisonOffender.forename} ${withPrisonOffender.surname}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(`CRN: ${withPrisonOffender.crn}`)).toBeVisible()
   })
 
   test('Can view inactive applications', async ({ page }) => {

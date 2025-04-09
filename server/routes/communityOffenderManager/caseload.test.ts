@@ -55,6 +55,7 @@ describe('GET', () => {
           currentTask: activeCase.currentTask,
         },
       ],
+      withPrisonAdminCases: [],
       inactiveApplications: [],
     })
   })
@@ -78,6 +79,7 @@ describe('GET', () => {
       postponedCases: [],
       readyForReleaseCases: [],
       toWorkOnByYouCases: [],
+      withPrisonAdminCases: [],
       inactiveApplications: [
         {
           createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,

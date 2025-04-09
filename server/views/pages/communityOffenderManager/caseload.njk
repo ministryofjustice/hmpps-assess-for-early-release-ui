@@ -4,6 +4,7 @@
 {% from "./postponedTab.njk" import postponedTab %}
 {% from "./readyForReleaseTab.njk" import readyForReleaseTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
+{% from "./withPrisonAdminTab.njk" import withPrisonAdminTab %}
 
 {% set pageTitle = applicationName + " - Assessing a licence - Caseload" %}
 {% set offenders = [] %}
@@ -17,6 +18,16 @@
         },
         panel: {
             html: toWorkOnByYouTab(toWorkOnByYouCases)
+        }
+    },
+    {
+        id: "with-prison-admin",
+        label: "With prison admin",
+        attributes: {
+           "data-qa": "with-prison-admin"
+        },
+        panel: {
+            html: withPrisonAdminTab(withPrisonAdminCases)
         }
     },
     {
