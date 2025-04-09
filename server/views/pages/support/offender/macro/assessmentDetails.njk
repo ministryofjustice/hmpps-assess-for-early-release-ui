@@ -1,0 +1,63 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{%  macro assessmentDetails(params) %}
+    {% set assessmentDetails = [
+        {
+            key: { text: "Booking Id" },
+            value: { html: params.bookingId}
+        },
+        {
+            key: { text: "Status" },
+            value: { html: params.status}
+        },
+        {
+            key: { text: "Previous Status" },
+            value: { html: params.previousStatus}
+        },
+        {
+            key: { text: "Policy Version" },
+            value: { html: params.policyVersion}
+        },
+        {
+            key: { text: "Address Checks Complete" },
+            value: { html: params.addressChecksComplete}
+        },
+        {
+            key: { text: "Team" },
+            value: { html: params.team}
+        },
+        {
+            key: { text: "Postponement Date" },
+            value: { html: params.postponementDate | formatDate('dd/MM/yy') }
+        },
+        {
+            key: { text: "OptOut Reason" },
+            value: { html: params.optOutReasonType}
+        },
+        {
+            key: { text: "OptOut Reason Other" },
+            value: { html: params.optOutReasonOther}
+        },
+        {
+            key: { text: "Assigned community officer" },
+            value: { html: "true" if params.responsibleCom else "false"}
+        }
+    ]
+    %}
+
+    {% set assessmentDetailsNoNulls = [] %}
+    {% for assessmentDetail in assessmentDetails %}
+        {% if assessmentDetail.value.html %}
+            {% set assessmentDetailsNoNulls = (assessmentDetailsNoNulls.push(assessmentDetail), assessmentDetailsNoNulls) %}
+        {% endif %}
+    {% endfor %}
+
+    {{ govukSummaryList({
+            card: {
+                title: {
+                    text: "Assessment details"
+                }
+            },
+            rows: assessmentDetailsNoNulls
+    }) }}
+{% endmacro %}

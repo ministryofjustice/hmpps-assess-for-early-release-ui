@@ -1,0 +1,29 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "partials/offender/offenderTable.njk" import offenderTable %}
+{% from "./offenderNameAndLink.njk" import offenderNameAndLink %}
+{% from "./assessmentsLink.njk" import assessmentsLink %}
+
+{% macro offenderSearchResults(offenderResults) %}
+    {% set offenderDetailRows = [] %}
+    {% for offenderResult in offenderResults %}
+        {% set offenderDetailRows = (offenderDetailRows.push([
+            {
+                attributes: tableAttributes(offenderResult, 'name', loop.index),
+                html: offenderNameAndLink(offenderResult, loop.index)
+            },
+            {
+                attributes: tableAttributes(offenderResult, 'crn', loop.index),
+                text: offenderResult.crn
+            },
+            {
+                attributes: tableAttributes(offenderResult, 'prisonId', loop.index),
+                text: offenderResult.prisonId
+            },
+            {
+                attributes: tableAttributes(offenderResult, 'dateOfBirth', loop.index),
+                text: offenderResult.dateOfBirth | formatDate('dd MMM yyyy')
+            }
+        ]), offenderDetailRows) %}
+    {% endfor %}
+    {{ offenderTable("Offender search reults", ["Name","CRN","Prison Code","DOB"], offenderDetailRows) }}
+{% endmacro %}

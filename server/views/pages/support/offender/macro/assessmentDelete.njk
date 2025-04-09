@@ -1,0 +1,7 @@
+{% macro assessmentDelete(assessment, index) %}
+    {%if assessment.deleted %}
+        <p id="deleted-{{ index }}">True {{ assessment.deletedTimestamp | formatDate('dd/MM/yy hh:mm') }} </p>
+    {% else %}
+        <p id="not-deleted-{{ index }}">False</p>
+    {% endif %}
+{% endmacro %}
