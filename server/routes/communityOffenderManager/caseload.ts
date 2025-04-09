@@ -49,11 +49,6 @@ export default class CaseloadRoutes {
       user as ProbationUser,
     )
 
-    const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES, false)
-    const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
-    const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
-    const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES, false)
-
     if (view === 'my-cases') {
       const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
       const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
