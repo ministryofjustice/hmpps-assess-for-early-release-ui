@@ -53,7 +53,7 @@ export default class CaseloadRoutes {
       const postponedCases = this.filterCasesByStatus(cases, CaseloadRoutes.POSTPONED_STATUSES, false)
       const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES, false)
       const withPrisonAdminCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES, false)
-      const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.NOT_TO_BE_WORKED_ON_STATUSES, true)
+      const toWorkOnByYouCases = this.filterCasesByStatus(cases, CaseloadRoutes.TO_WORK_ON_BY_YOU_STATUSES, false)
 
       res.render('pages/communityOffenderManager/caseload', {
         myCasesView: true,
