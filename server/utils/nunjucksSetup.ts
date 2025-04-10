@@ -109,7 +109,7 @@ export function registerNunjucks(app?: express.Express): Environment {
   )
 
   njkEnv.addFilter('toFullName', (assessmentSummary: AssessmentSummary) =>
-    convertToTitleCase(`${assessmentSummary.forename} ${assessmentSummary.surname}`.trim()),
+    convertToTitleCase(`${assessmentSummary?.forename} ${assessmentSummary?.surname}`.trim()),
   )
 
   njkEnv.addFilter(

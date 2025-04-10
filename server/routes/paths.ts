@@ -42,6 +42,7 @@ const addressCheckTask = addressCheckTasklist.path(':taskCode')
 const probationCurfewAddress = probationAssessmentHome.path('curfew-address')
 const checkCurfewAddresses = probationCurfewAddress.path('/check-addresses')
 const reviewInformation = probationAssessmentHome.path('review-information')
+const nonDisclosableInformation = probationAssessmentHome.path('non-disclosable-information')
 
 const decisionMaker = path('/decisionMaker')
 const decisionMakerCaseload = decisionMaker.path('caseload')
@@ -94,6 +95,7 @@ const paths = {
         addressCheckTask,
       },
       reviewInformation,
+      nonDisclosableInformation,
     },
   },
   decisionMaker: {
