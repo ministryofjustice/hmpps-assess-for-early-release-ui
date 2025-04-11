@@ -10,6 +10,21 @@ test.describe('Opt out', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
+
+  test('User can download address check form from the opt out link', async ({ page }) => {
+    const prisonNumber = 'A1234AE'
+    await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubOptOut(prisonNumber)
+    await login(page, { authorities: ['ROLE_LICENCE_CA'] })
+
+    await page.goto(paths.prison.assessment.home({ prisonNumber }))
+    const optInOutLink = await page.getByTestId('optInOutAction').getAttribute('href')
+    expect(optInOutLink).toEqual(paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck({ prisonNumber }))
+    await page.goto(optInOutLink)
+    const addressFormLink = await page.getByTestId('addressFormLink').getAttribute('href')
+    expect(addressFormLink).toEqual(`/offender/${prisonNumber}/document/OFFENDER_ADDRESS_CHECKS_FORM`)
+  })
+
   test('Offender can opt out of HDC', async ({ page }) => {
     const prisonNumber = 'A1234AE'
 
