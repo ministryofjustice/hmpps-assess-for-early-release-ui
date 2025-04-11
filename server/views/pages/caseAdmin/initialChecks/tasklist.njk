@@ -58,21 +58,28 @@
             {% set suitabilityBlocked = criteria.eligibilityStatus !== 'ELIGIBLE' and criteria.suitabilityStatus === 'NOT_STARTED' %}
             {% set suitabilityChecks =  [] %}
             {% for check in criteria.suitability %}
-            {% set suitabilityChecks = (suitabilityChecks.push(
-                {
-                    title: {
-                        text: check.taskName
-                    },
-                    href: undefined if suitabilityBlocked else paths.prison.assessment.initialChecks.check | toPath({
-                        prisonNumber:assessmentSummary.prisonNumber, 
-                        type: 'suitability-check',
-                        checkCode: check.code 
-                    }),
-                    status: eligibilityChecks.suitabilityLabel(suitabilityBlocked, check.status)
-                }
-            ), suitabilityChecks) %}
+                {% set checkRecordedOn = '' %}
+                {% if check.agent.fullName %}
+                    {% set checkRecordedOn = 'Recorded on ' + check.lastUpdated | formatDate('dd MMM yyyy') + ' by ' + check.agent.fullName %}
+                {% endif %}
+                {% set suitabilityChecks = (suitabilityChecks.push(
+                    {
+                        title: {
+                            text: check.taskName
+                        },
+                        hint: {
+                            text: checkRecordedOn
+                        },
+                        href: undefined if suitabilityBlocked else paths.prison.assessment.initialChecks.check | toPath({
+                            prisonNumber:assessmentSummary.prisonNumber,
+                            type: 'suitability-check',
+                            checkCode: check.code
+                        }),
+                        status: eligibilityChecks.suitabilityLabel(suitabilityBlocked, check.status)
+                    }
+                ), suitabilityChecks) %}
             {% endfor %}
-            <h2>Suitability checks</h2>         
+            <h2>Suitability checks</h2>
             {{ govukTaskList({
                 idPrefix: "suitability-check",
                 items: suitabilityChecks,

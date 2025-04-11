@@ -55,6 +55,27 @@ export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
   lastUpdated: '2025-07-16',
 }
 
+export const suitabilityCriterionComplete: SuitabilityCriterionProgress = {
+  code: 'code-1',
+  taskName: 'Answer the first suitability question',
+  status: 'SUITABLE',
+  questions: [
+    {
+      name: 'question1',
+      text: 'Please answer question 1',
+      answer: true,
+      hint: 'Its simple really',
+    },
+  ],
+  agent: {
+    username: 'rDavidson',
+    fullName: 'Rebecca Davidson',
+    role: 'PRISON_CA',
+    onBehalfOf: 'BMI',
+  },
+  lastUpdated: '2025-07-16',
+}
+
 export const eligibilityCriterion2: EligibilityCriterionProgress = {
   code: 'code-2',
   taskName: 'Answer the second 2 questions',
