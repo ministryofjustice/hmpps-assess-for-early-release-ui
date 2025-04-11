@@ -42,6 +42,8 @@ export default class AferSupportApiClient extends RestClient {
       agent,
     )
 
+    logger.debug(offenderResponse)
+
     return {
       ...offenderResponse,
       dateOfBirth: parseIsoDate(offenderResponse.dateOfBirth),

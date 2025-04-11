@@ -42,14 +42,14 @@ test.describe('Offender assessment overview page', () => {
     const offender = createOffenderResponse({ prisonNumber })
     await assessForEarlyRelease.stubGetOffenderResponse(prisonNumber, offender)
 
-    const assessmentSearchResponse1 = createAssessmentSearchResponse({ deletedTimestamp: '2021-01-11 12:13:00' })
+    const assessmentSearchResponse1 = createAssessmentSearchResponse({ deletedTimestamp: '2021-01-11T12:13:00' })
     const assessmentSearchResponse2 = createAssessmentSearchResponse({
       id: 123,
       bookingId: 173722,
       status: AssessmentStatus.NOT_STARTED,
       previousStatus: null,
-      createdTimestamp: '2021-01-11 12:13:00',
-      lastUpdatedTimestamp: '2021-01-11 12:13:00',
+      createdTimestamp: '2021-01-11T12:13:00',
+      lastUpdatedTimestamp: '2021-01-11T12:13:00',
     })
 
     await assessForEarlyRelease.stubGetAssessmentSearchResponse(prisonNumber, [
@@ -167,7 +167,7 @@ test.describe('Offender assessment overview page', () => {
     await assessForEarlyRelease.stubGetAssessmentSearchResponse(prisonNumber, [createAssessmentSearchResponse()])
     await page.locator('#name-button-1').click()
 
-    const assessmentSearchResponse1 = createAssessmentSearchResponse({ deletedTimestamp: '2021-01-11 12:13:00' })
+    const assessmentSearchResponse1 = createAssessmentSearchResponse({ deletedTimestamp: '2021-01-11T12:13:00' })
     const assessmentSearchResponse2 = createAssessmentSearchResponse({
       status: AssessmentStatus.NOT_STARTED,
       previousStatus: null,

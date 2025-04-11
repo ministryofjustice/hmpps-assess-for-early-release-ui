@@ -3,6 +3,9 @@ import { parse, format } from 'date-fns'
 import AuthRole from '../enumeration/authRole'
 import { DocumentSubjectType } from '../@types/assessForEarlyReleaseApiClientTypes'
 
+const API_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
+const API_DATE_FORMAT = 'yyyy-MM-dd'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -30,15 +33,15 @@ const initialiseName = (fullName?: string): string | null => {
 const hasRole = (user: Express.User, role: AuthRole): boolean => user?.userRoles.includes(role) || false
 
 const parseIsoDate = (date: string) => {
-  return date ? parse(date, 'yyyy-MM-dd', new Date()) : null
+  return date ? parse(date, API_DATE_FORMAT, new Date()) : null
 }
 
 const parseIsoDateTime = (date: string) => {
-  return date ? parse(date, 'yyyy-MM-dd HH:mm:ss', new Date()) : null
+  return date ? parse(date, API_DATE_TIME_FORMAT, new Date()) : null
 }
 
 const toIsoDate = (date: Date) => {
-  return date ? format(date, 'yyyy-MM-dd') : null
+  return date ? format(date, API_DATE_FORMAT) : null
 }
 
 const formatDate = (date: Date, pattern: string, defaultValue: string = null) => {
