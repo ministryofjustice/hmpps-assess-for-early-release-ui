@@ -17,7 +17,7 @@
                 Enter curfew address or CAS area
             </h1>
             <p class="govuk-body">
-                Download the <a href="/case-overview#forms?" class="govuk-link govuk-link--no-visited-state">address form</a> for this person to record where they could live.
+                Download the <a href="/offender/{{ assessment.prisonNumber }}/document/OFFENDER_ADDRESS_CHECKS_FORM" class="govuk-link govuk-link--no-visited-state" data-qa="addressFormLink" >address form</a> for this person to record where they could live.
             </p>
             <form method="POST">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
