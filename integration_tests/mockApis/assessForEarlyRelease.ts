@@ -168,6 +168,7 @@ const stubGetEligibilityAndSuitability = (
   eligibilityStatus = 'NOT_STARTED',
   failureType: 'INELIGIBLE' | 'UNSUITABLE' = null,
   failedCheckReasons = [],
+  suitabilityStatus = 'NOT_STARTED',
 ) =>
   stubFor({
     request: {
@@ -185,7 +186,7 @@ const stubGetEligibilityAndSuitability = (
         complete: false,
         overallStatus,
         eligibilityStatus,
-        suitabilityStatus: 'NOT_STARTED',
+        suitabilityStatus,
         eligibility,
         suitability,
         failureType,
