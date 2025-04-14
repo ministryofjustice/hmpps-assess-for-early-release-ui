@@ -58,7 +58,7 @@ test.describe('Suitability checks', () => {
 
     await assessForEarlyRelease.stubSubmitCheckRequest(prisonNumber)
     await login(page, { authorities: ['ROLE_LICENCE_CA'], feComponentsFail: false })
-    await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
+    await page.goto(paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber }))
     const suitabilityChecks = page.getByTestId('suitability-checks')
     expect(suitabilityChecks).toBeVisible()
     expect(suitabilityChecks).toContainText('Answer the first suitability question')
