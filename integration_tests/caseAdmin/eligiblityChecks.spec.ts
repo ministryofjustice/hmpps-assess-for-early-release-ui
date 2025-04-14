@@ -30,7 +30,7 @@ test.describe('Eligibility checks', () => {
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'], feComponentsFail: false })
 
-    await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
+    await page.goto(paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber }))
 
     await expect(page.getByRole('heading', { name: 'Assess eligibility and suitability' })).toBeVisible()
 
@@ -183,7 +183,7 @@ test.describe('Eligibility checks', () => {
       ['question-1'],
     )
 
-    await page.goto(paths.prison.assessment.initialChecks.tasklist({ prisonNumber }))
+    await page.goto(paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber }))
 
     await expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
     await expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')

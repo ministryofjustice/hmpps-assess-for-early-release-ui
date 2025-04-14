@@ -127,7 +127,9 @@ describe('POST', () => {
     )
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.initialChecks.tasklist({ prisonNumber: req.params.prisonNumber }),
+      paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({
+        prisonNumber: req.params.prisonNumber,
+      }),
     )
   })
 
@@ -170,7 +172,9 @@ describe('POST', () => {
     )
 
     expect(res.redirect).toHaveBeenCalledWith(
-      paths.prison.assessment.initialChecks.tasklist({ prisonNumber: req.params.prisonNumber }),
+      paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({
+        prisonNumber: req.params.prisonNumber,
+      }),
     )
   })
 })

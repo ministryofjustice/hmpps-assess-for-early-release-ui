@@ -14,15 +14,20 @@ describe('nunjucksSetup', () => {
   describe('toPath', () => {
     test('with correct args:', () => {
       const result = renderTemplate(
-        '{{- paths.prison.assessment.initialChecks.tasklist | toPath({prisonNumber: "A1224"}) -}} ',
+        '{{- paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList | toPath({prisonNumber: "A1224"}) -}} ',
         {},
       )
-      expect(result).toStrictEqual(paths.prison.assessment.initialChecks.tasklist({ prisonNumber: 'A1224' }))
+      expect(result).toStrictEqual(
+        paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber: 'A1224' }),
+      )
     })
 
     test('with incorrect args:', () => {
       try {
-        renderTemplate('{{- paths.prison.assessment.initialChecks.tasklist | toPath({prisonNUMBER: "A1224"}) -}} ', {})
+        renderTemplate(
+          '{{- paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList | toPath({prisonNUMBER: "A1224"}) -}} ',
+          {},
+        )
         expect(true).toBe(false)
       } catch (e) {
         expect(e.message).toContain(

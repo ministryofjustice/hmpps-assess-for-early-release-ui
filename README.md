@@ -41,6 +41,10 @@ And then, to build the assets and start the app with esbuild:
 
 `npm run lint`
 
+### Linter auto fix
+
+`npm run lint --fix`
+
 ### Run unit tests
 
 `npm run test`

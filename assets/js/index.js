@@ -3,6 +3,7 @@ import * as mojFrontend from '@ministryofjustice/frontend'
 import './card'
 import './addAnother'
 import './checkboxHandler'
+import './eligibilityQuestion'
 
 govukFrontend.initAll()
 mojFrontend.initAll()

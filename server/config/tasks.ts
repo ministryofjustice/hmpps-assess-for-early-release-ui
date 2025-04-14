@@ -17,7 +17,7 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       code: 'ASSESS_ELIGIBILITY',
       title: 'Assess eligibility and suitability',
       lockedDescription: assessment => `To do by ${jsonDtToDateShort(assessment?.toDoEligibilityAndSuitabilityBy)}.`,
-      path: paths.prison.assessment.initialChecks.tasklist,
+      path: paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList,
     },
     {
       code: 'ENTER_CURFEW_ADDRESS',
