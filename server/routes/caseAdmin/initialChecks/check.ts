@@ -71,13 +71,13 @@ export default class CheckRoutes {
     nextCriterion: EligibilityCriterionProgress | SuitabilityCriterionProgress,
     eligibilityStatus: EligibilityStatus,
   ): string => {
-    let nextLocation = paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
+    let nextLocation = paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber })
     if (eligibilityStatus === 'INELIGIBLE' || eligibilityStatus === 'ELIGIBLE') {
       nextLocation = paths.prison.assessment.initialChecks.checksComplete({ prisonNumber })
     } else if (req.body.saveType === 'nextQuestion') {
       nextLocation = nextCriterion
         ? paths.prison.assessment.initialChecks.check({ prisonNumber, type, checkCode: nextCriterion?.code })
-        : paths.prison.assessment.initialChecks.tasklist({ prisonNumber })
+        : paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber })
     }
     return nextLocation
   }

@@ -1,7 +1,7 @@
 import { createEligibilityAndSuitabilityCaseView } from '../../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockEligibilityAndSuitabilityService } from '../../../services/__testutils/mock'
-import TasklistRoutes from './tasklist'
+import EligibilityAndSuitabilityQuestionListHandler from './eligibilityAndSuitabilityQuestionListHandler'
 
 const view = createEligibilityAndSuitabilityCaseView({})
 
@@ -9,10 +9,10 @@ const eligibilityAndSuitabilityService = createMockEligibilityAndSuitabilityServ
 const req = mockRequest({})
 const res = mockResponse({})
 
-let tasklistRoutes: TasklistRoutes
+let handler: EligibilityAndSuitabilityQuestionListHandler
 
 beforeEach(() => {
-  tasklistRoutes = new TasklistRoutes(eligibilityAndSuitabilityService)
+  handler = new EligibilityAndSuitabilityQuestionListHandler(eligibilityAndSuitabilityService)
   eligibilityAndSuitabilityService.getCriteria.mockResolvedValue(view)
   mockedDate(new Date(2022, 6, 1))
 })
@@ -22,15 +22,15 @@ afterEach(() => {
 })
 
 describe('GET', () => {
-  it('should render task list', async () => {
+  it('should render eligibility and suitability question list', async () => {
     req.params.prisonNumber = view.assessmentSummary.prisonNumber
-    await tasklistRoutes.GET(req, res)
+    await handler.GET(req, res)
     expect(eligibilityAndSuitabilityService.getCriteria).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       req.params.prisonNumber,
     )
-    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/tasklist', {
+    expect(res.render).toHaveBeenCalledWith('pages/caseAdmin/initialChecks/eligibilityAndSuitabilityQuestionList', {
       criteria: view,
       totalChecks: 0,
       completedChecks: 0,

@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import type { EligibilityAndSuitabilityService } from '../../../services'
 import { convertToTitleCase } from '../../../utils/utils'
 
-export default class TasklistRoutes {
+export default class EligibilityAndSuitabilityQuestionListHandler {
   constructor(private readonly eligibilityAndSuitabilityService: EligibilityAndSuitabilityService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -29,7 +29,7 @@ export default class TasklistRoutes {
       })
     }
 
-    res.render('pages/caseAdmin/initialChecks/tasklist', {
+    res.render('pages/caseAdmin/initialChecks/eligibilityAndSuitabilityQuestionList', {
       criteria,
       totalChecks,
       completedChecks: completedEligibilityChecks + completedSuitabilityChecks,

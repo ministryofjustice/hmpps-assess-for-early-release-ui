@@ -250,7 +250,7 @@ describe('assessForEarlyReleaseApiClient', () => {
       expect(response).toEqual(apiResponse)
     })
 
-    it('should get residential checks task', async () => {
+    it('should get residential checks eligibility and suitability questions', async () => {
       const taskView = createResidentialChecksTaskView()
       const { prisonNumber } = taskView.assessmentSummary
       const taskCode = taskView.taskConfig.code
