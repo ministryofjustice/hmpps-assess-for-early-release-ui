@@ -1,7 +1,7 @@
 import { createEligibilityAndSuitabilityCaseView } from '../../../data/__testutils/testObjects'
 import { mockedDate, mockRequest, mockResponse } from '../../__testutils/requestTestUtils'
 import { createMockEligibilityAndSuitabilityService } from '../../../services/__testutils/mock'
-import EligibilityAndSuitabilityQuestionHandler from './eligibilityAndSuitabilityQuestionHandler'
+import EligibilityAndSuitabilityQuestionListHandler from './eligibilityAndSuitabilityQuestionListHandler'
 
 const view = createEligibilityAndSuitabilityCaseView({})
 
@@ -9,10 +9,10 @@ const eligibilityAndSuitabilityService = createMockEligibilityAndSuitabilityServ
 const req = mockRequest({})
 const res = mockResponse({})
 
-let handler: EligibilityAndSuitabilityQuestionHandler
+let handler: EligibilityAndSuitabilityQuestionListHandler
 
 beforeEach(() => {
-  handler = new EligibilityAndSuitabilityQuestionHandler(eligibilityAndSuitabilityService)
+  handler = new EligibilityAndSuitabilityQuestionListHandler(eligibilityAndSuitabilityService)
   eligibilityAndSuitabilityService.getCriteria.mockResolvedValue(view)
   mockedDate(new Date(2022, 6, 1))
 })
