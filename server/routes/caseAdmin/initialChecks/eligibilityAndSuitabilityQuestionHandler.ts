@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import type { EligibilityAndSuitabilityService } from '../../../services'
 import { convertToTitleCase } from '../../../utils/utils'
 
-export default class EligibilityAndSuitabilityQuestionHandler {
+export default class EligibilityAndSuitabilityQuestionListHandler {
   constructor(private readonly eligibilityAndSuitabilityService: EligibilityAndSuitabilityService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {

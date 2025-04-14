@@ -6,7 +6,7 @@ import AuthRole from '../../enumeration/authRole'
 import CaseloadRoutes from './caseload'
 import { Services } from '../../services'
 import AssessmentRoutes from './assessment'
-import EligibilityAndSuitabilityQuestionHandler from './initialChecks/eligibilityAndSuitabilityQuestionHandler'
+import EligibilityAndSuitabilityQuestionListHandler from './initialChecks/eligibilityAndSuitabilityQuestionHandler'
 import CheckRoutes from './initialChecks/check'
 import paths from '../paths'
 import setAgentRoleMiddleware from '../../middleware/setAgentRoleMiddleware'
@@ -50,12 +50,12 @@ export default function Index({
   const assessmentHandler = new AssessmentRoutes(caseAdminCaseloadService)
   get(paths.prison.assessment.home, assessmentHandler.GET)
 
-  const eligibilityAndSuitabilityQuestionHandler = new EligibilityAndSuitabilityQuestionHandler(
+  const eligibilityAndSuitabilityQuestionListHandler = new EligibilityAndSuitabilityQuestionListHandler(
     eligibilityAndSuitabilityService,
   )
   get(
     paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList,
-    eligibilityAndSuitabilityQuestionHandler.GET,
+    eligibilityAndSuitabilityQuestionListHandler.GET,
   )
 
   const checkRoutes = new CheckRoutes(eligibilityAndSuitabilityService)
