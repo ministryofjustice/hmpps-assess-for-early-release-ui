@@ -27,15 +27,15 @@ export default class NonDisclosableInformationRoutes {
 
     validateRequest(req, body => {
       const validationErrors: FieldValidationError[] = []
-      const { nonDisclosableInformation, addMoreInfo } = body
+      const { isNonDisclosable, nonDisclosableReason } = body
 
-      if (nonDisclosableInformation === 'yes' && !addMoreInfo) {
-        validationErrors.push({ field: 'addMoreInfo', message: 'Enter non-disclosable information' })
+      if (isNonDisclosable === 'yes' && !nonDisclosableReason) {
+        validationErrors.push({ field: 'nonDisclosableReason', message: 'Enter non-disclosable information' })
       }
 
-      if (!nonDisclosableInformation) {
+      if (!isNonDisclosable) {
         validationErrors.push({
-          field: 'nonDisclosableInformation',
+          field: 'isNonDisclosable',
           message: `Please select whether you need to enter any information that must not be disclosed to ${forename}`,
         })
       }

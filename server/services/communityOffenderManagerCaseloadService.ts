@@ -36,6 +36,8 @@ export default class CommunityOffenderManagerCaseloadService {
       currentTask: aCase.currentTask,
       postponementReasons: aCase.postponementReasons,
       postponementDate: aCase.postponementDate,
+      hasNonDisclosableInformation: aCase.hasNonDisclosableInformation,
+      nonDisclosableInformation: aCase.nonDisclosableInformation,
     }))
   }
 

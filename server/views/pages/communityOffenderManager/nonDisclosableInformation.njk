@@ -15,12 +15,12 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-l">Record non-disclosable information</h1>
-            {% set addMoreInfo %}
+            {% set nonDisclosableReason %}
                 {{ govukTextarea({
-                    name: "addMoreInfo",
-                    id: "addMoreInfo",
-                    errorMessage: validationErrors | findError('addMoreInfo'),
-                    value: submittedForm.addMoreInfo,
+                    name: "nonDisclosableReason",
+                    id: "nonDisclosableReason",
+                    errorMessage: validationErrors | findError('nonDisclosableReason'),
+                    value: submittedForm.nonDisclosableReason,
                     label: {
                         text: "Give details of information that cannot be disclosed. It must not be shared with this person under any circumstances, including where a subject access request is made."
                     }
@@ -30,10 +30,10 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
                 <div class="govuk-form-group">
                     {{ govukRadios({
-                        id: "nonDisclosableInformation",
+                        id: "isNonDisclosable",
                         idPrefix: "radio-option",
-                        name:  "nonDisclosableInformation",
-                        value: submittedForm.nonDisclosableInformation,
+                        name:  "isNonDisclosable",
+                        value: submittedForm.isNonDisclosable,
                         fieldset: {
                             legend: {
                                 text: radioButtonText,
@@ -46,7 +46,7 @@
                                 value: "yes",
                                 text: "Yes",
                                 conditional: {
-                                    html: addMoreInfo
+                                    html: nonDisclosableReason
                                 }
                             },
                             {
