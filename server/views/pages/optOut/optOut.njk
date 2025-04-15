@@ -76,7 +76,13 @@
                             preventDoubleClick: true,
                             attributes: { 'data-qa': 'continue' }
                         }) }}
-                        <a class="govuk-link govuk-link--no-visited-state" href="./">Cancel</a>
+                        {{ govukButton({
+                            text: "Cancel",
+                            href: paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck |
+                                toPath({prisonNumber: assessment.prisonNumber}),
+                            classes: "govuk-button--secondary",
+                            attributes: { 'data-qa': 'cancel' }
+                        }) }}
                     </div>
                 </form>
             </div>
