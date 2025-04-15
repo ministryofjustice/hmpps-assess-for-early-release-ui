@@ -11,7 +11,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
-            <form method="POST" id="task-form">
+            <form method="POST" id="eligibility-question-form">
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
                     <input id="saveType" type="hidden" name="saveType" value="save">
                     {% for criterionQuestion in criterion.questions %}
@@ -27,7 +27,7 @@
                         }) }}
                         {{ govukButton({
                             text: "Cancel",
-                            href: paths.prison.assessment.initialChecks.tasklist | toPath(assessmentSummary),
+                            href: paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList | toPath(assessmentSummary),
                             classes: "govuk-button--secondary"
                         }) }}
                         <a id="next-question-link" class="govuk-link govuk-link--no-visited-state" href="#">Save and go to next question</a>
@@ -38,5 +38,5 @@
 {% endblock %}
 
 {% block pageScripts %}
-    <script src="/assets/js/task.js"></script>
+    <script src="/assets/js/nextEligibilityQuestion.js"></script>
 {% endblock %}
