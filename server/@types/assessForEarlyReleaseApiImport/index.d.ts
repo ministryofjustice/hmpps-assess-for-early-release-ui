@@ -106,6 +106,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/record-non-disclosable-information': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Records an offender's non disclosable information
+     * @description Create or update an offender's non disclosable information
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['recordNonDisclosableInformation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/postpone': {
     parameters: {
       query?: never
@@ -847,9 +870,7 @@ export interface paths {
     trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -892,6 +913,19 @@ export interface components {
       userMessage?: string
       developerMessage?: string
       moreInfo?: string
+    }
+    /** @description Records an offender's non disclosable information */
+    NonDisclosableInformation: {
+      /**
+       * @description Is there any non disclosable information
+       * @example true
+       */
+      hasNonDisclosableInformation: boolean
+      /**
+       * @description Information that must not be disclosed to offender
+       * @example Give details of information that cannot be disclosed.
+       */
+      nonDisclosableInformation?: string
     }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
@@ -1389,6 +1423,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1485,6 +1525,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -1572,13 +1618,13 @@ export interface components {
       /**
        * Format: date-time
        * @description The create timestamp for the afer offender
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       createdTimestamp: string
       /**
        * Format: date-time
        * @description The offender's conditional release date date
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       lastUpdatedTimestamp?: string
     }
@@ -1647,19 +1693,19 @@ export interface components {
       /**
        * Format: date-time
        * @description The create timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       createdTimestamp: string
       /**
        * Format: date-time
        * @description The update timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       lastUpdatedTimestamp?: string
       /**
        * Format: date-time
        * @description The delete timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       deletedTimestamp?: string
     }
@@ -1762,19 +1808,19 @@ export interface components {
       /**
        * Format: date-time
        * @description The create timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       createdTimestamp: string
       /**
        * Format: date-time
        * @description The update timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       lastUpdatedTimestamp?: string
       /**
        * Format: date-time
        * @description The delete timestamp for the assessment
-       * @example 2020-01-11 12:13:00
+       * @example 2020-01-11T12:13:00
        */
       deletedTimestamp?: string
       /**
@@ -2101,6 +2147,16 @@ export interface components {
        * @example Ineligible
        */
       result?: string
+      /**
+       * @description Indicates whether the prisoner's information is non-disclosable
+       * @example false
+       */
+      hasNonDisclosableInformation?: boolean
+      /**
+       * @description Reason why the prisoner's information is non-disclosable
+       * @example Security concerns
+       */
+      nonDisclosableInformation?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
@@ -2188,19 +2244,6 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      requestType: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2220,9 +2263,22 @@ export interface components {
       /**
        * Format: date-time
        * @description The date / time the check was requested on
-       * @example 22/11/2026 10:43:28
+       * @example 22/11/2026T10:43:28
        */
       dateRequested: string
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -2234,9 +2290,7 @@ export interface components {
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
 export interface operations {
   retryDlq: {
     parameters: {
@@ -2378,6 +2432,57 @@ export interface operations {
         content: {
           'application/json': unknown
         }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Could not find an offender with the provided prison number */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  recordNonDisclosableInformation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NonDisclosableInformation']
+      }
+    }
+    responses: {
+      /** @description The offender's non disclosable information has been recorded. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
@@ -3895,7 +4000,6 @@ export interface operations {
     }
   }
 }
-
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

@@ -32,6 +32,7 @@ import type {
   DocumentSubjectType,
   _AssessmentOverviewSummary,
   AssessmentOverviewSummary,
+  NonDisclosableInformation,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import { parseIsoDate } from '../utils/utils'
@@ -471,6 +472,20 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
         headers: this.getDefaultHeaders(agent),
       },
       token,
+    )
+  }
+
+  async recordNonDisclosableInformation(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    nonDisclosableInformation: NonDisclosableInformation,
+  ): Promise<void> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/record-non-disclosable-information`,
+      token,
+      agent,
+      nonDisclosableInformation,
     )
   }
 }

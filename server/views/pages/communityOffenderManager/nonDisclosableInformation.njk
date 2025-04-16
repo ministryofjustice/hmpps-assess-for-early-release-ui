@@ -1,0 +1,78 @@
+{% extends "layout.njk" %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% set pageTitle = "Non disclosable information – " + applicationName %}
+{% set backLinkHref = "/" %}
+{% set radioButtonText = "Is there any information that must not be disclosed to " + assessmentSummary.forename | title + "?" %}
+
+{% block content %}
+    {% include 'partials/errorSummary.njk' %}
+    {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Record non-disclosable information</h1>
+            {% set nonDisclosableInformation %}
+                {{ govukTextarea({
+                    name: "nonDisclosableInformation",
+                    id: "nonDisclosableInformation",
+                    errorMessage: validationErrors | findError('nonDisclosableInformation'),
+                    value: submittedForm.nonDisclosableInformation | default(assessmentSummary.nonDisclosableInformation),
+                    label: {
+                        text: "Give details of information that cannot be disclosed. It must not be shared with this person under any circumstances, including where a subject access request is made."
+                    }
+                }) }}
+            {% endset -%}
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                <div class="govuk-form-group">
+                    {{ govukRadios({
+                        id: "hasNonDisclosableInformation",
+                        idPrefix: "radio-option",
+                        name:  "hasNonDisclosableInformation",
+                        value: submittedForm.hasNonDisclosableInformation | default(assessmentSummary.hasNonDisclosableInformation),
+                        fieldset: {
+                            legend: {
+                                text: radioButtonText,
+                                isPageHeading: true,
+                                classes: "govuk-fieldset__legend--s"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "yes",
+                                text: "Yes",
+                                conditional: {
+                                    html: nonDisclosableInformation
+                                }
+                            },
+                            {
+                                value: "no",
+                                text: "No"
+                            }
+                        ],
+                        errorMessage: errors | findError("moreInfoRequiredCheck")
+                    }) }}
+                </div>
+
+                <div class="govuk-button-group" style="margin-top: 30px;">
+                    {{ govukButton({
+                        text: "Save",
+                        preventDoubleClick: true,
+                        attributes: { 'data-qa': 'save' }
+                    }) }}
+                    {{ govukButton({
+                        text: "Cancel",
+                        href: paths.probation.assessment.home | toPath({ prisonNumber: assessmentSummary.prisonNumber }),
+                        classes: "govuk-button--secondary",
+                        preventDoubleClick: true,
+                        attributes: { 'data-qa': 'cancel' }
+                    }) }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

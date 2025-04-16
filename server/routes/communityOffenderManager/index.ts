@@ -12,12 +12,14 @@ import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
 import ResidentialChecksTaskRoutes from './residentialChecks/task'
 import ReviewInformationRoutes from './reviewInformation'
 import setAgentRoleMiddleware from '../../middleware/setAgentRoleMiddleware'
+import NonDisclosableInformationRoutes from './nonDisclosableInformation'
 
 export default function Index({
   addressService,
   caseAdminCaseloadService,
   communityOffenderManagerCaseloadService,
   residentialChecksService,
+  nonDisclosableInformationService,
 }: Services): Router {
   const router = Router()
 
@@ -59,6 +61,13 @@ export default function Index({
   )
   get(paths.probation.assessment.reviewInformation, reviewInformationRoutes.GET)
   post(paths.probation.assessment.reviewInformation, reviewInformationRoutes.POST)
+
+  const nonDisclosableInformationRoutes = new NonDisclosableInformationRoutes(
+    communityOffenderManagerCaseloadService,
+    nonDisclosableInformationService,
+  )
+  get(paths.probation.assessment.nonDisclosableInformation, nonDisclosableInformationRoutes.GET)
+  post(paths.probation.assessment.nonDisclosableInformation, nonDisclosableInformationRoutes.POST)
 
   return router
 }
