@@ -51,6 +51,27 @@ describe('Record nondisclosable information', () => {
         prisonNumber: req.params.prisonNumber,
       })
     })
+
+    it('should render has nondisclosable flag to null', async () => {
+      const assessmentOverviewSummary1 = createAssessmentOverviewSummary({ hasNonDisclosableInformation: null })
+      caseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary1)
+      req.params.prisonNumber = assessmentOverviewSummary1.prisonNumber
+      await nonDisclosableInformationRoutes.GET(req, res)
+
+      expect(caseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
+        req.middleware.clientToken,
+        res.locals.agent,
+        req.params.prisonNumber,
+      )
+
+      expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/nonDisclosableInformation', {
+        assessmentSummary: {
+          ...assessmentOverviewSummary1,
+          hasNonDisclosableInformation: null,
+        },
+        prisonNumber: req.params.prisonNumber,
+      })
+    })
   })
 
   describe('POST', () => {

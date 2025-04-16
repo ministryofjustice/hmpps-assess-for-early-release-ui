@@ -14,16 +14,23 @@ export default class NonDisclosableInformationRoutes {
 
   GET = async (req: Request, res: Response): Promise<void> => {
     const { prisonNumber } = req.params
+    let hasNonDisclosableInformation
     const assessmentSummary = await this.communityOffenderManagerCaseloadService.getAssessmentOverviewSummary(
       req?.middleware?.clientToken,
       res.locals.agent,
       prisonNumber,
     )
 
+    if (assessmentSummary.hasNonDisclosableInformation !== null) {
+      hasNonDisclosableInformation = assessmentSummary.hasNonDisclosableInformation ? 'yes' : 'no'
+    } else {
+      hasNonDisclosableInformation = null
+    }
+
     res.render('pages/communityOffenderManager/nonDisclosableInformation', {
       assessmentSummary: {
         ...assessmentSummary,
-        hasNonDisclosableInformation: assessmentSummary.hasNonDisclosableInformation ? 'yes' : 'no',
+        hasNonDisclosableInformation,
       },
       prisonNumber,
     })
