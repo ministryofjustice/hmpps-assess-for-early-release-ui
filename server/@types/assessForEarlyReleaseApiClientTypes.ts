@@ -96,3 +96,4 @@ export type AssessmentSearchResponse = ParsingDates<
   _AssessmentSearchResponse,
   'createdTimestamp' | 'lastUpdatedTimestamp' | 'deletedTimestamp'
 >
+export type NonDisclosableInformation = components['schemas']['NonDisclosableInformation']

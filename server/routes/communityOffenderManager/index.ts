@@ -19,6 +19,7 @@ export default function Index({
   caseAdminCaseloadService,
   communityOffenderManagerCaseloadService,
   residentialChecksService,
+  nonDisclosableInformationService,
 }: Services): Router {
   const router = Router()
 
@@ -61,7 +62,10 @@ export default function Index({
   get(paths.probation.assessment.reviewInformation, reviewInformationRoutes.GET)
   post(paths.probation.assessment.reviewInformation, reviewInformationRoutes.POST)
 
-  const nonDisclosableInformationRoutes = new NonDisclosableInformationRoutes(caseAdminCaseloadService)
+  const nonDisclosableInformationRoutes = new NonDisclosableInformationRoutes(
+    communityOffenderManagerCaseloadService,
+    nonDisclosableInformationService,
+  )
   get(paths.probation.assessment.nonDisclosableInformation, nonDisclosableInformationRoutes.GET)
   post(paths.probation.assessment.nonDisclosableInformation, nonDisclosableInformationRoutes.POST)
 

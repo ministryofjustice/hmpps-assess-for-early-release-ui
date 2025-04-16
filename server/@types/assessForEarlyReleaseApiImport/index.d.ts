@@ -2032,16 +2032,6 @@ export interface components {
        * @example DX12340A
        */
       crn?: string
-      /**
-       * @description Indicates whether the prisoner's information is non-disclosable
-       * @example false
-       */
-      hasNonDisclosableInformation?: boolean
-      /**
-       * @description Reason why the prisoner's information is non-disclosable
-       * @example Security concerns
-       */
-      nonDisclosableInformation?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentOverviewSummary: {
@@ -2157,6 +2147,16 @@ export interface components {
        * @example Ineligible
        */
       result?: string
+      /**
+       * @description Indicates whether the prisoner's information is non-disclosable
+       * @example false
+       */
+      hasNonDisclosableInformation?: boolean
+      /**
+       * @description Reason why the prisoner's information is non-disclosable
+       * @example Security concerns
+       */
+      nonDisclosableInformation?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
@@ -2268,17 +2268,17 @@ export interface components {
       dateRequested: string
       requestType: string
       /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown

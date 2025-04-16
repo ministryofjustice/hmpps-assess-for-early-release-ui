@@ -11,6 +11,7 @@ import ResidentialChecksService from './residentialChecksService'
 import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 import FormService from './formService'
 import SupportService from './supportService'
+import NonDisclosableInformationService from './nonDisclosableInformationService'
 
 export const services = () => {
   const { hmppsAuditClient, assessForEarlyReleaseApiClient, hmppsComponentsClient, aferSupportApiClient } = dataAccess
@@ -28,6 +29,7 @@ export const services = () => {
   const decisionMakerCaseloadService = new DecisionMakerCaseloadService(assessForEarlyReleaseApiClient)
   const formService = new FormService(assessForEarlyReleaseApiClient)
   const supportService = new SupportService(aferSupportApiClient, assessForEarlyReleaseApiClient)
+  const nonDisclosableInformationService = new NonDisclosableInformationService(assessForEarlyReleaseApiClient)
 
   return {
     dataAccess,
@@ -43,6 +45,7 @@ export const services = () => {
     decisionMakerCaseloadService,
     formService,
     supportService,
+    nonDisclosableInformationService,
   }
 }
 
@@ -59,4 +62,5 @@ export {
   UserService,
   DecisionMakerCaseloadService,
   FormService,
+  NonDisclosableInformationService,
 }
