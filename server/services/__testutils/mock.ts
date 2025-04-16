@@ -7,6 +7,7 @@ import {
   ResidentialChecksService,
   UserService,
   FormService,
+  NonDisclosableInformationService,
 } from '..'
 
 jest.mock('..')
@@ -32,6 +33,9 @@ const createMockDecisionMakerCaseloadService = () =>
 
 const createMockFormService = () => new FormService(null) as jest.Mocked<FormService>
 
+const createMockNonDisclosableInformationService = () =>
+  new NonDisclosableInformationService(null) as jest.Mocked<NonDisclosableInformationService>
+
 export {
   createMockAddressService,
   createMockCaseAdminCaseloadService,
@@ -41,4 +45,5 @@ export {
   createMockCommunityOffenderManagerCaseloadService,
   createMockDecisionMakerCaseloadService,
   createMockFormService,
+  createMockNonDisclosableInformationService,
 }

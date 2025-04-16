@@ -153,6 +153,8 @@ const createAssessmentOverviewSummary = ({
   },
   toDoEligibilityAndSuitabilityBy = parseIsoDate('2022-01-08'),
   result = null,
+  hasNonDisclosableInformation = false,
+  nonDisclosableInformation = '',
 } = {}): AssessmentOverviewSummary => ({
   bookingId,
   forename,
@@ -179,6 +181,8 @@ const createAssessmentOverviewSummary = ({
   },
   toDoEligibilityAndSuitabilityBy,
   result,
+  hasNonDisclosableInformation,
+  nonDisclosableInformation,
 })
 
 const createEligibilityAndSuitabilityCaseView = ({

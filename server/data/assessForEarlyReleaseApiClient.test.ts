@@ -6,6 +6,7 @@ import {
   _OffenderSummary,
   _ResidentialChecksTaskView,
   Agent,
+  NonDisclosableInformation,
   SaveResidentialChecksTaskAnswersRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import {
@@ -369,6 +370,29 @@ describe('assessForEarlyReleaseApiClient', () => {
         .reply(200)
 
       await assessForEarlyReleaseApiClient.submitAssessmentForPreDecisionChecks(token, agent, prisonNumber)
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
+
+  describe('Record NonDisclosable Information', () => {
+    const { prisonNumber } = createAssessmentOverviewSummary({})
+
+    it('record nondisclosable information', async () => {
+      const nonDisclosableInformation = {
+        hasNonDisclosableInformation: true,
+        nonDisclosableInformation: 'some info',
+      } as NonDisclosableInformation
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/record-non-disclosable-information`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      await assessForEarlyReleaseApiClient.recordNonDisclosableInformation(
+        token,
+        agent,
+        prisonNumber,
+        nonDisclosableInformation,
+      )
       expect(fakeAferApi.isDone()).toBe(true)
     })
   })
