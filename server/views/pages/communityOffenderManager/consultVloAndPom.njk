@@ -1,0 +1,104 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+
+{% set pageTitle = applicationName + " - Consult the VLO and POM" %}
+
+{% set victimContactSchemeRequestsHtml %}
+    {{ govukTextarea({
+        name: 'victimContactSchemeRequests',
+        id: 'victimContactSchemeRequests',
+        value: submittedForm.victimContactSchemeRequests | default(assessmentSummary.victimContactSchemeRequests),
+        label: {
+            text: 'Enter details of any requests the victim has made. For example, whether exclusion zones have been requested.'
+        },
+        errorMessage: validationErrors | findError('victimContactSchemeRequests'),
+        attributes: {
+            "data-qa": "victimContactSchemeRequests"
+        }
+    }) }}
+{% endset %}
+{% block content %}
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
+            <h1 class="govuk-heading-l">
+                Consult the VLO and POM
+            </h1>
+            <p class="govuk-body">
+                Completing this task will help the decision maker in the prison decide if this person is right for early release on HDC.
+            </p>
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {{ govukRadios({
+                    idPrefix: 'victimContactSchemeOptedIn',
+                    name:  'victimContactSchemeOptedIn',
+                    value: submittedForm.victimContactSchemeOptedIn | default(victimContactSchemeOptedIn),
+                    fieldset: {
+                        legend: {
+                            text: 'Does this case qualify for the Victim Contact Scheme and has the victim opted in?',
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+                    hint: {
+                        text: 'If so, victims must be given 14 days to make representations to the VLO about licence conditions and the impact of this person’s release.'
+                    },
+                    items: [
+                        {
+                            value: "true",
+                            text: "Yes",
+                            conditional: {
+                                html: victimContactSchemeRequestsHtml
+                            }
+                        },
+                        {
+                            value: "false",
+                            text: "No"
+                        }
+                    ],
+                    errorMessage: validationErrors | findError('victimContactSchemeOptedIn')
+                }) }}
+                {{ govukTextarea({
+                    name: "pomBehaviourInformation",
+                    id: "pomBehaviourInformation",
+                    value: submittedForm.pomBehaviourInformation | default(assessmentSummary.pomBehaviourInformation),
+                    label: {
+                        text: "What information has the POM provided about the behaviour of this person while in prison?",
+                        classes: "govuk-label--m"
+                    },
+                    hint: {
+                        html: "<p class='govuk-hint'>You must contact the POM to find out information like:</p>
+                               <ul class='govuk-list govuk-list--bullet'>
+                                 <li>any concerns about them being released on HDC</li>
+                                 <li>if there have been any changes to their level of risk</li>
+                                 <li>if they need any medical or mental health treatment after release</li>
+                               </ul>"
+                    },
+                    errorMessage: validationErrors | findError('pomBehaviourInformation'),
+                    attributes: {
+                        "data-qa": "pomBehaviourInformation"
+                    }
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Save",
+                        attributes: { 'data-qa': 'save' }
+                    }) }}
+
+                    {{ govukButton({
+                        text: "Cancel",
+                        attributes: { 'data-qa': 'cancel' },
+                        href: paths.probation.assessment.home | toPath({ prisonNumber: assessmentSummary.prisonNumber })
+                    }) }}
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

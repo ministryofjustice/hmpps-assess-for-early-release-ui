@@ -60,6 +60,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/vlo-and-pom-consultation': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates the vlo and pom consultation information for an assessment.
+     * @description Updates the vlo and pom consultation information for an assessment
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['updateVloAndPomConsultation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/submit-for-pre-decision-checks': {
     parameters: {
       query?: never
@@ -870,7 +893,6 @@ export interface paths {
     trace?: never
   }
 }
-export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -880,6 +902,33 @@ export interface components {
     PurgeQueueResult: {
       /** Format: int32 */
       messagesFoundCount: number
+    }
+    /** @description Request for updating the VLO and POM consultation information for an assessment */
+    UpdateVloAndPomConsultationRequest: {
+      /**
+       * @description Does the case qualify for and has the victim opted in for the Victim Contact Scheme
+       * @example true
+       */
+      victimContactSchemeOptedIn: boolean
+      /**
+       * @description Details of any requests the victim has made
+       * @example Any exclusion zones that have been requested
+       */
+      victimContactSchemeRequests?: string
+      /**
+       * @description Information that the POM has provided about the offender's behaviour in prison
+       * @example Any concerns about them being released on HDC
+       */
+      pomBehaviourInformation?: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
     }
     /** @description Details of the agent who is requesting a change be made to a resource */
     AgentDto: {
@@ -904,15 +953,6 @@ export interface components {
        * @example A prison code or probation team code
        */
       onBehalfOf?: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     /** @description Records an offender's non disclosable information */
     NonDisclosableInformation: {
@@ -1240,6 +1280,7 @@ export interface components {
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
         | 'PRINT_LICENCE'
+        | 'CONSULT_THE_VLO_AND_POM'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
         | 'SEND_CHECKS_TO_PRISON'
@@ -1423,12 +1464,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1519,12 +1554,6 @@ export interface components {
        * @example See AddressSummary
        */
       allocatedAddress?: components['schemas']['AddressSummary']
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -2014,6 +2043,7 @@ export interface components {
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
         | 'PRINT_LICENCE'
+        | 'CONSULT_THE_VLO_AND_POM'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
         | 'SEND_CHECKS_TO_PRISON'
@@ -2157,6 +2187,21 @@ export interface components {
        * @example Security concerns
        */
       nonDisclosableInformation?: string
+      /**
+       * @description Does the case qualify for and has the victim opted in for the Victim Contact Scheme
+       * @example true
+       */
+      victimContactSchemeOptedIn?: boolean
+      /**
+       * @description Details of any requests the victim has made
+       * @example Any exclusion zones that have been requested
+       */
+      victimContactSchemeRequests?: string
+      /**
+       * @description Information that the POM has provided about the offender's behaviour in prison
+       * @example Any concerns about them being released on HDC
+       */
+      pomBehaviourInformation?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
@@ -2266,19 +2311,19 @@ export interface components {
        * @example 22/11/2026T10:43:28
        */
       dateRequested: string
-      requestType: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -2290,7 +2335,6 @@ export interface components {
   headers: never
   pathItems: never
 }
-export type $defs = Record<string, never>
 export interface operations {
   retryDlq: {
     parameters: {
@@ -2352,6 +2396,48 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['PurgeQueueResult']
+        }
+      }
+    }
+  }
+  updateVloAndPomConsultation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateVloAndPomConsultationRequest']
+      }
+    }
+    responses: {
+      /** @description The vlo and pom consultation information has been updated. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

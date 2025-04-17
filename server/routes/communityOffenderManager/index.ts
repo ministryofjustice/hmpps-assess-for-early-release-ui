@@ -7,6 +7,7 @@ import CaseloadRoutes from './caseload'
 import { Services } from '../../services'
 import paths from '../paths'
 import CheckCurfewAddressesRoutes from './checkCurfewAddresses'
+import ConsultVloAndPomRoutes from './consultVloAndPom'
 import AssessmentRoutes from './assessment'
 import ResidentialChecksTasklistRoutes from './residentialChecks/tasklist'
 import ResidentialChecksTaskRoutes from './residentialChecks/task'
@@ -17,6 +18,7 @@ import NonDisclosableInformationRoutes from './nonDisclosableInformation'
 export default function Index({
   addressService,
   caseAdminCaseloadService,
+  comChecksService,
   communityOffenderManagerCaseloadService,
   residentialChecksService,
   nonDisclosableInformationService,
@@ -43,6 +45,10 @@ export default function Index({
 
   const assessmentHandler = new AssessmentRoutes(communityOffenderManagerCaseloadService)
   get(paths.probation.assessment.home, assessmentHandler.GET)
+
+  const consultVloAndPomRoutes = new ConsultVloAndPomRoutes(caseAdminCaseloadService, comChecksService)
+  get(paths.probation.assessment.consultVloAndPom, consultVloAndPomRoutes.GET)
+  post(paths.probation.assessment.consultVloAndPom, consultVloAndPomRoutes.POST)
 
   const checkCurfewAddressesRoutes = new CheckCurfewAddressesRoutes(addressService, caseAdminCaseloadService)
   get(paths.probation.assessment.curfewAddress.checkCurfewAddresses, checkCurfewAddressesRoutes.GET)
