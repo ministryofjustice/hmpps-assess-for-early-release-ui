@@ -39,6 +39,7 @@ const probationCaseload = probation.path('caseload')
 const probationAssessmentHome = probation.path('assessment/:prisonNumber')
 const addressCheckTasklist = probationAssessmentHome.path('address-checks/:checkRequestId')
 const addressCheckTask = addressCheckTasklist.path(':taskCode')
+const consultVloAndPom = probationAssessmentHome.path('consult-vlo-pom')
 const probationCurfewAddress = probationAssessmentHome.path('curfew-address')
 const checkCurfewAddresses = probationCurfewAddress.path('/check-addresses')
 const reviewInformation = probationAssessmentHome.path('review-information')
@@ -89,6 +90,7 @@ const paths = {
     probationCaseload,
     assessment: {
       home: probationAssessmentHome,
+      consultVloAndPom,
       curfewAddress: {
         checkCurfewAddresses,
         addressCheckTasklist,

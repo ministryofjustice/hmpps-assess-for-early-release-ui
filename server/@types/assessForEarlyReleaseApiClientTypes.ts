@@ -96,4 +96,6 @@ export type AssessmentSearchResponse = ParsingDates<
   _AssessmentSearchResponse,
   'createdTimestamp' | 'lastUpdatedTimestamp' | 'deletedTimestamp'
 >
+
+export type UpdateVloAndPomConsultationRequest = components['schemas']['UpdateVloAndPomConsultationRequest']
 export type NonDisclosableInformation = components['schemas']['NonDisclosableInformation']

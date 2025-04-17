@@ -12,11 +12,13 @@ import DecisionMakerCaseloadService from './decisionMakerCaseloadService'
 import FormService from './formService'
 import SupportService from './supportService'
 import NonDisclosableInformationService from './nonDisclosableInformationService'
+import ComChecksService from './comChecksService'
 
 export const services = () => {
   const { hmppsAuditClient, assessForEarlyReleaseApiClient, hmppsComponentsClient, aferSupportApiClient } = dataAccess
   const addressService = new AddressService(assessForEarlyReleaseApiClient)
   const auditService = new AuditService(hmppsAuditClient)
+  const comChecksService = new ComChecksService(assessForEarlyReleaseApiClient)
   const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClient)
   const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
   const eligibilityAndSuitabilityService = new EligibilityAndSuitabilityService(assessForEarlyReleaseApiClient)
@@ -37,6 +39,7 @@ export const services = () => {
     auditService,
     caseAdminCaseloadService,
     communityOffenderManagerCaseloadService,
+    comChecksService,
     eligibilityAndSuitabilityService,
     hmppsComponentsService,
     optOutService,
@@ -55,6 +58,7 @@ export {
   AddressService,
   CaseAdminCaseloadService,
   CommunityOffenderManagerCaseloadService,
+  ComChecksService,
   EligibilityAndSuitabilityService,
   HmppsComponentsService,
   OptOutService,

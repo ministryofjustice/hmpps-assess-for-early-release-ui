@@ -1084,6 +1084,20 @@ const stubGetUpdateCaseAdminAdditionalInformation = (prisonNumber: string, reque
     },
   })
 
+const stubSaveVloAndPomInfo = (prisonNumber: string) =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/vlo-and-pom-consultation`,
+    },
+    response: {
+      status: 204,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    },
+  })
+
 export default {
   stubDeliusStaff,
   stubPrisonStaff,
@@ -1111,4 +1125,5 @@ export default {
   stubGetAssessmentSearchResponse,
   stubDeleteAssessment,
   stubGetAssessmentResponse,
+  stubSaveVloAndPomInfo,
 }

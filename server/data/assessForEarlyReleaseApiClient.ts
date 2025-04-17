@@ -33,6 +33,7 @@ import type {
   _AssessmentOverviewSummary,
   AssessmentOverviewSummary,
   NonDisclosableInformation,
+  UpdateVloAndPomConsultationRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import { parseIsoDate } from '../utils/utils'
@@ -410,6 +411,20 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
       token,
       agent,
       'arraybuffer',
+    )
+  }
+
+  async updateVloAndPomConsultation(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    updateVloAndPomConsultationRequest: UpdateVloAndPomConsultationRequest,
+  ): Promise<void> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/vlo-and-pom-consultation`,
+      token,
+      agent,
+      updateVloAndPomConsultationRequest,
     )
   }
 

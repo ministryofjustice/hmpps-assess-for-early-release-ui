@@ -140,6 +140,7 @@ export const suitabilityCriterion1: SuitabilityCriterionProgress = {
 export const assessmentSummary = (
   prisonNumber: string,
   status: AssessmentStatus = AssessmentStatus.NOT_STARTED,
+  activeComTaskCode: string = 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
 ): _AssessmentSummary => ({
   bookingId: 23987,
   forename: 'Jimmy',
@@ -162,9 +163,9 @@ export const assessmentSummary = (
       { name: 'COMPLETE_14_DAY_CHECKS', progress: 'LOCKED' },
       { name: 'PRINT_LICENCE', progress: 'LOCKED' },
     ],
-    PROBATION_COM: tasks.PROBATION_COM.map((task, i) => ({
+    PROBATION_COM: tasks.PROBATION_COM.map(task => ({
       name: task.code as TaskCode,
-      progress: i === 0 ? 'READY_TO_START' : 'LOCKED',
+      progress: task.code === activeComTaskCode ? 'READY_TO_START' : 'LOCKED',
     })),
   },
 })
