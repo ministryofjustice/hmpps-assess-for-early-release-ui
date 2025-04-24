@@ -1,6 +1,9 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {%- from "moj/components/ticket-panel/macro.njk" import mojTicketPanel -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "partials/assessment/contactDetail.njk" import contactDetail %}
+{% from "partials/assessment/contactTypes.njk" import contactTypes %}
 
 {%  macro readyToStart(params) %}
   <h2 class="govuk-heading-m {% if params.task.code == 'ASSESS_ELIGIBILITY' %} govuk-!-margin-bottom-2 {% else %} govuk-!-margin-bottom-6 {% endif %}">{{params.task.title}}<span class="app-task-badge moj-badge moj-badge--black">Ready to start</span></h2>
@@ -83,8 +86,21 @@
         }
       ), tasksCards) %}
   {% endfor %}
- 
-    
+
+  {% set contactDetails = [] %}
+  {% for contact in params.contactList %}
+      {% set contactDetails = (contactDetails.push(
+      {
+        key: { text: contactTypes(contact) },
+        value: {
+            html: contactDetail(contact)
+        },
+        attributes: {
+          'data-qa': contact.userRole
+        }
+      }),contactDetails) %}
+  {% endfor %}
+
     {% set tasksHtml %}
     <div class="govuk-grid-row" id="tasks">
       <div class="govuk-grid-column-two-thirds">
@@ -116,6 +132,17 @@
       </div>
     {% endset -%}
 
+    {% set keycontactsHtml %}
+        <div class="govuk-grid-row" id="forms">
+            <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-l">Key contacts</h2>
+                {{ govukSummaryList({
+                    rows: contactDetails
+                }) }}
+            </div>
+        </div>
+    {% endset -%}
+
     {{ govukTabs({
             items: [
                 {
@@ -131,6 +158,13 @@
                     panel: {
                             html: formsHtml
                         }
+                },
+                {
+                    label: "Key contacts",
+                    id: "keycontacts",
+                    panel: {
+                        html: keycontactsHtml
+                    }
                 }
             ]
     }) }}

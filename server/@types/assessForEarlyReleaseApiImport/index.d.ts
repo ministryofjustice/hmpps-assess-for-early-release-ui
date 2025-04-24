@@ -731,6 +731,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/contacts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the current assessments contact details
+     * @description Returns the current assessments contact details
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getContacts']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/address-request/{requestId}/residential-checks': {
     parameters: {
       query?: never
@@ -893,6 +916,9 @@ export interface paths {
     trace?: never
   }
 }
+
+export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -2221,6 +2247,35 @@ export interface components {
       /** @description progress on the next criterion */
       nextCriterion?: components['schemas']['EligibilityCriterionProgress']
     }
+    /** @description A response to contain assessment contacts */
+    AssessmentContactsResponse: {
+      /** @description a set of contacts associated with the assessment */
+      contacts: components['schemas']['ContactResponse'][]
+    }
+    /** @description Details of a contact */
+    ContactResponse: {
+      /**
+       * @description The full name of the contact
+       * @example Bob Smith
+       */
+      fullName: string
+      /**
+       * @description The contact type
+       * @example CASE_ADMINISTRATOR
+       * @enum {string}
+       */
+      userRole: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
+      /**
+       * @description The email address of the contact
+       * @example bob.jones@justice.gov.uk
+       */
+      email?: string
+      /**
+       * @description The location name of the contact
+       * @example Foston Hall (HMP)
+       */
+      locationName?: string
+    }
     Input: {
       name: string
       /** @enum {string} */
@@ -2335,6 +2390,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
+export type $defs = Record<string, never>
+
 export interface operations {
   retryDlq: {
     parameters: {
@@ -3767,6 +3825,46 @@ export interface operations {
       }
     }
   }
+  getContacts: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the current assessments contact details */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentContactsResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getResidentialChecksView: {
     parameters: {
       query?: never
@@ -4086,6 +4184,7 @@ export interface operations {
     }
   }
 }
+
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

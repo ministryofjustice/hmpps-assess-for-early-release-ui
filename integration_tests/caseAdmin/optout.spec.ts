@@ -14,6 +14,7 @@ test.describe('Opt out', () => {
   test('User can download address check form from the opt out link', async ({ page }) => {
     const prisonNumber = 'A1234AE'
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await assessForEarlyRelease.stubOptOut(prisonNumber)
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
@@ -29,6 +30,7 @@ test.describe('Opt out', () => {
     const prisonNumber = 'A1234AE'
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await assessForEarlyRelease.stubOptOut(prisonNumber)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -52,6 +54,7 @@ test.describe('Opt out', () => {
     const prisonNumber = 'A1234AE'
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await assessForEarlyRelease.stubOptOut(prisonNumber)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -73,6 +76,7 @@ test.describe('Opt out', () => {
     const prisonNumber = 'A1234AE'
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
