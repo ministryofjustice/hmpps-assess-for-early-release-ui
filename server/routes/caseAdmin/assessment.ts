@@ -41,7 +41,7 @@ export default class AssessmentRoutes {
     contacts: ContactResponse[],
     role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM',
   ): ContactResponse {
-    const contact = contacts ? contacts.find(item => item.userRole === role) : null
+    const contact = contacts?.find(item => item.userRole === role)
     return contact || this.createDummyContact(role)
   }
 
