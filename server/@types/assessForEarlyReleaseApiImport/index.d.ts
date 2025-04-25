@@ -524,6 +524,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/probation/community-offender-manager/staff-code/{staffCode}/team-caseload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the team caseload for a community offender manager.
+     * @description Returns the cases assigned to any of a community offender managers teams.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getComTeamCaseload']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/probation/community-offender-manager/staff-code/{staffCode}/caseload': {
     parameters: {
       query?: never
@@ -1105,7 +1128,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1
@@ -1308,6 +1331,7 @@ export interface components {
         | 'PRINT_LICENCE'
         | 'CONSULT_THE_VLO_AND_POM'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
+        | 'RECORD_NON_DISCLOSABLE_INFORMATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
         | 'SEND_CHECKS_TO_PRISON'
         | 'CREATE_LICENCE'
@@ -1891,7 +1915,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * Format: date
        * @description The postponement date
@@ -2071,6 +2095,7 @@ export interface components {
         | 'PRINT_LICENCE'
         | 'CONSULT_THE_VLO_AND_POM'
         | 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION'
+        | 'RECORD_NON_DISCLOSABLE_INFORMATION'
         | 'MAKE_A_RISK_MANAGEMENT_DECISION'
         | 'SEND_CHECKS_TO_PRISON'
         | 'CREATE_LICENCE'
@@ -2165,7 +2190,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1
@@ -2295,7 +2320,7 @@ export interface components {
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      status: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
@@ -2338,12 +2363,25 @@ export interface components {
        * @description The current status of the task
        * @enum {string}
        */
-      taskStatus: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2366,19 +2404,6 @@ export interface components {
        * @example 22/11/2026T10:43:28
        */
       dateRequested: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -3417,6 +3442,46 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
+  getComTeamCaseload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffCode: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns a list of cases assigned to any of the teams that the user is assigned to */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummaryResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

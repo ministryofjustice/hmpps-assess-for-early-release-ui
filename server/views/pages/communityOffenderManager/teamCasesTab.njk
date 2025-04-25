@@ -1,0 +1,36 @@
+{% from "./offenderDetails.njk" import offenderDetails %}
+{% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
+
+{% macro teamCasesTab(teamCasesCases) %}
+    {% set teamCasesRows = [] %}
+    {% for case in teamCasesCases %}
+        {% set teamCasesRows = (teamCasesRows.push([
+            {
+                attributes: tableAttributes(case, 'name', loop.index),
+                html: offenderDetails(case, loop.index)
+            },
+            {
+                attributes: tableAttributes(case, 'probationPractitioner', loop.index),
+                html: case.probationPractitioner
+            },
+            {
+                attributes: tableAttributes(case, 'hdced', loop.index),
+                html: case.hdced | formatDate('dd MMM yyyy')
+            },
+            {
+                attributes: tableAttributes(case, 'workingDaysToHdced', loop.index),
+                text: case.workingDaysToHdced
+            },
+            {
+                attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
+                text: ''
+            },
+            {
+                attributes: tableAttributes(case, 'task', loop.index),
+                text: case.currentTask
+            }
+        ]), teamCasesRows) %}
+    {% endfor %}
+    <h2 class="govuk-heading-l">To work on by your team</h2>
+    {{ caseloadTable("To work on by your team", ["Name", "Probation Practitioner", "HDCED", "Working days to HDCED", "Last worked on by", "Task"], teamCasesRows) }}
+{% endmacro %}

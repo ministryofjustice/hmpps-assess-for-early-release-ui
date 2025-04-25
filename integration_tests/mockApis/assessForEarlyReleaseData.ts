@@ -280,6 +280,68 @@ export const createOffenderSummary = ({
   addressChecksComplete,
 })
 
+export const refusedOffender = createOffenderSummary({
+  prisonNumber: 'GU3243TP',
+  forename: 'George',
+  surname: 'Kurian',
+  hdced: '2026-09-04',
+  workingDaysToHdced: 15,
+  probationPractitioner: 'Mark James',
+  status: AssessmentStatus.REFUSED,
+})
+
+export const timedOutOffender = createOffenderSummary({
+  prisonNumber: 'G3243TH',
+  forename: 'Dave',
+  surname: 'Roberts',
+  hdced: '2026-09-04',
+  workingDaysToHdced: 15,
+  status: AssessmentStatus.TIMED_OUT,
+})
+
+export const postponedOffender = createOffenderSummary({
+  prisonNumber: 'G3243TH',
+  crn: 'W493087',
+  forename: 'Dave',
+  surname: 'Roberts',
+  hdced: '2026-09-04',
+  workingDaysToHdced: 15,
+  isPostponed: true,
+  postponementDate: '2025-04-25',
+  postponementReasons: ['Postponed for some reason'],
+  status: AssessmentStatus.POSTPONED,
+})
+
+export const readyForReleaseOffender = createOffenderSummary({
+  prisonNumber: 'K8932TE',
+  crn: 'Z456712',
+  forename: 'Brian',
+  surname: 'Morrish',
+  hdced: '2026-10-25',
+  workingDaysToHdced: 3,
+  probationPractitioner: 'David Newton',
+  status: AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
+})
+
+export const toWorkOnByComCases = createOffenderSummary({
+  prisonNumber: 'G3243TB',
+  forename: 'Tim',
+  surname: 'Cook',
+  hdced: '2026-12-06',
+  workingDaysToHdced: 10,
+  status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+})
+
+export const withPrisonOffender = createOffenderSummary({
+  prisonNumber: 'G7543KR',
+  crn: 'X921514',
+  forename: 'Carl',
+  surname: 'Bennett',
+  hdced: '2026-02-25',
+  workingDaysToHdced: 39,
+  status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
+})
+
 export const createOffenderSearchResponse = ({
   prisonNumber = 'A1234AE',
   prisonId = 'BRI',
@@ -364,7 +426,7 @@ export const createAssessmentResponse = ({
   deletedTimestamp = '2020-01-12T12:13:00',
   policyVersion = '1',
   addressChecksComplete = true,
-  team = 'MyTeam',
+  teamCode = 'MyTeam',
   responsibleCom = createResponsibleCom(),
   postponementDate = '2026-08-23',
   optOutReasonType = OptOutReasonType.NOWHERE_TO_STAY,
@@ -379,7 +441,7 @@ export const createAssessmentResponse = ({
   deletedTimestamp,
   policyVersion,
   addressChecksComplete,
-  team,
+  teamCode,
   postponementDate,
   optOutReasonType,
   optOutReasonOther,

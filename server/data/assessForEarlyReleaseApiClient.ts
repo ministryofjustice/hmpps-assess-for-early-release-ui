@@ -313,13 +313,33 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     return this.getWithToken<PrisonUserDetails>(`/staff/prison/${username}`, token, agent)
   }
 
-  async getCommunityOffenderManagerCaseload(
+  async getCommunityOffenderManagerStaffCaseload(
     token: string,
     agent: Agent,
     staffCode: string,
   ): Promise<OffenderSummary[]> {
     const caseAdminCaseload = await this.getWithToken<_OffenderSummary[]>(
       `/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
+      token,
+      agent,
+    )
+    return caseAdminCaseload.map(c => {
+      return {
+        ...c,
+        hdced: parseIsoDate(c.hdced),
+        postponementDate: parseIsoDate(c.postponementDate),
+        taskOverdueOn: parseIsoDate(c.taskOverdueOn),
+      }
+    })
+  }
+
+  async getCommunityOffenderManagerTeamCaseload(
+    token: string,
+    agent: Agent,
+    staffCode: string,
+  ): Promise<OffenderSummary[]> {
+    const caseAdminCaseload = await this.getWithToken<_OffenderSummary[]>(
+      `/probation/community-offender-manager/staff-code/${staffCode}/team-caseload`,
       token,
       agent,
     )

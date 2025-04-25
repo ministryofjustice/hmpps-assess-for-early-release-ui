@@ -60,11 +60,26 @@ const stubGetCaseAdminCaseload = (prisonCode: string, caseload: _OffenderSummary
     },
   })
 
-const stubGetComCaseload = (staffCode: string, list: _OffenderSummary[]) =>
+const stubGetComStaffCaseload = (staffCode: string, list: _OffenderSummary[]) =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: `/afer-api/probation/community-offender-manager/staff-code/${staffCode}/caseload`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: list,
+    },
+  })
+
+const stubGetComTeamCaseload = (staffCode: string, list: _OffenderSummary[]) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/probation/community-offender-manager/staff-code/${staffCode}/team-caseload`,
     },
     response: {
       status: 200,
@@ -1118,7 +1133,8 @@ export default {
   stubDeliusStaff,
   stubPrisonStaff,
   stubGetCaseAdminCaseload,
-  stubGetComCaseload,
+  stubGetComStaffCaseload,
+  stubGetComTeamCaseload,
   stubGetAssessmentSummary,
   stubGetAssessmentContacts,
   stubGetEligibilityAndSuitability,

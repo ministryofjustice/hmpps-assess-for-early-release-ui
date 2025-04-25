@@ -30,20 +30,20 @@ afterEach(() => {
 describe('GET', () => {
   it('should render active cases', async () => {
     const activeCase = createComCase({ status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS })
-    communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue([activeCase])
+    communityOffenderManagerCaseloadService.getCommunityOffenderManagerStaffCaseload.mockResolvedValue([activeCase])
 
     await caseloadRoutes.GET(req, res)
 
-    expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
+    expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerStaffCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      myCasesView: true,
+      view: 'my-cases',
       postponedCases: [],
       readyForReleaseCases: [],
-      toWorkOnByYouCases: [
+      toWorkOnByYouOrTeamCases: [
         {
           createLink: `/probation/assessment/${activeCase.prisonNumber}`,
           hdced: activeCase.hdced,
@@ -55,26 +55,28 @@ describe('GET', () => {
           currentTask: activeCase.currentTask,
         },
       ],
+      withDecisionMakerCases: [],
       withPrisonAdminCases: [],
     })
   })
 
   it('should render inactive cases', async () => {
-    const myCases = false
     req.query = { view: 'inactive-applications' }
     const inactiveCase = createComCase({ status: AssessmentStatus.REFUSED })
     const offenderSummaryList = [inactiveCase]
-    communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload.mockResolvedValue(offenderSummaryList)
+    communityOffenderManagerCaseloadService.getCommunityOffenderManagerStaffCaseload.mockResolvedValue(
+      offenderSummaryList,
+    )
 
     await caseloadRoutes.GET(req, res)
 
-    expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload).toHaveBeenCalledWith(
+    expect(communityOffenderManagerCaseloadService.getCommunityOffenderManagerStaffCaseload).toHaveBeenCalledWith(
       req.middleware.clientToken,
       res.locals.agent,
       res.locals.user as ProbationUser,
     )
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
-      myCasesView: myCases,
+      view: 'inactive-applications',
       inactiveApplications: [
         {
           createLink: `/probation/assessment/${inactiveCase.prisonNumber}`,
