@@ -62,6 +62,11 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
       path: paths.probation.assessment.curfewAddress.checkCurfewAddresses,
     },
     {
+      code: 'RECORD_NON_DISCLOSABLE_INFORMATION',
+      title: 'Record non-disclosable information',
+      path: paths.probation.assessment.nonDisclosableInformation,
+    },
+    {
       code: 'MAKE_A_RISK_MANAGEMENT_DECISION',
       title: 'Make a risk management decision',
       lockedDescription: assessment =>
