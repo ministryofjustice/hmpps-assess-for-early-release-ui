@@ -2,13 +2,16 @@ import { createAgent, createAssessmentOverviewSummary } from '../../data/__testu
 import { mockedDate, mockRequest, mockResponse } from '../__testutils/requestTestUtils'
 import { createMockCaseAdminCaseloadService } from '../../services/__testutils/mock'
 import AssessmentRoutes from './assessment'
-import { contactResponse } from '../../../integration_tests/mockApis/assessForEarlyReleaseData'
+import {
+  assessmentContactsResponse,
+  contactResponse,
+} from '../../../integration_tests/mockApis/assessForEarlyReleaseData'
 
 const assessmentOverviewSummary = createAssessmentOverviewSummary({})
 const probationCom = contactResponse(null, 'PROBATION_COM', null, null)
 const prisonDm = contactResponse(null, 'PRISON_DM', null, null)
 const prisonCa = contactResponse(null, 'PRISON_CA', null, null)
-
+const assessmentContactsResponseDto = assessmentContactsResponse([probationCom, prisonDm, prisonCa])
 const caseAdminCaseloadService = createMockCaseAdminCaseloadService()
 const req = mockRequest({})
 const res = mockResponse({})
@@ -19,6 +22,7 @@ let assessmentRoutes: AssessmentRoutes
 beforeEach(() => {
   assessmentRoutes = new AssessmentRoutes(caseAdminCaseloadService)
   caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
+  caseAdminCaseloadService.getCurrentAssessmentContactDetails.mockResolvedValue(assessmentContactsResponseDto)
   mockedDate(new Date(2022, 6, 1))
 })
 

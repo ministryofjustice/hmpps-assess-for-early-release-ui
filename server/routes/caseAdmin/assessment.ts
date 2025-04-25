@@ -24,7 +24,7 @@ export default class AssessmentRoutes {
       assessmentSummary: {
         ...assessmentSummary,
         tasks: assessmentSummary.tasks.PRISON_CA,
-        contactList: this.createContactData(assessmentContactsResponse ? assessmentContactsResponse.contacts : null),
+        contactList: this.createContactData(assessmentContactsResponse.contacts),
         formsToShow: getStatusFormsMap[status],
       },
     })
