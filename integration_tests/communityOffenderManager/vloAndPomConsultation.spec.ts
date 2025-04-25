@@ -18,7 +18,7 @@ test.describe('VLO and POM consultation task', () => {
     const staffCode = 'STAFF1'
 
     await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ code: staffCode }))
-    await assessForEarlyRelease.stubGetComCaseload(staffCode, [
+    await assessForEarlyRelease.stubGetComStaffCaseload(staffCode, [
       createOffenderSummary({
         prisonNumber,
         status: AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,

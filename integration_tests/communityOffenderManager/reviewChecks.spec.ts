@@ -21,7 +21,7 @@ test.describe('Can view a summary of addresses and residential check results', (
     const addressCheckRequestId = 1
 
     await assessForEarlyRelease.stubDeliusStaff('USER1', createStaffDetails({ code: staffCode }))
-    await assessForEarlyRelease.stubGetComCaseload(staffCode, [createOffenderSummary({ prisonNumber })])
+    await assessForEarlyRelease.stubGetComStaffCaseload(staffCode, [createOffenderSummary({ prisonNumber })])
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
     await assessForEarlyRelease.stubGetCheckRequestsForAssessment(prisonNumber, createCheckRequestsForAssessmentSummary)
     await assessForEarlyRelease.stubGetResidentialChecksView(prisonNumber, addressCheckRequestId)
