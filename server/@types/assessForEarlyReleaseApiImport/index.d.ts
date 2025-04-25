@@ -524,6 +524,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/probation/community-offender-manager/staff-code/{staffCode}/team-caseload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the team caseload for a community offender manager.
+     * @description Returns the cases assigned to any of a community offender managers teams.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getComTeamCaseload']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/probation/community-offender-manager/staff-code/{staffCode}/caseload': {
     parameters: {
       query?: never
@@ -1080,7 +1103,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1
@@ -1879,7 +1902,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * Format: date
        * @description The postponement date
@@ -2154,7 +2177,7 @@ export interface components {
        * @description The team that the COM responsible for this assessment is assigned to
        * @example N55LAU
        */
-      team?: string
+      teamCode?: string
       /**
        * @description The version of the policy that this assessment has been carried out under
        * @example 1
@@ -2304,6 +2327,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
       /**
        * @description The status of the check request
        * @example SUITABLE
@@ -3375,6 +3411,46 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
+  getComTeamCaseload: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffCode: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns a list of cases assigned to any of the teams that the user is assigned to */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OffenderSummaryResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

@@ -28,9 +28,9 @@ describe('COM Caseload Service', () => {
   describe('Caseload', () => {
     it('get community offender manager caseload', async () => {
       const aCase = createOffenderSummary({})
-      assessForEarlyReleaseApiClient.getCommunityOffenderManagerCaseload.mockResolvedValue([aCase])
+      assessForEarlyReleaseApiClient.getCommunityOffenderManagerStaffCaseload.mockResolvedValue([aCase])
 
-      const result = await communityOffenderManagerCaseloadService.getCommunityOffenderManagerCaseload(
+      const result = await communityOffenderManagerCaseloadService.getCommunityOffenderManagerStaffCaseload(
         token,
         agent,
         user,

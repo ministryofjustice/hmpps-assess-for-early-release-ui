@@ -101,7 +101,7 @@ const createAssessmentSummary = ({
     email: 'afer_com@digital.justice.gov.uk',
     forename: 'a',
     surname: 'com',
-    team: 'N55LAU',
+    teamCode: 'N55LAU',
   },
 } = {}): AssessmentSummary => ({
   bookingId,
@@ -149,7 +149,7 @@ const createAssessmentOverviewSummary = ({
     email: 'afer_com@digital.justice.gov.uk',
     forename: 'a',
     surname: 'com',
-    team: 'N55LAU',
+    teamCode: 'N55LAU',
   },
   toDoEligibilityAndSuitabilityBy = parseIsoDate('2022-01-08'),
   result = null,

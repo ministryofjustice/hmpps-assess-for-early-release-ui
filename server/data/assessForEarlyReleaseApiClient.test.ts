@@ -374,6 +374,30 @@ describe('assessForEarlyReleaseApiClient', () => {
     })
   })
 
+  describe('Get COM team caseload', () => {
+    const staffCode = 'STAFF_CODE'
+    const offenderSummaryList = [createOffenderSummary({})]
+
+    it('gets the caseload for all teams linked to a COM user', async () => {
+      const apiResponse: _OffenderSummary[] = offenderSummaryList.map(c => {
+        return {
+          ...c,
+          hdced: toIsoDate(c.hdced),
+          postponementDate: toIsoDate(c.postponementDate),
+          taskOverdueOn: toIsoDate(c.taskOverdueOn),
+        }
+      })
+
+      fakeAferApi
+        .get(`/probation/community-offender-manager/staff-code/${staffCode}/team-caseload`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, apiResponse)
+
+      await assessForEarlyReleaseApiClient.getCommunityOffenderManagerTeamCaseload(token, agent, staffCode)
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
+
   describe('Record NonDisclosable Information', () => {
     const { prisonNumber } = createAssessmentOverviewSummary({})
 
