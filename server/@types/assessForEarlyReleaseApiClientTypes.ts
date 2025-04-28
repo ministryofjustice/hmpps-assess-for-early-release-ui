@@ -80,11 +80,14 @@ export type UpdateCaseAdminAdditionInfoRequest = components['schemas']['UpdateCa
 export type MapStringAny = components['schemas']['MapStringAny']
 export type ProblemDetail = components['schemas']['ProblemDetail']
 export type Agent = components['schemas']['AgentDto']
+
 export type _AssessmentOverviewSummary = components['schemas']['AssessmentOverviewSummary']
 export type AssessmentOverviewSummary = ParsingDates<
   _AssessmentOverviewSummary,
   'dateOfBirth' | 'hdced' | 'crd' | 'toDoEligibilityAndSuitabilityBy'
 >
+export type AssessmentContactsResponse = components['schemas']['AssessmentContactsResponse']
+export type ContactResponse = components['schemas']['ContactResponse']
 export type _AssessmentResponse = components['schemas']['AssessmentResponse']
 export type AssessmentResponse = ParsingDates<
   _AssessmentResponse,

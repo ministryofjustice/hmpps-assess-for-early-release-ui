@@ -6,8 +6,10 @@ import {
   _OffenderResponse,
   _OffenderSearchResponse,
   _OffenderSummary,
+  AssessmentContactsResponse,
   CheckRequestSummary,
   ComSummary,
+  ContactResponse,
   EligibilityCriterionProgress,
   ResidentSummary,
   SuitabilityCriterionProgress,
@@ -168,6 +170,22 @@ export const assessmentSummary = (
       progress: task.code === activeComTaskCode ? 'READY_TO_START' : 'LOCKED',
     })),
   },
+})
+
+export const assessmentContactsResponse = (contacts: ContactResponse[]): AssessmentContactsResponse => ({
+  contacts,
+})
+
+export const contactResponse = (
+  fullName: string,
+  userRole: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM',
+  email?: string,
+  locationName?: string,
+): ContactResponse => ({
+  fullName,
+  userRole,
+  email,
+  locationName,
 })
 
 const address1 = {

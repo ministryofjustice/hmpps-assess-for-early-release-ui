@@ -34,6 +34,7 @@ import type {
   AssessmentOverviewSummary,
   NonDisclosableInformation,
   UpdateVloAndPomConsultationRequest,
+  AssessmentContactsResponse,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config, { ApiConfig } from '../config'
 import { parseIsoDate } from '../utils/utils'
@@ -78,6 +79,21 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
       hdced: parseIsoDate(assessmentOverviewSummary.hdced),
       crd: parseIsoDate(assessmentOverviewSummary.crd),
       toDoEligibilityAndSuitabilityBy: parseIsoDate(assessmentOverviewSummary.toDoEligibilityAndSuitabilityBy),
+    }
+  }
+
+  async getCurrentAssessmentContactDetails(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+  ): Promise<AssessmentContactsResponse> {
+    const assessmentContactsResponse = await this.getWithToken<AssessmentContactsResponse>(
+      `/offender/${prisonNumber}/current-assessment/contacts`,
+      token,
+      agent,
+    )
+    return {
+      ...assessmentContactsResponse,
     }
   }
 

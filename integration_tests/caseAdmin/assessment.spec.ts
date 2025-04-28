@@ -19,6 +19,7 @@ test.describe('Case admin assessment', () => {
     const fullName = `${assessmentSummaryDto.forename} ${assessmentSummaryDto.surname}`
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummaryDto)
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
     // When

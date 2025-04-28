@@ -13,6 +13,7 @@ import {
   PrisonUserDetails,
   SuitabilityCriterionProgress,
 } from '../../server/@types/assessForEarlyReleaseApiClientTypes'
+import { assessmentContactsResponse } from './assessForEarlyReleaseData'
 
 const stubDeliusStaff = (username: string, staff: DeliusStaff) =>
   stubFor({
@@ -157,6 +158,21 @@ const stubDeleteAssessment = (assessmentId: string) =>
     },
     response: {
       status: 204,
+    },
+  })
+
+const stubGetAssessmentContacts = (prisonNumber: string, contactResponse = assessmentContactsResponse([])) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/contacts`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: contactResponse,
     },
   })
 
@@ -1120,6 +1136,7 @@ export default {
   stubGetComStaffCaseload,
   stubGetComTeamCaseload,
   stubGetAssessmentSummary,
+  stubGetAssessmentContacts,
   stubGetEligibilityAndSuitability,
   stubGetEligibilityCriterionView,
   stubGetSuitabilityCriterionView,

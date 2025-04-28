@@ -18,6 +18,7 @@ test.describe('Case admin forms', () => {
     const fullName = `${assessmentSummaryDto.forename} ${assessmentSummaryDto.surname}`
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummaryDto)
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
     // When
@@ -42,6 +43,8 @@ test.describe('Case admin forms', () => {
     const prisonNumber: string = 'A1234AE'
     const assessmentOverviewSummary = assessmentSummary(prisonNumber, AssessmentStatus.ELIGIBLE_AND_SUITABLE)
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentOverviewSummary)
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
+
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
     await page.goto(`${paths.prison.assessment.home({ prisonNumber })}#forms`)
 
@@ -81,6 +84,7 @@ test.describe('Case admin forms', () => {
     const prisonNumber: string = 'A1234AE'
     const assessmentOverviewSummary1 = assessmentSummary(prisonNumber, AssessmentStatus.INELIGIBLE_OR_UNSUITABLE)
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentOverviewSummary1)
+    await assessForEarlyRelease.stubGetAssessmentContacts(prisonNumber)
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
     await page.goto(`${paths.prison.assessment.home({ prisonNumber })}#forms`)
 
