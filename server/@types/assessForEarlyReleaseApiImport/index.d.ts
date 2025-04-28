@@ -1169,6 +1169,11 @@ export interface components {
        * @example Robbery
        */
       mainOffense?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description A summary of a community offender manager */
     ComSummary: {
@@ -2113,6 +2118,11 @@ export interface components {
        * @example DX12340A
        */
       crn?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentOverviewSummary: {
@@ -2253,6 +2263,11 @@ export interface components {
        * @example Any concerns about them being released on HDC
        */
       pomBehaviourInformation?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
@@ -2369,19 +2384,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
       /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
-      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info

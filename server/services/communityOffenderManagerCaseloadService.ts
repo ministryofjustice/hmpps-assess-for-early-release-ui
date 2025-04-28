@@ -13,6 +13,7 @@ export type Case = {
   workingDaysToHdced: number
   status: AssessmentStatus
   currentTask?: string
+  lastUpdateBy?: string
 }
 
 export default class CommunityOffenderManagerCaseloadService {
@@ -44,19 +45,20 @@ export default class CommunityOffenderManagerCaseloadService {
     return result.map(offenderSummary => this.mapOffenderSummaryToCase(offenderSummary))
   }
 
-  mapOffenderSummaryToCase = (offender: OffenderSummary) => {
+  mapOffenderSummaryToCase = (offenderSummary: OffenderSummary) => {
     return {
-      name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
-      crn: offender.crn,
-      prisonNumber: offender.prisonNumber,
-      probationPractitioner: offender.probationPractitioner,
-      crd: offender.crd,
-      hdced: offender.hdced,
-      workingDaysToHdced: offender.workingDaysToHdced,
-      status: offender.status as AssessmentStatus,
-      currentTask: offender.currentTask,
-      postponementReasons: offender.postponementReasons,
-      postponementDate: offender.postponementDate,
+      name: convertToTitleCase(`${offenderSummary.forename} ${offenderSummary.surname}`.trim()),
+      crn: offenderSummary.crn,
+      prisonNumber: offenderSummary.prisonNumber,
+      probationPractitioner: offenderSummary.probationPractitioner,
+      crd: offenderSummary.crd,
+      hdced: offenderSummary.hdced,
+      workingDaysToHdced: offenderSummary.workingDaysToHdced,
+      status: offenderSummary.status as AssessmentStatus,
+      currentTask: offenderSummary.currentTask,
+      postponementReasons: offenderSummary.postponementReasons,
+      postponementDate: offenderSummary.postponementDate,
+      lastUpdateBy: offenderSummary.lastUpdateBy,
     }
   }
 
