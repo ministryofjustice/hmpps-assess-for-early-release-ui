@@ -916,7 +916,9 @@ export interface paths {
     trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -1144,6 +1146,11 @@ export interface components {
        * @example Robbery
        */
       mainOffense?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description A summary of a community offender manager */
     ComSummary: {
@@ -1489,12 +1496,6 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1585,12 +1586,6 @@ export interface components {
        * @example See AddressSummary
        */
       allocatedAddress?: components['schemas']['AddressSummary']
-    } & {
-      /**
-       * @description discriminator enum property added by openapi-typescript
-       * @enum {string}
-       */
-      requestType: 'CAS'
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -2100,6 +2095,11 @@ export interface components {
        * @example DX12340A
        */
       crn?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description Response object which describes an assessment */
     AssessmentOverviewSummary: {
@@ -2240,6 +2240,11 @@ export interface components {
        * @example Any concerns about them being released on HDC
        */
       pomBehaviourInformation?: string
+      /**
+       * @description Last updated by
+       * @example Aled Evans
+       */
+      lastUpdateBy?: string
     }
     /** @description The details of a specific suitability criterion */
     SuitabilityCriterionView: {
@@ -2278,7 +2283,7 @@ export interface components {
        * @example NOT_STARTED
        * @enum {string}
        */
-      status: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      status: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
@@ -2321,19 +2326,12 @@ export interface components {
        * @description The current status of the task
        * @enum {string}
        */
-      taskStatus: 'NOT_STARTED' | 'UNSUITABLE' | 'SUITABLE'
+      taskStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description A map of answer codes to answer values */
       answers: components['schemas']['MapStringAny']
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      requestType: string
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
@@ -2346,12 +2344,6 @@ export interface components {
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
       requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
@@ -2386,7 +2378,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
 export interface operations {
   retryDlq: {
     parameters: {
@@ -4178,6 +4172,7 @@ export interface operations {
     }
   }
 }
+
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

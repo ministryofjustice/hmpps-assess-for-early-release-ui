@@ -246,6 +246,7 @@ export const createOffenderSummary = ({
   postponementReasons = [],
   status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
   addressChecksComplete = false,
+  lastUpdateBy = 'Aled Evans',
 } = {}): _OffenderSummary => ({
   prisonNumber,
   crn,
@@ -260,6 +261,7 @@ export const createOffenderSummary = ({
   postponementReasons,
   status,
   addressChecksComplete,
+  lastUpdateBy,
 })
 
 export const refusedOffender = createOffenderSummary({

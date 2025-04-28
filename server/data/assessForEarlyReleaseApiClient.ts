@@ -51,12 +51,12 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
       agent,
     )
 
-    return caseAdminCaseload.map(c => {
+    return caseAdminCaseload.map(offenderSummary => {
       return {
-        ...c,
-        hdced: parseIsoDate(c.hdced),
-        postponementDate: parseIsoDate(c.postponementDate),
-        taskOverdueOn: parseIsoDate(c.taskOverdueOn),
+        ...offenderSummary,
+        hdced: parseIsoDate(offenderSummary.hdced),
+        postponementDate: parseIsoDate(offenderSummary.postponementDate),
+        taskOverdueOn: parseIsoDate(offenderSummary.taskOverdueOn),
       }
     })
   }
