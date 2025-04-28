@@ -16,6 +16,7 @@ export type Case = {
   addressChecksComplete: boolean
   taskOverdueOn?: Date
   currentTask?: string
+  lastUpdateBy?: string
 }
 
 export default class CaseAdminCaseloadService {
@@ -23,20 +24,21 @@ export default class CaseAdminCaseloadService {
 
   public async getCaseAdminCaseload(token: string, agent: Agent, prisonCode: string): Promise<Case[]> {
     const result = await this.assessForEarlyReleaseApiClient.getCaseAdminCaseload(token, agent, prisonCode)
-    return result.map(offender => ({
-      name: convertToTitleCase(`${offender.forename} ${offender.surname}`.trim()),
-      prisonNumber: offender.prisonNumber,
-      hdced: offender.hdced,
-      crd: offender.crd,
-      workingDaysToHdced: offender.workingDaysToHdced,
-      probationPractitioner: convertToTitleCase(offender.probationPractitioner?.trim()),
-      isPostponed: offender.isPostponed,
-      postponementReasons: offender.postponementReasons,
-      postponementDate: offender.postponementDate,
-      status: offender.status as AssessmentStatus,
-      addressChecksComplete: offender.addressChecksComplete,
-      taskOverdueOn: offender.taskOverdueOn,
-      currentTask: offender.currentTask,
+    return result.map(offenderSummary => ({
+      name: convertToTitleCase(`${offenderSummary.forename} ${offenderSummary.surname}`.trim()),
+      prisonNumber: offenderSummary.prisonNumber,
+      hdced: offenderSummary.hdced,
+      crd: offenderSummary.crd,
+      workingDaysToHdced: offenderSummary.workingDaysToHdced,
+      probationPractitioner: convertToTitleCase(offenderSummary.probationPractitioner?.trim()),
+      isPostponed: offenderSummary.isPostponed,
+      postponementReasons: offenderSummary.postponementReasons,
+      postponementDate: offenderSummary.postponementDate,
+      status: offenderSummary.status as AssessmentStatus,
+      addressChecksComplete: offenderSummary.addressChecksComplete,
+      taskOverdueOn: offenderSummary.taskOverdueOn,
+      currentTask: offenderSummary.currentTask,
+      lastUpdateBy: offenderSummary.lastUpdateBy,
     }))
   }
 
