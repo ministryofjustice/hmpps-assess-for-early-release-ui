@@ -21,6 +21,8 @@ test.describe('Opt in', () => {
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
 
     await page.goto(paths.prison.assessment.home({ prisonNumber }))
+    const allApplicationsLink = await page.getByTestId('allApplicationsAction').getAttribute('href')
+    expect(allApplicationsLink).toEqual(paths.prison.prisonCaseload({}))
     const optOutLink = await page.getByTestId('optInAction').getAttribute('href')
     expect(optOutLink).toEqual(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn({ prisonNumber }))
   })
