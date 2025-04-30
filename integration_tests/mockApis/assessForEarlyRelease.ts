@@ -346,11 +346,11 @@ const getSubmittedEligibilityChecks = (assessmentSummary: _AssessmentSummary) =>
     return requests.map((request: { body: string }) => JSON.parse(request.body))
   })
 
-const stubGetAddressesForPostcode = (postcode: string, addressSummaries: AddressSummary[]) =>
+const stubSearchForAddresses = (searchQuery: string, addressSummaries: AddressSummary[]) =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/afer-api/addresses\\?postcode=${postcode}`,
+      urlPattern: `/afer-api/addresses/search/${searchQuery}`,
     },
     response: {
       status: 200,
@@ -1144,7 +1144,7 @@ export default {
   stubSubmitCheckRequest,
   stubOptOut,
   getSubmittedEligibilityChecks,
-  stubGetAddressesForPostcode,
+  stubSearchForAddresses,
   stubAddStandardAddressCheckRequest,
   stubGetStandardAddressCheckRequest,
   stubGetStandardAddressCheckRequestWithResidents,

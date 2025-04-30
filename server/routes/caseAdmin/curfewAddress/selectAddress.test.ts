@@ -23,7 +23,7 @@ describe('select address routes', () => {
 
   beforeEach(() => {
     selectAddressRoutes = new SelectAddressRoutes(addressService, caseAdminCaseloadService)
-    addressService.findAddressesForPostcode.mockResolvedValue([
+    addressService.searchForAddresses.mockResolvedValue([
       createAddressSummary({}),
       createAddressSummary({ uprn: '310030568' }),
     ])
@@ -38,7 +38,7 @@ describe('select address routes', () => {
   describe('GET', () => {
     it('should render select address page', async () => {
       req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
-      req.query.postcode = 'SO128UF'
+      req.query.searchQuery = 'SO128UF'
       await selectAddressRoutes.GET(req, res)
 
       expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
@@ -82,7 +82,7 @@ describe('select address routes', () => {
     })
 
     it('should render add resident details page', async () => {
-      addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
+      addressService.searchForAddresses.mockResolvedValue([createAddressSummary({})])
       req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.query.postcode = 'SO128UF'
       await selectAddressRoutes.GET(req, res)

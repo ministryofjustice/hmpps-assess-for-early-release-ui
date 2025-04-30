@@ -62,7 +62,15 @@ describe('POST', () => {
   const question = createQuestion({})
   const eligibilityCheck1 = createEligibilityCriterionProgress({
     code: 'code-1',
-    questions: [{ name: 'question1', text: 'answer the question?', answer: null, hint: null }],
+    questions: [
+      {
+        name: 'question1',
+        failedQuestionDescription: 'failed because',
+        text: 'answer the question?',
+        answer: null,
+        hint: null,
+      },
+    ],
   })
   const eligibilityCheck2 = createEligibilityCriterionProgress({ code: 'code-2' })
   const validPayload = { [question.name]: 'true', saveType: 'nextQuestion' }

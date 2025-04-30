@@ -20,12 +20,12 @@ export default class SelectAddressRoutes {
       req.params.prisonNumber,
     )
 
-    const postcode = req.query?.postcode as string
-    if (postcode) {
-      const addresses = await this.addressService.findAddressesForPostcode(
+    const searchQuery = req.query?.searchQuery as string
+    if (searchQuery) {
+      const addresses = await this.addressService.searchForAddresses(
         req?.middleware?.clientToken,
         res.locals.agent,
-        postcode,
+        searchQuery,
       )
       if (addresses.length === 1) {
         const checkRequestSummary = await this.addressService.addStandardAddressCheckRequest(
@@ -50,7 +50,7 @@ export default class SelectAddressRoutes {
         findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
           prisonNumber: req.params.prisonNumber,
         }),
-        formattedPostcode: this.formatPostcode(postcode),
+        formattedPostcode: this.formatPostcode(searchQuery),
       })
     }
 

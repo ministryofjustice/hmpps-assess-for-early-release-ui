@@ -182,8 +182,12 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     )
   }
 
-  async findAddressesForPostcode(token: string, agent: Agent, postcode: string): Promise<AddressSummary[]> {
-    const addressSummaries = await this.getWithToken<_AddressSummary[]>(`/addresses?postcode=${postcode}`, token, agent)
+  async searchForAddresses(token: string, agent: Agent, searchQuery: string): Promise<AddressSummary[]> {
+    const addressSummaries = await this.getWithToken<_AddressSummary[]>(
+      `/addresses/search/${searchQuery}`,
+      token,
+      agent,
+    )
     return addressSummaries.map(addressSummary => {
       return { ...addressSummary, addressLastUpdated: parseIsoDate(addressSummary.addressLastUpdated) }
     })

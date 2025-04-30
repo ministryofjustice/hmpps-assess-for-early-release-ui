@@ -54,9 +54,9 @@ describe('Address Service', () => {
         addressLastUpdated: new Date('2019-08-15'),
       }),
     ] as AddressSummary[]
-    assessForEarlyReleaseApiClient.findAddressesForPostcode.mockResolvedValue(addressSummaries)
+    assessForEarlyReleaseApiClient.searchForAddresses.mockResolvedValue(addressSummaries)
 
-    const result = await addressService.findAddressesForPostcode(token, agent, postcode)
+    const result = await addressService.searchForAddresses(token, agent, postcode)
 
     expect(result).toEqual(addressSummaries)
   })
