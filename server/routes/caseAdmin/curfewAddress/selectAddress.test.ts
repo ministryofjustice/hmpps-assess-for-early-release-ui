@@ -77,7 +77,7 @@ describe('select address routes', () => {
         findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
           prisonNumber: req.params.prisonNumber,
         }),
-        formattedPostcode: 'SO12 8UF',
+        formattedSearchQuery: 'SO12 8UF',
       })
     })
 
