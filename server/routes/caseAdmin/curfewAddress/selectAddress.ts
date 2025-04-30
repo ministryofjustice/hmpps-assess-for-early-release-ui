@@ -50,7 +50,7 @@ export default class SelectAddressRoutes {
         findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
           prisonNumber: req.params.prisonNumber,
         }),
-        formattedPostcode: this.formatPostcode(searchQuery),
+        formattedSearchQuery: this.formatPostcode(searchQuery),
       })
     }
 
