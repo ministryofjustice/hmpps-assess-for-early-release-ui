@@ -1,3 +1,7 @@
 .ineligible-outcome-panel {
     background-color: $govuk-error-colour;
 }
+
+.actions-summary-list dt.govuk-summary-list__key {
+    width: 50%;
+}

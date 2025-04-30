@@ -10,7 +10,6 @@ export default class CaseloadRoutes {
     AssessmentStatus.REFUSED,
     AssessmentStatus.TIMED_OUT,
     AssessmentStatus.OPTED_OUT,
-    AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
   ]
 
   static readonly TO_WORK_ON_BY_YOU_OR_TEAM_STATUSES = [

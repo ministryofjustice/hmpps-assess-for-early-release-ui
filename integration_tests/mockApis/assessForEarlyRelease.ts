@@ -327,7 +327,21 @@ const stubOptOut = (prisonNumber: string) =>
       urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/opt-out`,
     },
     response: {
-      status: 200,
+      status: 204,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    },
+  })
+
+const stubOptIn = (prisonNumber: string) =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/afer-api/offender/${prisonNumber}/current-assessment/opt-in`,
+    },
+    response: {
+      status: 204,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
@@ -1143,6 +1157,7 @@ export default {
   stubSaveCriterionAnswers,
   stubSubmitCheckRequest,
   stubOptOut,
+  stubOptIn,
   getSubmittedEligibilityChecks,
   stubSearchForAddresses,
   stubAddStandardAddressCheckRequest,

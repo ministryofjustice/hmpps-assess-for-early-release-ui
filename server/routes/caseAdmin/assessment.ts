@@ -2,8 +2,30 @@ import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../services'
 import { getStatusFormsMap } from '../../config/forms'
 import { ContactResponse } from '../../@types/assessForEarlyReleaseApiClientTypes'
+import AssessmentStatus from '../../enumeration/assessmentStatus'
 
 export default class AssessmentRoutes {
+  static readonly OPT_OUT_AVAILABLE_STATUSES = [
+    AssessmentStatus.ELIGIBLE_AND_SUITABLE,
+    AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+    AssessmentStatus.ADDRESS_AND_RISK_CHECKS_IN_PROGRESS,
+    AssessmentStatus.ADDRESS_UNSUITABLE,
+    AssessmentStatus.AWAITING_PRE_DECISION_CHECKS,
+    AssessmentStatus.AWAITING_DECISION,
+    AssessmentStatus.APPROVED,
+    AssessmentStatus.AWAITING_PRE_RELEASE_CHECKS,
+    AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
+  ]
+
+  static readonly POSTPONE_AVAILABLE_STATUSES = [
+    AssessmentStatus.ADDRESS_UNSUITABLE,
+    AssessmentStatus.AWAITING_PRE_DECISION_CHECKS,
+    AssessmentStatus.AWAITING_DECISION,
+    AssessmentStatus.APPROVED,
+    AssessmentStatus.AWAITING_PRE_RELEASE_CHECKS,
+    AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
+  ]
+
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -26,6 +48,11 @@ export default class AssessmentRoutes {
         tasks: assessmentSummary.tasks.PRISON_CA,
         contactList: this.createContactData(assessmentContactsResponse.contacts),
         formsToShow: getStatusFormsMap[status],
+      },
+      availableActions: {
+        optInAvailable: status === 'OPTED_OUT',
+        optOutAvailable: AssessmentRoutes.OPT_OUT_AVAILABLE_STATUSES.includes(status as AssessmentStatus),
+        postponeAvailable: AssessmentRoutes.POSTPONE_AVAILABLE_STATUSES.includes(status as AssessmentStatus),
       },
     })
   }
