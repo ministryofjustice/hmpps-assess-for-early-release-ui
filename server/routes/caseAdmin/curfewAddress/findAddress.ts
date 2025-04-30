@@ -34,20 +34,20 @@ export default class FindAddressRoutes {
       return validationErrors
     })
 
-    const postcode = (req.body.searchQuery as string).replace(/\s+/g, '')
-    const addresses = await this.addressService.findAddressesForPostcode(
+    const searchQuery = (req.body.searchQuery as string).replace(/\s+/g, '')
+    const addresses = await this.addressService.searchForAddresses(
       req?.middleware?.clientToken,
       res.locals.agent,
-      postcode,
+      searchQuery,
     )
     if (addresses.length === 0) {
       return res.redirect(
-        `${paths.prison.assessment.enterCurfewAddressOrCasArea.noAddressFound({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.noAddressFound({ prisonNumber: req.params.prisonNumber })}?searchQuery=${searchQuery}`,
       )
     }
 
     return res.redirect(
-      `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${postcode}`,
+      `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?searchQuery=${searchQuery}`,
     )
   }
 }

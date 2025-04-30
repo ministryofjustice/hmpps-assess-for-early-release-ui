@@ -55,7 +55,7 @@ test.describe('Can add a curfew address and a main resident', () => {
     ] as AddressSummary[]
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummary(prisonNumber))
-    await assessForEarlyRelease.stubGetAddressesForPostcode(postcode, addressSummaries)
+    await assessForEarlyRelease.stubSearchForAddresses(postcode, addressSummaries)
     await assessForEarlyRelease.stubAddStandardAddressCheckRequest(prisonNumber)
     await assessForEarlyRelease.stubGetStandardAddressCheckRequest(prisonNumber, addressCheckRequestId)
     await assessForEarlyRelease.stubAddResident(prisonNumber, addressCheckRequestId)

@@ -27,6 +27,7 @@ export const eligibilityCriterion1: EligibilityCriterionProgress = {
   questions: [
     {
       name: 'question1',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 1',
       answer: null,
       hint: 'Its simple really',
@@ -43,6 +44,7 @@ export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
   questions: [
     {
       name: 'question1',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 1',
       answer: true,
       hint: 'Its simple really',
@@ -64,6 +66,7 @@ export const suitabilityCriterionComplete: SuitabilityCriterionProgress = {
   questions: [
     {
       name: 'question1',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 1',
       answer: true,
       hint: 'Its simple really',
@@ -85,12 +88,14 @@ export const eligibilityCriterion2: EligibilityCriterionProgress = {
   questions: [
     {
       name: 'question2',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 2',
       answer: null,
       hint: null,
     },
     {
       name: 'question3',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 3',
       answer: null,
       hint: 'its the last eligibility question!',
@@ -105,12 +110,14 @@ export const eligibilityCriterion2Ineligible: EligibilityCriterionProgress = {
   questions: [
     {
       name: 'question2',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 2',
       answer: false,
       hint: null,
     },
     {
       name: 'question3',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 3',
       answer: false,
       hint: 'its the last eligibility question!',
@@ -132,6 +139,7 @@ export const suitabilityCriterion1: SuitabilityCriterionProgress = {
   questions: [
     {
       name: 'question3',
+      failedQuestionDescription: 'failed because',
       text: 'Please answer question 4',
       answer: null,
       hint: 'Theres only one suitability question',

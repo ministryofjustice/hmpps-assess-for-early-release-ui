@@ -17,7 +17,7 @@ describe('find address routes', () => {
 
   beforeEach(() => {
     findAddressRoutes = new FindAddressRoutes(addressService, caseAdminCaseloadService)
-    addressService.findAddressesForPostcode.mockResolvedValue([createAddressSummary({})])
+    addressService.searchForAddresses.mockResolvedValue([createAddressSummary({})])
     caseAdminCaseloadService.getAssessmentOverviewSummary.mockResolvedValue(assessmentOverviewSummary)
   })
 
@@ -52,14 +52,14 @@ describe('find address routes', () => {
       req.body.searchQuery = 'SO128UF'
       await findAddressRoutes.POST(req, res)
 
-      expect(addressService.findAddressesForPostcode).toHaveBeenCalledWith(
+      expect(addressService.searchForAddresses).toHaveBeenCalledWith(
         req.middleware.clientToken,
         res.locals.agent,
         req.body.searchQuery,
       )
 
       expect(res.redirect).toHaveBeenCalledWith(
-        `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?postcode=${req.body.searchQuery}`,
+        `${paths.prison.assessment.enterCurfewAddressOrCasArea.selectAddress({ prisonNumber: req.params.prisonNumber })}?searchQuery=${req.body.searchQuery}`,
       )
     })
   })

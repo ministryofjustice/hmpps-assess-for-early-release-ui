@@ -328,8 +328,15 @@ const createSuitabilityCriterionView = ({
   nextCriterion,
 })
 
-const createQuestion = ({ name = 'question1', text = 'answer the question?', answer = null, hint = null }) => ({
+const createQuestion = ({
+  name = 'question1',
+  failedQuestionDescription = 'failed because',
+  text = 'answer the question?',
+  answer = null,
+  hint = null,
+}) => ({
   name,
+  failedQuestionDescription,
   text,
   answer,
   hint,

@@ -846,7 +846,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/addresses': {
+  '/addresses/search/{searchQuery}': {
     parameters: {
       query?: never
       header?: never
@@ -854,13 +854,13 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Returns addresses that match the postcode parameter
-     * @description Returns addresses that match the postcode parameter
+     * Searches for addresses that match the given search text
+     * @description Searches for addresses that match the given search text
      *
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getAddressesForPostcode']
+    get: operations['searchForAddresses']
     put?: never
     post?: never
     delete?: never
@@ -1235,7 +1235,10 @@ export interface components {
        * @enum {string}
        */
       failureType?: 'INELIGIBLE' | 'UNSUITABLE'
-      /** @description Reasons why someone is ineligible */
+      /**
+       * @description TaskName why someone is ineligible or unsuitable
+       * @example ROTL failure to return
+       */
       failedCheckReasons: string[]
     }
     /** @description The progress on a specific eligibility criterion for a case */
@@ -1274,6 +1277,11 @@ export interface components {
        * @example a question...
        */
       text: string
+      /**
+       * @description The reason for failure
+       * @example a reason
+       */
+      failedQuestionDescription: string
       /**
        * @description The hint html associated with this question
        * @example <p>Some hint text</p>
@@ -4095,18 +4103,18 @@ export interface operations {
       }
     }
   }
-  getAddressesForPostcode: {
+  searchForAddresses: {
     parameters: {
-      query: {
-        postcode: string
-      }
+      query?: never
       header?: never
-      path?: never
+      path: {
+        searchQuery: string
+      }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description Returns addresses matching the supplied postcode */
+      /** @description Returns addresses matching the given search text */
       200: {
         headers: {
           [name: string]: unknown

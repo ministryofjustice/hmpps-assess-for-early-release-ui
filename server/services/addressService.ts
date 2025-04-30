@@ -12,8 +12,8 @@ import type {
 export default class AddressService {
   constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
 
-  public async findAddressesForPostcode(token: string, agent: Agent, postcode: string): Promise<AddressSummary[]> {
-    return this.assessForEarlyReleaseApiClient.findAddressesForPostcode(token, agent, postcode)
+  public async searchForAddresses(token: string, agent: Agent, searchQuery: string): Promise<AddressSummary[]> {
+    return this.assessForEarlyReleaseApiClient.searchForAddresses(token, agent, searchQuery)
   }
 
   public async getAddressForUprn(token: string, agent: Agent, uprn: string): Promise<AddressSummary> {
