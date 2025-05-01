@@ -17,15 +17,16 @@ import AddResidentDetailsRoutes from './curfewAddress/addResidentDetails'
 import MoreInfoRequiredCheckRoutes from './curfewAddress/moreInfoRequiredCheck'
 import RequestMoreAddressChecksRoutes from './curfewAddress/requestMoreAddressChecks'
 import CheckYourAnswersRoutes from './curfewAddress/checkYourAnswers'
-import OptOutCheckRoutes from './optout/optOutCheck'
-import OptOutRoutes from './optout/optOut'
+import OptOutCheckRoutes from './optInOut/optOutCheck'
+import OptOutRoutes from './optInOut/optOut'
 import ChecksCompleteRoutes from './initialChecks/checksComplete'
+import OptInRoutes from './optInOut/optIn'
 
 export default function Index({
   caseAdminCaseloadService,
   eligibilityAndSuitabilityService,
   addressService,
-  optOutService,
+  optInOutService,
 }: Services): Router {
   const router = Router()
 
@@ -110,9 +111,12 @@ export default function Index({
   get(paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck, optOutCheckHandler.GET)
   post(paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck, optOutCheckHandler.POST)
 
-  const optOutHandler = new OptOutRoutes(caseAdminCaseloadService, optOutService)
+  const optOutHandler = new OptOutRoutes(caseAdminCaseloadService, optInOutService)
   get(paths.prison.assessment.enterCurfewAddressOrCasArea.optOut, optOutHandler.GET)
   post(paths.prison.assessment.enterCurfewAddressOrCasArea.optOut, optOutHandler.POST)
 
+  const optInHandler = new OptInRoutes(caseAdminCaseloadService, optInOutService)
+  get(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn, optInHandler.GET)
+  post(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn, optInHandler.POST)
   return router
 }

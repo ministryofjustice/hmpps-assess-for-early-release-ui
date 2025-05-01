@@ -196,6 +196,20 @@ describe('assessForEarlyReleaseApiClient', () => {
     })
   })
 
+  describe('optIn', () => {
+    const { prisonNumber } = createEligibilityAndSuitabilityCaseView().assessmentSummary
+
+    it('should opt in', async () => {
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/opt-in`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(204)
+
+      await assessForEarlyReleaseApiClient.optIn(token, agent, prisonNumber)
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
+
   describe('optOut', () => {
     const initialChecks = createEligibilityAndSuitabilityCaseView()
     const { prisonNumber } = initialChecks.assessmentSummary
@@ -204,7 +218,7 @@ describe('assessForEarlyReleaseApiClient', () => {
       fakeAferApi
         .put(`/offender/${prisonNumber}/current-assessment/opt-out`)
         .matchHeader('authorization', `Bearer ${token}`)
-        .reply(200)
+        .reply(204)
 
       await assessForEarlyReleaseApiClient.optOut(token, agent, prisonNumber, {
         reasonType: 'NOWHERE_TO_STAY',

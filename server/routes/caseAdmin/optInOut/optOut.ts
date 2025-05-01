@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../../services'
 import OptOutReasonType from '../../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
-import OptOutService from '../../../services/optOutService'
+import OptInOutService from '../../../services/optInOutService'
 import paths from '../../paths'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 
 export default class OptOutRoutes {
   constructor(
     private readonly caseAdminCaseloadService: CaseAdminCaseloadService,
-    private readonly optOutService: OptOutService,
+    private readonly optOutService: OptInOutService,
   ) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {

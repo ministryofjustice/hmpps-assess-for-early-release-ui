@@ -3,7 +3,7 @@ import AuditService from './auditService'
 import CaseAdminCaseloadService from './caseAdminCaseloadService'
 import EligibilityAndSuitabilityService from './eligibilityAndSuitabilityService'
 import HmppsComponentsService from './hmppsComponentsService'
-import OptOutService from './optOutService'
+import OptInOutService from './optInOutService'
 import AddressService from './addressService'
 import CommunityOffenderManagerCaseloadService from './communityOffenderManagerCaseloadService'
 import UserService from './userService'
@@ -22,7 +22,7 @@ export const services = () => {
   const hmppsComponentsService = new HmppsComponentsService(hmppsComponentsClient)
   const caseAdminCaseloadService = new CaseAdminCaseloadService(assessForEarlyReleaseApiClient)
   const eligibilityAndSuitabilityService = new EligibilityAndSuitabilityService(assessForEarlyReleaseApiClient)
-  const optOutService = new OptOutService(assessForEarlyReleaseApiClient)
+  const optInOutService = new OptInOutService(assessForEarlyReleaseApiClient)
   const communityOffenderManagerCaseloadService = new CommunityOffenderManagerCaseloadService(
     assessForEarlyReleaseApiClient,
   )
@@ -42,7 +42,7 @@ export const services = () => {
     comChecksService,
     eligibilityAndSuitabilityService,
     hmppsComponentsService,
-    optOutService,
+    optInOutService,
     residentialChecksService,
     userService,
     decisionMakerCaseloadService,
@@ -61,7 +61,7 @@ export {
   ComChecksService,
   EligibilityAndSuitabilityService,
   HmppsComponentsService,
-  OptOutService,
+  OptInOutService,
   ResidentialChecksService,
   UserService,
   DecisionMakerCaseloadService,

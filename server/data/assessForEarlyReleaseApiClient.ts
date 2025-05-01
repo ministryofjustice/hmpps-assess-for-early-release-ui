@@ -164,6 +164,10 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     }
   }
 
+  async optIn(token: string, agent: Agent, prisonNumber: string): Promise<void> {
+    return this.putWithToken(`/offender/${prisonNumber}/current-assessment/opt-in`, token, agent)
+  }
+
   async optOut(token: string, agent: Agent, prisonNumber: string, optOutRequest: OptOutRequest): Promise<void> {
     return this.putWithToken(`/offender/${prisonNumber}/current-assessment/opt-out`, token, agent, optOutRequest)
   }
@@ -273,12 +277,7 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
   }
 
   async submitAssessmentForAddressChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
-    return this.putWithToken(
-      `/offender/${prisonNumber}/current-assessment/submit-for-address-checks`,
-      token,
-      agent,
-      agent,
-    )
+    return this.putWithToken(`/offender/${prisonNumber}/current-assessment/submit-for-address-checks`, token, agent)
   }
 
   async submitAssessmentForPreDecisionChecks(token: string, agent: Agent, prisonNumber: string): Promise<void> {
@@ -492,7 +491,7 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     path: string,
     token: string,
     agent: Agent,
-    payload: Record<string, unknown> | string,
+    payload: Record<string, unknown> | string = null,
   ): Promise<T> {
     return this.put<T>(
       {
