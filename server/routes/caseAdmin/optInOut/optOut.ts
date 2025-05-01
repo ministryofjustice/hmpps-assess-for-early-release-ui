@@ -19,7 +19,7 @@ export default class OptOutRoutes {
       req.params.prisonNumber,
     )
 
-    res.render('pages/optOut/optOut', {
+    res.render('pages/optInOut/optOut', {
       assessment,
     })
   }
