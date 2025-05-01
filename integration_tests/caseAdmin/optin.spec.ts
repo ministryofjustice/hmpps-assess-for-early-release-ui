@@ -5,6 +5,7 @@ import { assessmentSummary } from '../mockApis/assessForEarlyReleaseData'
 import { login, resetStubs } from '../testUtils'
 import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 import paths from '../../server/routes/paths'
+import playwrightConfig from '../../playwright.config'
 
 test.describe('Opt in', () => {
   test.afterEach(async () => {
@@ -23,7 +24,12 @@ test.describe('Opt in', () => {
     await page.goto(paths.prison.assessment.home({ prisonNumber }))
     const allApplicationsLink = await page.getByTestId('allApplicationsAction').getAttribute('href')
     expect(allApplicationsLink).toEqual(paths.prison.prisonCaseload({}))
-    const optOutLink = await page.getByTestId('optInAction').getAttribute('href')
-    expect(optOutLink).toEqual(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn({ prisonNumber }))
+    const optInLink = await page.getByTestId('optInAction').getAttribute('href')
+    expect(optInLink).toEqual(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn({ prisonNumber }))
+
+    await page.goto(optInLink)
+    await page.getByTestId('resumeApplication').click()
+    await page.getByTestId('continue').click()
+    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.assessment.home({ prisonNumber })}`)
   })
 })

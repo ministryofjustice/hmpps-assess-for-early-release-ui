@@ -1,15 +1,14 @@
 import { Request, Response } from 'express'
 import { CaseAdminCaseloadService } from '../../../services'
-import OptOutReasonType from '../../../enumeration/optOutReasonType'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
-import OptOutService from '../../../services/optOutService'
+import OptInOutService from '../../../services/optInOutService'
 import paths from '../../paths'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 
-export default class OptOutRoutes {
+export default class OptInRoutes {
   constructor(
     private readonly caseAdminCaseloadService: CaseAdminCaseloadService,
-    private readonly optOutService: OptOutService,
+    private readonly optInOutService: OptInOutService,
   ) {}
 
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -19,7 +18,7 @@ export default class OptOutRoutes {
       req.params.prisonNumber,
     )
 
-    res.render('pages/optOut/optOut', {
+    res.render('pages/optInOut/optIn', {
       assessment,
     })
   }
@@ -28,24 +27,17 @@ export default class OptOutRoutes {
     validateRequest(req, body => {
       const validationErrors: FieldValidationError[] = []
 
-      if (!body.optOutReasonType) {
-        validationErrors.push({ field: 'optOutReasonType', message: 'Select an opt-out reason' })
-      }
-
-      if (body.optOutReasonType === OptOutReasonType.OTHER && !body.otherReason) {
-        validationErrors.push({ field: 'otherReason', message: 'Enter the reason for opting out' })
+      if (body.resumeApplication !== 'Yes' && body.resumeApplication !== 'No') {
+        validationErrors.push({ field: 'otherReason', message: 'Select whether you want to resume the application' })
       }
 
       return validationErrors
     })
 
-    const { optOutReasonType, otherReason } = req.body
+    if (req.body.resumeApplication === 'Yes') {
+      await this.optInOutService.optIn(req?.middleware?.clientToken, req.params.prisonNumber, res.locals.agent)
+    }
 
-    await this.optOutService.optOut(req?.middleware?.clientToken, req.params.prisonNumber, {
-      optOutReasonType,
-      otherReason,
-      agent: res.locals.agent,
-    })
     return res.redirect(paths.prison.assessment.home({ prisonNumber: req.params.prisonNumber }))
   }
 }

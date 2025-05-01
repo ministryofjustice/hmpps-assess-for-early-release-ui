@@ -2,8 +2,12 @@ import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClie
 import type { Agent, OptOutRequest } from '../@types/assessForEarlyReleaseApiClientTypes'
 import OptOutReasonType from '../enumeration/optOutReasonType'
 
-export default class OptOutService {
+export default class OptInOutService {
   constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
+
+  public async optIn(token: string, prisonNumber: string, agent: Agent): Promise<void> {
+    return this.assessForEarlyReleaseApiClient.optIn(token, agent, prisonNumber)
+  }
 
   public async optOut(
     token: string,
