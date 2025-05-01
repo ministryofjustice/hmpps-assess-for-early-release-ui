@@ -7,6 +7,18 @@
             value: { html: params.bookingId}
         },
         {
+            key: { text: "Sentence Start Date" },
+            value: { html: params.sentenceStartDate | formatDate('dd/MM/yy') }
+        },
+        {
+            key: { text: "HDCED" },
+            value: { html: params.hdced | formatDate('dd/MM/yy') }
+        },
+        {
+            key: { text: "CRD" },
+            value: { html: params.crd | formatDate('dd/MM/yy') }
+        },
+        {
             key: { text: "Status" },
             value: { html: params.status}
         },

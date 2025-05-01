@@ -4,6 +4,7 @@ import paths from '../../server/routes/paths'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import { createStaffDetails } from '../../server/data/__testutils/testObjects'
 import {
+  createAssessmentResponse,
   createAssessmentSearchResponse,
   createOffenderResponse,
   createOffenderSearchResponse,
@@ -57,6 +58,8 @@ test.describe('Offender assessment overview page', () => {
       assessmentSearchResponse2,
     ])
 
+    await assessForEarlyRelease.stubGetCurrentAssessmentResponse(prisonNumber, createAssessmentResponse())
+
     // When
     await page.locator('#name-button-1').click()
 
@@ -79,7 +82,7 @@ test.describe('Offender assessment overview page', () => {
     await assertKeyValue(rows, 1, `Prison Number`, `A1234AE`)
     await assertKeyValue(rows, 2, `CRN`, `DX12340A`)
     await assertKeyValue(rows, 3, `DOB`, `20 Feb 2002`)
-    await assertKeyValue(rows, 4, `Sentence Start`, `23 Jun 2028`)
+    await assertKeyValue(rows, 4, `Sentence Start Date`, `23 Jun 2028`)
     await assertKeyValue(rows, 5, `HDCED`, `23 Aug 2026`)
     await assertKeyValue(rows, 6, `CRD`, `23 Sep 2026`)
     await assertKeyValue(rows, 7, `Created`, `11/01/20 12:13`)
@@ -165,6 +168,7 @@ test.describe('Offender assessment overview page', () => {
     await assessForEarlyRelease.stubGetOffenderResponse(prisonNumber, offender)
 
     await assessForEarlyRelease.stubGetAssessmentSearchResponse(prisonNumber, [createAssessmentSearchResponse()])
+    await assessForEarlyRelease.stubGetCurrentAssessmentResponse(prisonNumber, createAssessmentResponse())
     await page.locator('#name-button-1').click()
 
     const assessmentSearchResponse1 = createAssessmentSearchResponse({ deletedTimestamp: '2021-01-11T12:13:00' })

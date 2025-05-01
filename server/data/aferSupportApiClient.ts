@@ -47,9 +47,6 @@ export default class AferSupportApiClient extends RestClient {
     return {
       ...offenderResponse,
       dateOfBirth: parseIsoDate(offenderResponse.dateOfBirth),
-      hdced: parseIsoDate(offenderResponse.hdced),
-      crd: parseIsoDate(offenderResponse.crd),
-      sentenceStartDate: parseIsoDate(offenderResponse.sentenceStartDate),
       createdTimestamp: parseIsoDateTime(offenderResponse.createdTimestamp),
       lastUpdatedTimestamp: parseIsoDateTime(offenderResponse.lastUpdatedTimestamp),
     }
@@ -68,6 +65,9 @@ export default class AferSupportApiClient extends RestClient {
       deletedTimestamp: parseIsoDateTime(currentAssessment.deletedTimestamp),
       lastUpdatedTimestamp: parseIsoDateTime(currentAssessment.lastUpdatedTimestamp),
       createdTimestamp: parseIsoDateTime(currentAssessment.createdTimestamp),
+      hdced: parseIsoDate(currentAssessment.hdced),
+      crd: parseIsoDate(currentAssessment.crd),
+      sentenceStartDate: parseIsoDate(currentAssessment.sentenceStartDate),
     }
   }
 
@@ -84,6 +84,9 @@ export default class AferSupportApiClient extends RestClient {
       deletedTimestamp: parseIsoDateTime(assessment.deletedTimestamp),
       lastUpdatedTimestamp: parseIsoDateTime(assessment.lastUpdatedTimestamp),
       createdTimestamp: parseIsoDateTime(assessment.createdTimestamp),
+      hdced: parseIsoDate(assessment.hdced),
+      crd: parseIsoDate(assessment.crd),
+      sentenceStartDate: parseIsoDate(assessment.sentenceStartDate),
     }
   }
 

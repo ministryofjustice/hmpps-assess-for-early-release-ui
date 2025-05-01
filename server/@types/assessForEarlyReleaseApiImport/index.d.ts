@@ -939,9 +939,7 @@ export interface paths {
     trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -1527,6 +1525,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'STANDARD_ADDRESS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'STANDARD_ADDRESS'
     }
     /** @description Request for adding a resident to a standard address check request */
     AddResidentRequest: {
@@ -1623,6 +1627,12 @@ export interface components {
        * @enum {string}
        */
       requestType: 'CAS'
+    } & {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      requestType: 'CAS'
     }
     /** @description The request type to save a set of answers for a residential checks task. */
     SaveResidentialChecksTaskAnswersRequest: {
@@ -1685,28 +1695,10 @@ export interface components {
        */
       dateOfBirth: string
       /**
-       * Format: date
-       * @description The offender's home detention curfew eligibility date
-       * @example 2026-08-23
-       */
-      hdced: string
-      /**
-       * Format: date
-       * @description The offender's conditional release date date
-       * @example 2026-08-23
-       */
-      crd?: string
-      /**
        * @description The case reference number assigned to a person on probation in NDelius
        * @example DX12340A
        */
       crn?: string
-      /**
-       * Format: date
-       * @description The sentence start date
-       * @example 2028-06-23
-       */
-      sentenceStartDate?: string
       /**
        * Format: date-time
        * @description The create timestamp for the afer offender
@@ -1942,6 +1934,24 @@ export interface components {
       optOutReasonType?: 'NOWHERE_TO_STAY' | 'DOES_NOT_WANT_TO_BE_TAGGED' | 'NO_REASON_GIVEN' | 'OTHER'
       /** @description The opt out reason description if rhe optOutReasonType is OTHER */
       optOutReasonOther: string
+      /**
+       * Format: date
+       * @description The home detention curfew eligibility date
+       * @example 2026-08-23
+       */
+      hdced: string
+      /**
+       * Format: date
+       * @description The offender's conditional release date date
+       * @example 2026-08-23
+       */
+      crd?: string
+      /**
+       * Format: date
+       * @description The sentence start date
+       * @example 2028-06-23
+       */
+      sentenceStartDate?: string
     }
     Detail: {
       code: string
@@ -2392,19 +2402,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
-      requestType: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
       /**
        * @description The status of the check request
        * @example SUITABLE
        * @enum {string}
        */
       status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2438,9 +2448,7 @@ export interface components {
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
 export interface operations {
   retryDlq: {
     parameters: {
@@ -4272,7 +4280,6 @@ export interface operations {
     }
   }
 }
-
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }

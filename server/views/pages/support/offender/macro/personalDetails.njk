@@ -2,14 +2,14 @@
 
 {%  macro personalDetails(params) %}
     {% set personalDetails = [
-            {
-                key: { text: "Name" },
-                value: { text: params | toFullName }
-            },
-            {
-                key: { text: "Prison Number" },
-                value: { text: params.prisonNumber }
-            },
+        {
+            key: { text: "Name" },
+            value: { text: params | toFullName }
+        },
+        {
+            key: { text: "Prison Number" },
+            value: { text: params.prisonNumber }
+        },
         {
             key: { text: "CRN" },
             value: { text: params.crn }
@@ -17,19 +17,7 @@
         {
             key: { text: "DOB" },
             value: { html: params.dateOfBirth | formatDate('dd MMM yyyy') }
-        },
-        {
-            key: { text: "Sentence Start" },
-            value: { html: params.sentenceStartDate | formatDate('dd MMM yyyy') }
-        },
-            {
-                key: { text: "HDCED" },
-                value: { html: params.hdced | formatDate('dd MMM yyyy') }
-            },
-            {
-                key: { text: "CRD" },
-                value: { html: params.crd | formatDate('dd MMM yyyy', 'not found')}
-            }
+        }
     ]
     %}
 

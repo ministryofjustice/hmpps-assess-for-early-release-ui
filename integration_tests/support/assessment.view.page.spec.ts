@@ -39,6 +39,7 @@ test.describe('Offender assessment overview page', () => {
     await assessForEarlyRelease.stubGetOffenderResponse(prisonNumber, offender)
 
     await assessForEarlyRelease.stubGetAssessmentSearchResponse(prisonNumber, [createAssessmentSearchResponse()])
+    await assessForEarlyRelease.stubGetCurrentAssessmentResponse(prisonNumber, createAssessmentResponse())
     await page.locator('#name-button-1').click()
 
     await assessForEarlyRelease.stubGetAssessmentResponse('722', createAssessmentResponse())
@@ -52,25 +53,28 @@ test.describe('Offender assessment overview page', () => {
     const rows = page.locator('.govuk-summary-list__row')
 
     await assertKeyValue(rows, 0, `Booking Id`, `773722`)
-    await assertKeyValue(rows, 1, `Status`, `NOT_STARTED`)
-    await assertKeyValue(rows, 2, `Policy Version`, `1`)
-    await assertKeyValue(rows, 3, `Address Checks Complete`, `true`)
-    await assertKeyValue(rows, 4, `Team`, `MyTeam`)
-    await assertKeyValue(rows, 5, `Postponement Date`, `23/08/26`)
-    await assertKeyValue(rows, 6, `OptOut Reason`, `NOWHERE_TO_STAY`)
-    await assertKeyValue(rows, 7, `OptOut Reason Other`, `another reason`)
-    await assertKeyValue(rows, 8, `Assigned community officer`, `true`)
+    await assertKeyValue(rows, 1, `Sentence Start Date`, `23/06/28`)
+    await assertKeyValue(rows, 2, `HDCED`, `23/08/26`)
+    await assertKeyValue(rows, 3, `CRD`, `23/09/26`)
+    await assertKeyValue(rows, 4, `Status`, `NOT_STARTED`)
+    await assertKeyValue(rows, 5, `Policy Version`, `1`)
+    await assertKeyValue(rows, 6, `Address Checks Complete`, `true`)
+    await assertKeyValue(rows, 7, `Team`, `MyTeam`)
+    await assertKeyValue(rows, 8, `Postponement Date`, `23/08/26`)
+    await assertKeyValue(rows, 9, `OptOut Reason`, `NOWHERE_TO_STAY`)
+    await assertKeyValue(rows, 10, `OptOut Reason Other`, `another reason`)
+    await assertKeyValue(rows, 11, `Assigned community officer`, `true`)
 
     // Staff details
-    await assertKeyValue(rows, 9, `Name`, `Testforename Testsurname`)
-    await assertKeyValue(rows, 10, `Staff Code`, `STAFF1`)
-    await assertKeyValue(rows, 11, `User Name`, `testName`)
-    await assertKeyValue(rows, 12, `Email`, `test.com@moj.com`)
+    await assertKeyValue(rows, 12, `Name`, `Testforename Testsurname`)
+    await assertKeyValue(rows, 13, `Staff Code`, `STAFF1`)
+    await assertKeyValue(rows, 14, `User Name`, `testName`)
+    await assertKeyValue(rows, 15, `Email`, `test.com@moj.com`)
 
     // Audit details
-    await assertKeyValue(rows, 13, `Created`, `10/01/20 12:13`)
-    await assertKeyValue(rows, 14, `Last Updated`, `11/01/20 12:13`)
-    await assertKeyValue(rows, 15, `Deleted`, `12/01/20 12:13`)
+    await assertKeyValue(rows, 16, `Created`, `10/01/20 12:13`)
+    await assertKeyValue(rows, 17, `Last Updated`, `11/01/20 12:13`)
+    await assertKeyValue(rows, 18, `Deleted`, `12/01/20 12:13`)
   })
 
   async function assertKeyValue(rows: Locator, index: number, key: string, value: string) {
