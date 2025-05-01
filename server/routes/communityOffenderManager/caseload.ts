@@ -10,6 +10,7 @@ export default class CaseloadRoutes {
     AssessmentStatus.REFUSED,
     AssessmentStatus.TIMED_OUT,
     AssessmentStatus.OPTED_OUT,
+    AssessmentStatus.INELIGIBLE_OR_UNSUITABLE,
   ]
 
   static readonly TO_WORK_ON_BY_YOU_OR_TEAM_STATUSES = [
@@ -31,12 +32,6 @@ export default class CaseloadRoutes {
     AssessmentStatus.APPROVED,
     AssessmentStatus.AWAITING_PRE_RELEASE_CHECKS,
   ]
-
-  static readonly NOT_TO_BE_WORKED_ON_STATUSES = CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES.concat(
-    CaseloadRoutes.READY_FOR_RELEASE_STATUSES,
-  )
-    .concat(CaseloadRoutes.POSTPONED_STATUSES)
-    .concat(CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES)
 
   constructor(private readonly communityOffenderManagerCaseloadService: CommunityOffenderManagerCaseloadService) {}
 
