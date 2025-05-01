@@ -24,6 +24,8 @@ const checksComplete = eligibilityAndSuitabilityQuestionList.path('checks-comple
 const enterCurfewAddressOrCasArea = currentAssessment.path('enter-curfew-address-or-cas-area')
 const optOutCheck = enterCurfewAddressOrCasArea.path('opt-in-opt-out')
 const optOut = enterCurfewAddressOrCasArea.path('opt-out-reason')
+const optIn = enterCurfewAddressOrCasArea.path('opt-in')
+const postpone = enterCurfewAddressOrCasArea.path('postpone')
 const findAddress = enterCurfewAddressOrCasArea.path('find-address')
 const selectAddress = enterCurfewAddressOrCasArea.path('select-an-address')
 const noAddressFound = enterCurfewAddressOrCasArea.path('no-address-found')
@@ -74,6 +76,8 @@ const paths = {
       enterCurfewAddressOrCasArea: {
         optOutCheck,
         optOut,
+        optIn,
+        postpone,
         findAddress,
         selectAddress,
         noAddressFound,

@@ -46,6 +46,11 @@ describe('GET', () => {
         tasks: assessmentOverviewSummary.tasks.PRISON_CA,
         formsToShow: [],
       },
+      availableActions: {
+        optInAvailable: false,
+        optOutAvailable: false,
+        postponeAvailable: false,
+      },
     })
   })
 })

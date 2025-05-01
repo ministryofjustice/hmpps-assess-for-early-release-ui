@@ -1,13 +1,44 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{%  macro actions(optOutLink) %}
+{%  macro actions(prisonNumber, availableActions) %}
+    {% set caseloadLink = paths.prison.prisonCaseload() %}
+    {% set optOutLink = paths.prison.assessment.enterCurfewAddressOrCasArea.optOutCheck({ prisonNumber: prisonNumber }) %}
+    {% set optInLink = paths.prison.assessment.enterCurfewAddressOrCasArea.optIn({ prisonNumber: prisonNumber }) %}
+    {% set postponeLink = paths.prison.assessment.enterCurfewAddressOrCasArea.postpone({ prisonNumber: prisonNumber }) %}
+
     {% set actions = [
         {
-            key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optInOutAction' href=" + optOutLink + ">Opt out</a>" },
+            key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='allApplicationsAction' href=" + caseloadLink + ">Go to all HDC applications</a>" },
             value: { html: '' }
-        }
-    ]
+        }]
     %}
+
+    {% if availableActions.optInAvailable %}
+        {% set actions = (actions.push(
+            {
+                key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optInAction' href=" + optInLink + ">Opt in</a>" },
+                value: { html: '' }
+            }), actions)
+        %}
+    {% endif %}
+
+    {% if availableActions.optOutAvailable %}
+        {% set actions = (actions.push(
+            {
+                key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='optOutAction' href=" + optOutLink + ">Opt out</a>" },
+                value: { html: '' }
+            }), actions)
+        %}
+    {% endif %}
+
+    {% if availableActions.postponeAvailable %}
+        {% set actions = (actions.push(
+            {
+                key: { html: "<a class='govuk-link govuk-link--no-visited-state' data-qa='postponeAction' href=" + postponeLink + ">Postpone application</a>" },
+                value: { html: '' }
+            }), actions)
+        %}
+    {% endif %}
 
     {{ govukSummaryList({
         attributes: { id: 'actions' },
@@ -16,6 +47,7 @@
             text: "Shortcuts"
             }
         },
-        rows: actions
+        rows: actions,
+        classes: 'actions-summary-list'
     }) }}
 {% endmacro %}
