@@ -13,7 +13,7 @@ export default class OptOutCheckRoutes {
       req.params.prisonNumber,
     )
 
-    res.render('pages/optOut/optOutCheck', {
+    res.render('pages/optInOut/optOutCheck', {
       assessment,
     })
   }
