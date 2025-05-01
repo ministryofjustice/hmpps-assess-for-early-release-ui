@@ -1,4 +1,4 @@
-import { AuthenticationClient, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { ApiConfig, AuthenticationClient, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import type {
   _OffenderResponse,
   Agent,
@@ -10,7 +10,7 @@ import type {
   _OffenderSearchResponse,
   OffenderSearchResponse,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
-import config, { ApiConfig } from '../config'
+import config from '../config'
 import { parseIsoDate, parseIsoDateTime } from '../utils/utils'
 import logger from '../../logger'
 
