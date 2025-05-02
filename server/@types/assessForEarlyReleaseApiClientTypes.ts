@@ -13,7 +13,7 @@ export type OffenderSearchResponse = ParsingDates<_OffenderSearchResponse, 'date
 export type _OffenderResponse = components['schemas']['OffenderResponse']
 export type OffenderResponse = ParsingDates<
   _OffenderResponse,
-  'dateOfBirth' | 'hdced' | 'crd' | 'sentenceStartDate' | 'createdTimestamp' | 'lastUpdatedTimestamp'
+  'dateOfBirth' | 'createdTimestamp' | 'lastUpdatedTimestamp'
 >
 
 export type _AddressSummary = components['schemas']['AddressSummary']
@@ -91,7 +91,13 @@ export type ContactResponse = components['schemas']['ContactResponse']
 export type _AssessmentResponse = components['schemas']['AssessmentResponse']
 export type AssessmentResponse = ParsingDates<
   _AssessmentResponse,
-  'createdTimestamp' | 'lastUpdatedTimestamp' | 'deletedTimestamp' | 'postponementDate'
+  | 'createdTimestamp'
+  | 'lastUpdatedTimestamp'
+  | 'deletedTimestamp'
+  | 'postponementDate'
+  | 'hdced'
+  | 'crd'
+  | 'sentenceStartDate'
 >
 export type ComSummary = components['schemas']['ComSummary']
 export type _AssessmentSearchResponse = components['schemas']['AssessmentSearchResponse']

@@ -150,6 +150,21 @@ const stubGetAssessmentResponse = (assessmentId: string, assessmentResponse: _As
     },
   })
 
+const stubGetCurrentAssessmentResponse = (prisonNumber: string, assessmentResponse: _AssessmentResponse) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/afer-api/support/offender/assessment/current/${prisonNumber}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: assessmentResponse,
+    },
+  })
+
 const stubDeleteAssessment = (assessmentId: string) =>
   stubFor({
     request: {
@@ -1173,5 +1188,6 @@ export default {
   stubGetAssessmentSearchResponse,
   stubDeleteAssessment,
   stubGetAssessmentResponse,
+  stubGetCurrentAssessmentResponse,
   stubSaveVloAndPomInfo,
 }

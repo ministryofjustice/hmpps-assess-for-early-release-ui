@@ -15,10 +15,17 @@ export default class OffenderViewHandler {
       prisonNumber,
     )
 
+    const currentAssessment = await this.supportService.getCurrentAssessment(
+      req?.middleware?.clientToken,
+      res.locals.agent,
+      prisonNumber,
+    )
+
     res.render('pages/support/offender/offenderView', {
       offender,
       assessments,
       prisonNumber,
+      currentAssessment,
     })
   }
 }

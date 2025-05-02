@@ -72,6 +72,8 @@ Then run the server in test mode by:
 
 `npm run start-feature` (or `npm run start-feature:dev` to run with auto-restart on changes)
 
+If there is an error with Node, try use `nvm use` which will ensure you are using the version of Node specified in the `.nvmrc` file
+
 <em>The server should startup normally and you should see something like this in the logs:</em>
 
 `14:26:46.498Z INFO Hmpps Assess For Early Release Ui: Server listening on port 3007`

@@ -374,10 +374,7 @@ export const createOffenderResponse = ({
   forename = 'Bob',
   surname = 'Smith',
   dateOfBirth = '2002-02-20',
-  hdced = '2026-08-23',
-  crd = '2026-09-23',
   crn = 'DX12340A',
-  sentenceStartDate = '2028-06-23',
   createdTimestamp = '2020-01-11T12:13:00',
   lastUpdatedTimestamp = '2020-02-12T12:13:00',
 } = {}): _OffenderResponse => ({
@@ -386,10 +383,7 @@ export const createOffenderResponse = ({
   forename,
   surname,
   dateOfBirth,
-  hdced,
-  crd,
   crn,
-  sentenceStartDate,
   createdTimestamp,
   lastUpdatedTimestamp,
 })
@@ -441,6 +435,9 @@ export const createAssessmentResponse = ({
   postponementDate = '2026-08-23',
   optOutReasonType = OptOutReasonType.NOWHERE_TO_STAY,
   optOutReasonOther = 'another reason',
+  hdced = '2026-08-23',
+  crd = '2026-09-23',
+  sentenceStartDate = '2028-06-23',
 } = {}): _AssessmentResponse => ({
   id,
   bookingId,
@@ -456,4 +453,7 @@ export const createAssessmentResponse = ({
   optOutReasonType,
   optOutReasonOther,
   responsibleCom,
+  hdced,
+  crd,
+  sentenceStartDate,
 })
