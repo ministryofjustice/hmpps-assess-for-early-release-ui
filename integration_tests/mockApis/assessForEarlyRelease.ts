@@ -154,7 +154,7 @@ const stubGetCurrentAssessmentResponse = (prisonNumber: string, assessmentRespon
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/afer-api/support/offender/assessment/current/${prisonNumber}`,
+      urlPattern: `/afer-api/support/offender/${prisonNumber}/assessment/current`,
     },
     response: {
       status: 200,
