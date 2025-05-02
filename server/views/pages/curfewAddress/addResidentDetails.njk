@@ -109,7 +109,10 @@
                         name: "phoneNumber",
                         classes: 'govuk-!-width-one-half',
                         errorMessage: validationErrors | findError('phoneNumber'),
-                        value: submittedForm.phoneNumber |  default(mainResident.phoneNumber)
+                        value: submittedForm.phoneNumber |  default(mainResident.phoneNumber),
+                        attributes: {
+                            'data-qa': 'phoneNumber'
+                        }
                     }) }}
                     {{ govukInput({
                         id: 'relation',
