@@ -254,14 +254,14 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     )
   }
 
-  async addressDeleteReason(
+  async withdrawAddress(
     token: string,
     agent: Agent,
     prisonNumber: string,
     requestId: number,
     addressDeleteReason: AddressDeleteReason,
   ): Promise<void> {
-    return this.postWithToken(
+    return this.putWithToken(
       `/offender/${prisonNumber}/current-assessment/address-delete-reason/${requestId}`,
       token,
       agent,

@@ -40,7 +40,7 @@ export default class AddressDeleteReasonRoutes {
       return validationErrors
     })
 
-    await this.addressService.addressDeleteReason(
+    await this.addressService.withdrawAddress(
       req?.middleware?.clientToken,
       res.locals.agent,
       prisonNumber,

@@ -267,6 +267,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-delete-reason/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Adds a address deletion reason.
+     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['withdrawAddress']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/standard-address-check-request': {
     parameters: {
       query?: never
@@ -353,29 +376,6 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     post: operations['saveResidentialChecksTaskAnswers']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/offender/{prisonNumber}/current-assessment/address-delete-reason/{requestId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Adds a address deletion reason.
-     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
-     *
-     *     Requires one of the following roles:
-     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
-     */
-    post: operations['addressDeleteReason']
     delete?: never
     options?: never
     head?: never
@@ -476,6 +476,52 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     delete: operations['deleteAssessment']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/support/offender/assessment/{assessmentId}/events': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the assessment events for the given id and filter
+     * @description Gets the assessment events for the given id and filter
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getEvents']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/support/offender/assessment/current/{prisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the current assessment for the given prisoner
+     * @description Returns the current assessment for the given prisoner
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getCurrentAssessment']
+    put?: never
+    post?: never
+    delete?: never
     options?: never
     head?: never
     patch?: never
@@ -676,7 +722,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getCurrentAssessment']
+    get: operations['getCurrentAssessment_1']
     put?: never
     post?: never
     delete?: never
@@ -1358,7 +1404,6 @@ export interface components {
       name:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -1377,7 +1422,7 @@ export interface components {
        * @example Smith
        * @enum {string}
        */
-      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
+      progress: 'UNAVAILABLE' | 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -1386,6 +1431,24 @@ export interface components {
        * @example Additional information...
        */
       additionalInformation: string
+    }
+    /** @description Records an offender's non disclosable information */
+    AddressDeleteReasonDto: {
+      /**
+       * @description The reason why address deleted
+       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
+       * @enum {string}
+       */
+      addressDeleteReasonType:
+        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
+        | 'NOT_ENOUGH_TIME_TO_ASSESS'
+        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
+        | 'OTHER_REASON'
+      /**
+       * @description Other reason to delete address
+       * @example Give details of information regards delete address
+       */
+      addressDeleteOtherReason?: string
     }
     /** @description Request for adding a standard address check request */
     AddStandardAddressCheckRequest: {
@@ -1542,6 +1605,11 @@ export interface components {
        * @example See ResidentSummary
        */
       residents: components['schemas']['ResidentSummary'][]
+      /**
+       * @description The reason for deleting address
+       * @example See reason type and text
+       */
+      deleteReason?: components['schemas']['AddressDeleteReasonDto']
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1688,24 +1756,6 @@ export interface components {
       instance?: unknown
     } & {
       [key: string]: unknown | unknown | unknown
-    }
-    /** @description Records an offender's non disclosable information */
-    AddressDeleteReason: {
-      /**
-       * @description The reason why address deleted
-       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
-       * @enum {string}
-       */
-      addressDeleteReasonType:
-        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
-        | 'NOT_ENOUGH_TIME_TO_ASSESS'
-        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
-        | 'OTHER_REASON'
-      /**
-       * @description Other reason to delete address
-       * @example Give details of information regards delete address
-       */
-      addressDeleteOtherReason?: string
     }
     /** @description Response object which describes an offender */
     OffenderResponse: {
@@ -1994,6 +2044,45 @@ export interface components {
        */
       sentenceStartDate?: string
     }
+    /** @description Response object which describes a assessment event */
+    AssessmentEventResponse: {
+      /** @description full name of the person who triggered the event */
+      fullName: string
+      /** @description username of the person who triggered the event */
+      username: string
+      /**
+       * @description role of the used to trigger the event
+       * @enum {string}
+       */
+      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
+      /**
+       * @description type that describes the event
+       * @enum {string}
+       */
+      eventType:
+        | 'STATUS_CHANGE'
+        | 'RESIDENT_UPDATED'
+        | 'ADDRESS_UPDATED'
+        | 'ADDRESS_DELETED'
+        | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+        | 'PRISON_TRANSFERRED'
+        | 'PRISONER_UPDATED'
+        | 'PRISONER_CREATED'
+        | 'ASSESSMENT_DELETED'
+        | 'NONDISCLOSURE_INFORMATION_ENTRY'
+        | 'VLO_AND_POM_CONSULTATION_UPDATED'
+      /** @description subject of the event */
+      summary: string
+      /**
+       * Format: date-time
+       * @description time and date of the event
+       */
+      eventTime: string
+      /** @description Event on Behalf of */
+      onBehalfOf?: string
+      /** @description changes that occurred during the event */
+      changes?: string
+    }
     Detail: {
       code: string
       description?: string
@@ -2152,7 +2241,6 @@ export interface components {
       currentTask?:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -2443,13 +2531,19 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
-      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2472,19 +2566,6 @@ export interface components {
        * @example 22/11/2026T10:43:28
        */
       dateRequested: string
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -2858,11 +2939,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
       204: {
@@ -2981,6 +3058,60 @@ export interface operations {
         }
       }
       /** @description An address check request with the specified id does not exist for the offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  withdrawAddress: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddressDeleteReasonDto']
+      }
+    }
+    responses: {
+      /** @description The address deletion reason has been added. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token. */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role. */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender. */
       404: {
         headers: {
           [name: string]: unknown
@@ -3196,67 +3327,6 @@ export interface operations {
       }
     }
   }
-  addressDeleteReason: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        prisonNumber: string
-        requestId: number
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AddressDeleteReason']
-      }
-    }
-    responses: {
-      /** @description Created */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description The address deletion reason has been added. */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': unknown
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token. */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description An address check request with the specified id does not exist for the offender. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   getOffender: {
     parameters: {
       query?: never
@@ -3443,6 +3513,100 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getEvents: {
+    parameters: {
+      query?: {
+        filter?: (
+          | 'STATUS_CHANGE'
+          | 'RESIDENT_UPDATED'
+          | 'ADDRESS_UPDATED'
+          | 'ADDRESS_DELETED'
+          | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+          | 'PRISON_TRANSFERRED'
+          | 'PRISONER_UPDATED'
+          | 'PRISONER_CREATED'
+          | 'ASSESSMENT_DELETED'
+          | 'NONDISCLOSURE_INFORMATION_ENTRY'
+          | 'VLO_AND_POM_CONSULTATION_UPDATED'
+        )[]
+      }
+      header?: never
+      path: {
+        assessmentId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the assessments events */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentEventResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCurrentAssessment: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returned the current assessment for the given prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentResponse'][]
+        }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {
@@ -3818,7 +3982,7 @@ export interface operations {
       }
     }
   }
-  getCurrentAssessment: {
+  getCurrentAssessment_1: {
     parameters: {
       query?: never
       header?: never

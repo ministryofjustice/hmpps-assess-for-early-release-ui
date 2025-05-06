@@ -53,14 +53,14 @@ export default class AddressService {
     return this.assessForEarlyReleaseApiClient.deleteAddressCheckRequest(token, agent, prisonNumber, requestId)
   }
 
-  public async addressDeleteReason(
+  public async withdrawAddress(
     token: string,
     agent: Agent,
     prisonNumber: string,
     requestId: number,
     addressDeleteReason: AddressDeleteReason,
   ): Promise<void> {
-    return this.assessForEarlyReleaseApiClient.addressDeleteReason(
+    return this.assessForEarlyReleaseApiClient.withdrawAddress(
       token,
       agent,
       prisonNumber,
