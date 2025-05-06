@@ -458,6 +458,52 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/support/offender/assessment/{assessmentId}/events': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the assessment events for the given id and filter
+     * @description Gets the assessment events for the given id and filter
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getEvents']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/support/offender/assessment/current/{prisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the current assessment for the given prisoner
+     * @description Returns the current assessment for the given prisoner
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getCurrentAssessment']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/staff': {
     parameters: {
       query?: never
@@ -653,7 +699,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getCurrentAssessment']
+    get: operations['getCurrentAssessment_1']
     put?: never
     post?: never
     delete?: never
@@ -939,7 +985,9 @@ export interface paths {
     trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     RetryDlqResult: {
@@ -1335,7 +1383,6 @@ export interface components {
       name:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -1354,7 +1401,7 @@ export interface components {
        * @example Smith
        * @enum {string}
        */
-      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
+      progress: 'UNAVAILABLE' | 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -1953,6 +2000,44 @@ export interface components {
        */
       sentenceStartDate?: string
     }
+    /** @description Response object which describes a assessment event */
+    AssessmentEventResponse: {
+      /** @description full name of the person who triggered the event */
+      fullName: string
+      /** @description Event on Behalf of */
+      onBehalfOf?: string
+      /** @description changes that occurred during the event */
+      changes?: string
+      /**
+       * Format: date-time
+       * @description time and date of the event
+       */
+      eventTime: string
+      /** @description username of the person who triggered the event */
+      username: string
+      /** @description subject of the event */
+      summary: string
+      /**
+       * @description type that describes the event
+       * @enum {string}
+       */
+      eventType:
+        | 'STATUS_CHANGE'
+        | 'RESIDENT_UPDATED'
+        | 'ADDRESS_UPDATED'
+        | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+        | 'PRISON_TRANSFERRED'
+        | 'PRISONER_UPDATED'
+        | 'PRISONER_CREATED'
+        | 'ASSESSMENT_DELETED'
+        | 'NONDISCLOSURE_INFORMATION_ENTRY'
+        | 'VLO_AND_POM_CONSULTATION_UPDATED'
+      /**
+       * @description role of the used to trigger the event
+       * @enum {string}
+       */
+      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
+    }
     Detail: {
       code: string
       description?: string
@@ -2111,7 +2196,6 @@ export interface components {
       currentTask?:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -2403,19 +2487,6 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
-       * Format: int64
-       * @description Unique internal identifier for this request
-       * @example 123344
-       */
-      requestId: number
-      requestType: string
-      /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
        */
@@ -2437,6 +2508,19 @@ export interface components {
        * @example 22/11/2026T10:43:28
        */
       dateRequested: string
+      requestType: string
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -2448,7 +2532,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
 export interface operations {
   retryDlq: {
     parameters: {
@@ -2810,11 +2896,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
       204: {
@@ -3355,6 +3437,99 @@ export interface operations {
       }
     }
   }
+  getEvents: {
+    parameters: {
+      query?: {
+        filter?: (
+          | 'STATUS_CHANGE'
+          | 'RESIDENT_UPDATED'
+          | 'ADDRESS_UPDATED'
+          | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+          | 'PRISON_TRANSFERRED'
+          | 'PRISONER_UPDATED'
+          | 'PRISONER_CREATED'
+          | 'ASSESSMENT_DELETED'
+          | 'NONDISCLOSURE_INFORMATION_ENTRY'
+          | 'VLO_AND_POM_CONSULTATION_UPDATED'
+        )[]
+      }
+      header?: never
+      path: {
+        assessmentId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the assessments events */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentEventResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCurrentAssessment: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returned the current assessment for the given prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getStaffDetailsByUsername: {
     parameters: {
       query: {
@@ -3709,7 +3884,7 @@ export interface operations {
       }
     }
   }
-  getCurrentAssessment: {
+  getCurrentAssessment_1: {
     parameters: {
       query?: never
       header?: never
@@ -4280,6 +4455,7 @@ export interface operations {
     }
   }
 }
+
 type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P]
 }
