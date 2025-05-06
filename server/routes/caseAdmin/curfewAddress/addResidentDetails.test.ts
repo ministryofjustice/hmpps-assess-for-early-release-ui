@@ -77,7 +77,7 @@ describe('add resident details routes', () => {
       req.body.surname = 'Ridgeway'
       req.body.relation = 'sister'
       req.body.residentId = 1
-      req.body.phoneNumber = '3434567890'
+      req.body.phoneNumber = '01889483290'
       req.body.isOffender = false
       req.body.otherResident = [
         {
