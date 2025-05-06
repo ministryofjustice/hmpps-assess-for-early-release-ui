@@ -19,6 +19,7 @@ const prisonCaseload = prison.path('case-list')
 const prisonAssessmentHome = prison.path('application-overview/:prisonNumber')
 const currentAssessment = prison.path('assessment/:prisonNumber')
 const eligibilityAndSuitabilityQuestionList = currentAssessment.path('assess-eligibility-and-suitability')
+const addressDeleteReason = currentAssessment.path('address-delete-reason/:checkRequestId')
 const check = eligibilityAndSuitabilityQuestionList.path(':type/:checkCode')
 const checksComplete = eligibilityAndSuitabilityQuestionList.path('checks-complete')
 const enterCurfewAddressOrCasArea = currentAssessment.path('enter-curfew-address-or-cas-area')
@@ -88,6 +89,7 @@ const paths = {
         checkYourAnswers,
         deleteCheckYourAnswers,
       },
+      addressDeleteReason,
     },
   },
   probation: {

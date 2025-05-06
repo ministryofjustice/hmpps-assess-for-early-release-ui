@@ -359,6 +359,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/address-delete-reason/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Adds a address deletion reason.
+     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    post: operations['addressDeleteReason']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/support/offender/{prisonNumber}': {
     parameters: {
       query?: never
@@ -1666,6 +1689,24 @@ export interface components {
     } & {
       [key: string]: unknown | unknown | unknown
     }
+    /** @description Records an offender's non disclosable information */
+    AddressDeleteReason: {
+      /**
+       * @description The reason why address deleted
+       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
+       * @enum {string}
+       */
+      addressDeleteReasonType:
+        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
+        | 'NOT_ENOUGH_TIME_TO_ASSESS'
+        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
+        | 'OTHER_REASON'
+      /**
+       * @description Other reason to delete address
+       * @example Give details of information regards delete address
+       */
+      addressDeleteOtherReason?: string
+    }
     /** @description Response object which describes an offender */
     OffenderResponse: {
       /**
@@ -2403,12 +2444,6 @@ export interface components {
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
@@ -2437,6 +2472,19 @@ export interface components {
        * @example 22/11/2026T10:43:28
        */
       dateRequested: string
+      /**
+       * Format: int64
+       * @description Unique internal identifier for this request
+       * @example 123344
+       */
+      requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
+      requestType: string
     } & (components['schemas']['StandardAddressCheckRequestSummary'] | components['schemas']['CasCheckRequestSummary'])
     MapStringAny: {
       [key: string]: unknown | unknown
@@ -3138,6 +3186,67 @@ export interface operations {
         }
       }
       /** @description An address check request with the specified request id does not exist for the provided offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  addressDeleteReason: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddressDeleteReason']
+      }
+    }
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description The address deletion reason has been added. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token. */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role. */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender. */
       404: {
         headers: {
           [name: string]: unknown
