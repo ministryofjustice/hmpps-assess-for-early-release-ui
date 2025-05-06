@@ -33,8 +33,15 @@ export default class AddressDeleteReasonRoutes {
 
       if (addressDeleteReasonType === AddressDeleteReasonType.OTHER_REASON) {
         if (!addressDeleteOtherReason || addressDeleteOtherReason?.trim() === '') {
-          validationErrors.push({ field: 'addressDeleteOtherReason', message: 'Enter reason' })
+          validationErrors.push({ field: 'addressDeleteOtherReason', message: 'Other reason cannot be blank' })
         }
+      }
+
+      if (!addressDeleteReasonType) {
+        validationErrors.push({
+          field: 'addressDeleteReasonType',
+          message: 'Provide a reason for deleting this',
+        })
       }
 
       return validationErrors

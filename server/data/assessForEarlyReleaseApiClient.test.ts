@@ -5,6 +5,7 @@ import {
   _AssessmentOverviewSummary,
   _OffenderSummary,
   _ResidentialChecksTaskView,
+  AddressDeleteReason,
   Agent,
   NonDisclosableInformation,
   SaveResidentialChecksTaskAnswersRequest,
@@ -22,6 +23,7 @@ import {
   createAgent,
 } from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
+import AddressDeleteReasonType from '../enumeration/AddressDeleteReasonType'
 
 describe('assessForEarlyReleaseApiClient', () => {
   let fakeAferApi: nock.Scope
@@ -431,6 +433,25 @@ describe('assessForEarlyReleaseApiClient', () => {
         prisonNumber,
         nonDisclosableInformation,
       )
+      expect(fakeAferApi.isDone()).toBe(true)
+    })
+  })
+
+  describe('withdraw Address', () => {
+    const { prisonNumber } = createAssessmentOverviewSummary({})
+    const requestId = 1
+
+    it('record address deletion reason', async () => {
+      const addressDeleteReason = {
+        addressDeleteReasonType: 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE',
+        addressDeleteOtherReason: null,
+      } as AddressDeleteReason
+      fakeAferApi
+        .put(`/offender/${prisonNumber}/current-assessment/address-delete-reason/${requestId}`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      await assessForEarlyReleaseApiClient.withdrawAddress(token, agent, prisonNumber, requestId, addressDeleteReason)
       expect(fakeAferApi.isDone()).toBe(true)
     })
   })
