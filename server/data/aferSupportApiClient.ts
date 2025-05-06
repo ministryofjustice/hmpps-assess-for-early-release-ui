@@ -9,6 +9,8 @@ import type {
   _AssessmentSearchResponse,
   _OffenderSearchResponse,
   OffenderSearchResponse,
+  _AssessmentEventResponse,
+  AssessmentEventResponse,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config from '../config'
 import { parseIsoDate, parseIsoDateTime } from '../utils/utils'
@@ -88,6 +90,21 @@ export default class AferSupportApiClient extends RestClient {
       crd: parseIsoDate(assessment.crd),
       sentenceStartDate: parseIsoDate(assessment.sentenceStartDate),
     }
+  }
+
+  async getAssessmentEvents(token: string, agent: Agent, assessmentId: string): Promise<AssessmentEventResponse[]> {
+    const events = await this.getWithToken<_AssessmentEventResponse[]>(
+      `/support/offender/assessment/${assessmentId}/events`,
+      token,
+      agent,
+    )
+
+    return events.map(assessment => {
+      return {
+        ...assessment,
+        eventTime: parseIsoDate(assessment.eventTime),
+      }
+    })
   }
 
   async getAssessments(token: string, agent: Agent, prisonNumber: string): Promise<AssessmentSearchResponse[]> {

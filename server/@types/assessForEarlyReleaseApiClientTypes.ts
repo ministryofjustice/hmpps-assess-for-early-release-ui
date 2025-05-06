@@ -99,6 +99,10 @@ export type AssessmentResponse = ParsingDates<
   | 'crd'
   | 'sentenceStartDate'
 >
+
+export type _AssessmentEventResponse = components['schemas']['AssessmentEventResponse']
+export type AssessmentEventResponse = ParsingDates<_AssessmentEventResponse, 'eventTime'>
+
 export type ComSummary = components['schemas']['ComSummary']
 export type _AssessmentSearchResponse = components['schemas']['AssessmentSearchResponse']
 export type AssessmentSearchResponse = ParsingDates<

@@ -16,10 +16,17 @@ export default class ViewAssessmentHandler {
         assessmentId,
       )
 
+      const events = await this.supportService.getAssessmentEvents(
+        req?.middleware?.clientToken,
+        res.locals.agent,
+        assessmentId,
+      )
+
       res.render('pages/support/offender/assessmentView', {
         assessmentId,
         prisonNumber,
         assessment,
+        events,
       })
     } else {
       res.redirect(paths.support.offender.supportOffenderView({ prisonNumber }))

@@ -1,5 +1,6 @@
 import {
   Agent,
+  type AssessmentEventResponse,
   type AssessmentOverviewSummary,
   type AssessmentResponse,
   type AssessmentSearchResponse,
@@ -33,6 +34,14 @@ export default class SupportService {
 
   public async getAssessment(token: string, agent: Agent, assessmentId: string): Promise<AssessmentResponse> {
     return this.aferSupportApiClient.getAssessment(token, agent, assessmentId)
+  }
+
+  public async getAssessmentEvents(
+    token: string,
+    agent: Agent,
+    assessmentId: string,
+  ): Promise<AssessmentEventResponse[]> {
+    return this.aferSupportApiClient.getAssessmentEvents(token, agent, assessmentId)
   }
 
   public async getAssessmentOverviewSummary(
