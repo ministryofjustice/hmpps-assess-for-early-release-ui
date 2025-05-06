@@ -23,7 +23,6 @@ import {
   createAgent,
 } from './__testutils/testObjects'
 import { toIsoDate } from '../utils/utils'
-import AddressDeleteReasonType from '../enumeration/AddressDeleteReasonType'
 
 describe('assessForEarlyReleaseApiClient', () => {
   let fakeAferApi: nock.Scope
