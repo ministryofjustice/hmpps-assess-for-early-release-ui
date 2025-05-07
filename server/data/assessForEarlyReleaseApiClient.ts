@@ -301,7 +301,6 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
       `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`,
       token,
       agent,
-      agent,
     )
   }
 
