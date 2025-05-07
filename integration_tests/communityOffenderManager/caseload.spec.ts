@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import {
-  createOffenderSummary,
+  withDecisionMaker,
   postponedOffender,
   assessmentCompletedOffender,
   refusedOffender,
@@ -15,7 +15,6 @@ import paths from '../../server/routes/paths'
 import { convertToTitleCase, formatDate, parseIsoDate } from '../../server/utils/utils'
 import { createStaffDetails } from '../../server/data/__testutils/testObjects'
 import playwrightConfig from '../../playwright.config'
-import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
 const staffCode = 'STAFF1'
 
@@ -29,16 +28,6 @@ test.describe('COM caseload', () => {
   })
 
   test('Can view my cases', async ({ page }) => {
-    const withDecisionMaker = createOffenderSummary({
-      prisonNumber: 'G8303TB',
-      forename: 'Simon',
-      surname: 'Adamson',
-      hdced: '2027-04-09',
-      workingDaysToHdced: 27,
-      probationPractitioner: 'Russell Dickson',
-      status: AssessmentStatus.AWAITING_DECISION,
-    })
-
     await assessForEarlyRelease.stubGetComStaffCaseload(staffCode, [
       postponedOffender,
       assessmentCompletedOffender,
@@ -73,6 +62,14 @@ test.describe('COM caseload', () => {
     // With Decision Maker Tab
     await page.getByTestId('with-decision-maker').click()
     await expect(page.getByLabel('With decision maker').getByText('Aled Evans')).toBeVisible()
+
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-decision-maker`,
+    )
+    await expect(
+      page.getByText(convertToTitleCase(`${withDecisionMaker.forename} ${withDecisionMaker.surname}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(`Prison number: ${withDecisionMaker.prisonNumber}`)).toBeVisible()
 
     // Postponed Tab
     await page.getByTestId('postponed').click()
