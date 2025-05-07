@@ -1,0 +1,93 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "partials/offenderSummary.njk" import offenderSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% set pageTitle = "Address Delete Reason - " + applicationName %}
+{% set reasonNoLongerWantText = assessmentSummary.forename+ " no longer wants to be released here" %}
+{% set reasonHasAnotherAddressText = assessmentSummary.forename +" has another suitable curfew address or CAS area" %}
+{% set otherReasonHtml %}
+    {{ govukInput({
+      label: {
+        text: "Enter reason",
+        classes: "govuk-label"
+      },
+      id: "addressDeleteOtherReason",
+      name: "addressDeleteOtherReason",
+      value: submittedForm.addressDeleteOtherReason,
+      classes: "govuk-input--width-30",
+      errorMessage: validationErrors | findError('addressDeleteOtherReason')
+    }) }}
+{% endset %}
+{% set items =[
+                {
+                    value: "NO_LONGER_WANTS_TO_BE_RELEASED_HERE",
+                    text: reasonNoLongerWantText
+                },
+                {
+                    value: "NOT_ENOUGH_TIME_TO_ASSESS",
+                    text: "Probation practitioner does not have time to assess",
+                    attributes: {
+                        "data-qa": "doNotWantToBeTaggedRadio"
+                    }
+                },
+                {
+                    value: "HAS_ANOTHER_SUITABLE_ADDRESS",
+                    text: reasonHasAnotherAddressText
+                },
+                {
+                    value: "OTHER_REASON",
+                    text: "Other reason",
+                    conditional: {
+                        html: otherReasonHtml
+                    }
+                }
+            ] %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'partials/errorSummary.njk' %}
+            {{ offenderSummary(assessmentSummary.prisonNumber, assessmentSummary.hdced, assessmentSummary.dateOfBirth, assessmentSummary | toFullName) }}
+
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+                {{ govukRadios({
+                    idPrefix: 'addressDeleteReasonType',
+                    name:  'addressDeleteReasonType',
+                    value: submittedForm.addressDeleteReasonType | default(addressDeleteReasonType),
+                    fieldset: {
+                        legend: {
+                            text: 'Provide a reason for deleting this',
+                            classes: "govuk-fieldset__legend--l"
+                        }
+                    },
+                    hint: {
+                        text: 'address'
+                    },
+                    errorMessage: validationErrors | findError('addressDeleteReasonType'),
+                    items: items
+                }) }}
+
+                <div class="govuk-button-group">
+                    {{ govukButton({
+                        text: "Continue",
+                        preventDoubleClick: true,
+                        attributes: { 'data-qa': 'continue' }
+                    }) }}
+                    {{ govukButton({
+                        text: "Cancel",
+                        href: paths.prison.assessment.home |
+                            toPath({prisonNumber: assessmentSummary.prisonNumber}),
+                        classes: "govuk-button--secondary",
+                        attributes: { 'data-qa': 'cancel' }
+                    }) }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
