@@ -446,7 +446,7 @@ describe('assessForEarlyReleaseApiClient', () => {
         addressDeleteOtherReason: null,
       } as AddressDeleteReason
       fakeAferApi
-        .put(`/offender/${prisonNumber}/current-assessment/address-delete-reason/${requestId}`)
+        .put(`/offender/${prisonNumber}/current-assessment/withdraw-address/${requestId}`)
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
