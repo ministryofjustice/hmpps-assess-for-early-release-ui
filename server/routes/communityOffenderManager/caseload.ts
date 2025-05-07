@@ -20,7 +20,7 @@ export default class CaseloadRoutes {
 
   static readonly POSTPONED_STATUSES = [AssessmentStatus.POSTPONED]
 
-  static readonly READY_FOR_RELEASE_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
+  static readonly ASSESSMENT_COMPLETED_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
 
   static readonly WITH_DECISION_MAKER_STATUSES = [AssessmentStatus.AWAITING_DECISION]
 
@@ -56,7 +56,7 @@ export default class CaseloadRoutes {
 
     if (view !== 'inactive-applications') {
       const postponedCases = this.filterCasesByStatus(caseload, CaseloadRoutes.POSTPONED_STATUSES)
-      const readyForReleaseCases = this.filterCasesByStatus(caseload, CaseloadRoutes.READY_FOR_RELEASE_STATUSES)
+      const assessmentCompltedCases = this.filterCasesByStatus(caseload, CaseloadRoutes.ASSESSMENT_COMPLETED_STATUSES)
       const withDecisionMakerCases = this.filterCasesByStatus(caseload, CaseloadRoutes.WITH_DECISION_MAKER_STATUSES)
       const withPrisonAdminCases = this.filterCasesByStatus(caseload, CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES)
       const toWorkOnByYouOrTeamCases = this.filterCasesByStatus(
@@ -68,7 +68,7 @@ export default class CaseloadRoutes {
         view,
         toWorkOnByYouOrTeamCases: toWorkOnByYouOrTeamCases.map(this.mapToViewModel),
         postponedCases: postponedCases.map(this.mapToViewModel),
-        readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
+        assessmentCompltedCases: assessmentCompltedCases.map(this.mapToViewModel),
         withDecisionMakerCases: withDecisionMakerCases.map(this.mapToViewModel),
         withPrisonAdminCases: withPrisonAdminCases.map(this.mapToViewModel),
       })

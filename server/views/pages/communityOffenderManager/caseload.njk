@@ -2,7 +2,7 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
 {% from "./postponedTab.njk" import postponedTab %}
-{% from "./readyForReleaseTab.njk" import readyForReleaseTab %}
+{% from "./assessmentCompltedTab.njk" import assessmentCompltedTab %}
 {% from "./teamCasesTab.njk" import teamCasesTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withDecisionMakerTab.njk" import withDecisionMakerTab %}
@@ -43,13 +43,13 @@
         }
     },
     {
-        id: "ready-for-release",
-        label: "Ready for release",
+        id: "assessment-complted",
+        label: "Assessment Complted",
         attributes: {
-            "data-qa": "ready-for-release"
+            "data-qa": "assessment-complted"
         },
         panel: {
-            html: readyForReleaseTab(readyForReleaseCases)
+            html: assessmentCompltedTab(assessmentCompltedCases)
         }
     }] %}
 

@@ -42,7 +42,7 @@ describe('GET', () => {
     expect(res.render).toHaveBeenCalledWith('pages/communityOffenderManager/caseload', {
       view: 'my-cases',
       postponedCases: [],
-      readyForReleaseCases: [],
+      assessmentCompltedCases: [],
       toWorkOnByYouOrTeamCases: [
         {
           createLink: `/probation/assessment/${activeCase.prisonNumber}`,
