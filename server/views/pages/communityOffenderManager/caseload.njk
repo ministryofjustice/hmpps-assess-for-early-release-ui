@@ -2,7 +2,7 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
 {% from "./postponedTab.njk" import postponedTab %}
-{% from "./assessmentCompltedTab.njk" import assessmentCompltedTab %}
+{% from "./assessmentCompletedTab.njk" import assessmentCompletedTab %}
 {% from "./teamCasesTab.njk" import teamCasesTab %}
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withDecisionMakerTab.njk" import withDecisionMakerTab %}
@@ -43,13 +43,13 @@
         }
     },
     {
-        id: "assessment-complted",
-        label: "Assessment Complted",
+        id: "assessment-completed",
+        label: "Assessment Completed",
         attributes: {
-            "data-qa": "assessment-complted"
+            "data-qa": "assessment-completed"
         },
         panel: {
-            html: assessmentCompltedTab(assessmentCompltedCases)
+            html: assessmentCompletedTab(assessmentCompletedCases)
         }
     }] %}
 

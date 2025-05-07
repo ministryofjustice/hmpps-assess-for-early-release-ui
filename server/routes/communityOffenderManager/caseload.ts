@@ -56,7 +56,7 @@ export default class CaseloadRoutes {
 
     if (view !== 'inactive-applications') {
       const postponedCases = this.filterCasesByStatus(caseload, CaseloadRoutes.POSTPONED_STATUSES)
-      const assessmentCompltedCases = this.filterCasesByStatus(caseload, CaseloadRoutes.ASSESSMENT_COMPLETED_STATUSES)
+      const assessmentCompletedCases = this.filterCasesByStatus(caseload, CaseloadRoutes.ASSESSMENT_COMPLETED_STATUSES)
       const withDecisionMakerCases = this.filterCasesByStatus(caseload, CaseloadRoutes.WITH_DECISION_MAKER_STATUSES)
       const withPrisonAdminCases = this.filterCasesByStatus(caseload, CaseloadRoutes.WITH_PRISON_ADMIN_STATUSES)
       const toWorkOnByYouOrTeamCases = this.filterCasesByStatus(
@@ -68,7 +68,7 @@ export default class CaseloadRoutes {
         view,
         toWorkOnByYouOrTeamCases: toWorkOnByYouOrTeamCases.map(this.mapToViewModel),
         postponedCases: postponedCases.map(this.mapToViewModel),
-        assessmentCompltedCases: assessmentCompltedCases.map(this.mapToViewModel),
+        assessmentCompletedCases: assessmentCompletedCases.map(this.mapToViewModel),
         withDecisionMakerCases: withDecisionMakerCases.map(this.mapToViewModel),
         withPrisonAdminCases: withPrisonAdminCases.map(this.mapToViewModel),
       })
