@@ -60,6 +60,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/withdraw-address/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Adds a address deletion reason.
+     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['withdrawAddress']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/vlo-and-pom-consultation': {
     parameters: {
       query?: never
@@ -260,29 +283,6 @@ export interface paths {
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
     put: operations['updateCaseAdminAdditionalInformation']
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/offender/{prisonNumber}/current-assessment/address-delete-reason/{requestId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    /**
-     * Adds a address deletion reason.
-     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
-     *
-     *     Requires one of the following roles:
-     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
-     */
-    put: operations['withdrawAddress']
     post?: never
     delete?: never
     options?: never
@@ -1019,6 +1019,33 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    /** @description Records an offender's non disclosable information */
+    AddressDeleteReasonDto: {
+      /**
+       * @description The reason why address deleted
+       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
+       * @enum {string}
+       */
+      addressDeleteReasonType:
+        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
+        | 'NOT_ENOUGH_TIME_TO_ASSESS'
+        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
+        | 'OTHER_REASON'
+      /**
+       * @description Other reason to delete address
+       * @example Give details of information regards delete address
+       */
+      addressDeleteOtherReason?: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Request for updating the VLO and POM consultation information for an assessment */
     UpdateVloAndPomConsultationRequest: {
       /**
@@ -1037,14 +1064,18 @@ export interface components {
        */
       pomBehaviourInformation?: string
     }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
+    /** @description Records an offender's non disclosable information */
+    NonDisclosableInformation: {
+      /**
+       * @description Is there any non disclosable information
+       * @example true
+       */
+      hasNonDisclosableInformation: boolean
+      /**
+       * @description Information that must not be disclosed to offender
+       * @example Give details of information that cannot be disclosed.
+       */
+      nonDisclosableInformation?: string
     }
     /** @description Details of the agent who is requesting a change be made to a resource */
     AgentDto: {
@@ -1069,19 +1100,6 @@ export interface components {
        * @example A prison code or probation team code
        */
       onBehalfOf?: string
-    }
-    /** @description Records an offender's non disclosable information */
-    NonDisclosableInformation: {
-      /**
-       * @description Is there any non disclosable information
-       * @example true
-       */
-      hasNonDisclosableInformation: boolean
-      /**
-       * @description Information that must not be disclosed to offender
-       * @example Give details of information that cannot be disclosed.
-       */
-      nonDisclosableInformation?: string
     }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
@@ -1431,24 +1449,6 @@ export interface components {
        * @example Additional information...
        */
       additionalInformation: string
-    }
-    /** @description Records an offender's non disclosable information */
-    AddressDeleteReasonDto: {
-      /**
-       * @description The reason why address deleted
-       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
-       * @enum {string}
-       */
-      addressDeleteReasonType:
-        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
-        | 'NOT_ENOUGH_TIME_TO_ASSESS'
-        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
-        | 'OTHER_REASON'
-      /**
-       * @description Other reason to delete address
-       * @example Give details of information regards delete address
-       */
-      addressDeleteOtherReason?: string
     }
     /** @description Request for adding a standard address check request */
     AddStandardAddressCheckRequest: {
@@ -2048,8 +2048,10 @@ export interface components {
     AssessmentEventResponse: {
       /** @description full name of the person who triggered the event */
       fullName: string
-      /** @description username of the person who triggered the event */
-      username: string
+      /** @description changes that occurred during the event */
+      changes?: string
+      /** @description Event on Behalf of */
+      onBehalfOf?: string
       /**
        * @description role of the used to trigger the event
        * @enum {string}
@@ -2078,10 +2080,8 @@ export interface components {
        * @description time and date of the event
        */
       eventTime: string
-      /** @description Event on Behalf of */
-      onBehalfOf?: string
-      /** @description changes that occurred during the event */
-      changes?: string
+      /** @description username of the person who triggered the event */
+      username: string
     }
     Detail: {
       code: string
@@ -2533,17 +2533,17 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2643,6 +2643,60 @@ export interface operations {
       }
     }
   }
+  withdrawAddress: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddressDeleteReasonDto']
+      }
+    }
+    responses: {
+      /** @description The address deletion reason has been added. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token. */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role. */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   updateVloAndPomConsultation: {
     parameters: {
       query?: never
@@ -2694,11 +2748,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender's current assessment has been sent to the prison case admin for checking. */
       204: {
@@ -2747,11 +2797,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender's current assessment has been submitted for address checks. */
       204: {
@@ -3058,60 +3104,6 @@ export interface operations {
         }
       }
       /** @description An address check request with the specified id does not exist for the offender */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  withdrawAddress: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        prisonNumber: string
-        requestId: number
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AddressDeleteReasonDto']
-      }
-    }
-    responses: {
-      /** @description The address deletion reason has been added. */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': unknown
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token. */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role. */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description An address check request with the specified id does not exist for the offender. */
       404: {
         headers: {
           [name: string]: unknown

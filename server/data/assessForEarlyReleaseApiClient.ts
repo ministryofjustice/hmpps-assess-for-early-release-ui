@@ -262,7 +262,7 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     addressDeleteReason: AddressDeleteReason,
   ): Promise<void> {
     return this.putWithToken(
-      `/offender/${prisonNumber}/current-assessment/address-delete-reason/${requestId}`,
+      `/offender/${prisonNumber}/current-assessment/withdraw-address/${requestId}`,
       token,
       agent,
       addressDeleteReason,
