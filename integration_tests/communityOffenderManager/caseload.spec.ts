@@ -3,7 +3,7 @@ import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import {
   createOffenderSummary,
   postponedOffender,
-  readyForReleaseOffender,
+  assessmentCompletedOffender,
   refusedOffender,
   timedOutOffender,
   toWorkOnByComCases,
@@ -41,7 +41,7 @@ test.describe('COM caseload', () => {
 
     await assessForEarlyRelease.stubGetComStaffCaseload(staffCode, [
       postponedOffender,
-      readyForReleaseOffender,
+      assessmentCompletedOffender,
       timedOutOffender,
       toWorkOnByComCases,
       withDecisionMaker,
@@ -83,19 +83,19 @@ test.describe('COM caseload', () => {
 
     await expect(page.getByText(`CRN: ${postponedOffender.crn}`)).toBeVisible()
 
-    // Ready for release Tab
-    await page.getByTestId('ready-for-release').click()
-    await expect(page.getByLabel('Ready for release').getByText('Aled Evans')).toBeVisible()
+    // Assessment Completed Tab
+    await page.getByTestId('assessment-completed').click()
+    await expect(page.getByLabel('Assessment Completed').getByText('Aled Evans')).toBeVisible()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#ready-for-release`,
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#assessment-completed`,
     )
     await expect(
       page.getByText(
-        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+        convertToTitleCase(`${assessmentCompletedOffender.forename} ${assessmentCompletedOffender.surname}`.trim()),
       ),
     ).toBeVisible()
-    await expect(page.getByText(`CRN: ${readyForReleaseOffender.crn}`)).toBeVisible()
+    await expect(page.getByText(`CRN: ${assessmentCompletedOffender.crn}`)).toBeVisible()
 
     await expect(
       page.getByText(convertToTitleCase(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())),
@@ -105,7 +105,7 @@ test.describe('COM caseload', () => {
   test('Can view team cases', async ({ page }) => {
     await assessForEarlyRelease.stubGetComTeamCaseload(staffCode, [
       postponedOffender,
-      readyForReleaseOffender,
+      assessmentCompletedOffender,
       timedOutOffender,
       toWorkOnByComCases,
       withPrisonOffender,
@@ -125,13 +125,13 @@ test.describe('COM caseload', () => {
       page.getByText(convertToTitleCase(`${postponedOffender.forename} ${postponedOffender.surname}`.trim())),
     ).toBeVisible()
 
-    await page.getByTestId('ready-for-release').click()
+    await page.getByTestId('assessment-completed').click()
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}?view=team-cases#ready-for-release`,
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}?view=team-cases#assessment-completed`,
     )
     await expect(
       page.getByText(
-        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+        convertToTitleCase(`${assessmentCompletedOffender.forename} ${assessmentCompletedOffender.surname}`.trim()),
       ),
     ).toBeVisible()
 

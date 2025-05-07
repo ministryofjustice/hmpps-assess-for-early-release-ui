@@ -1,10 +1,10 @@
 {% from "./offenderDetails.njk" import offenderDetails %}
 {% from "partials/caseload/caseloadTable.njk" import caseloadTable %}
 
-{% macro readyForReleaseTab(readyForReleaseCases) %}
-    {% set readyForReleaseRows = [] %}
-    {% for case in readyForReleaseCases %}
-        {% set readyForReleaseRows = (readyForReleaseRows.push([
+{% macro assessmentCompletedTab(assessmentCompletedCases) %}
+    {% set assessmentCompletedRows = [] %}
+    {% for case in assessmentCompletedCases %}
+        {% set assessmentCompletedRows = (assessmentCompletedRows.push([
             {
                 attributes: tableAttributes(case, 'name', loop.index),
                 html: offenderDetails(case, loop.index)
@@ -21,8 +21,8 @@
                 attributes: tableAttributes(case, 'lastWorkedOnBy', loop.index),
                 text: case.lastUpdateBy
             }
-        ]), readyForReleaseRows) %}
+        ]), assessmentCompletedRows) %}
     {% endfor %}
-    <h2 class="govuk-heading-l">Ready for release</h2>
-    {{ caseloadTable("Ready for release", ["Name", "HDCED", "Working days to HDCED", "Last worked on by"], readyForReleaseRows) }}
+    <h2 class="govuk-heading-l">Assessment completed</h2>
+    {{ caseloadTable("Assessment completed", ["Name", "HDCED", "Working days to HDCED", "Last worked on by"], assessmentCompletedRows) }}
 {% endmacro %}
