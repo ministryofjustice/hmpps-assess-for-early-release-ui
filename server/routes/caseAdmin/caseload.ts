@@ -31,7 +31,7 @@ export default class CaseloadRoutes {
 
   static readonly WITH_DECISION_MAKER_STATUSES = [AssessmentStatus.AWAITING_DECISION]
 
-  static readonly READY_FOR_RELEASE_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
+  static readonly ASSESSMENT_COMPLETED_STATUSES = [AssessmentStatus.PASSED_PRE_RELEASE_CHECKS]
 
   constructor(private readonly caseAdminCaseloadService: CaseAdminCaseloadService) {}
 
@@ -48,7 +48,7 @@ export default class CaseloadRoutes {
     const withDecisionMakerCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_DECISION_MAKER_STATUSES)
     const withProbationCases = this.filterCasesByStatus(cases, CaseloadRoutes.WITH_PROBATION_STATUSES)
     const inactiveApplications = this.filterCasesByStatus(cases, CaseloadRoutes.INACTIVE_APPLICATIONS_STATUSES)
-    const readyForReleaseCases = this.filterCasesByStatus(cases, CaseloadRoutes.READY_FOR_RELEASE_STATUSES)
+    const assessmentCompletedCases = this.filterCasesByStatus(cases, CaseloadRoutes.ASSESSMENT_COMPLETED_STATUSES)
 
     res.render('pages/caseAdmin/caseload', {
       activeApplicationView,
@@ -57,7 +57,7 @@ export default class CaseloadRoutes {
       withDecisionMakerCases: withDecisionMakerCases.map(this.mapToViewModel),
       withProbationCases: withProbationCases.map(this.mapToViewModel),
       inactiveApplications: inactiveApplications.map(this.mapToViewModel),
-      readyForReleaseCases: readyForReleaseCases.map(this.mapToViewModel),
+      assessmentCompletedCases: assessmentCompletedCases.map(this.mapToViewModel),
     })
   }
 

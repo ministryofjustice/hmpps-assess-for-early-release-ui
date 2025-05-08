@@ -4,7 +4,7 @@
 {% from "./toWorkOnByYouTab.njk" import toWorkOnByYouTab %}
 {% from "./withDecisionMakerTab.njk" import withDecisionMakerTab %}
 {% from "./withProbationTab.njk" import withProbationTab %}
-{% from "./readyForReleaseTab.njk" import readyForReleaseTab %}
+{% from "./assessmentCompletedTab.njk" import assessmentCompletedTab %}
 {% from "../../partials/offenderName.njk" import offenderName %}
 {% from "./inactiveApplicationsTab.njk" import inactiveApplicationsTab %}
 
@@ -51,13 +51,13 @@
         }
     },
     {
-        id: "ready-for-release",
-        label: "Ready for release",
+        id: "assessment-completed",
+        label: "Assessment Completed",
         attributes: {
-            "data-qa": "ready-for-release"
+            "data-qa": "assessment-completed"
         },
         panel: {
-            html: readyForReleaseTab(readyForReleaseCases)
+            html: assessmentCompletedTab(assessmentCompletedCases)
         }
     }
 ] %}

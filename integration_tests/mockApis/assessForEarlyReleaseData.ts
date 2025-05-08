@@ -333,17 +333,6 @@ export const assessmentCompletedOffender = createOffenderSummary({
   status: AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
 })
 
-export const readyForReleaseOffender = createOffenderSummary({
-  prisonNumber: 'K8932TE',
-  crn: 'Z456712',
-  forename: 'Brian',
-  surname: 'Morrish',
-  hdced: '2026-10-25',
-  workingDaysToHdced: 3,
-  probationPractitioner: 'David Newton',
-  status: AssessmentStatus.PASSED_PRE_RELEASE_CHECKS,
-})
-
 export const toWorkOnByComCases = createOffenderSummary({
   prisonNumber: 'G3243TB',
   forename: 'Tim',
