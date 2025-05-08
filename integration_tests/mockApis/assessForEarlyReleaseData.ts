@@ -353,6 +353,16 @@ export const toWorkOnByComCases = createOffenderSummary({
   status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
 })
 
+export const withDecisionMaker = createOffenderSummary({
+  prisonNumber: 'G8303TB',
+  forename: 'Simon',
+  surname: 'Adamson',
+  hdced: '2027-04-09',
+  workingDaysToHdced: 27,
+  probationPractitioner: 'Russell Dickson',
+  status: AssessmentStatus.AWAITING_DECISION,
+})
+
 export const withPrisonOffender = createOffenderSummary({
   prisonNumber: 'G7543KR',
   crn: 'X921514',
