@@ -82,7 +82,8 @@ export const tasks: Record<UsersWithTypes, Task[]> = {
     {
       code: 'CREATE_LICENCE',
       title: 'Create Licence',
-      lockedDescription: () => 'You can do this if a decision maker in prison approves George for HDC release.',
+      lockedDescription: assessment =>
+        `You can do this if a decision maker in prison approves ${properCase(assessment.forename)} for HDC release.`,
     },
   ],
   PRISON_DM: [

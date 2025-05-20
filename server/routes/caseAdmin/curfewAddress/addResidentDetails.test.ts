@@ -53,9 +53,9 @@ describe('add resident details routes', () => {
       expect(res.render).toHaveBeenCalledWith('pages/curfewAddress/addResidentDetails', {
         assessmentSummary: assessmentOverviewSummary,
         address: {
-          line1: '99, Hartland Road',
-          postcode: 'RG2 8AF',
-          town: 'Reading',
+          line1: '1, Test Road',
+          postcode: 'TEST',
+          town: 'Test Town',
         },
         mainResident: addressCheckRequestSummary.residents[0],
         otherResidents: [],
@@ -73,11 +73,11 @@ describe('add resident details routes', () => {
     it('add a resident for a valid POST request', async () => {
       req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
       req.params.checkRequestId = '693'
-      req.body.forename = 'Corina'
-      req.body.surname = 'Ridgeway'
+      req.body.forename = 'Tora'
+      req.body.surname = 'Riskal'
       req.body.relation = 'sister'
       req.body.residentId = 1
-      req.body.phoneNumber = '01889483290'
+      req.body.phoneNumber = '00000000000'
       req.body.isOffender = false
       req.body.otherResident = [
         {
@@ -85,8 +85,8 @@ describe('add resident details routes', () => {
           month: '01',
           year: '1985',
           residentId: 2,
-          forename: 'James',
-          surname: 'Bluff',
+          forename: 'Lestor',
+          surname: 'Riskal',
           relation: 'brother',
           age: 89,
           isMainResident: false,
@@ -130,7 +130,7 @@ describe('add resident details routes', () => {
       req.params.checkRequestId = '693'
       req.body.residentId = 1
       req.body.isOffender = true
-      req.body.prisonerName = 'Jim Smith'
+      req.body.prisonerName = 'Test Person'
       req.body.otherResident = []
       const { residentId, isOffender, prisonerName } = req.body
       const mainResident = {
@@ -160,8 +160,8 @@ describe('add resident details routes', () => {
     it('transforms valid otherResident data to ResidentSummary', () => {
       const otherResident = {
         residentId: 2,
-        forename: 'James',
-        surname: 'Bluff',
+        forename: 'Kutaj',
+        surname: 'Nizhisht',
         relation: 'brother',
         day: '11',
         month: '01',
@@ -171,8 +171,8 @@ describe('add resident details routes', () => {
 
       const expectedResidentSummary = {
         residentId: 2,
-        forename: 'James',
-        surname: 'Bluff',
+        forename: 'Kutaj',
+        surname: 'Nizhisht',
         relation: 'brother',
         dateOfBirth: '1985-01-11',
         age: 89,

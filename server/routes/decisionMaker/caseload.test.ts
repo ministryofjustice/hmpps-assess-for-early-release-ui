@@ -36,7 +36,7 @@ describe('GET', () => {
           createLink: '/decisionMaker/assessment/A1234AB',
           hdced: parseIsoDate('2022-01-08'),
           workingDaysToHdced: 1,
-          name: 'Jim Smith',
+          name: 'Test Person',
           prisonNumber: 'A1234AB',
         },
       ],

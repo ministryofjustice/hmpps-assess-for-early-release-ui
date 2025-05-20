@@ -51,8 +51,8 @@ export const eligibilityCriterion1Completed: EligibilityCriterionProgress = {
     },
   ],
   agent: {
-    username: 'rDavidson',
-    fullName: 'Rebecca Davidson',
+    username: 'kKular',
+    fullName: 'Kahlest Kular',
     role: 'PRISON_CA',
     onBehalfOf: 'BMI',
   },
@@ -73,8 +73,8 @@ export const suitabilityCriterionComplete: SuitabilityCriterionProgress = {
     },
   ],
   agent: {
-    username: 'rDavidson',
-    fullName: 'Rebecca Davidson',
+    username: 'kKular',
+    fullName: 'Kahlest Kular',
     role: 'PRISON_CA',
     onBehalfOf: 'BMI',
   },
@@ -124,8 +124,8 @@ export const eligibilityCriterion2Ineligible: EligibilityCriterionProgress = {
     },
   ],
   agent: {
-    username: 'rDavidson',
-    fullName: 'Rebecca Davidson',
+    username: 'kKular',
+    fullName: 'Kahlest Kular',
     role: 'PRISON_CA',
     onBehalfOf: 'BMI',
   },
@@ -153,8 +153,8 @@ export const assessmentSummary = (
   activeComTaskCode: string = 'CHECK_ADDRESSES_OR_COMMUNITY_ACCOMMODATION',
 ): _AssessmentSummary => ({
   bookingId: 23987,
-  forename: 'Jimmy',
-  surname: 'Quelch',
+  forename: 'Kurn',
+  surname: 'Uvarek',
   dateOfBirth: '1974-07-18',
   prisonNumber,
   hdced: toIsoDate(add(new Date(), { weeks: 1 })),
@@ -197,12 +197,12 @@ export const contactResponse = (
 })
 
 const address1 = {
-  firstLine: '97, HARTLAND ROAD',
+  firstLine: '1, TEST ROAD',
   secondLine: '',
-  town: 'READING',
-  postcode: 'RG2 8AF',
+  town: 'TEST TOWN',
+  postcode: 'TEST',
   uprn: '310030567',
-  county: 'READING',
+  county: 'TEST COUNTY',
   country: 'England',
   xcoordinate: 472231.0,
   ycoordinate: 170070.0,
@@ -210,12 +210,12 @@ const address1 = {
 }
 
 const address2 = {
-  firstLine: '99, HARTLAND ROAD',
+  firstLine: '2, TEST ROAD',
   secondLine: '',
-  town: 'READING',
-  postcode: 'RG2 8AF',
+  town: 'TEST TOWN',
+  postcode: 'TEST',
   uprn: '310030567',
-  county: 'READING',
+  county: 'TEST COUNTY',
   country: 'England',
   xcoordinate: 472231.0,
   ycoordinate: 170070.0,
@@ -224,8 +224,8 @@ const address2 = {
 
 const createResidentSummary = (residentId: number, isMainResident: boolean): ResidentSummary => ({
   residentId,
-  forename: `Tommy`,
-  surname: `Johnson-${residentId}`,
+  forename: `Kola`,
+  surname: `Anag-${residentId}`,
   phoneNumber: '07527341960',
   relation: 'mother',
   dateOfBirth: new Date('1985-03-31'),
@@ -262,17 +262,17 @@ export const createCheckRequestsForAssessmentSummary: CheckRequestSummary[] = [
 export const createOffenderSummary = ({
   prisonNumber = '',
   crn = 'X123456',
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Lestav',
+  surname = 'Mogh',
   hdced = '2022-01-08',
   workingDaysToHdced = 10,
-  probationPractitioner = 'Mark Coombes',
+  probationPractitioner = 'Shena Elas',
   isPostponed = false,
   postponementDate = null,
   postponementReasons = [],
   status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
   addressChecksComplete = false,
-  lastUpdateBy = 'Aled Evans',
+  lastUpdateBy = 'Reli Boral',
 } = {}): _OffenderSummary => ({
   prisonNumber,
   crn,
@@ -292,18 +292,18 @@ export const createOffenderSummary = ({
 
 export const refusedOffender = createOffenderSummary({
   prisonNumber: 'GU3243TP',
-  forename: 'George',
-  surname: 'Kurian',
+  forename: 'Kadar',
+  surname: 'Vrag',
   hdced: '2026-09-04',
   workingDaysToHdced: 15,
-  probationPractitioner: 'Mark James',
+  probationPractitioner: 'Kagran Darj',
   status: AssessmentStatus.REFUSED,
 })
 
 export const timedOutOffender = createOffenderSummary({
   prisonNumber: 'G3243TH',
-  forename: 'Dave',
-  surname: 'Roberts',
+  forename: 'Antaan',
+  surname: 'Kruge',
   hdced: '2026-09-04',
   workingDaysToHdced: 15,
   status: AssessmentStatus.TIMED_OUT,
@@ -312,8 +312,8 @@ export const timedOutOffender = createOffenderSummary({
 export const postponedOffender = createOffenderSummary({
   prisonNumber: 'G3243TH',
   crn: 'W493087',
-  forename: 'Dave',
-  surname: 'Roberts',
+  forename: 'Antaan',
+  surname: 'Kruge',
   hdced: '2026-09-04',
   workingDaysToHdced: 15,
   isPostponed: true,
@@ -325,8 +325,8 @@ export const postponedOffender = createOffenderSummary({
 export const assessmentCompletedOffender = createOffenderSummary({
   prisonNumber: 'K8932TE',
   crn: 'Z456712',
-  forename: 'Brian',
-  surname: 'Morrish',
+  forename: 'Kessum',
+  surname: 'Laggal',
   hdced: '2026-10-25',
   workingDaysToHdced: 3,
   probationPractitioner: 'David Newton',
@@ -335,8 +335,8 @@ export const assessmentCompletedOffender = createOffenderSummary({
 
 export const toWorkOnByComCases = createOffenderSummary({
   prisonNumber: 'G3243TB',
-  forename: 'Tim',
-  surname: 'Cook',
+  forename: 'Keth',
+  surname: 'Chang',
   hdced: '2026-12-06',
   workingDaysToHdced: 10,
   status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
@@ -355,8 +355,8 @@ export const withDecisionMaker = createOffenderSummary({
 export const withPrisonOffender = createOffenderSummary({
   prisonNumber: 'G7543KR',
   crn: 'X921514',
-  forename: 'Carl',
-  surname: 'Bennett',
+  forename: 'Kev',
+  surname: 'Nestar',
   hdced: '2026-02-25',
   workingDaysToHdced: 39,
   status: AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
@@ -365,8 +365,8 @@ export const withPrisonOffender = createOffenderSummary({
 export const createOffenderSearchResponse = ({
   prisonNumber = 'A1234AE',
   prisonId = 'BRI',
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Lestav',
+  surname = 'Mogh',
   dateOfBirth = '2001-01-08',
   crn = 'X123456',
 } = {}): _OffenderSearchResponse => ({
@@ -381,8 +381,8 @@ export const createOffenderSearchResponse = ({
 export const createOffenderResponse = ({
   prisonNumber = 'A1234AA',
   prisonId = 'BRS',
-  forename = 'Bob',
-  surname = 'Smith',
+  forename = 'Nestar',
+  surname = 'Mogh',
   dateOfBirth = '2002-02-20',
   crn = 'DX12340A',
   createdTimestamp = '2020-01-11T12:13:00',

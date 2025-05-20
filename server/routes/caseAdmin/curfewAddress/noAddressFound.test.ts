@@ -26,7 +26,7 @@ afterEach(() => {
 describe('GET', () => {
   it('should render find address page', async () => {
     req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
-    req.params.postcode = 'BA129FU'
+    req.params.postcode = 'TEST'
     await noAddressFoundRoutes.GET(req, res)
 
     expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(

@@ -18,9 +18,9 @@ test.describe('Case admin assessment key contacts', () => {
 
     await assessForEarlyRelease.stubGetAssessmentSummary(assessmentSummaryDto)
 
-    const probationCom = contactResponse('Aled Evans', 'PROBATION_COM', 'aled.evans@moj.gov.uk', 'Cardiff')
-    const prisonDm = contactResponse('Gwyn Evans', 'PRISON_DM', 'gwyn.evans@moj.gov.uk', 'London')
-    const prisonCa = contactResponse('Ceri Evans', 'PRISON_CA', 'ceri.evans@moj.gov.uk', 'Bristol')
+    const probationCom = contactResponse('Reli Boral', 'PROBATION_COM', 'reli.boral@moj.gov.uk', 'Cardiff')
+    const prisonDm = contactResponse('Shussa Vollox', 'PRISON_DM', 'shussa.vollox@moj.gov.uk', 'London')
+    const prisonCa = contactResponse('Hena Nivalli', 'PRISON_CA', 'hena.nivalli@moj.gov.uk', 'Bristol')
 
     const contacts = [probationCom, prisonDm, prisonCa]
     await assessForEarlyRelease.stubGetAssessmentContacts(
@@ -40,22 +40,22 @@ test.describe('Case admin assessment key contacts', () => {
     const prisonCaText = page.getByTestId('PRISON_CA')
     const prisonCaParent = prisonCaText.locator('..').locator('..')
     await expect(prisonCaText).toContainText('Case administrator')
-    await expect(prisonCaParent).toContainText('Ceri Evans')
-    await expect(prisonCaParent).toContainText('ceri.evans@moj.gov.uk')
+    await expect(prisonCaParent).toContainText('Hena Nivalli')
+    await expect(prisonCaParent).toContainText('hena.nivalli@moj.gov.uk')
     await expect(prisonCaParent).toContainText('Bristol')
 
     const probationComText = page.getByTestId('PROBATION_COM')
     const probationComParent = probationComText.locator('..').locator('..')
     await expect(probationComText).toContainText('Probation practitioner')
-    await expect(probationComParent).toContainText('Aled Evans')
-    await expect(probationComParent).toContainText('aled.evans@moj.gov.uk')
+    await expect(probationComParent).toContainText('Reli Boral')
+    await expect(probationComParent).toContainText('reli.boral@moj.gov.uk')
     await expect(probationComParent).toContainText('Cardiff')
 
     const prisonDmText = page.getByTestId('PRISON_DM')
     const prisonDmParent = prisonDmText.locator('..').locator('..')
     await expect(prisonDmText).toContainText('Decision maker')
-    await expect(prisonDmParent).toContainText('Gwyn Evans')
-    await expect(prisonDmParent).toContainText('gwyn.evans@moj.gov.uk')
+    await expect(prisonDmParent).toContainText('Shussa Vollox')
+    await expect(prisonDmParent).toContainText('shussa.vollox@moj.gov.uk')
     await expect(prisonDmParent).toContainText('London')
   })
 

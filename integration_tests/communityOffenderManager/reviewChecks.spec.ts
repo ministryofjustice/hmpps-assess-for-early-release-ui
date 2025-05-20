@@ -30,10 +30,9 @@ test.describe('Can view a summary of addresses and residential check results', (
     await page.goto(paths.probation.assessment.reviewInformation({ prisonNumber }))
 
     await expect(page.getByText('Review information and send checks to prison')).toBeVisible()
-    await expect(page.getByText('97, HARTLAND ROAD')).toBeVisible()
-    await expect(page.getByText('99, HARTLAND ROAD')).toBeVisible()
-    await expect(page.getByText('Tommy Johnson-1')).toBeVisible()
-    await expect(page.getByText('Tommy Johnson-2')).toBeVisible()
+    await expect(page.getByText('1, TEST ROAD')).toBeVisible()
+    await expect(page.getByText('Kola Anag-1')).toBeVisible()
+    await expect(page.getByText('Kola Anag-2')).toBeVisible()
 
     const electricitySupplyQuestion = page.getByText('Is the address connected to an electricity supply?')
     await expect(electricitySupplyQuestion).toHaveCount(2)

@@ -31,10 +31,10 @@ import { tasks } from '../../config/tasks'
 
 const createCase = ({
   prisonNumber = 'A1234AB',
-  name = 'Jim Smith',
+  name = 'Test Person',
   hdced = parseIsoDate('2022-01-08'),
   workingDaysToHdced = 1,
-  probationPractitioner = 'Jane Huggins',
+  probationPractitioner = 'Korth Gorkon',
   isPostponed = false,
   status = AssessmentStatus.ELIGIBILITY_AND_SUITABILITY_IN_PROGRESS,
   taskOverdueOn = parseIsoDate('2022-01-08'),
@@ -55,8 +55,8 @@ const createCase = ({
 const createOffenderSummary = ({
   prisonNumber = 'A1234AB',
   bookingId = 54321,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   hdced = addDays(startOfDay(new Date()), 3),
   probationPractitioner = 'CVl_COM',
   isPostponed = false,
@@ -83,8 +83,8 @@ const createOffenderSummary = ({
 
 const createAssessmentSummary = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-10-08'),
@@ -96,12 +96,12 @@ const createAssessmentSummary = ({
   cellLocation = 'S-1-A1',
   policyVersion = '1.0',
   responsibleCom = {
-    staffCode: 'N55A023',
+    staffCode: 'StaffCode1',
     username: 'afer_com',
     email: 'afer_com@digital.justice.gov.uk',
     forename: 'a',
     surname: 'com',
-    teamCode: 'N55LAU',
+    teamCode: 'Team1',
   },
 } = {}): AssessmentSummary => ({
   bookingId,
@@ -132,8 +132,8 @@ const createAssessmentSummary = ({
 
 const createAssessmentOverviewSummary = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-10-08'),
@@ -144,12 +144,12 @@ const createAssessmentOverviewSummary = ({
   cellLocation = 'S-1-A1',
   policyVersion = '1.0',
   responsibleCom = {
-    staffCode: 'N55A023',
+    staffCode: 'StaffCode1',
     username: 'afer_com',
     email: 'afer_com@digital.justice.gov.uk',
     forename: 'a',
     surname: 'com',
-    teamCode: 'N55LAU',
+    teamCode: 'Team1',
   },
   toDoEligibilityAndSuitabilityBy = parseIsoDate('2022-01-08'),
   result = null,
@@ -183,12 +183,13 @@ const createAssessmentOverviewSummary = ({
   result,
   hasNonDisclosableInformation,
   nonDisclosableInformation,
+  addressChecksStatus: 'NOT_STARTED',
 })
 
 const createEligibilityAndSuitabilityCaseView = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
@@ -238,8 +239,8 @@ const createEligibilityAndSuitabilityCaseView = ({
 
 const createEligibilityCriterionView = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
@@ -284,8 +285,8 @@ const createEligibilityCriterionView = ({
 
 const createSuitabilityCriterionView = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
@@ -368,11 +369,11 @@ const createSuitabilityCriterionProgress = ({
 
 const createAddressSummary = ({
   uprn = '310030567',
-  firstLine = '99, HARTLAND ROAD',
+  firstLine = '1, TEST ROAD',
   secondLine = '',
-  town = 'READING',
-  county = 'READING',
-  postcode = 'RG2 8AF',
+  town = 'TEST TOWN',
+  county = 'TEST COUNTY',
+  postcode = 'TEST',
   country = 'England',
   xcoordinate = 472231.0,
   ycoordinate = 170070.0,
@@ -424,9 +425,9 @@ const createStandardAddressCheckRequestSummary = ({
 })
 
 const createAddResidentRequest = ({
-  forename = 'Tommy',
-  surname = 'Johnson',
-  phoneNumber = '07527341960',
+  forename = 'Test',
+  surname = 'Person',
+  phoneNumber = '07001001001',
   relation = 'mother',
   dateOfBirth = '1985-03-31',
   age = 38,
@@ -445,9 +446,9 @@ const createAddResidentRequest = ({
 
 const createResidentSummary = ({
   residentId = 4,
-  forename = 'Tommy',
-  surname = 'Johnson',
-  phoneNumber = '07527341960',
+  forename = 'Test',
+  surname = 'Person',
+  phoneNumber = '07001001001',
   relation = 'mother',
   dateOfBirth = parseIsoDate('1985-03-31'),
   age = 38,
@@ -474,10 +475,10 @@ const createCheckRequestsForAssessmentSummary = ({
   preferencePriority = 'FIRST',
   status = 'IN_PROGRESS',
   address = {
-    firstLine: '99, HARTLAND ROAD',
+    firstLine: '1, TEST ROAD',
     secondLine: '',
-    town: 'READING',
-    postcode: 'RG2 8AF',
+    town: 'TEST TOWN',
+    postcode: 'TEST',
   },
   residents = [createResidentSummary()],
 } = {}): CheckRequestSummary[] => [
@@ -542,7 +543,7 @@ const createPrisonStaffDetails = ({
 })
 
 const createComCase = ({
-  name = 'Jim Smith',
+  name = 'TEST PERSON',
   probationPractitioner = 'CVl_COM',
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-01-08'),
@@ -766,8 +767,8 @@ const createResidentialChecksTask = (): ResidentialChecksTask => {
 
 const createResidentialChecksView = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
@@ -812,8 +813,8 @@ const createResidentialChecksView = ({
 
 const createResidentialChecksTaskView = ({
   bookingId = 89754,
-  forename = 'Jim',
-  surname = 'Smith',
+  forename = 'Test',
+  surname = 'Person',
   dateOfBirth = parseIsoDate('1976-04-14'),
   prisonNumber = 'A1234AB',
   hdced = parseIsoDate('2022-08-01'),
@@ -855,12 +856,7 @@ const createResidentialChecksTaskView = ({
   answers: {},
 })
 
-const createAgent = ({
-  username = 'user1',
-  fullName = 'User One',
-  role = 'PRISON_CA',
-  onBehalfOf = 'N55LAU',
-} = {}) => ({
+const createAgent = ({ username = 'user1', fullName = 'User One', role = 'PRISON_CA', onBehalfOf = 'Test1' } = {}) => ({
   username,
   fullName,
   role,

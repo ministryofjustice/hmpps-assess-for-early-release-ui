@@ -45,11 +45,11 @@ test.describe('COM caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByComCases.hdced), 'dd MMM yyyy'))).toBeVisible()
     await expect(page.getByTestId('to-work-on-by-you')).toBeVisible()
-    await expect(page.getByRole('cell', { name: 'Aled Evans' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Reli Boral' })).toBeVisible()
 
     // With prison admin Tab
     await page.getByTestId('with-prison-admin').click()
-    await expect(page.getByLabel('With prison admin').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With prison admin').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-prison-admin`,
@@ -61,7 +61,7 @@ test.describe('COM caseload', () => {
 
     // With Decision Maker Tab
     await page.getByTestId('with-decision-maker').click()
-    await expect(page.getByLabel('With decision maker').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With decision maker').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-decision-maker`,
@@ -82,7 +82,7 @@ test.describe('COM caseload', () => {
 
     // Assessment Completed Tab
     await page.getByTestId('assessment-completed').click()
-    await expect(page.getByLabel('Assessment Completed').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('Assessment Completed').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#assessment-completed`,

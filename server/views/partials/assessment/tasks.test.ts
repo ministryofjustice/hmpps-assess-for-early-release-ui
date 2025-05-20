@@ -6,8 +6,8 @@ describe('tasks', () => {
       ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks("PRISON_CA", assessmentSummary) }}',
       {
         assessmentSummary: {
-          forename: 'Bob',
-          surname: 'Smith',
+          forename: 'Test',
+          surname: 'Person',
           prisonNumber: 'A1234AA',
           tasks: [
             { name: 'ASSESS_ELIGIBILITY', progress: 'READY_TO_START' },
@@ -57,8 +57,8 @@ describe('tasks', () => {
       ' {% from "partials/assessment/tasks.njk" import tasks %} {{ tasks("PRISON_CA", assessmentSummary) }}',
       {
         assessmentSummary: {
-          forename: 'Bob',
-          surname: 'Smith',
+          forename: 'Test',
+          surname: 'Person',
           prisonNumber: 'A1234AA',
           tasks: [
             { name: 'ASSESS_ELIGIBILITY', progress: 'COMPLETE' },

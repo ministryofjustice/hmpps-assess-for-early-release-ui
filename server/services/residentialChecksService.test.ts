@@ -36,8 +36,8 @@ describe('ResidentialChecksService', () => {
       expect(result.tasks).toEqual(expect.arrayContaining([expect.objectContaining({ status: 'NOT_STARTED' })]))
       expect(result.assessmentSummary).toEqual(
         expect.objectContaining({
-          forename: 'Jim',
-          surname: 'Smith',
+          forename: 'Test',
+          surname: 'Person',
           dateOfBirth: parseIsoDate('1976-04-14'),
           prisonNumber: 'A1234AB',
           hdced: parseIsoDate('2022-08-01'),

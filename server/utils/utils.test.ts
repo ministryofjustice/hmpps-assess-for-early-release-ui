@@ -5,13 +5,13 @@ describe('convert to title case', () => {
   it.each([
     [null, null, ''],
     ['empty string', '', ''],
-    ['Lower case', 'robert', 'Robert'],
-    ['Upper case', 'ROBERT', 'Robert'],
-    ['Mixed case', 'RoBErT', 'Robert'],
-    ['Multiple words', 'RobeRT SMiTH', 'Robert Smith'],
-    ['Leading spaces', '  RobeRT', '  Robert'],
-    ['Trailing spaces', 'RobeRT  ', 'Robert  '],
-    ['Hyphenated', 'Robert-John SmiTH-jONes-WILSON', 'Robert-John Smith-Jones-Wilson'],
+    ['Lower case', 'test', 'Test'],
+    ['Upper case', 'TEST', 'Test'],
+    ['Mixed case', 'TeSt', 'Test'],
+    ['Multiple words', 'TEst PERsON', 'Test Person'],
+    ['Leading spaces', '  TeST', '  Test'],
+    ['Trailing spaces', 'TeST  ', 'Test  '],
+    ['Hyphenated', 'Test-Person peRson-Person-PERSON', 'Test-Person Person-Person-Person'],
   ])('%s convertToTitleCase(%s, %s)', (_: string, a: string, expected: string) => {
     expect(convertToTitleCase(a)).toEqual(expected)
   })
@@ -21,10 +21,10 @@ describe('initialise name', () => {
   it.each([
     [null, null, null],
     ['Empty string', '', null],
-    ['One word', 'robert', 'r. robert'],
-    ['Two words', 'Robert James', 'R. James'],
-    ['Three words', 'Robert James Smith', 'R. Smith'],
-    ['Double barrelled', 'Robert-John Smith-Jones-Wilson', 'R. Smith-Jones-Wilson'],
+    ['One word', 'test', 't. test'],
+    ['Two words', 'Test Person', 'T. Person'],
+    ['Three words', 'Test Test Person', 'T. Person'],
+    ['Double barrelled', 'Test-Person Person-Person-Person', 'T. Person-Person-Person'],
   ])('%s initialiseName(%s, %s)', (_: string, a: string, expected: string) => {
     expect(initialiseName(a)).toEqual(expected)
   })

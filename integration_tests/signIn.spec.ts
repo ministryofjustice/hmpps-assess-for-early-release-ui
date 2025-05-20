@@ -44,7 +44,7 @@ test.describe('SignIn', () => {
   test('User name visible in header', async ({ page }) => {
     await login(page, { authorities: ['ROLE_LICENCE_CA', 'ROLE_NOMIS_BATCHLOAD'] })
 
-    await expect(page.getByTestId('header-user-name')).toHaveText('B. Brown')
+    await expect(page.getByTestId('header-user-name')).toHaveText('K. Kone')
   })
 
   test('Token verification failure takes user to sign in page', async ({ page }) => {
@@ -70,6 +70,6 @@ test.describe('SignIn', () => {
       active: true,
     })
 
-    await expect(page.getByTestId('header-user-name')).toHaveText('B. Brown')
+    await expect(page.getByTestId('header-user-name')).toHaveText('K. Kone')
   })
 })

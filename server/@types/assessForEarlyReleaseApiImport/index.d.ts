@@ -1081,12 +1081,12 @@ export interface components {
     AgentDto: {
       /**
        * @description The name of the user requesting the change
-       * @example BobSmith
+       * @example KalittaAmexar
        */
       username: string
       /**
        * @description The full name of the user requesting the change
-       * @example Bob Smith
+       * @example Kalitta Amexar
        */
       fullName: string
       /**
@@ -1147,12 +1147,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname?: string
       /**
@@ -1211,7 +1211,7 @@ export interface components {
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -1256,7 +1256,7 @@ export interface components {
       mainOffense?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -1274,17 +1274,17 @@ export interface components {
       username?: string
       /**
        * @description The offender managers email address
-       * @example bob.jones@justice.gov.uk
+       * @example Kalitta.Amexar@justice.gov.uk
        */
       email?: string
       /**
        * @description The offender managers first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender managers surname
-       * @example Jones
+       * @example Amexar
        */
       surname?: string
     }
@@ -1437,7 +1437,7 @@ export interface components {
         | 'OPT_IN'
       /**
        * @description The state of this task for a specific assessment
-       * @example Smith
+       * @example LOCKED
        * @enum {string}
        */
       progress: 'UNAVAILABLE' | 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
@@ -1483,32 +1483,32 @@ export interface components {
       uprn: string
       /**
        * @description The address's first line
-       * @example 34
+       * @example 1
        */
       firstLine?: string
       /**
        * @description The address's second line
-       * @example Urchfont
+       * @example Off Test Road
        */
       secondLine?: string
       /**
        * @description The address's town
-       * @example Chippenham
+       * @example Test Town
        */
       town: string
       /**
        * @description The address's county
-       * @example Shropshire
+       * @example Test County
        */
       county: string
       /**
        * @description The address's postcode
-       * @example RG13HS
+       * @example Test Postcode
        */
       postcode: string
       /**
        * @description The address's country
-       * @example Wales
+       * @example Test Country
        */
       country: string
       /**
@@ -1540,12 +1540,12 @@ export interface components {
       residentId: number
       /**
        * @description The resident's forename
-       * @example Dave
+       * @example Grana
        */
       forename: string
       /**
        * @description The resident's surname
-       * @example Jones
+       * @example Mrith
        */
       surname: string
       /**
@@ -1633,12 +1633,12 @@ export interface components {
       residentId?: number
       /**
        * @description The resident's forename
-       * @example Dave
+       * @example Grana
        */
       forename: string
       /**
        * @description The resident's surname
-       * @example Jones
+       * @example Mrith
        */
       surname: string
       /**
@@ -1771,12 +1771,12 @@ export interface components {
       prisonId: string
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -1898,12 +1898,12 @@ export interface components {
       prisonId: string
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -2009,7 +2009,7 @@ export interface components {
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -2148,12 +2148,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -2176,7 +2176,7 @@ export interface components {
       workingDaysToHdced: number
       /**
        * @description The full name of the probation practitioner responsible for this offender
-       * @example Mark Coombes
+       * @example Shena Elas
        */
       probationPractitioner?: string
       /**
@@ -2267,7 +2267,7 @@ export interface components {
       crn?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -2281,12 +2281,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname?: string
       /**
@@ -2341,11 +2341,17 @@ export interface components {
         | 'POSTPONED'
         | 'OPTED_OUT'
         | 'RELEASED_ON_HDC'
+      /**
+       * @description The status of address checks for this assessment
+       * @example IN_PROGRESS
+       * @enum {string}
+       */
+      addressChecksStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description The community offender manager assigned to this assessment */
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -2412,7 +2418,7 @@ export interface components {
       pomBehaviourInformation?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -2443,7 +2449,7 @@ export interface components {
     ContactResponse: {
       /**
        * @description The full name of the contact
-       * @example Bob Smith
+       * @example Kalitta Amexar
        */
       fullName: string
       /**
@@ -2454,7 +2460,7 @@ export interface components {
       userRole: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
       /**
        * @description The email address of the contact
-       * @example bob.jones@justice.gov.uk
+       * @example Kalitta.Amexar@justice.gov.uk
        */
       email?: string
       /**

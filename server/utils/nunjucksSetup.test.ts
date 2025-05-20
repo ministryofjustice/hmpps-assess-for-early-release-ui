@@ -169,9 +169,9 @@ describe('nunjucksSetup', () => {
     })
     test('when undefined array:', () => {
       const result = renderTemplate('{{- value | toFullName -}}', {
-        value: { forename: 'JIM', surname: 'SMITH-BOOTH' },
+        value: { forename: 'TEST', surname: 'PERSON-ONE' },
       })
-      expect(result).toStrictEqual('Jim Smith-Booth')
+      expect(result).toStrictEqual('Test Person-One')
     })
   })
 
@@ -291,11 +291,11 @@ describe('nunjucksSetup', () => {
       const result = renderTemplate('{{- addressSummary | toAddressView | valuesToList -}}', {
         addressSummary: {
           uprn: '310030567',
-          firstLine: '99, HARTLAND ROAD',
+          firstLine: '1, TEST ROAD',
           secondLine: '',
-          town: 'READING',
-          county: 'READING',
-          postcode: 'RG2 8AF',
+          town: 'TEST TOWN',
+          county: 'TEST COUNTY',
+          postcode: 'TEST',
           country: 'England',
           xcoordinate: 472231.0,
           ycoordinate: 170070.0,
@@ -303,7 +303,7 @@ describe('nunjucksSetup', () => {
         },
       })
 
-      expect(result).toEqual('99, HARTLAND ROAD, READING, RG2 8AF')
+      expect(result).toEqual('1, TEST ROAD, TEST TOWN, TEST')
     })
   })
 

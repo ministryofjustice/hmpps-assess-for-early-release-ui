@@ -313,7 +313,7 @@ describe('assessForEarlyReleaseApiClient', () => {
           username: 'JohnDoe',
           fullName: 'John Doe',
           role: 'PROBATION_COM',
-          onBehalfOf: 'N55LAU',
+          onBehalfOf: 'Test1',
         },
       }
 

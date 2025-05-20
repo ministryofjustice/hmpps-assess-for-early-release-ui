@@ -18,11 +18,11 @@ test.describe('Can add a curfew address and a main resident', () => {
     const addressSummaries = [
       {
         uprn: '310010433',
-        firstLine: '97, HARTLAND ROAD',
+        firstLine: '1, TEST ROAD',
         secondLine: '',
-        town: 'READING',
-        county: 'READING',
-        postcode: 'RG2 8AF',
+        town: 'TEST TOWN',
+        county: 'TEST COUNTY',
+        postcode: 'TEST',
         country: 'England',
         xcoordinate: 472219.0,
         ycoordinate: 170067.0,
@@ -30,11 +30,11 @@ test.describe('Can add a curfew address and a main resident', () => {
       },
       {
         uprn: '310030567',
-        firstLine: '99, HARTLAND ROAD',
+        firstLine: '2, TEST ROAD',
         secondLine: '',
-        town: 'READING',
-        county: 'READING',
-        postcode: 'RG2 8AF',
+        town: 'TEST TOWN',
+        county: 'TEST COUNTY',
+        postcode: 'TEST',
         country: 'England',
         xcoordinate: 472231.0,
         ycoordinate: 170070.0,
@@ -42,11 +42,11 @@ test.describe('Can add a curfew address and a main resident', () => {
       },
       {
         uprn: '310068688',
-        firstLine: 'JOHN MADEJSKI ACADEMY, 125, HARTLAND ROAD',
+        firstLine: 'TEST BUILDING, 3, HARTLAND ROAD',
         secondLine: '',
-        town: 'READING',
-        county: 'READING',
-        postcode: 'RG2 8AF',
+        town: 'TEST TOWN',
+        county: 'TEST COUNTY',
+        postcode: 'TEST',
         country: 'England',
         xcoordinate: 472274.0,
         ycoordinate: 170113.0,
@@ -73,8 +73,8 @@ test.describe('Can add a curfew address and a main resident', () => {
       `${playwrightConfig.use.baseURL}${paths.prison.assessment.enterCurfewAddressOrCasArea.addResidentDetails({ prisonNumber, checkRequestId: '1' })}`,
     )
 
-    const forename = 'Bob'
-    const surname = 'Carragher'
+    const forename = 'Vrenn'
+    const surname = 'Zalcveg'
     const relation = 'sister'
     await page.getByTestId('resident-forename').fill(forename)
     await page.getByTestId('resident-surname').fill(surname)

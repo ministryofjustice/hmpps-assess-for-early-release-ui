@@ -3,7 +3,7 @@ import { stubFor, getMatchingRequests } from './wiremock'
 
 function createToken(authorities: string[]) {
   const payload = {
-    name: 'bobby brown',
+    name: 'katogh kone',
     scope: ['read', 'write'],
     auth_source: 'nomis',
     authorities,
