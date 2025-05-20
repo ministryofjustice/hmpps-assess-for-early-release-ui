@@ -54,7 +54,7 @@ export default class AferSupportApiClient extends RestClient {
 
   async getCurrentAssessment(token: string, agent: Agent, prisonNumber: string): Promise<AssessmentResponse> {
     const currentAssessment = await this.getWithToken<_AssessmentResponse>(
-      `/support/offender/assessment/current/${prisonNumber}`,
+      `/support/offender/${prisonNumber}/assessment/current`,
       token,
       agent,
     )
