@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
 import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import {
-  createOffenderSummary,
+  withDecisionMaker,
   postponedOffender,
-  readyForReleaseOffender,
+  assessmentCompletedOffender,
   refusedOffender,
   timedOutOffender,
   toWorkOnByComCases,
@@ -15,7 +15,6 @@ import paths from '../../server/routes/paths'
 import { convertToTitleCase, formatDate, parseIsoDate } from '../../server/utils/utils'
 import { createStaffDetails } from '../../server/data/__testutils/testObjects'
 import playwrightConfig from '../../playwright.config'
-import AssessmentStatus from '../../server/enumeration/assessmentStatus'
 
 const staffCode = 'STAFF1'
 
@@ -29,19 +28,9 @@ test.describe('COM caseload', () => {
   })
 
   test('Can view my cases', async ({ page }) => {
-    const withDecisionMaker = createOffenderSummary({
-      prisonNumber: 'G8303TB',
-      forename: 'Kaluk',
-      surname: 'Mrith',
-      hdced: '2027-04-09',
-      workingDaysToHdced: 27,
-      probationPractitioner: 'Russell Dickson',
-      status: AssessmentStatus.AWAITING_DECISION,
-    })
-
     await assessForEarlyRelease.stubGetComStaffCaseload(staffCode, [
       postponedOffender,
-      readyForReleaseOffender,
+      assessmentCompletedOffender,
       timedOutOffender,
       toWorkOnByComCases,
       withDecisionMaker,
@@ -74,6 +63,14 @@ test.describe('COM caseload', () => {
     await page.getByTestId('with-decision-maker').click()
     await expect(page.getByLabel('With decision maker').getByText('Reli Boral')).toBeVisible()
 
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-decision-maker`,
+    )
+    await expect(
+      page.getByText(convertToTitleCase(`${withDecisionMaker.forename} ${withDecisionMaker.surname}`.trim())),
+    ).toBeVisible()
+    await expect(page.getByText(`Prison number: ${withDecisionMaker.prisonNumber}`)).toBeVisible()
+
     // Postponed Tab
     await page.getByTestId('postponed').click()
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#postponed`)
@@ -83,19 +80,19 @@ test.describe('COM caseload', () => {
 
     await expect(page.getByText(`CRN: ${postponedOffender.crn}`)).toBeVisible()
 
-    // Ready for release Tab
-    await page.getByTestId('ready-for-release').click()
-    await expect(page.getByLabel('Ready for release').getByText('Reli Boral')).toBeVisible()
+    // Assessment Completed Tab
+    await page.getByTestId('assessment-completed').click()
+    await expect(page.getByLabel('Assessment Completed').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#ready-for-release`,
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#assessment-completed`,
     )
     await expect(
       page.getByText(
-        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+        convertToTitleCase(`${assessmentCompletedOffender.forename} ${assessmentCompletedOffender.surname}`.trim()),
       ),
     ).toBeVisible()
-    await expect(page.getByText(`CRN: ${readyForReleaseOffender.crn}`)).toBeVisible()
+    await expect(page.getByText(`CRN: ${assessmentCompletedOffender.crn}`)).toBeVisible()
 
     await expect(
       page.getByText(convertToTitleCase(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())),
@@ -105,7 +102,7 @@ test.describe('COM caseload', () => {
   test('Can view team cases', async ({ page }) => {
     await assessForEarlyRelease.stubGetComTeamCaseload(staffCode, [
       postponedOffender,
-      readyForReleaseOffender,
+      assessmentCompletedOffender,
       timedOutOffender,
       toWorkOnByComCases,
       withPrisonOffender,
@@ -125,13 +122,13 @@ test.describe('COM caseload', () => {
       page.getByText(convertToTitleCase(`${postponedOffender.forename} ${postponedOffender.surname}`.trim())),
     ).toBeVisible()
 
-    await page.getByTestId('ready-for-release').click()
+    await page.getByTestId('assessment-completed').click()
     await expect(page).toHaveURL(
-      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}?view=team-cases#ready-for-release`,
+      `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}?view=team-cases#assessment-completed`,
     )
     await expect(
       page.getByText(
-        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+        convertToTitleCase(`${assessmentCompletedOffender.forename} ${assessmentCompletedOffender.surname}`.trim()),
       ),
     ).toBeVisible()
 

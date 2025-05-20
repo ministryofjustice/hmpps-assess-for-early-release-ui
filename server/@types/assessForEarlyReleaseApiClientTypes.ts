@@ -108,3 +108,4 @@ export type AssessmentSearchResponse = ParsingDates<
 
 export type UpdateVloAndPomConsultationRequest = components['schemas']['UpdateVloAndPomConsultationRequest']
 export type NonDisclosableInformation = components['schemas']['NonDisclosableInformation']
+export type AddressDeleteReason = components['schemas']['AddressDeleteReasonDto']

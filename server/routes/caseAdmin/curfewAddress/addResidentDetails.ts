@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { AddressService, CaseAdminCaseloadService } from '../../../services'
 import { convertToTitleCase, getOrdinal } from '../../../utils/utils'
+import isValidPhoneNumber from '../../../utils/validationUtils'
 import { validateRequest } from '../../../middleware/setUpValidationMiddleware'
 import { FieldValidationError } from '../../../@types/FieldValidationError'
 import { _ResidentSummary } from '../../../@types/assessForEarlyReleaseApiClientTypes'
@@ -79,6 +80,13 @@ export default class AddResidentDetailsRoutes {
           validationErrors.push({
             field: 'relation',
             message: `Enter the main occupier’s relationship to ${prisonerName}`,
+          })
+        }
+
+        if (!isValidPhoneNumber(phoneNumber)) {
+          validationErrors.push({
+            field: 'phoneNumber',
+            message: 'Enter a phone number in the correct format, like 01632 960901 ',
           })
         }
       }

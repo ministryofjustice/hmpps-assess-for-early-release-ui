@@ -1,6 +1,6 @@
-import AssessForEarlyReleaseApiClient from '../data/assessForEarlyReleaseApiClient'
 import type {
   AddResidentRequest,
+  AddressDeleteReason,
   AddressSummary,
   AddStandardAddressCheckRequest,
   Agent,
@@ -8,6 +8,7 @@ import type {
   StandardAddressCheckRequestSummary,
   UpdateCaseAdminAdditionInfoRequest,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
+import { AssessForEarlyReleaseApiClient } from '../data'
 
 export default class AddressService {
   constructor(private readonly assessForEarlyReleaseApiClient: AssessForEarlyReleaseApiClient) {}
@@ -50,6 +51,22 @@ export default class AddressService {
     requestId: number,
   ): Promise<void> {
     return this.assessForEarlyReleaseApiClient.deleteAddressCheckRequest(token, agent, prisonNumber, requestId)
+  }
+
+  public async withdrawAddress(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    requestId: number,
+    addressDeleteReason: AddressDeleteReason,
+  ): Promise<void> {
+    return this.assessForEarlyReleaseApiClient.withdrawAddress(
+      token,
+      agent,
+      prisonNumber,
+      requestId,
+      addressDeleteReason,
+    )
   }
 
   public async getCheckRequestsForAssessment(

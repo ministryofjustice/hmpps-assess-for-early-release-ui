@@ -21,6 +21,7 @@ import OptOutCheckRoutes from './optInOut/optOutCheck'
 import OptOutRoutes from './optInOut/optOut'
 import ChecksCompleteRoutes from './initialChecks/checksComplete'
 import OptInRoutes from './optInOut/optIn'
+import AddressDeleteReasonRoutes from './curfewAddress/addressDeleteReason'
 
 export default function Index({
   caseAdminCaseloadService,
@@ -118,5 +119,10 @@ export default function Index({
   const optInHandler = new OptInRoutes(caseAdminCaseloadService, optInOutService)
   get(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn, optInHandler.GET)
   post(paths.prison.assessment.enterCurfewAddressOrCasArea.optIn, optInHandler.POST)
+
+  const addressDeleteReason = new AddressDeleteReasonRoutes(addressService, caseAdminCaseloadService)
+  get(paths.prison.assessment.addressDeleteReason, addressDeleteReason.GET)
+  post(paths.prison.assessment.addressDeleteReason, addressDeleteReason.POST)
+
   return router
 }

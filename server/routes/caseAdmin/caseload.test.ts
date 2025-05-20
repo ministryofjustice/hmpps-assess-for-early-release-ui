@@ -58,7 +58,7 @@ describe('GET', () => {
       ],
       withDecisionMakerCases: [],
       withProbationCases: [],
-      readyForReleaseCases: [],
+      assessmentCompletedCases: [],
       inactiveApplications: [],
     })
   })
@@ -101,7 +101,7 @@ describe('GET', () => {
           currentTask: null,
         },
       ],
-      readyForReleaseCases: [],
+      assessmentCompletedCases: [],
     })
   })
 
@@ -142,7 +142,7 @@ describe('GET', () => {
         },
       ],
       inactiveApplications: [],
-      readyForReleaseCases: [],
+      assessmentCompletedCases: [],
     })
   })
 })

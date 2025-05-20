@@ -3,7 +3,7 @@ import assessForEarlyRelease from '../mockApis/assessForEarlyRelease'
 import {
   createOffenderSummary,
   postponedOffender,
-  readyForReleaseOffender,
+  assessmentCompletedOffender,
   refusedOffender,
   timedOutOffender,
 } from '../mockApis/assessForEarlyReleaseData'
@@ -49,7 +49,7 @@ test.describe('Case admin caseload', () => {
       postponedOffender,
       withDecisionMaker,
       withProbationOffender,
-      readyForReleaseOffender,
+      assessmentCompletedOffender,
     ])
 
     await login(page, { authorities: ['ROLE_LICENCE_CA'] })
@@ -99,21 +99,25 @@ test.describe('Case admin caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(postponedOffender.postponementReasons[0])).toBeVisible()
 
-    // Ready for release Tab
-    await page.getByTestId('ready-for-release').click()
-    await expect(page.getByLabel('Ready for release').getByText('Reli Boral')).toBeVisible()
+    // Assessment completed Tab
+    await page.getByTestId('assessment-completed').click()
+    await expect(page.getByLabel('Assessment completed').getByText('Reli Boral')).toBeVisible()
 
-    await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#ready-for-release`)
+    await expect(page).toHaveURL(
+      `${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#assessment-completed`,
+    )
     await expect(
       page.getByText(
-        convertToTitleCase(`${readyForReleaseOffender.forename} ${readyForReleaseOffender.surname}`.trim()),
+        convertToTitleCase(`${assessmentCompletedOffender.forename} ${assessmentCompletedOffender.surname}`.trim()),
       ),
     ).toBeVisible()
-    await expect(page.getByText(`Prison number: ${readyForReleaseOffender.prisonNumber}`)).toBeVisible()
+    await expect(page.getByText(`Prison number: ${assessmentCompletedOffender.prisonNumber}`)).toBeVisible()
     await expect(
-      page.getByText(convertToTitleCase(`${readyForReleaseOffender.probationPractitioner}`.trim())),
+      page.getByText(convertToTitleCase(`${assessmentCompletedOffender.probationPractitioner}`.trim())),
     ).toBeVisible()
-    await expect(page.getByText(formatDate(parseIsoDate(readyForReleaseOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
+    await expect(
+      page.getByText(formatDate(parseIsoDate(assessmentCompletedOffender.hdced), 'dd MMM yyyy')),
+    ).toBeVisible()
   })
 
   test('Case admin inactive applications caseload', async ({ page }) => {

@@ -2048,8 +2048,15 @@ export interface components {
     AssessmentEventResponse: {
       /** @description full name of the person who triggered the event */
       fullName: string
-      /** @description username of the person who triggered the event */
-      username: string
+      /** @description changes that occurred during the event */
+      changes?: string
+      /** @description Event on Behalf of */
+      onBehalfOf?: string
+      /**
+       * @description role of the used to trigger the event
+       * @enum {string}
+       */
+      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
       /**
        * @description type that describes the event
        * @enum {string}
@@ -2066,11 +2073,6 @@ export interface components {
         | 'ASSESSMENT_DELETED'
         | 'NONDISCLOSURE_INFORMATION_ENTRY'
         | 'VLO_AND_POM_CONSULTATION_UPDATED'
-      /**
-       * @description role of the used to trigger the event
-       * @enum {string}
-       */
-      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
       /** @description subject of the event */
       summary: string
       /**
@@ -2078,10 +2080,8 @@ export interface components {
        * @description time and date of the event
        */
       eventTime: string
-      /** @description Event on Behalf of */
-      onBehalfOf?: string
-      /** @description changes that occurred during the event */
-      changes?: string
+      /** @description username of the person who triggered the event */
+      username: string
     }
     Detail: {
       code: string
@@ -2539,17 +2539,17 @@ export interface components {
     CheckRequestSummary: {
       requestType: string
       /**
-       * @description The status of the check request
-       * @example SUITABLE
-       * @enum {string}
-       */
-      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
-      /**
        * Format: int64
        * @description Unique internal identifier for this request
        * @example 123344
        */
       requestId: number
+      /**
+       * @description The status of the check request
+       * @example SUITABLE
+       * @enum {string}
+       */
+      status: 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info

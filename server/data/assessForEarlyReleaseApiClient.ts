@@ -35,6 +35,7 @@ import type {
   NonDisclosableInformation,
   UpdateVloAndPomConsultationRequest,
   AssessmentContactsResponse,
+  AddressDeleteReason,
 } from '../@types/assessForEarlyReleaseApiClientTypes'
 import config from '../config'
 import { parseIsoDate } from '../utils/utils'
@@ -253,6 +254,21 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     )
   }
 
+  async withdrawAddress(
+    token: string,
+    agent: Agent,
+    prisonNumber: string,
+    requestId: number,
+    addressDeleteReason: AddressDeleteReason,
+  ): Promise<void> {
+    return this.putWithToken(
+      `/offender/${prisonNumber}/current-assessment/withdraw-address/${requestId}`,
+      token,
+      agent,
+      addressDeleteReason,
+    )
+  }
+
   async getCheckRequestsForAssessment(
     token: string,
     agent: Agent,
@@ -284,7 +300,6 @@ export default class AssessForEarlyReleaseApiClient extends RestClient {
     return this.putWithToken(
       `/offender/${prisonNumber}/current-assessment/submit-for-pre-decision-checks`,
       token,
-      agent,
       agent,
     )
   }

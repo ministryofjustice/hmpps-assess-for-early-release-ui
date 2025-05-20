@@ -322,7 +322,7 @@ export const postponedOffender = createOffenderSummary({
   status: AssessmentStatus.POSTPONED,
 })
 
-export const readyForReleaseOffender = createOffenderSummary({
+export const assessmentCompletedOffender = createOffenderSummary({
   prisonNumber: 'K8932TE',
   crn: 'Z456712',
   forename: 'Kessum',
@@ -340,6 +340,16 @@ export const toWorkOnByComCases = createOffenderSummary({
   hdced: '2026-12-06',
   workingDaysToHdced: 10,
   status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
+})
+
+export const withDecisionMaker = createOffenderSummary({
+  prisonNumber: 'G8303TB',
+  forename: 'Simon',
+  surname: 'Adamson',
+  hdced: '2027-04-09',
+  workingDaysToHdced: 27,
+  probationPractitioner: 'Russell Dickson',
+  status: AssessmentStatus.AWAITING_DECISION,
 })
 
 export const withPrisonOffender = createOffenderSummary({
