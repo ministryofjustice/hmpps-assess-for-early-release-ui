@@ -127,7 +127,7 @@ test.describe('Eligibility checks', () => {
     await page.getByText(nextQuestionLinkText).click()
 
     await expect(page.getByText('Eligibility and suitability checks complete')).toBeVisible()
-    await expect(page.getByText('Jimmy Quelch is eligible and suitable for HDC')).toBeVisible()
+    await expect(page.getByText('Kurn Uvarek is eligible and suitable for HDC')).toBeVisible()
 
     const submittedChecks = await assessForEarlyRelease.getSubmittedEligibilityChecks(anAssessmentSummary)
     expect(submittedChecks).toStrictEqual([
@@ -137,7 +137,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
-          fullName: 'Bobby Brown',
+          fullName: 'Katogh Kone',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -151,7 +151,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
-          fullName: 'Bobby Brown',
+          fullName: 'Katogh Kone',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -164,7 +164,7 @@ test.describe('Eligibility checks', () => {
         },
         agent: {
           username: 'USER1',
-          fullName: 'Bobby Brown',
+          fullName: 'Katogh Kone',
           role: 'PRISON_CA',
           onBehalfOf: 'MDI',
         },
@@ -185,17 +185,17 @@ test.describe('Eligibility checks', () => {
 
     await page.goto(paths.prison.assessment.initialChecks.eligibilityAndSuitabilityQuestionList({ prisonNumber }))
 
-    await expect(page.getByTestId('bannerHeading')).toContainText('Jimmy Quelch is ineligible for HDC')
+    await expect(page.getByTestId('bannerHeading')).toContainText('Kurn Uvarek is ineligible for HDC')
     await expect(page.locator('#eligibility-check-1-status')).toContainText('Completed')
     await expect(page.locator('#eligibility-check-2-status')).toContainText('Ineligible')
     await expect(page.locator('#suitability-check-1-status')).toContainText('Cannot start yet')
     await expect(page.getByTestId('failureType')).toContainText('Ineligible')
     await expect(page.getByTestId('failureReasons')).toContainText('question-1')
     await expect(page.getByTestId('eligibility-checks')).toContainText(
-      'Answer the first question Recorded on 16 Jul 2025 by Rebecca Davidson',
+      'Answer the first question Recorded on 16 Jul 2025 by Kahlest Kular',
     )
     await expect(page.getByTestId('eligibility-checks')).toContainText(
-      'Answer the second 2 questions Recorded on 15 Jul 2025 by Rebecca Davidson',
+      'Answer the second 2 questions Recorded on 15 Jul 2025 by Kahlest Kular',
     )
     await expect(page.getByTestId('suitability-checks')).toContainText('Answer the first suitability question')
   })

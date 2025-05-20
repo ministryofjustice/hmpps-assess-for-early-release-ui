@@ -60,6 +60,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/offender/{prisonNumber}/current-assessment/withdraw-address/{requestId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Adds a address deletion reason.
+     * @description Adds a reason for deleting an address in the context of an offender's current assessment.
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    put: operations['withdrawAddress']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/offender/{prisonNumber}/current-assessment/vlo-and-pom-consultation': {
     parameters: {
       query?: never
@@ -458,6 +481,52 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/support/offender/assessment/{assessmentId}/events': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the assessment events for the given id and filter
+     * @description Gets the assessment events for the given id and filter
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getEvents']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/support/offender/assessment/current/{prisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Returns the current assessment for the given prisoner
+     * @description Returns the current assessment for the given prisoner
+     *
+     *     Requires one of the following roles:
+     *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
+     */
+    get: operations['getCurrentAssessment']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/staff': {
     parameters: {
       query?: never
@@ -653,7 +722,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ASSESS_FOR_EARLY_RELEASE_ADMIN
      */
-    get: operations['getCurrentAssessment']
+    get: operations['getCurrentAssessment_1']
     put?: never
     post?: never
     delete?: never
@@ -950,6 +1019,33 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    /** @description Records an offender's non disclosable information */
+    AddressDeleteReasonDto: {
+      /**
+       * @description The reason why address deleted
+       * @example NO_LONGER_WANTS_TO_BE_RELEASED_HERE
+       * @enum {string}
+       */
+      addressDeleteReasonType:
+        | 'NO_LONGER_WANTS_TO_BE_RELEASED_HERE'
+        | 'NOT_ENOUGH_TIME_TO_ASSESS'
+        | 'HAS_ANOTHER_SUITABLE_ADDRESS'
+        | 'OTHER_REASON'
+      /**
+       * @description Other reason to delete address
+       * @example Give details of information regards delete address
+       */
+      addressDeleteOtherReason?: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Request for updating the VLO and POM consultation information for an assessment */
     UpdateVloAndPomConsultationRequest: {
       /**
@@ -968,25 +1064,29 @@ export interface components {
        */
       pomBehaviourInformation?: string
     }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
+    /** @description Records an offender's non disclosable information */
+    NonDisclosableInformation: {
+      /**
+       * @description Is there any non disclosable information
+       * @example true
+       */
+      hasNonDisclosableInformation: boolean
+      /**
+       * @description Information that must not be disclosed to offender
+       * @example Give details of information that cannot be disclosed.
+       */
+      nonDisclosableInformation?: string
     }
     /** @description Details of the agent who is requesting a change be made to a resource */
     AgentDto: {
       /**
        * @description The name of the user requesting the change
-       * @example BobSmith
+       * @example KalittaAmexar
        */
       username: string
       /**
        * @description The full name of the user requesting the change
-       * @example Bob Smith
+       * @example Kalitta Amexar
        */
       fullName: string
       /**
@@ -1000,19 +1100,6 @@ export interface components {
        * @example A prison code or probation team code
        */
       onBehalfOf?: string
-    }
-    /** @description Records an offender's non disclosable information */
-    NonDisclosableInformation: {
-      /**
-       * @description Is there any non disclosable information
-       * @example true
-       */
-      hasNonDisclosableInformation: boolean
-      /**
-       * @description Information that must not be disclosed to offender
-       * @example Give details of information that cannot be disclosed.
-       */
-      nonDisclosableInformation?: string
     }
     /** @description Request for opting an offender out of assess for early release */
     OptOutRequest: {
@@ -1060,12 +1147,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname?: string
       /**
@@ -1124,7 +1211,7 @@ export interface components {
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -1169,7 +1256,7 @@ export interface components {
       mainOffense?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -1187,17 +1274,17 @@ export interface components {
       username?: string
       /**
        * @description The offender managers email address
-       * @example bob.jones@justice.gov.uk
+       * @example Kalitta.Amexar@justice.gov.uk
        */
       email?: string
       /**
        * @description The offender managers first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender managers surname
-       * @example Jones
+       * @example Amexar
        */
       surname?: string
     }
@@ -1335,7 +1422,6 @@ export interface components {
       name:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -1351,10 +1437,10 @@ export interface components {
         | 'OPT_IN'
       /**
        * @description The state of this task for a specific assessment
-       * @example Smith
+       * @example LOCKED
        * @enum {string}
        */
-      progress: 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
+      progress: 'UNAVAILABLE' | 'LOCKED' | 'READY_TO_START' | 'IN_PROGRESS' | 'COMPLETE'
     }
     /** @description Request for updating the case admin additional information for an address check request */
     UpdateCaseAdminAdditionInfoRequest: {
@@ -1397,32 +1483,32 @@ export interface components {
       uprn: string
       /**
        * @description The address's first line
-       * @example 34
+       * @example 1
        */
       firstLine?: string
       /**
        * @description The address's second line
-       * @example Urchfont
+       * @example Off Test Road
        */
       secondLine?: string
       /**
        * @description The address's town
-       * @example Chippenham
+       * @example Test Town
        */
       town: string
       /**
        * @description The address's county
-       * @example Shropshire
+       * @example Test County
        */
       county: string
       /**
        * @description The address's postcode
-       * @example RG13HS
+       * @example Test Postcode
        */
       postcode: string
       /**
        * @description The address's country
-       * @example Wales
+       * @example Test Country
        */
       country: string
       /**
@@ -1454,12 +1540,12 @@ export interface components {
       residentId: number
       /**
        * @description The resident's forename
-       * @example Dave
+       * @example Grana
        */
       forename: string
       /**
        * @description The resident's surname
-       * @example Jones
+       * @example Mrith
        */
       surname: string
       /**
@@ -1519,6 +1605,11 @@ export interface components {
        * @example See ResidentSummary
        */
       residents: components['schemas']['ResidentSummary'][]
+      /**
+       * @description The reason for deleting address
+       * @example See reason type and text
+       */
+      deleteReason?: components['schemas']['AddressDeleteReasonDto']
     } & {
       /**
        * @description discriminator enum property added by openapi-typescript
@@ -1542,12 +1633,12 @@ export interface components {
       residentId?: number
       /**
        * @description The resident's forename
-       * @example Dave
+       * @example Grana
        */
       forename: string
       /**
        * @description The resident's surname
-       * @example Jones
+       * @example Mrith
        */
       surname: string
       /**
@@ -1680,12 +1771,12 @@ export interface components {
       prisonId: string
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -1807,12 +1898,12 @@ export interface components {
       prisonId: string
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -1918,7 +2009,7 @@ export interface components {
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -1952,6 +2043,45 @@ export interface components {
        * @example 2028-06-23
        */
       sentenceStartDate?: string
+    }
+    /** @description Response object which describes a assessment event */
+    AssessmentEventResponse: {
+      /** @description full name of the person who triggered the event */
+      fullName: string
+      /** @description username of the person who triggered the event */
+      username: string
+      /**
+       * @description type that describes the event
+       * @enum {string}
+       */
+      eventType:
+        | 'STATUS_CHANGE'
+        | 'RESIDENT_UPDATED'
+        | 'ADDRESS_UPDATED'
+        | 'ADDRESS_DELETED'
+        | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+        | 'PRISON_TRANSFERRED'
+        | 'PRISONER_UPDATED'
+        | 'PRISONER_CREATED'
+        | 'ASSESSMENT_DELETED'
+        | 'NONDISCLOSURE_INFORMATION_ENTRY'
+        | 'VLO_AND_POM_CONSULTATION_UPDATED'
+      /**
+       * @description role of the used to trigger the event
+       * @enum {string}
+       */
+      role: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
+      /** @description subject of the event */
+      summary: string
+      /**
+       * Format: date-time
+       * @description time and date of the event
+       */
+      eventTime: string
+      /** @description Event on Behalf of */
+      onBehalfOf?: string
+      /** @description changes that occurred during the event */
+      changes?: string
     }
     Detail: {
       code: string
@@ -2018,12 +2148,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname: string
       /**
@@ -2046,7 +2176,7 @@ export interface components {
       workingDaysToHdced: number
       /**
        * @description The full name of the probation practitioner responsible for this offender
-       * @example Mark Coombes
+       * @example Shena Elas
        */
       probationPractitioner?: string
       /**
@@ -2111,7 +2241,6 @@ export interface components {
       currentTask?:
         | 'ASSESS_ELIGIBILITY'
         | 'ENTER_CURFEW_ADDRESS'
-        | 'COMPLETE_PRE_RELEASE_CHECKS'
         | 'REVIEW_APPLICATION_AND_SEND_FOR_DECISION'
         | 'COMPLETE_14_DAY_CHECKS'
         | 'COMPLETE_2_DAY_CHECKS'
@@ -2138,7 +2267,7 @@ export interface components {
       crn?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -2152,12 +2281,12 @@ export interface components {
       bookingId: number
       /**
        * @description The offender's first name
-       * @example Bob
+       * @example Kalitta
        */
       forename?: string
       /**
        * @description The offender's surname
-       * @example Smith
+       * @example Amexar
        */
       surname?: string
       /**
@@ -2212,11 +2341,17 @@ export interface components {
         | 'POSTPONED'
         | 'OPTED_OUT'
         | 'RELEASED_ON_HDC'
+      /**
+       * @description The status of address checks for this assessment
+       * @example IN_PROGRESS
+       * @enum {string}
+       */
+      addressChecksStatus: 'NOT_STARTED' | 'IN_PROGRESS' | 'UNSUITABLE' | 'SUITABLE'
       /** @description The community offender manager assigned to this assessment */
       responsibleCom?: components['schemas']['ComSummary']
       /**
        * @description The team that the COM responsible for this assessment is assigned to
-       * @example N55LAU
+       * @example Team1
        */
       teamCode?: string
       /**
@@ -2283,7 +2418,7 @@ export interface components {
       pomBehaviourInformation?: string
       /**
        * @description Last updated by
-       * @example Aled Evans
+       * @example Bura Hurn
        */
       lastUpdateBy?: string
     }
@@ -2314,7 +2449,7 @@ export interface components {
     ContactResponse: {
       /**
        * @description The full name of the contact
-       * @example Bob Smith
+       * @example Kalitta Amexar
        */
       fullName: string
       /**
@@ -2325,7 +2460,7 @@ export interface components {
       userRole: 'PRISON_CA' | 'PRISON_DM' | 'PROBATION_COM' | 'SUPPORT' | 'SYSTEM'
       /**
        * @description The email address of the contact
-       * @example bob.jones@justice.gov.uk
+       * @example Kalitta.Amexar@justice.gov.uk
        */
       email?: string
       /**
@@ -2402,6 +2537,7 @@ export interface components {
     }
     /** @description Describes a check request, a discriminator exists to distinguish between different types of check requests */
     CheckRequestSummary: {
+      requestType: string
       /**
        * @description The status of the check request
        * @example SUITABLE
@@ -2414,7 +2550,6 @@ export interface components {
        * @example 123344
        */
       requestId: number
-      requestType: string
       /**
        * @description Any additional information on the request added by the case administrator
        * @example Some additional info
@@ -2514,6 +2649,60 @@ export interface operations {
       }
     }
   }
+  withdrawAddress: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+        requestId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddressDeleteReasonDto']
+      }
+    }
+    responses: {
+      /** @description The address deletion reason has been added. */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': unknown
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token. */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role. */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An address check request with the specified id does not exist for the offender. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   updateVloAndPomConsultation: {
     parameters: {
       query?: never
@@ -2565,11 +2754,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender's current assessment has been sent to the prison case admin for checking. */
       204: {
@@ -2618,11 +2803,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender's current assessment has been submitted for address checks. */
       204: {
@@ -2810,11 +2991,7 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AgentDto']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description The offender has been opted back into being assessed for early release. */
       204: {
@@ -3355,6 +3532,100 @@ export interface operations {
       }
     }
   }
+  getEvents: {
+    parameters: {
+      query?: {
+        filter?: (
+          | 'STATUS_CHANGE'
+          | 'RESIDENT_UPDATED'
+          | 'ADDRESS_UPDATED'
+          | 'ADDRESS_DELETED'
+          | 'RESIDENTIAL_CHECKS_TASK_ANSWERS_UPDATED'
+          | 'PRISON_TRANSFERRED'
+          | 'PRISONER_UPDATED'
+          | 'PRISONER_CREATED'
+          | 'ASSESSMENT_DELETED'
+          | 'NONDISCLOSURE_INFORMATION_ENTRY'
+          | 'VLO_AND_POM_CONSULTATION_UPDATED'
+        )[]
+      }
+      header?: never
+      path: {
+        assessmentId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returns the assessments events */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentEventResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCurrentAssessment: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Returned the current assessment for the given prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AssessmentResponse'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getStaffDetailsByUsername: {
     parameters: {
       query: {
@@ -3709,7 +3980,7 @@ export interface operations {
       }
     }
   }
-  getCurrentAssessment: {
+  getCurrentAssessment_1: {
     parameters: {
       query?: never
       header?: never

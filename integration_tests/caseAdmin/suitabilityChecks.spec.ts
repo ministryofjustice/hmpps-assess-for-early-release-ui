@@ -63,7 +63,7 @@ test.describe('Suitability checks', () => {
     expect(suitabilityChecks).toBeVisible()
     expect(suitabilityChecks).toContainText('Answer the first suitability question')
     expect(suitabilityChecks.locator('#suitability-check-1-hint')).toHaveText(
-      'Recorded on 16 Jul 2025 by Rebecca Davidson',
+      'Recorded on 16 Jul 2025 by Kahlest Kular',
     )
   })
 })

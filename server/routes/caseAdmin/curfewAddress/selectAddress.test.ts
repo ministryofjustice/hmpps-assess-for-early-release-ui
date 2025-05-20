@@ -38,7 +38,7 @@ describe('select address routes', () => {
   describe('GET', () => {
     it('should render select address page', async () => {
       req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
-      req.query.searchQuery = 'SO128UF'
+      req.query.searchQuery = 'TEST'
       await selectAddressRoutes.GET(req, res)
 
       expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(
@@ -51,11 +51,11 @@ describe('select address routes', () => {
         foundAddresses: [
           {
             uprn: '310030567',
-            firstLine: '99, Hartland Road',
+            firstLine: '1, Test Road',
             secondLine: '',
-            town: 'Reading',
-            county: 'READING',
-            postcode: 'RG2 8AF',
+            town: 'Test Town',
+            county: 'TEST COUNTY',
+            postcode: 'TEST',
             country: 'England',
             xcoordinate: 472231,
             ycoordinate: 170070,
@@ -63,11 +63,11 @@ describe('select address routes', () => {
           },
           {
             uprn: '310030568',
-            firstLine: '99, Hartland Road',
+            firstLine: '1, Test Road',
             secondLine: '',
-            town: 'Reading',
-            county: 'READING',
-            postcode: 'RG2 8AF',
+            town: 'Test Town',
+            county: 'TEST COUNTY',
+            postcode: 'TEST',
             country: 'England',
             xcoordinate: 472231,
             ycoordinate: 170070,
@@ -77,14 +77,14 @@ describe('select address routes', () => {
         findAddressUrl: paths.prison.assessment.enterCurfewAddressOrCasArea.findAddress({
           prisonNumber: req.params.prisonNumber,
         }),
-        formattedSearchQuery: 'SO12 8UF',
+        formattedSearchQuery: 'TEST',
       })
     })
 
     it('should render add resident details page', async () => {
       addressService.searchForAddresses.mockResolvedValue([createAddressSummary({})])
       req.params.prisonNumber = assessmentOverviewSummary.prisonNumber
-      req.query.postcode = 'SO128UF'
+      req.query.postcode = 'TEST'
       await selectAddressRoutes.GET(req, res)
 
       expect(caseAdminCaseloadService.getAssessmentOverviewSummary).toHaveBeenCalledWith(

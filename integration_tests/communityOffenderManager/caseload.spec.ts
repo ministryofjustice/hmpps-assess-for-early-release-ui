@@ -31,8 +31,8 @@ test.describe('COM caseload', () => {
   test('Can view my cases', async ({ page }) => {
     const withDecisionMaker = createOffenderSummary({
       prisonNumber: 'G8303TB',
-      forename: 'Simon',
-      surname: 'Adamson',
+      forename: 'Kaluk',
+      surname: 'Mrith',
       hdced: '2027-04-09',
       workingDaysToHdced: 27,
       probationPractitioner: 'Russell Dickson',
@@ -56,11 +56,11 @@ test.describe('COM caseload', () => {
     ).toBeVisible()
     await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByComCases.hdced), 'dd MMM yyyy'))).toBeVisible()
     await expect(page.getByTestId('to-work-on-by-you')).toBeVisible()
-    await expect(page.getByRole('cell', { name: 'Aled Evans' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Reli Boral' })).toBeVisible()
 
     // With prison admin Tab
     await page.getByTestId('with-prison-admin').click()
-    await expect(page.getByLabel('With prison admin').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With prison admin').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#with-prison-admin`,
@@ -72,7 +72,7 @@ test.describe('COM caseload', () => {
 
     // With Decision Maker Tab
     await page.getByTestId('with-decision-maker').click()
-    await expect(page.getByLabel('With decision maker').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With decision maker').getByText('Reli Boral')).toBeVisible()
 
     // Postponed Tab
     await page.getByTestId('postponed').click()
@@ -85,7 +85,7 @@ test.describe('COM caseload', () => {
 
     // Ready for release Tab
     await page.getByTestId('ready-for-release').click()
-    await expect(page.getByLabel('Ready for release').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('Ready for release').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(
       `${playwrightConfig.use.baseURL}${paths.probation.probationCaseload({})}#ready-for-release`,

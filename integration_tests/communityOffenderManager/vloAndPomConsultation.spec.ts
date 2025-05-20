@@ -31,7 +31,7 @@ test.describe('VLO and POM consultation task', () => {
 
     await login(page, { authorities: ['ROLE_LICENCE_RO'], authSource: 'delius' })
     await page.goto(paths.probation.probationCaseload({}))
-    await page.getByRole('link', { name: 'Jim Smith' }).click()
+    await page.getByRole('link', { name: 'Lestav Mogh' }).click()
 
     const initialTask = page.getByTestId('CONSULT_THE_VLO_AND_POM')
     await expect(initialTask).toBeVisible()

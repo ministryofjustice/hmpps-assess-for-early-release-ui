@@ -27,7 +27,7 @@ describe('Decision maker Caseload Service', () => {
 
       expect(result).toEqual([
         {
-          name: 'Jim Smith',
+          name: 'Test Person',
           prisonNumber: 'A1234AB',
           hdced: aCase.hdced,
           workingDaysToHdced: 3,

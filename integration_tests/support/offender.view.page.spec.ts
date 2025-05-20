@@ -73,12 +73,12 @@ test.describe('Offender assessment overview page', () => {
         .getAttribute('href'),
     ).toEqual('#')
 
-    await expect(page.getByText(`HDC application for Bob Smith`)).toBeVisible()
+    await expect(page.getByText(`HDC application for Nestar Mogh`)).toBeVisible()
 
     // Offender checks
 
     const rows = page.locator('.govuk-summary-list__row')
-    await assertKeyValue(rows, 0, `Name`, `Bob Smith`)
+    await assertKeyValue(rows, 0, `Name`, `Nestar Mogh`)
     await assertKeyValue(rows, 1, `Prison Number`, `A1234AE`)
     await assertKeyValue(rows, 2, `CRN`, `DX12340A`)
     await assertKeyValue(rows, 3, `DOB`, `20 Feb 2002`)
@@ -187,7 +187,7 @@ test.describe('Offender assessment overview page', () => {
     await page.locator('#delete-button-1').click()
 
     // Then
-    await expect(page.getByText(`HDC application for Bob Smith`)).toBeVisible()
+    await expect(page.getByText(`HDC application for Nestar Mogh`)).toBeVisible()
 
     const table = page.locator('.govuk-table')
     const bookedId1 = table.locator('#bookingId-1')

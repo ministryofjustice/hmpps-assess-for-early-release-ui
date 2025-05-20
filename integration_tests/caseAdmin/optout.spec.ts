@@ -51,7 +51,7 @@ test.describe('Opt out', () => {
     await page.getByTestId('doNotWantToBeTaggedRadio').click()
     await page.getByTestId('continue').click()
 
-    await expect(page.getByTestId('optedOutOfHdcBanner')).toHaveText('Jimmy Quelch has opted out of HDC')
+    await expect(page.getByTestId('optedOutOfHdcBanner')).toHaveText('Kurn Uvarek has opted out of HDC')
   })
 
   test('Offender can cancel opt out of HDC', async ({ page }) => {

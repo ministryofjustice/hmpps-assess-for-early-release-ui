@@ -27,8 +27,8 @@ test.describe('Case admin caseload', () => {
     })
     const withDecisionMaker = createOffenderSummary({
       prisonNumber: 'G8303TB',
-      forename: 'Simon',
-      surname: 'Adamson',
+      forename: 'Kaluk',
+      surname: 'Mrith',
       hdced: '2027-04-09',
       workingDaysToHdced: 27,
       probationPractitioner: 'Russell Dickson',
@@ -36,11 +36,11 @@ test.describe('Case admin caseload', () => {
     })
     const withProbationOffender = createOffenderSummary({
       prisonNumber: 'G3243TB',
-      forename: 'Tim',
-      surname: 'Cook',
+      forename: 'Keth',
+      surname: 'Chang',
       hdced: '2026-12-04',
       workingDaysToHdced: 16,
-      probationPractitioner: 'Mark James',
+      probationPractitioner: 'Kagran Darj',
       status: AssessmentStatus.AWAITING_ADDRESS_AND_RISK_CHECKS,
     })
 
@@ -64,11 +64,11 @@ test.describe('Case admin caseload', () => {
     await expect(page.getByText(formatDate(parseIsoDate(toWorkOnByYouOffender.hdced), 'dd MMM yyyy'))).toBeVisible()
     await expect(page.getByText('10')).toBeVisible()
 
-    await expect(page.getByRole('cell', { name: 'Aled Evans' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Reli Boral' })).toBeVisible()
 
     // With Probation Tab
     await page.getByTestId('with-probation').click()
-    await expect(page.getByLabel('With probation').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With probation').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#with-probation`)
     await expect(
@@ -82,7 +82,7 @@ test.describe('Case admin caseload', () => {
 
     // With Decision Maker Tab
     await page.getByTestId('with-decision-maker').click()
-    await expect(page.getByLabel('With decision maker').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('With decision maker').getByText('Reli Boral')).toBeVisible()
 
     // Postponed Tab
     await page.getByTestId('postponed').click()
@@ -101,7 +101,7 @@ test.describe('Case admin caseload', () => {
 
     // Ready for release Tab
     await page.getByTestId('ready-for-release').click()
-    await expect(page.getByLabel('Ready for release').getByText('Aled Evans')).toBeVisible()
+    await expect(page.getByLabel('Ready for release').getByText('Reli Boral')).toBeVisible()
 
     await expect(page).toHaveURL(`${playwrightConfig.use.baseURL}${paths.prison.prisonCaseload({})}#ready-for-release`)
     await expect(
@@ -127,10 +127,10 @@ test.describe('Case admin caseload', () => {
     await expect(page.getByTestId('inactive-applications')).toBeVisible()
     await expect(page.getByText(`${refusedOffender.forename} ${refusedOffender.surname}`.trim())).toBeVisible()
     await expect(page.getByText(`Prison number: ${refusedOffender.prisonNumber}`)).toBeVisible()
-    await expect(page.getByText('Mark James')).toBeVisible()
+    await expect(page.getByText('Kagran Darj')).toBeVisible()
 
     await expect(page.getByText(`${timedOutOffender.forename} ${timedOutOffender.surname}`.trim())).toBeVisible()
     await expect(page.getByText(`Prison number: ${timedOutOffender.prisonNumber}`)).toBeVisible()
-    await expect(page.getByText('Mark Coombes	')).toBeVisible()
+    await expect(page.getByText('Shena Elas	')).toBeVisible()
   })
 })

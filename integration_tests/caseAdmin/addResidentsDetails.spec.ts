@@ -29,7 +29,7 @@ test.describe('Can add, edit & remove residents', () => {
 
     await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
     await expect(page.getByTestId('main-occupier')).toBeVisible()
-    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    await expect(page.locator('Label:has-text("Kurn Uvarek is the main occupier")')).toBeVisible()
     const isChecked = await page.locator('#isOffender').isChecked()
     expect(isChecked).toBe(false)
     await expect(page.getByText('Other residents (optional)')).toBeVisible()
@@ -61,7 +61,7 @@ test.describe('Can add, edit & remove residents', () => {
 
     await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
     await expect(page.getByTestId('main-occupier')).toBeVisible()
-    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    await expect(page.locator('Label:has-text("Kurn Uvarek is the main occupier")')).toBeVisible()
     const isChecked = await page.locator('#isOffender').isChecked()
     expect(isChecked).toBe(false)
     await expect(page.getByTestId('add-another-resident')).toBeVisible()
@@ -79,7 +79,7 @@ test.describe('Can add, edit & remove residents', () => {
     const errorSummaryList = page.locator('.govuk-error-summary__list li')
     const errorMessages = (await errorSummaryList.allTextContents()).map(message => message.trim())
 
-    await expect(errorMessages).toContain('Enter the 2nd other resident’s relationship to Jimmy Quelch')
+    await expect(errorMessages).toContain('Enter the 2nd other resident’s relationship to Kurn Uvarek')
   })
 
   test('Should hide mainOccupier fields when offender is main occupier', async ({ page }) => {
@@ -104,7 +104,7 @@ test.describe('Can add, edit & remove residents', () => {
     )
 
     await expect(page.locator('legend:has-text("Main occupier")')).toBeVisible()
-    await expect(page.locator('Label:has-text("Jimmy Quelch is the main occupier")')).toBeVisible()
+    await expect(page.locator('Label:has-text("Kurn Uvarek is the main occupier")')).toBeVisible()
     const isChecked = await page.locator('#isOffender').isChecked()
     expect(isChecked).toBe(true)
 

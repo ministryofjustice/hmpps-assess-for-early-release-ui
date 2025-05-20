@@ -47,8 +47,8 @@ test.describe('Offender search page', () => {
     const searchResult2 = createOffenderSearchResponse({
       prisonNumber: 'A1234AE',
       prisonId: 'CWL',
-      forename: 'Ceri',
-      surname: 'Evans',
+      forename: 'Kaden',
+      surname: 'Valaxar',
       dateOfBirth: '2000-02-02',
       crn: 'Y123456',
     })
@@ -75,7 +75,7 @@ test.describe('Offender search page', () => {
     await expect(dateOfBirth1).toBeVisible()
     await expect(row1Link).toBeVisible()
 
-    await expect(name1).toContainText('Jim Smith')
+    await expect(name1).toContainText('Lestav Mogh')
     await expect(name1).toContainText('Prison number: A1234AE')
     await expect(crn1).toHaveText('X123456')
     await expect(prisonId1).toHaveText('BRI')
@@ -88,7 +88,7 @@ test.describe('Offender search page', () => {
     const row2Link = page.locator('#name-button-2')
 
     await expect(row2Link).toBeVisible()
-    await expect(name2).toContainText('Ceri Evans')
+    await expect(name2).toContainText('Kaden Valaxar')
     await expect(name2).toContainText('Prison number: A1234AE')
     await expect(crn2).toHaveText('Y123456')
     await expect(prisonId2).toHaveText('CWL')
